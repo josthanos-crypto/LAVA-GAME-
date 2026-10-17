@@ -1,10 +1,13 @@
-# Juego de Lanzarote («Arrecife a Todo Gas», nombre provisional)
+# Lava Game (antes «Arrecife a Todo Gas»)
 
 Juego web de conducción estilo GTA por las calles reales de Arrecife, con los
 negocios de los clientes de José Manuel Pérez Cabrera (Canary Consulting) por
 dentro. Empezó como medio juego y ahora va a ser un **proyecto de publicidad**:
 los negocios salen en el juego. La idea es ampliarlo a toda Lanzarote; de
 momento solo es Arrecife.
+
+El nombre elegido por José Manuel es **Lava Game**. En el juego todavía pone
+«Arrecife a Todo Gas»: cambiarlo es lo primero de la lista de abajo.
 
 ## Cómo trabajar con José Manuel
 
@@ -108,19 +111,29 @@ momento solo es Arrecife.
   puerta de la oficina de Canary Consulting; por ahora no se explican sus servicios.
 - Perros salchicha: no se les puede hacer daño. Las patinetas se caen y se levantan.
 
-## Lo que viene (en este orden)
+## Lo que viene (en este orden, acordado con José Manuel)
 
-1. **Mapa grande con buscador**: al tocar el minimapa redondo se abre el mapa entero;
+1. **Nombre «Lava Game» e imagen de lava**: título, pantalla de inicio con logo
+   «LAVA GAME», vista previa al compartir, nombre del ZIP (`lava-game-web.zip`, la
+   carpeta de dentro sigue siendo `juego/`) y colores de lava (negro y naranja
+   incandescente) en el inicio, los menús y el marcador. Todo en `index.html`.
+2. **Volcán al fondo**: echa humo de día y brilla en rojo de noche; se ve desde
+   toda la ciudad.
+3. **Piedras de lava escondidas**: brillan en naranja y dan dinero al cogerlas, como
+   los paquetes ocultos de GTA; sobre todo en las puertas de los negocios de los
+   clientes (así el juego lleva a la gente a pasar por delante). Contador en el
+   marcador y que se recuerden las ya cogidas.
+4. **Mapa grande con buscador**: al tocar el minimapa redondo se abre el mapa entero;
    pinchas un punto o escribes una calle o un negocio y el coche aparece allí, en la
-   calzada y mirando a lo largo de la calle, y sigues desde ahí. En PC y en móvil.
-2. **Estilo GTA V** (referencia: `referencias/estilo-personajes-y-calles.jpg`):
+   calzada y mirando a lo largo de la calle, y sigues desde ahí. Con la policía detrás
+   o en mitad de una misión no se puede. En PC y en móvil.
+5. **Estilo GTA V** (referencia: `referencias/estilo-personajes-y-calles.jpg`):
    personajes y calles realistas, por fases y probando el rendimiento en el móvil:
    protagonista sacado de esa imagen (imagen → modelo 3D, esqueleto, animaciones),
    gente de la calle, fachadas canarias (casas blancas, carpintería oscura, balcones de
    madera, piedra volcánica), adoquines, bolardos, farolas de globo blanco, palmeras,
    volcanes al fondo y luz de sol fuerte. Ser sincero con lo que se puede en un juego
    de navegador que va en el móvil.
-3. **Nombre del proyecto de publicidad**: propuestas «Lanzarote a Todo Gas»
-   (recomendada), «Lanzarote en Juego» y «Ruta Conejera». Cuando elija, cambiar
-   título, pantalla de inicio y vista previa al compartir (index.html).
-4. Ampliar a toda Lanzarote (más adelante).
+6. Más adelante: coche «Lava» (deportivo negro con detalles naranjas, premio por reunir
+   todas las piedras), misión «¡Erupción!» (la lava baja por las calles y hay que
+   escapar o rescatar a la gente) y ampliar a toda Lanzarote.

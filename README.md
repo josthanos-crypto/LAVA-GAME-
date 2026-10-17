@@ -1,7 +1,7 @@
-# Juego de Lanzarote
+# Lava Game
 
 Juego web de conducción por las calles reales de Arrecife (Lanzarote), con los
-negocios de los clientes por dentro. Nombre provisional: «Arrecife a Todo Gas».
+negocios de los clientes por dentro. Antes se llamaba «Arrecife a Todo Gas».
 
 - Jugar (enlace privado): https://claude.ai/artifact/AGkBFTGmX8R9ArAg1bsiHA
 - Qué ha cambiado en cada versión: `VERSION_WEB.txt`
