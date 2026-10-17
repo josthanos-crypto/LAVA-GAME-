@@ -1,0 +1,169 @@
+ARRECIFE A TODO GAS (antes "GTA Canarias") - VERSION WEB
+=========================================================
+
+Link (privado, se abre con la cuenta de Claude de José Manuel):
+https://claude.ai/artifact/AGkBFTGmX8R9ArAg1bsiHA
+
+Como se monta la version web a partir de esta carpeta:
+1. npx vite build --base ./
+   (rutas relativas: map/, ortho/, ortho-m/, mapillary/, brand/)
+2. Fotos aereas:
+   - ortho/q00..q11.jpg  -> las originales reducidas a 4096 px de ancho (calidad 82)
+   - ortho-m/q00..q11.jpg -> reducidas a 2048 px (calidad 80), para moviles (Safari en iPhone)
+   Si falta ortho-m, el juego usa ortho (world.js lo hace solo).
+3. Copiar map/arrecife.json y mapillary/photos.json junto al index.html del build.
+4. Publicar el build como artefacto de Claude en el mismo link.
+
+Para regalar el juego desde la web de la empresa (sin cuenta de Claude):
+- arrecife-a-todo-gas-web.zip (te lo pasó Claude) trae la carpeta "juego" ya montada.
+- En el administrador de archivos del hosting: subir el ZIP a public_html y
+  extraerlo ahí. Queda en https://canaryislandconsulting.es/juego/
+- La vista previa al compartir el enlace (WhatsApp, Facebook...) está preparada para
+  esa dirección (index.html, etiquetas og:). Si va en otra carpeta, hay que cambiarlas.
+
+Copias de seguridad de cada cambio: carpetas _copia_antes_*
+
+Version 5 (coches y gente):
+- carModels.js: 14 coches con marca y modelo inventados (Guanche Chinijo, Alisio Berlina
+  y Familiar, Malpaís 4x4, Majorero Faena, Jameo Cargo, Guanche Reparto, Volcanía
+  Timanfaya GT y Cráter, Atlántica Bravo, Papagayo Spider, Guanche Tunera, taxi y
+  Policía Local). Pasos de rueda de verdad, cristales y plásticos con su material,
+  faros y pilotos que se encienden de noche, anuncios en las furgonetas.
+- parked.js (nuevo): coches aparcados medio subidos a la acera. Se roban con F / E
+  (o el botón Subir en el móvil) y si les das un golpe se desplazan.
+- humanModel.js: muñecos con esqueleto (rodillas, codos, cabeza), hombres y mujeres,
+  mayores con canas, vestidos, faldas, chaquetas, gorras, bolsos y mochilas, y cara.
+- peds.js: peatones variados; customizer.js: nuevos peinados, prenda de arriba y calzado.
+- Copia de lo anterior en _copia_antes_coches_gente
+
+Version 6 (rótulos de Canary Consulting):
+- brand.js (nuevo): datos de contacto, colores y rótulos de la marca.
+- El 80% de coches, furgonetas y camiones (tráfico y aparcados) llevan la marca:
+  pegatina en las puertas, símbolo y web en el techo, banda trasera con teléfono
+  y web, lonas en las furgonetas y la caja entera rotulada en el camión nuevo
+  (Majorero Tonelada). El deportivo del jugador también va rotulado.
+  La proporción se cambia en carModels.js (BRAND_SHARE = 0.8).
+- index.html: en la pantalla de inicio, tarjeta "Juego gratis gracias a" con el logo,
+  teléfono, web y email (se pueden pulsar); en partida, la marca arriba con el teléfono.
+- public/brand: los logos originales de iCloudDrive\marketing
+  (logo-oscuro.png = canarylogofondooscuro2400.png,
+   logo-claro.png = canarylogohorizontalclaro2400.png).
+- Copia de lo anterior en _copia_antes_rotulos
+
+Version 7 (nombre nuevo y versión para la web):
+- index.html: el juego se llama "Arrecife a Todo Gas". Vista previa al compartir,
+  descripción para buscadores e icono.
+- public/brand/portada.png = iCloudDrive\marketing\facebookportada1640x856.png
+  (la imagen que sale al compartir el enlace).
+- public/brand/icono.png = iCloudDrive\marketing\canaryavatar1024.png (icono de la web).
+- El logo vertical de la tarjeta de inicio se monta con logo-oscuro.png (el símbolo
+  encima del texto); ya no hace falta ningún archivo de logo vertical.
+  public/brand/logo-vertical.webp quedó a medias y no se usa: se puede borrar.
+- Los datos guardados de los jugadores (ropa, dinero, misiones) siguen igual.
+- Copia de lo anterior en _copia_antes_nombre
+
+Version 8 (Arrecife más real, estilo GTA):
+- Costa (coast.js, nuevo): el mar y el Charco quedan cerrados, ya no se conduce ni se
+  anda por el agua. Muro bajo encalado con albardilla en el paseo, como en la Avenida,
+  y pretiles en puentes y pasarelas. En el minimapa el Charco sale como agua.
+  La misión de la acampada se monta en el sitio real del Parque Islas Canarias.
+- Playa del Reducto (beach.js, nuevo): arena mojada en la orilla, sombrillas, hamacas y
+  toallas, gente tomando el sol, bañistas con el agua por la cintura, nadadores, gente
+  paseando por la orilla, socorrista, duchas y chiringuito.
+- Más gente por la calle (peds.js): 150 peatones en el PC y 64 en el móvil, parejas y
+  amigos que pasean juntos y se paran a charlar; la Calle Real se llena.
+- Protagonista con mucho más detalle (humanModel.js, y humanHead.js y humanParts.js,
+  nuevos): cara con párpados, pestañas, nariz y labios, pelo por mechones, dedos, reloj,
+  bolsillos y costuras del vaquero, cordones y suela de las zapatillas.
+- Rotondas (roundabouts.js, nuevo): 38 isletas con picón, cardones, aloes y tabaibas, y
+  en el centro su escultura: Barlovento de César Manrique, el Homenaje a la Vela Latina,
+  el Pescador con el marlín y, en las demás, juguetes del viento que giran con la brisa,
+  aceros corten, monolitos de basalto o un ancla.
+- Deportes (sports.js, nuevo): campos de fútbol con todas sus líneas, porterías con red
+  y torres de focos; pistas de tenis y de pádel (también las 2 de la Ciudad Deportiva
+  que no venían en el mapa) y canchas con porterías y canastas.
+- Colegios, organismos oficiales y hotelitos (civic.js, nuevo): rótulo en la fachada,
+  banderas de España, Canarias y la UE ondeando con el alisio, buzón de Correos, señal
+  de «niños» junto a los colegios y letrero en la azotea de los hoteles.
+- Sitios famosos: Iglesia de San Ginés con su torre y el parque de detrás (sanGines.js);
+  Castillo de San Gabriel y Puente de las Bolas con sus muretes, los pilares con las
+  bolas y el puente levadizo (fortBridge.js); comercios de la Calle Real, Cines
+  Atlántida, Charco Vivo (antigua Casa Ginory) y la tiendita del chino del Charco, donde
+  se hace un parón con la T: refresco y pipas, y la salud al 100% (shops.js).
+- Ciudad (cityDetail.js, nuevo): en las azoteas, casetones, bidones de agua, termos
+  solares, aparatos de aire y antenas; en parques y jardines, laureles de Indias, ficus
+  y algún drago. world.js: arreglados los 167 edificios que salían con las paredes negras.
+- places.js y extraData.js (nuevos): los sitios con nombre, las rotondas y las esculturas.
+- El ZIP nuevo para la web se sube igual que el anterior (extraer en public_html,
+  sustituyendo la carpeta "juego").
+- Copia de lo anterior en _copia_antes_realismo2 (los 12 archivos que ya existían;
+  el resto son nuevos).
+
+Version 9 (sonido):
+- El juego viene con sonido de serie. Antes casi no se oía: el motor era tan grave que
+  el altavoz del móvil no lo sacaba, los tiros y la sirena no arrancaban en el móvil,
+  el iPhone en modo silencio lo callaba todo y a pie casi no sonaba nada.
+- Todo el sonido sale por un mismo sitio (sound.js, nuevo): se enciende al pulsar
+  Conducir y, si el móvil lo corta (una llamada, salir de la app), vuelve con el
+  siguiente toque. En el iPhone suena aunque esté en modo silencio.
+- Motor (audio.js): se oye bien en el altavoz del móvil y cambia de marcha al acelerar.
+  Los tiros (combat.js), la sirena (police.js) y los golpes (props.js) salen por el
+  mismo sitio.
+- Ambiente (ambience.js, nuevo): ruido de ciudad y, cerca del mar y del Charco, olas.
+- Para quitarlo: en el PC, la tecla V o el botón del altavoz de arriba a la izquierda;
+  en el móvil, ··· y «Silenciar» (luego pone «Poner sonido»). El navegador lo recuerda.
+- Cambiados también main.js, touch.js e index.html.
+- El ZIP nuevo para la web se sube igual que el anterior (extraer en public_html,
+  sustituyendo la carpeta "juego").
+- Copia de lo anterior en _copia_antes_sonido (los archivos que ya existían; sound.js
+  y ambience.js son nuevos).
+
+Version 10 (locales de los clientes, Iria, perros salchicha y patinetas):
+- Se entra en los locales de los clientes: en la puerta hay una flecha y un aro de su
+  color, y en el minimapa sale su letra. F (o el botón amarillo en el móvil) para entrar
+  y salir, T (o Hablar) para hablar con su gente. Algunos te ofrecen algo: otra T y lo
+  pagas con el dinero de las misiones (si no llega, invita la casa).
+  · El Nuevo Maccheroni (Manolo Millares): Andrea en la sala y Elvis en la cocina cuentan
+    la carta (pasta fresca rellena, pizzas, la Pizza Elvis...). Raviolis 13 €, pizza 15 €.
+  · Sakura (por la calle Fenauso, detrás de Las Buganvillas): Willy y el buffet libre, 14 €.
+  · La Cervecería del Reducto: la camarera dentro (caña con tapa, 4 €) y el camarero
+    en la terraza.
+  · C.C. Las Buganvillas: un pasillo con Todofone (Siso; pantalla del móvil, 25 €), la
+    peluquería de Toño enfrente (corte de pelo, 12 €: cambia el peinado) y la Zapatería
+    Eliseo (zapatos nuevos, 30 €). Al fondo, la escalera al gimnasio (no se sube todavía).
+  · Funeraria Arroyo (Manolo Millares, la antigua José Antonio): Michael explica los
+    servicios.
+  · Tanatorio Arroyo (Juan de Quesada 31): la fachada como en las fotos, con el rótulo
+    grande; dentro, recepción, dos salas de velatorio y el patio canario. En el lateral
+    que sube, la puerta de la foto y, un poco más arriba, la puerta de la oficina de
+    Canary Consulting con su rótulo (a la oficina todavía no se entra).
+- Terrazas techadas del Reducto (terrace.js, nuevo): La Cervecería y La Botica con sus
+  toldos, mesas con gente, guirnaldas de bombillas que se encienden de noche y un camarero.
+- Perros salchicha (dogs.js, nuevo): con correa paseando con la gente y sueltos por la
+  plaza. Ladran y se apartan de los coches: no se les puede hacer daño.
+- Gente en patineta (skaters.js, nuevo): por las calles y dando vueltas por la plaza.
+  Saltan y, si los atropellas, salen volando, se levantan y siguen.
+- Iria, cuarta protagonista: tecla 4 en el PC o en el menú ··· del móvil. La gente de
+  los locales le habla en femenino.
+- Archivos nuevos: interiorKit.js, locales.js, localesCommon.js, localesComida.js,
+  localesArroyo.js, localesBuganvillas.js, localesData.js, terrace.js, dogs.js y skaters.js.
+- Cambiados: main.js, minimap.js, touch.js, ambience.js, character.js, dialogue.js,
+  customizer.js e index.html.
+- El ZIP nuevo para la web se sube igual que el anterior (extraer en public_html,
+  sustituyendo la carpeta "juego").
+- Copia de lo anterior en _copia_antes_locales (los archivos que ya existían; los
+  nuevos no estaban).
+
+Version 11 (correcciones de José Manuel):
+- Funeraria y Tanatorio Arroyo: el teléfono de los dos es el de Michael, 658 753 941.
+  Sale en el rótulo de la funeraria y en el rótulo grande del tanatorio, y lo dicen
+  Michael y la recepcionista.
+- C.C. Las Buganvillas: la zapatería de Eliseo es Calzado El Más Barato (rótulo,
+  directorio y lo que cuenta Eliseo) y el gimnasio de la primera planta es Areafit.
+- Sakura: la puerta está ahora donde está de verdad, en la calle Fenauso 55. Se entra a
+  Fenauso desde Manolo Millares (sentido único) y el Sakura queda al final, en la esquina
+  de la izquierda, la de la calle Aniagua.
+- Cambiados: localesArroyo.js, localesBuganvillas.js y localesComida.js.
+- El ZIP nuevo para la web se sube igual que el anterior (extraer en public_html,
+  sustituyendo la carpeta "juego").
+- Copia de lo anterior en _copia_antes_correcciones.

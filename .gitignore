@@ -1,0 +1,7 @@
+node_modules
+dist/
+srv/
+juego/
+*.zip
+*.log
+/*.png
