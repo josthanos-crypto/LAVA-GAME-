@@ -1775,3 +1775,17 @@ Version 140 - Los aparcamientos del Hospital Molina Orosa (16/11/2026)
 - El constructor de aparcamientos de la Version 135 sirve ya para cualquier sitio (buildAparcamientos).
 - Archivo nuevo: hospitalAparcamiento.js. Cambiados: aparcamientosTenderete.js y el index.js del barrio Argana Alta.
   Sin tocar main.js ni index.html.
+
+
+Version 141 - El parque comercial de la salida a Costa Teguise: IKEA, Electron y las canchas de padel (16/11/2026)
+- IKEA: la nave de la esquina de la calle Oceano Indico con la Carretera de los Marmoles (su direccion oficial es
+  "Parque Industrial Arrecife Puerto, Carretera de los Marmoles s/n"). Era un bloque generico: ahora es la caja azul
+  con las letras amarillas en tres caras, la entrada acristalada con su marquesina amarilla y sus aparcamientos.
+- Electron: el nombre en grande en las dos caras de su nave que dan a la calle.
+- Las canchas de padel que ensena la foto aerea detras de Electron: seis pistas (tres verdes, dos de color teja y
+  una azul) con sus fondos de cristal, la malla, la red y las rayas. Chocan: no se cruzan con el coche.
+- Aparcamientos con sus plazas delante de Electron y las naves de al lado (calle Oceano Atlantico), los de IKEA y el
+  del Lidl de al lado: 132 plazas (las que caben, no el numero real).
+- Las demas naves del parque se quedan como estaban: falta saber que empresa es cada una (no se inventan nombres).
+- Archivo nuevo: parqueComercialPuerto.js. Cambiado: el index.js de "compartido" (esa zona no es de ningun barrio).
+  Sin tocar main.js ni index.html.

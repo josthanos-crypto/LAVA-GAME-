@@ -23,6 +23,7 @@ import { applyOneWay } from '../../sentidos.js';
 import { ajustarCalles } from '../../ajusteCalles.js';
 import { buildWalkIndex } from '../../aceras.js';
 import { buildParadasGuagua } from '../../paradasGuagua.js';
+import { tuneParqueComercialPuerto, buildParqueComercialPuerto } from '../../parqueComercialPuerto.js';
 
 export const BARRIO = {
   id: 'compartido',
@@ -36,6 +37,8 @@ export function prepararMapa(map) {
   map.desnivelesResto = desnivelesResto();
   // y los pocos picos y uves que quedaban en mitad de una calle, redondeados
   map.quiebros = redondearQuiebros();
+  // el parque comercial de la salida a Costa Teguise (IKEA, Electron): no es de ningún barrio
+  tuneParqueComercialPuerto(map);
   // aceras libres: las calles se ajustan a lo que dejan las fachadas y, si no basta, la fachada se echa atrás
   // (ajusteCalles.js). Va aquí, al final, para respetar los edificios que los barrios marcan como hechos a mano.
   // El índice de aceras (aceras.js) se hizo antes con las anchuras viejas: se rehace.
@@ -60,6 +63,8 @@ export function construir({ scene, map, colliders, touch, story }) {
   const aeropuerto = buildAeropuerto(scene);
   // las paradas de guagua reales de toda la ciudad (OpenStreetMap), con su nombre; las guaguas paran en ellas
   const paradas = buildParadasGuagua(scene, map, colliders);
+  // el parque comercial de la salida a Costa Teguise: IKEA, Electron, las canchas de pádel y los aparcamientos
+  buildParqueComercialPuerto(scene, colliders, map);
   // rotondas con su isleta y su escultura
   const roundabouts = buildRoundabouts(scene, colliders);
   // edificios y sitios con nombre de toda la ciudad (cabildo, comisarías, hoteles, colegios...)
