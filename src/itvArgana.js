@@ -16,7 +16,8 @@ import { paveMaterial, asfalto } from './suelos.js';
  * caseta de recepción y las filas de espera con sus flechas.
  *
  * (Version 138) El recinto entero: firme de asfalto, aparcamiento entre la nave y la carretera, la VALLA DE REJILLA
- * que lo rodea y la PUERTA, que está al lado del local de Remar (la nave de al lado), como dijo José Manuel.
+ * que lo rodea y la PUERTA, que está al lado del local de Remar. (Version 139) Remar es la nave de ABAJO (la que
+ * queda bajando hacia Arrecife), no la de arriba: lo corrigió José Manuel. La puerta va en esa punta del recinto.
  *
  * No lleva el nombre de la empresa que la explota ni horarios ni precios: solo «ITV» (no se inventan datos).
  * El sentido de paso (se entra por la punta de arriba, la de las filas pintadas) sale de la foto aérea; que lo
@@ -36,9 +37,10 @@ const P = (s, v) => [C[0] + U[0] * s + V[0] * v, C[1] + U[1] * s + V[1] * v];
 const VALLA_V = 39;                        // la valla de la carretera (la calzada empieza en v = 42,6)
 const VALLA_HOSP = -16.5;                  // la valla del lado del hospital
 const FIN_S = -39;                         // el fondo, por la punta de la salida (la nave siguiente empieza en -42)
-const REMAR_S = 29.7;                      // donde empieza la nave de al lado (el local de Remar)
+const VECINA_S = 29.7;                     // donde empieza la nave de arriba (no es de la ITV)
+const REMAR_S = -41.9;                     // donde acaba la nave de abajo: el local de Remar
 const COLA_S = 54;                         // el fondo de las filas de espera
-const PUERTA = [21.5, 28.7];               // la puerta del recinto, pegada a la nave de Remar
+const PUERTA = [-38.5, -31.3];             // la puerta del recinto, en la punta de abajo, pegada a la nave de Remar
 
 const BLANCO = 0xf2f1ec, AZUL = 0x1c4f9c, GRIS = 0x8f9498, HORMIGON = 0x9a9b98, AMARILLO = 0xf2c200, OSCURO = 0x23262a;
 
@@ -184,7 +186,7 @@ export function buildItvArgana(scene, colliders) {
   }
   // el poste con el rótulo, en la carretera, al lado de la puerta
   {
-    const s = PUERTA[0] - 1.6, v = VALLA_V + 0.6;   // junto a la puerta del recinto
+    const s = PUERTA[1] + 1.6, v = VALLA_V + 0.6;   // junto a la puerta del recinto
     caja(s, v, 0, 0.35, 6.2, 0.35, GRIS);
     caja(s, v, 4.4, 4.2, 1.8, 0.3, BLANCO, V);
     const tex = lienzo(384, 160, (c, w, h) => {
@@ -198,8 +200,10 @@ export function buildItvArgana(scene, colliders) {
 
   // ───────────── el recinto: firme, filas de espera, aparcamiento, valla y puerta (Version 138) ─────────────
   // Medido sobre el mapa y la foto aérea: la carretera queda a 34 m de la pared de la nave (v = 42,6); la nave de
-  // al lado (la del local de Remar) empieza en s = 29,7 y deja libre, entre ella y la boca de la ITV, el paso por el
-  // que se entra desde la carretera; las filas de espera están más arriba, pegadas al lado del hospital.
+  // arriba empieza en s = 29,7; la de abajo (el local de Remar) acaba en s = -41,9 y junto a ella está la puerta.
+  // Se entra por abajo, se sube por el aparcamiento hasta las filas de espera (más arriba, pegadas al lado del
+  // hospital) y se cruza la nave de arriba abajo. (En la Version 138 la puerta estaba arriba, en el paso entre la nave
+  // de la ITV y la de arriba, y el rótulo de Remar en la nave de arriba: era un error.)
   const blanco = [], flechas = [];
   const Y = 0.105;                 // el firme del recinto, por debajo del suelo de la nave
   const linea = (s0, v0, s1, v1, hw = 0.06) => {
@@ -223,8 +227,8 @@ export function buildItvArgana(scene, colliders) {
         for (const [x, z] of [pt(i, j), pt(i, j + 1), pt(i + 1, j), pt(i + 1, j), pt(i, j + 1), pt(i + 1, j + 1)]) { pos.push(x, Y, z); uv.push(x / 4, -z / 4); }
       }
     };
-    losa(FIN_S, REMAR_S - 0.7, VALLA_HOSP, VALLA_V);           // la nave, el aparcamiento y el paso de entrada
-    losa(REMAR_S - 0.7, COLA_S, VALLA_HOSP, 3.4);              // las filas de espera, detrás de la nave de Remar
+    losa(FIN_S, VECINA_S - 0.7, VALLA_HOSP, VALLA_V);          // la nave, el aparcamiento y el paso a las filas
+    losa(VECINA_S - 0.7, COLA_S, VALLA_HOSP, 3.4);             // las filas de espera, detrás de la nave de arriba
     losa(PUERTA[0], PUERTA[1], VALLA_V, VALLA_V + 3.4);        // el vado de la puerta, hasta la calzada
     const g = new THREE.BufferGeometry();
     g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
@@ -237,23 +241,25 @@ export function buildItvArgana(scene, colliders) {
     grupo.add(firme);
   }
   // las filas de espera (tres carriles) y sus flechas hacia la nave
-  for (const v of [-14, -8.7, -3.3, 2]) linea(REMAR_S + 1.5, v, COLA_S - 2, v);
+  for (const v of [-14, -8.7, -3.3, 2]) linea(VECINA_S + 1.5, v, COLA_S - 2, v);
   for (const v of [-11.35, -6, -0.65]) for (const sx of [36, 46]) flecha(sx, v, -1, 0);
   // delante de cada boca, la raya de «espere», y a la salida las rayas y una flecha
   for (const v of LINEAS) linea(L + 1.6, v - 2.2, L + 1.6, v + 2.2, 0.15);
   for (const v of [-7.95, -2.65, 2.65, 7.95]) linea(-L - 1.5, v, -L - 8, v);
   for (const v of LINEAS) flecha(-L - 5, v, -1, 0);
-  // el paso de entrada desde la puerta: dos flechas hacia dentro
-  for (const v of [32, 20]) flecha((PUERTA[0] + PUERTA[1]) / 2, v, 0, -1);
+  // el camino desde la puerta: una flecha hacia dentro, dos subiendo por el aparcamiento y dos hacia las filas
+  flecha((PUERTA[0] + PUERTA[1]) / 2, VALLA_V - 4, 0, -1);
+  for (const sx of [-22, 2]) flecha(sx, 27.5, 1, 0);
+  for (const v of [26, 12]) flecha(25, v, 0, -1);
   // el aparcamiento, entre la nave y la carretera: una fila contra la valla y otra contra la nave
   let plazas = 0;
-  for (let sx = FIN_S + 2; sx <= PUERTA[0] - 2; sx += 2.5) { linea(sx, VALLA_V - 5.6, sx, VALLA_V - 0.6); plazas++; }
-  linea(FIN_S + 2, VALLA_V - 5.6, PUERTA[0] - 2, VALLA_V - 5.6);
+  for (let sx = PUERTA[1] + 2.5; sx <= VECINA_S - 2.5; sx += 2.5) { linea(sx, VALLA_V - 5.6, sx, VALLA_V - 0.6); plazas++; }
+  linea(PUERTA[1] + 2.5, VALLA_V - 5.6, VECINA_S - 2.5, VALLA_V - 5.6);
   for (let sx = -L + 1; sx <= L - 1; sx += 2.5) { linea(sx, W + 1.4, sx, W + 6.4); plazas++; }
   linea(-L + 1, W + 6.4, L - 1, W + 6.4);
   grupo.userData.plazas = plazas - 2;
 
-  // la valla de rejilla que rodea el recinto, con la puerta abierta al lado de la nave de Remar
+  // la valla de rejilla que rodea el recinto, con la puerta abierta en la punta de abajo, al lado de la nave de Remar
   {
     const ALTA = 2.0, PANEL = 2.5;
     const tex = lienzo(128, 128, (c, w, h) => {
@@ -275,9 +281,9 @@ export function buildItvArgana(scene, colliders) {
       for (let i = 0; i <= n; i++) caja(s0 + (s1 - s0) * i / n, v0 + (v1 - v0) * i / n, 0.1, 0.07, ALTA + 0.1, 0.07, 0x5f6a62);
       muro(s0, v0, s1, v1);
     };
-    tramo(FIN_S, VALLA_V, PUERTA[0], VALLA_V);                 // por la carretera, hasta la puerta
-    tramo(PUERTA[1], VALLA_V, PUERTA[1], 32.2);                // de la puerta a la esquina de la nave de Remar
-    tramo(REMAR_S + 0.3, 6.4, COLA_S, 3.4);                    // por detrás de la nave de Remar
+    tramo(PUERTA[1], VALLA_V, VECINA_S - 0.5, VALLA_V);        // por la carretera, de la puerta hacia arriba
+    tramo(VECINA_S - 0.5, VALLA_V, VECINA_S - 0.5, 32.2);      // hasta la esquina de la nave de arriba
+    tramo(VECINA_S + 0.3, 6.4, COLA_S, 3.4);                   // por detrás de la nave de arriba
     tramo(COLA_S, 3.4, COLA_S, VALLA_HOSP);                    // el fondo de las filas de espera
     tramo(COLA_S, VALLA_HOSP, FIN_S, VALLA_HOSP);              // el lado del hospital
     tramo(FIN_S, VALLA_HOSP, FIN_S, VALLA_V);                  // el fondo de la salida
@@ -298,7 +304,7 @@ export function buildItvArgana(scene, colliders) {
     grupo.add(valla);
   }
 
-  // el rótulo del local de al lado (Remar), que es por donde José Manuel dice que está la entrada
+  // el rótulo de la nave de abajo (Remar), que es por donde José Manuel dice que está la entrada
   {
     const tex = lienzo(512, 128, (c, w, h) => {
       c.fillStyle = '#ffffff'; c.fillRect(0, 0, w, h);
@@ -306,8 +312,8 @@ export function buildItvArgana(scene, colliders) {
       c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = 'bold 92px Arial, Helvetica, sans-serif';
       c.fillText('REMAR', w / 2, h / 2 + 4);
     });
-    cartel(REMAR_S + 9, 31.9 + 0.3, 4.6, 7.2, 1.8, V, tex, 0.15);          // en la fachada de la carretera
-    cartel(REMAR_S - 0.3, 22, 4.6, 7.2, 1.8, menosU, tex, 0.15);          // en el costado que da al paso de entrada
+    cartel(REMAR_S - 9, 40.2 + 0.3, 4.3, 7.2, 1.8, V, tex, 0.15);          // en la fachada de la carretera
+    cartel(REMAR_S + 0.3, 30, 4.3, 7.2, 1.8, U, tex, 0.15);               // en el testero que mira a la puerta de la ITV
   }
 
   const pintura = new THREE.MeshStandardMaterial({ color: 0xeceae2, roughness: 0.85, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });

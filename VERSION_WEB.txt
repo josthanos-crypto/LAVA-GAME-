@@ -1755,3 +1755,11 @@ Version 138 - El recinto de la ITV: aparcamiento, valla de rejilla y la puerta j
   Solo el nombre que dio Jose Manuel: sin logotipo ni mas datos. Falta que confirme que es esa nave.
 - Las plazas son las que caben, no el numero real. La valla choca (no se cruza con el coche); la puerta esta abierta.
 - Cambiado: itvArgana.js. Sin tocar main.js ni index.html.
+
+
+Version 139 - ITV: Remar y la puerta, en el lado de abajo (16/11/2026)
+- Correccion de Jose Manuel: el local de Remar esta por DEBAJO de la ITV (bajando hacia Arrecife), no por encima. El
+  rotulo "REMAR" pasa a la nave de abajo y la puerta del recinto de la ITV a esa punta, pegada a ella. Por arriba el
+  recinto queda cerrado con la valla. Se entra por abajo, se sube por el aparcamiento hasta las filas de espera y se
+  cruza la nave de arriba abajo (flechas pintadas). El aparcamiento sigue con 37 plazas.
+- Cambiado: itvArgana.js. Sin tocar main.js ni index.html.

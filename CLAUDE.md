@@ -78,7 +78,7 @@ Los archivos de cada barrio están en la ficha de ese barrio (`src/barrios/<barr
 | aldiAparcamiento.js, mcdonaldsAparcamiento.js, navesLados.js, lidlRepsol.js | (Version 134) Plazas en línea delante del ALDI; el aparcamiento del McDonald's de Argana (plano, sigue el terreno, no pisa la calle); la trasera y los costados del Burger King y el Decathlon (`vestirLados`, lo llama arrecifeExtras.js); y el Lidl de la carretera de San Bartolomé con su Repsol (marquesina en su sitio) y el lavadero de coches |
 | aparcamientosTenderete.js | (Version 135) Aparcamientos de la zona comercial de Tenderete: firme y plazas en batería en los solares de la lista `SOLARES` (McDonald's/Mercadona, Mercadona de abajo, Burger King y Decathlon, medidos sobre la foto aérea) y el carril del autoservicio (`AUTOSERVICIOS`) dando la vuelta al McDonald's y al Burger King. No pinta sobre calle, acera ni edificio. Para otro aparcamiento, añadir una línea a `SOLARES` |
 | bazarArgana.js | (Version 136) El bazar de la esquina de la carretera de San Bartolomé con Tomás Morales, frente al C.C. Argana y junto a Dos Cabras: nave que no venía en el mapa, medida sobre la foto aérea. **Nombre sin confirmar** (José Manuel cree que «Seco Hogar»): el rótulo dice solo «BAZAR»; se cambia en `NOMBRE` |
-| itvArgana.js | (Version 137) La estación de ITV de la subida a San Bartolomé, entre la carretera y el Hospital Molina Orosa: nave con tres líneas que se cruzan con el coche (fosos, rodillos, números de línea), caseta, poste y filas de espera pintadas. Solo pone «ITV»: sin empresa, horarios ni precios. Lo tumbado en el suelo va en trozos de 4 m (`tira`) para que suba con el terreno. (Version 138) El recinto: firme, aparcamiento entre la nave y la carretera, la valla de rejilla que lo rodea (choca) y la puerta abierta junto a la nave de al lado, que lleva el rótulo «REMAR» (lo dijo José Manuel; falta confirmar que es esa nave). Las medidas del recinto están arriba del archivo (`VALLA_V`, `PUERTA`, `REMAR_S`…) |
+| itvArgana.js | (Version 137) La estación de ITV de la subida a San Bartolomé, entre la carretera y el Hospital Molina Orosa: nave con tres líneas que se cruzan con el coche (fosos, rodillos, números de línea), caseta, poste y filas de espera pintadas. Solo pone «ITV»: sin empresa, horarios ni precios. Lo tumbado en el suelo va en trozos de 4 m (`tira`) para que suba con el terreno. (Version 138) El recinto: firme, aparcamiento entre la nave y la carretera, la valla de rejilla que lo rodea (choca) y la puerta abierta en la punta de abajo, junto a la nave de Remar, que lleva el rótulo «REMAR» (Version 139: Remar está por DEBAJO de la ITV, bajando hacia Arrecife; lo corrigió José Manuel). Las medidas del recinto están arriba del archivo (`VALLA_V`, `PUERTA`, `REMAR_S`…) |
 | ruedas.js, cocheDetalle.js, cocheAdornos.js, cocheLejos.js, matriculas.js | Detalle de los coches (Version 133). `ruedas.js`: neumático con dibujo y llanta con radios, tuercas y disco (`ruedaFina`), y la rueda de pocos triángulos (`ruedaLejos`). `cocheDetalle.js`: lunas (`LUNA`), suciedad (`ensuciar`), dónde caen faros y pilotos (`focos`), su cristal (`tulipas`), el resplandor de noche (`halos`) y la pinza de freno. `cocheAdornos.js`: juntas, gomas, limpias, retrovisores, tercera luz de freno, antena y faldón, fundidos en la carrocería. `cocheLejos.js`: la carrocería ligera (~1.600 triángulos, 4 llamadas) que carModels.js enseña a más de 32 m (20 en el móvil) con `userData.setDist(d)`; la llaman traffic.js y parked.js. `matriculas.js`: matrículas inventadas con portamatrículas |
 | marcas.js | Marcas de coche inventadas: emblema dibujado de cada una (`drawLogo`, `logoCanvas`) y su lema. Los coches se parecen a los reales, pero ni nombres ni logos son de marcas reales |
 | traffic.js, parked.js, roadGraph.js | Tráfico, coches aparcados que se roban, rutas por las calles |
@@ -182,7 +182,7 @@ hacer algo que ya hacen los extras, se apaga allí la parte repetida (como se hi
    archivo con `guardar_archivo` (texto, sobrescribir) y comprueba que los bytes que
    devuelve coinciden con `wc -c`. No pases imágenes en base64.
 4. **Notas**: añade una sección «Version N» al final de `VERSION_WEB.txt` (aquí y en
-   casa). La última es la Version 138.
+   casa). La última es la Version 139.
 5. **GitHub**: trabaja en una rama y abre un PR para que quede el historial (la copia del
    PC de casa no es un repositorio git: ahí no hay rama ni PR).
 
@@ -217,6 +217,8 @@ hacer algo que ya hacen los extras, se apaga allí la parte repetida (como se hi
 - **Tanatorio Arroyo**: Juan de Quesada 31, casa terrera de la esquina. Mismo teléfono
   que la funeraria: **658 753 941** (el de Michael). En el lateral que sube está la
   puerta de la oficina de Canary Consulting; por ahora no se explican sus servicios.
+- **ITV y Remar** (subida a San Bartolomé): el local de **Remar** está en la nave de **abajo** de la ITV (bajando
+  hacia Arrecife) y la entrada de la ITV está pegada a él. La ITV tiene aparcamiento y una valla de rejilla alrededor.
 - Perros salchicha: no se les puede hacer daño. Las patinetas se caen y se levantan.
 
 ## Lo que viene (en este orden, acordado con José Manuel)
