@@ -152,7 +152,8 @@ export function buildShops(scene, map, colliders) {
 
   // Cines Atlántida: rótulo grande, marquesina con bombillas y carteleras
   const cineB = findBuilding(map, ...PLACES.cinesAtlantida);
-  const cf = cineB && streetFace(cineB, roads);
+  // el edificio Atlántida tiene su propio modelo con su rótulo (atlantida.js)
+  const cf = cineB && !cineB.atlantida && streetFace(cineB, roads);
   if (cf) {
     const [ax, az, bx, bz, nx, nz, len] = cf;
     const mx = (ax + bx) / 2, mz = (az + bz) / 2, ry = Math.atan2(nx, nz), tx = -nz, tz = nx;
@@ -175,9 +176,9 @@ export function buildShops(scene, map, colliders) {
     group.add(posters);
   }
 
-  // Charco Vivo: la antigua Casa Ginory
+  // Charco Vivo: la antigua Casa Ginory (si charcoVivo.js le ha puesto la fachada de la foto, el rótulo es el suyo)
   const gB = findBuilding(map, ...PLACES.casaGinory);
-  const gf = gB && streetFace(gB, roads);
+  const gf = gB && !gB.charcoVivo && streetFace(gB, roads);
   if (gf) {
     const [ax, az, bx, bz, nx, nz, len] = gf;
     const w = Math.min(len * 0.85, 6.4);
@@ -215,7 +216,7 @@ export function buildShops(scene, map, colliders) {
     glow.push(colored(at(new THREE.BoxGeometry(0.6, 1.3, 0.02), fx + nx * 0.36, 1.0, fz + nz * 0.36, ry), 0x7fc8f0));
     // la dueña, en la puerta
     const keeper = buildHuman({ sex: 'f', skin: 0xe8c9a0, hair: 0x15110e, hairStyle: 'bun', top: 0xc8261c, topStyle: 'tshirt', bottom: 0x1c1c1e, bottomStyle: 'pants', shoes: 0x1c1c1e, eyes: 0x1a120c, height: 1.58 });
-    keeper.group.position.set(mx + nx * 0.9 + tx * 0.6, 0.19, mz + nz * 0.9 + tz * 0.6);
+    keeper.group.position.set(mx + nx * 0.9 + tx * 0.6, 0.24, mz + nz * 0.9 + tz * 0.6);
     keeper.group.rotation.y = ry;
     keeper.armL.rotation.x = -0.25;
     keeper.armR.rotation.x = -0.25;

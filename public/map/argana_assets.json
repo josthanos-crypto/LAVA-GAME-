@@ -1,0 +1,44 @@
+{
+  "version": 2,
+  "barrio": "argana-alta",
+  "note": "Fotos de los fotogramas del recorrido del 25/10/2026. Cada entrada de photos se pega en el juego: apunta a un edificio real (buildingAt), a la pared que da a la calle (wallAt) y al trozo de pared que ocupa (u, ancho, alto). Solo se proyecta lo que se ha podido rectificar de frente y recortar limpio; lo demás está en rejected con el motivo, para no volver a colarlo.",
+  "photos": [
+    {
+      "id": "garaje-blanco",
+      "label": "Garaje con puerta seccional blanca",
+      "texture": "textures/argana-alta/fachadas/04-garaje-blanco.jpg",
+      "buildingAt": [-1211, -1457],
+      "wallAt": [-1241.2, -1471.4],
+      "facing": [-1275, -1460],
+      "width": 3.0,
+      "height": 2.3,
+      "u": 0.2,
+      "frame": true,
+      "frameWidth": 0.09,
+      "frameColor": "#d9d5cc",
+      "source": "argana-alta-frames/IMG_5113/f_0008.jpg",
+      "sourceCrop": [[0.1782, 0.4228], [0.4699, 0.3865], [0.5, 0.5542], [0.1968, 0.5617]],
+      "note": "Rectificado en perspectiva: las cuatro esquinas del portón se enderezan a un rectángulo."
+    }
+  ],
+  "rejected": [
+    {
+      "id": "casa-blanca-dos-plantas",
+      "texture": "textures/argana-alta/fachadas/01-casa-blanca-dos-plantas.jpg",
+      "reason": "No es una fachada: el recorte trae una farola en medio, la señal de prohibido el paso, cielo arriba y el edificio de al lado a la izquierda. Proyectado sobre un muro se ve como un cartel pegado. Hace falta la foto de frente y recortada solo de pared.",
+      "source": "IMG_0397_main.png"
+    },
+    {
+      "id": "muro-blanco-puerta-verde",
+      "texture": "textures/argana-alta/fachadas/02-muro-blanco-puerta-verde.jpg",
+      "reason": "La puerta verde sale muy pequeña en el fotograma (375x540 px para 3,4 m de ancho): al ampliarla se ve borrosa. Habría que sacarla de un fotograma más cercano o de una foto hecha de frente.",
+      "source": "IMG_0399_main.png"
+    },
+    {
+      "id": "estacion-sprint",
+      "texture": "textures/argana-alta/fachadas/03-estacion-sprint.jpg",
+      "reason": "Es la tienda de la estación de servicio, no de esta manzana, y la estación ya tiene modelo propio. Además el recorte lleva una farola cruzada.",
+      "source": "IMG_0398_main.png"
+    }
+  ]
+}

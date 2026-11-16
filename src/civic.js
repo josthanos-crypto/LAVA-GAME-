@@ -25,6 +25,8 @@ const STYLE = {
   salud: ['#ffffff', '#1a7a43', '#1a7a43'],
   cultura: ['#3a2e26', '#f0e2c0', '#c8a96a'],
   school: ['#ffffff', '#0d4e8a', '#f0bf1a'],
+  pesca: ['#123f6e', '#ffffff', '#ffffff'],
+  insular: ['#ffffff', '#1a6e45', '#1a6e45'],
   hotel: ['#14181f', '#f2d58a', '#f2d58a'],
 };
 // color de fachada [r, g, b] por tipo
@@ -32,7 +34,7 @@ const FACADE = {
   cabildo: [236, 234, 228], ayto: [244, 238, 226], policia: [236, 238, 240], correos: [240, 236, 226],
   hospital: [232, 236, 238], salud: [238, 240, 236], cultura: [236, 226, 206], school: [236, 220, 178], hotel: [244, 242, 236],
 };
-const FLAGGED = new Set(['cabildo', 'ayto', 'policia', 'hospital', 'salud', 'cultura', 'school']);
+const FLAGGED = new Set(['cabildo', 'ayto', 'policia', 'hospital', 'salud', 'cultura', 'school', 'pesca', 'insular']);
 const FLOOR_H = 3.0;
 // el alisio sopla del nornordeste: las banderas apuntan al sursuroeste
 const WIND = new THREE.Vector2(-0.3, 0.95).normalize();
@@ -237,7 +239,8 @@ export function buildCivic(scene, map) {
   // primero se decide dónde va cada cosa; luego se pinta el atlas de rótulos
   const signs = [], solids = [], flags = [], kids = [];
   for (const c of list) {
-    const face = streetFace(c.b, roads);
+    // b.face: la fachada que toca, cuando se sabe por las fotos (si no, la que da a la calle)
+    const face = c.b.face || streetFace(c.b, roads);
     if (!face) continue;
     const [ax, az, bx, bz, nx, nz, len] = face;
     const mx = (ax + bx) / 2, mz = (az + bz) / 2, tx = (bx - ax) / len, tz = (bz - az) / len;
@@ -245,7 +248,8 @@ export function buildCivic(scene, map) {
     (group.userData.spots ||= []).push({ n: c.n, k: c.k, x: mx, z: mz, nx, nz });
     // rótulo sobre la entrada
     const sh = Math.min(c.k === 'school' || c.k === 'hotel' ? 0.85 : 1.0, (len * 0.8) / 6.4);
-    signs.push({ text: c.n, style: c.k, x: mx + nx * 0.07, z: mz + nz * 0.07, y: tall ? FLOOR_H - 0.45 : Math.min(c.b.h - 0.6, 2.6), w: sh * 6.4, h: sh, nx, nz });
+    // el Ayuntamiento lleva sus letras de bronce en la portada (ayuntamiento.js)
+    if (!c.b.ownFacade) signs.push({ text: c.n, style: c.k, x: mx + nx * 0.07, z: mz + nz * 0.07, y: tall ? FLOOR_H - 0.45 : Math.min(c.b.h - 0.6, 2.6), w: sh * 6.4, h: sh, nx, nz });
     if (c.k === 'hospital') {
       signs.push({ text: 'URGENCIAS', style: 'urgencias', x: mx + nx * 0.07 + tx * len * 0.3, z: mz + nz * 0.07 + tz * len * 0.3, y: 1.2 + sh, w: sh * 4.5, h: sh * 0.7, nx, nz });
     }
@@ -274,19 +278,22 @@ export function buildCivic(scene, map) {
       post.translate(bx0, 0.43, bz0);
       solids.push([post, 0x2a2c30]);
     }
-    // mástiles con banderas delante de la fachada
+    // mástiles con banderas delante de la fachada (el Ayuntamiento trae los suyos: ayuntamiento.js)
     if (FLAGGED.has(c.k)) {
       const ph = c.k === 'school' ? 6 : 7.5;
       const side = Math.min(len * 0.35, 6);
-      for (let k = 0; k < 3; k++) {
-        const fx = mx + nx * 2.4 + tx * (side + (k - 1) * 1.3), fz = mz + nz * 2.4 + tz * (side + (k - 1) * 1.3);
-        const pole = new THREE.CylinderGeometry(0.04, 0.06, ph, 8);
-        pole.translate(fx, ph / 2, fz);
+      const poles = (c.b.ownFacade && map.aytoFlags) || [0, 1, 2].map(k => ({
+        x: mx + nx * 2.4 + tx * (side + (k - 1) * 1.3), z: mz + nz * 2.4 + tz * (side + (k - 1) * 1.3), base: 0, h: ph, row: k, s: 1,
+      }));
+      for (const f of poles) {
+        const r = 0.04 * Math.sqrt(f.s);
+        const pole = new THREE.CylinderGeometry(r, r * 1.5, f.h, 8);
+        pole.translate(f.x, f.base + f.h / 2, f.z);
         solids.push([pole, 0xeeeeea]);
-        const knob = new THREE.SphereGeometry(0.07, 8, 6);
-        knob.translate(fx, ph + 0.05, fz);
+        const knob = new THREE.SphereGeometry(0.07 * Math.sqrt(f.s), 8, 6);
+        knob.translate(f.x, f.base + f.h + 0.05, f.z);
         solids.push([knob, 0xd6b24a]);
-        flags.push({ x: fx, z: fz, y: ph - 0.15, row: k });
+        flags.push({ x: f.x, z: f.z, y: f.base + f.h - 0.15, row: f.row, s: f.s });
       }
     }
     // colegios: señal de «niños» junto a la calle
@@ -348,8 +355,9 @@ export function buildCivic(scene, map) {
   if (flags.length) {
     const FW = 1.5, FH = 1.0, SEG = 12;
     const geos = flags.map(f => {
-      const g = new THREE.PlaneGeometry(FW, FH, SEG, 1);
-      g.translate(FW / 2, -FH / 2, 0);
+      const s = f.s || 1;
+      const g = new THREE.PlaneGeometry(FW * s, FH * s, SEG, 1);
+      g.translate(FW * s / 2, -FH * s / 2, 0);
       const uv = g.getAttribute('uv');
       for (let k = 0; k < uv.count; k++) uv.setY(k, 1 - (f.row + 1 - uv.getY(k)) / 3);
       g.rotateY(Math.atan2(WIND.y, WIND.x) * -1);
@@ -383,9 +391,10 @@ export function buildCivic(scene, map) {
         for (let k = f * per; k < (f + 1) * per; k++) {
           const bx = base[k * 3], by = base[k * 3 + 1], bz = base[k * 3 + 2];
           const along = (bx - fl[f].x) * WIND.x + (bz - fl[f].z) * WIND.y;
-          const u = Math.max(0, along / FW);
-          const wave = Math.sin(t * 5.5 - u * 7 + f) * 0.11 * u;
-          pos.setXYZ(k, bx + perpX * wave, by - u * u * 0.06, bz + perpZ * wave);
+          const fs = fl[f].s || 1;
+          const u = Math.max(0, along / (FW * fs));
+          const wave = Math.sin(t * 5.5 - u * 7 + f) * 0.11 * u * fs;
+          pos.setXYZ(k, bx + perpX * wave, by - u * u * 0.06 * fs, bz + perpZ * wave);
         }
       }
       pos.needsUpdate = true;

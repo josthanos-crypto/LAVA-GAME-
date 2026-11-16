@@ -3,7 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "scripts": { "dev": "vite --port 5173", "build": "vite build", "preview": "vite preview" },
-  "dependencies": { "three": "^0.170.0" },
-  "devDependencies": { "vite": "^6.0.0" }
+  "scripts": {
+    "dev": "vite --port 5274 --strictPort",
+    "movil": "vite --port 5274 --strictPort --host",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
 }

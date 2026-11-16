@@ -3,28 +3,29 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-  <meta name="theme-color" content="#0b1522" />
+  <meta name="theme-color" content="#120805" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="A Todo Gas" />
-  <title>Arrecife a Todo Gas</title>
-  <meta name="description" content="Juego gratis de conducción por las calles reales de Arrecife (Lanzarote). Cortesía de Canary Consulting: ahorra en tu factura de la luz y el gas." />
-  <!-- vista previa al compartir el enlace (WhatsApp, Facebook...): preparada para canaryislandconsulting.es/juego -->
+  <meta name="apple-mobile-web-app-title" content="Lava Game" />
+  <title>Lava Game · Arrecife</title>
+  <meta name="description" content="Lava Game: juego gratis de conducción por las calles reales de Arrecife (Lanzarote). Busca las piedras de lava. Cortesía de Canary Consulting: ahorra en tu factura de la luz y el gas." />
+  <!-- vista previa al compartir el enlace (WhatsApp, Facebook...): preparada para lavagame.tech -->
   <meta property="og:type" content="website" />
   <meta property="og:locale" content="es_ES" />
-  <meta property="og:title" content="Arrecife a Todo Gas · Juego gratis" />
-  <meta property="og:description" content="Conduce por las calles reales de Arrecife y completa carreras, repartos y misiones. Gratis, gracias a Canary Consulting." />
-  <meta property="og:url" content="https://canaryislandconsulting.es/juego/" />
-  <meta property="og:image" content="https://canaryislandconsulting.es/juego/brand/portada.png" />
+  <meta property="og:title" content="Lava Game · Juego gratis" />
+  <meta property="og:description" content="Conduce por las calles reales de Arrecife, completa misiones y encuentra las piedras de lava escondidas. Gratis, gracias a Canary Consulting." />
+  <meta property="og:url" content="https://lavagame.tech/" />
+  <meta property="og:image" content="https://lavagame.tech/brand/portada-lava.png" />
   <meta property="og:image:width" content="1640" />
   <meta property="og:image:height" content="856" />
+  <meta property="og:image:alt" content="Lava Game, con un volcán de Lanzarote" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" type="image/png" href="brand/icono.png" />
   <link rel="apple-touch-icon" href="brand/icono.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,800;1,700;1,800&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,800;1,700;1,800&family=Yellowtail&display=swap">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0c10; overscroll-behavior: none; -webkit-tap-highlight-color: transparent; }
@@ -33,11 +34,13 @@
 
     :root {
       --hud-font: "Barlow Condensed", "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
-      --accent: #f4c542;
+      --accent: #ff9a1f;
+      --lava: #ff5a14;
+      --ember: #ffb340;
       --turq: #18c5b8;
       /* cristal líquido: superficie, borde y brillo */
-      --glass: rgba(18, 26, 34, 0.32);
-      --glass-edge: rgba(255, 255, 255, 0.22);
+      --glass: rgba(24, 12, 8, 0.42);
+      --glass-edge: rgba(255, 150, 70, 0.28);
       --glass-hi: rgba(255, 255, 255, 0.35);
     }
 
@@ -45,10 +48,10 @@
     #loader {
       position: fixed; inset: 0; z-index: 50;
       background:
-        radial-gradient(120% 80% at 70% 110%, rgba(255,140,60,.35), transparent 60%),
-        radial-gradient(90% 60% at 20% -10%, rgba(24,197,184,.25), transparent 60%),
-        linear-gradient(170deg, #0b1522 0%, #12283a 50%, #2a1d16 100%);
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
+        radial-gradient(120% 80% at 70% 110%, rgba(255,90,20,.55), transparent 62%),
+        radial-gradient(90% 60% at 15% -10%, rgba(255,60,10,.18), transparent 60%),
+        linear-gradient(170deg, #060303 0%, #170a05 55%, #3a1305 100%);
+      display: flex; flex-direction: column; align-items: center; justify-content: safe center; overflow-y: auto; padding: 16px 0;
       color: #eee; font-family: var(--hud-font);
       transition: opacity .8s ease; user-select: none;
     }
@@ -62,25 +65,90 @@
       text-transform: uppercase; line-height: .82; text-align: center; color: #fff;
       text-shadow: 0 6px 30px rgba(0,0,0,.45);
     }
+    #loader .title.lava {
+      background: linear-gradient(180deg, #fff3c4 0%, #ffc233 28%, #ff6a12 62%, #b81c06 100%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 0 18px rgba(255,90,20,.65)) drop-shadow(0 6px 20px rgba(0,0,0,.6));
+      animation: ember 3.2s ease-in-out infinite;
+    }
     #loader .title em { font-style: italic; color: var(--accent); display: block; font-size: .5em; letter-spacing: .16em; margin-top: 8px; }
+    #loader .title.lava em { -webkit-text-fill-color: transparent; }
+    @keyframes ember { 50% { filter: drop-shadow(0 0 30px rgba(255,120,30,.9)) drop-shadow(0 6px 20px rgba(0,0,0,.6)); } }
+    #loader .tag { margin-top: 14px; font-size: 15px; font-weight: 600; letter-spacing: 6px; text-transform: uppercase; color: var(--ember); }
+    body.touch #loader .tag { margin-top: 6px; font-size: 11px; letter-spacing: 4px; }
     #loader .sub { margin-top: 22px; font-size: 15px; font-weight: 600; letter-spacing: 5px; text-transform: uppercase; color: #a9bccf; max-width: 90vw; text-align: center; }
     #loader .credit { margin-top: 12px; font-size: 12px; color: #7a8a9a; letter-spacing: 1px; max-width: 480px; text-align: center; line-height: 1.5; font-weight: 500; }
     #loader .bar { margin-top: 28px; width: min(420px, 70vw); height: 3px; background: rgba(255,255,255,.12); border-radius: 2px; overflow: hidden; }
-    #loader .bar i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, var(--turq), var(--accent)); transition: width .3s ease; }
+    #loader .bar i { display: block; height: 100%; width: 0%; background: linear-gradient(90deg, #b81c06, var(--lava), var(--ember)); transition: width .3s ease; }
     #loader .controls {
-      margin-top: 34px; font-size: 15px; color: #c8d4e0; letter-spacing: 1px; line-height: 2.1; text-align: center; font-weight: 500;
+      margin-top: 24px; font-size: 14px; color: #c8d4e0; letter-spacing: 1px; line-height: 1.85; text-align: center; font-weight: 500;
       padding: 14px 26px; border-radius: 18px; background: var(--glass); border: 1px solid var(--glass-edge);
       backdrop-filter: blur(14px) saturate(1.4); -webkit-backdrop-filter: blur(14px) saturate(1.4);
     }
     #loader .controls b { color: #fff; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.22); border-radius: 6px; padding: 1px 8px; margin: 0 2px; font-weight: 600; }
+    /* ---- ¿Por dónde quieres empezar? ---- */
+    #start-pick { margin-top: 18px; width: min(760px, 92vw); text-align: center; display: none; }
+    #start-pick.on { display: block; }
+    #start-pick h3 { font-size: 15px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase; color: var(--ember); margin-bottom: 10px; }
+    #start-pick .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
+    #start-pick .chips button { font-family: var(--hud-font); font-size: 15px; font-weight: 700; letter-spacing: .5px; color: #f3e6d8; cursor: pointer;
+      padding: 6px 14px; border-radius: 999px; background: rgba(40,18,8,.55); border: 1px solid rgba(255,150,70,.32);
+      transition: background .15s ease, color .15s ease, transform .12s ease, box-shadow .15s ease; }
+    #start-pick .chips button.client { border-style: dashed; }
+    #start-pick .chips button:hover { background: rgba(255,120,40,.22); transform: translateY(-1px); }
+    #start-pick .chips button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    #start-pick .chips button.sel { background: linear-gradient(180deg, #ffc233, #ff6a12); color: #1a0a03; border-color: transparent; box-shadow: 0 4px 16px rgba(255,100,20,.45); }
+    #start-pick .row { margin-top: 10px; display: flex; gap: 10px; justify-content: center; align-items: center; flex-wrap: wrap; }
+    #start-where { font-family: var(--hud-font); font-size: 16px; font-weight: 600; width: min(340px, 70vw); padding: 8px 16px; border-radius: 999px;
+      color: #fff; background: rgba(0,0,0,.35); border: 1px solid rgba(255,150,70,.45); outline: none; }
+    #start-where::placeholder { color: #b9a596; }
+    #start-where:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255,154,31,.25); }
+    #start-where.bad { border-color: #ff5a3c; animation: shake .3s; }
+    @keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+    #start-demo { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; letter-spacing: .5px; color: #f3e6d8; cursor: pointer; user-select: none; }
+    #start-demo input { width: 18px; height: 18px; accent-color: var(--lava); cursor: pointer; }
+    #car-btn { font-family: var(--hud-font); font-size: 15px; font-weight: 700; letter-spacing: .5px; color: #f3e6d8; cursor: pointer;
+      background: rgba(255,255,255,.07); border: 1px solid rgba(255,154,31,.5); border-radius: 999px; padding: 7px 18px; }
+    #car-btn:hover { background: rgba(255,120,40,.22); }
+    #car-pick { display: none; margin-top: 10px; }
+    #car-pick.on { display: block; }
+    #car-pick .chips { max-height: 96px; overflow-y: auto; scrollbar-width: thin; }
+    #car-pick .cdot { width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgba(255,255,255,.25); cursor: pointer; padding: 0; }
+    #car-pick .cdot.sel { border-color: #fff; box-shadow: 0 0 0 3px rgba(255,154,31,.45); }
+    body.touch #car-pick .chips { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; padding-bottom: 4px; scrollbar-width: none; }
+    #arma-hud { position: absolute; right: 26px; bottom: 136px; font-family: var(--hud-font); font-size: 14px; font-weight: 800;
+      letter-spacing: 1px; color: #ffd9a8; background: rgba(20,12,6,.72); border: 1px solid rgba(255,154,31,.45);
+      border-radius: 999px; padding: 6px 14px; display: none; }
+    #arma-hud.on { display: block; }
+    body.touch #arma-hud { right: auto; left: calc(env(safe-area-inset-left) + 12px); bottom: auto; top: 124px; font-size: 12px; }
+    body.touch #start-pick { margin-top: 8px; width: min(560px, 74vw); margin-left: min(180px, 22vw); }
+    body.touch #start-pick h3 { font-size: 11px; letter-spacing: 3px; margin-bottom: 5px; }
+    body.touch #start-pick .chips { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; padding-bottom: 4px; scrollbar-width: none; }
+    body.touch #start-pick .chips button { font-size: 12px; padding: 4px 10px; flex: none; }
+    body.touch #start-pick .row { margin-top: 6px; gap: 8px; }
+    body.touch #start-where { font-size: 13px; padding: 5px 12px; width: min(240px, 40vw); }
+    body.touch #start-demo { font-size: 12px; }
+    body.touch #loader #touch-help { display: none; }
+    /* pantallas de ordenador bajas: todo el inicio a la vista, sin tener que bajar */
+    @media (max-height: 900px) {
+      body:not(.touch) #loader .title { font-size: clamp(48px, 9vh, 110px); }
+      body:not(.touch) #loader .tag { margin-top: 8px; }
+      body:not(.touch) #loader .sub { margin-top: 12px; }
+      body:not(.touch) #loader .bar { margin-top: 14px; }
+      body:not(.touch) #loader .controls { margin-top: 14px; font-size: 13px; line-height: 1.65; padding: 10px 22px; }
+      body:not(.touch) #start-pick { margin-top: 12px; }
+      body:not(.touch) #start-pick h3 { margin-bottom: 7px; }
+      body:not(.touch) #start-pick .chips button { font-size: 14px; padding: 5px 12px; }
+      body:not(.touch) #start-btn { margin-top: 14px; padding: 11px 50px; }
+    }
     #start-btn {
-      margin-top: 26px; font-family: var(--hud-font); font-size: 20px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase;
-      padding: 13px 54px; color: #10141a; background: var(--accent); border: none; border-radius: 999px;
+      margin-top: 20px; font-family: var(--hud-font); font-size: 20px; font-weight: 800; letter-spacing: 4px; text-transform: uppercase;
+      padding: 13px 54px; color: #1a0a03; background: linear-gradient(180deg, #ffc233, #ff6a12); border: none; border-radius: 999px;
       cursor: pointer; display: none;
-      box-shadow: 0 10px 30px rgba(244,197,66,.35), inset 0 1px 0 rgba(255,255,255,.6);
+      box-shadow: 0 10px 30px rgba(255,90,20,.45), inset 0 1px 0 rgba(255,255,255,.6);
       transition: transform .15s ease, box-shadow .15s ease;
     }
-    #start-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 38px rgba(244,197,66,.5), inset 0 1px 0 rgba(255,255,255,.6); }
+    #start-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 38px rgba(255,100,20,.65), inset 0 1px 0 rgba(255,255,255,.6); }
     #start-btn:active { transform: translateY(1px); }
     #start-btn:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
 
@@ -166,7 +234,7 @@
       position: absolute; left: 24px; bottom: 24px;
       width: 220px; height: 220px; border-radius: 50%; padding: 7px;
     }
-    #minimap-wrap .inner { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background: #244a72; box-shadow: inset 0 0 18px rgba(0,0,0,.45); }
+    #minimap-wrap .inner { width: 100%; height: 100%; border-radius: 50%; overflow: hidden; background: #244a72; box-shadow: inset 0 0 18px rgba(0,0,0,.45), 0 0 0 1px rgba(255,120,40,.35); }
     #minimap { width: 100%; height: 100%; }
 
     #street {
@@ -177,6 +245,7 @@
     }
     #street.on { opacity: 1; transform: none; }
     #street .zone { display: block; font-size: 13px; font-weight: 600; letter-spacing: 3px; color: var(--accent); }
+    #street .zone.slope { color: #ffe14d; font-weight: 800; }
     #street-name { font-size: 24px; font-weight: 800; font-style: italic; letter-spacing: .5px; line-height: 1.05; }
 
     #speedo {
@@ -202,6 +271,24 @@
     }
     #toast.on { opacity: 1; transform: translate(-50%, 0); }
 
+    /* ---- Coches: cartel de marca y modelo al subirte, intermitentes junto al velocímetro ---- */
+    #carcard { position: absolute; top: calc(16% + 62px); left: 50%; transform: translate(-50%, -8px) scale(.96); display: flex; align-items: center; gap: 14px;
+      padding: 10px 26px 10px 12px; border-radius: 20px; color: #fff; opacity: 0; pointer-events: none;
+      transition: opacity .4s ease, transform .4s cubic-bezier(.2,.9,.3,1.2); }
+    #carcard.on { opacity: 1; transform: translate(-50%, 0) scale(1); }
+    #carcard canvas { width: 64px; height: 64px; filter: drop-shadow(0 2px 6px rgba(0,0,0,.5)); }
+    #carcard .t { display: flex; flex-direction: column; line-height: 1.05; }
+    #carcard .b { font-size: 12px; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); }
+    #carcard .m { font-size: 30px; font-weight: 800; font-style: italic; letter-spacing: .5px; }
+    #carcard .l { font-size: 13px; font-weight: 500; color: #cdd6e0; margin-top: 2px; }
+    #blinkers { position: absolute; right: 26px; bottom: 198px; width: 168px; display: flex; justify-content: center; gap: 46px; opacity: 0; transition: opacity .2s; pointer-events: none; }
+    #blinkers.show { opacity: 1; }
+    #blinkers i { width: 0; height: 0; border-top: 13px solid transparent; border-bottom: 13px solid transparent; filter: drop-shadow(0 1px 2px rgba(0,0,0,.8)); }
+    #blink-l { border-right: 22px solid #24402c; }
+    #blink-r { border-left: 22px solid #24402c; }
+    #blink-l.on { border-right-color: #3dff6a; filter: drop-shadow(0 0 8px #3dff6a); }
+    #blink-r.on { border-left-color: #3dff6a; filter: drop-shadow(0 0 8px #3dff6a); }
+
     /* ---- Locales: aviso de lo que se puede hacer y fundido al entrar ---- */
     #prompt { position: absolute; left: 50%; bottom: 196px; transform: translate(-50%, 8px); display: flex; align-items: center; gap: 12px;
       padding: 7px 20px 7px 7px; border-radius: 999px; color: #fff; font-size: 20px; font-weight: 700; letter-spacing: .5px;
@@ -211,6 +298,26 @@
       background: var(--accent); color: #10141a; font-size: 18px; font-weight: 800; box-shadow: 0 2px 0 rgba(0,0,0,.25); }
     #prompt b.btn { border-radius: 999px; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
     #prompt .sep { width: 1px; height: 22px; background: rgba(255,255,255,.3); margin: 0 4px 0 6px; }
+    /* ---- Si el aparato se queda sin memoria gráfica: aviso y botón para seguir ---- */
+    #lost { position: fixed; inset: 0; z-index: 70; display: none; place-items: center; padding: 16px; background: rgba(5,7,10,.78); font-family: var(--hud-font); }
+    #lost.on { display: grid; }
+    #lost .card { max-width: 440px; padding: 22px 26px 24px; border-radius: 22px; color: #fff; text-align: center; }
+    #lost h2 { margin: 0 0 8px; font-size: 24px; font-weight: 800; font-style: italic; letter-spacing: 1px; text-transform: uppercase; color: #ffc233; }
+    #lost p { margin: 0 0 18px; font-size: 17px; line-height: 1.35; color: #dfe6ee; }
+    #lost button { font-family: inherit; font-size: 18px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; padding: 12px 34px; color: #1a0a03;
+      background: linear-gradient(180deg, #ffc233, #ff6a12); border: none; border-radius: 999px; cursor: pointer; box-shadow: 0 10px 30px rgba(255,90,20,.45), inset 0 1px 0 rgba(255,255,255,.6); }
+    #lost button:active { transform: translateY(1px); }
+    #lost button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
+    /* ---- Pausa (Esc o Menú en el mando) ---- */
+    #pausa { position: fixed; inset: 0; z-index: 65; display: none; place-items: center; padding: 16px; background: rgba(5,7,10,.6); font-family: var(--hud-font); }
+    #pausa.on { display: grid; }
+    #pausa .card { max-width: 420px; padding: 22px 28px 24px; border-radius: 22px; color: #fff; text-align: center; }
+    #pausa h2 { margin: 0 0 8px; font-size: 34px; font-weight: 800; font-style: italic; letter-spacing: 3px; text-transform: uppercase; color: #ffc233; }
+    #pausa p { margin: 0 0 18px; font-size: 17px; line-height: 1.35; color: #dfe6ee; }
+    #pausa button { font-family: inherit; font-size: 18px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; padding: 12px 34px; color: #1a0a03;
+      background: linear-gradient(180deg, #ffc233, #ff6a12); border: none; border-radius: 999px; cursor: pointer; box-shadow: 0 10px 30px rgba(255,90,20,.45), inset 0 1px 0 rgba(255,255,255,.6); }
+    #pausa button:active { transform: translateY(1px); }
+    #pausa button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
     #fade { position: fixed; inset: 0; z-index: 30; background: #05070a; opacity: 0; pointer-events: none; transition: opacity .28s ease; }
     #fade.on { opacity: 1; }
 
@@ -257,6 +364,16 @@
     /* ---- Misiones y dinero ---- */
     #money { position: absolute; top: 128px; right: 26px; font-size: 30px; font-weight: 800; color: #8fe36b;
       text-shadow: 0 2px 8px rgba(0,0,0,.7); font-variant-numeric: tabular-nums; letter-spacing: .5px; }
+    #stones { position: absolute; top: 200px; right: 26px; display: none; align-items: center; gap: 8px; padding: 5px 14px 5px 10px; border-radius: 999px;
+      color: #fff; font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    #stones.on { display: flex; }
+    #stones i { width: 18px; height: 18px; border-radius: 40% 55% 45% 60%; display: block; background: radial-gradient(circle at 35% 30%, #ffd77a, #ff6a12 55%, #7a1604);
+      box-shadow: 0 0 10px 2px rgba(255,100,20,.7); }
+    #stones small { font-size: 14px; font-weight: 600; color: #ffb98a; letter-spacing: 1px; }
+    #stones.pop { animation: stonepop .5s ease; }
+    @keyframes stonepop { 30% { transform: scale(1.25); box-shadow: 0 0 22px rgba(255,120,30,.9); } }
+    body.touch #stones { top: 114px; right: calc(env(safe-area-inset-right) + 14px); font-size: 16px; padding: 3px 10px 3px 8px; }
+    body.touch #stones i { width: 13px; height: 13px; }
     #money-delta { position: absolute; top: 164px; right: 26px; font-size: 20px; font-weight: 800; opacity: 0; transform: translateY(-6px);
       transition: opacity .3s, transform .3s; text-shadow: 0 2px 8px rgba(0,0,0,.7); }
     #money-delta.on { opacity: 1; transform: none; }
@@ -283,7 +400,7 @@
     /* ---- Personalización ---- */
     #custom { position: fixed; z-index: 20; top: 16px; right: 16px; bottom: 16px; width: min(380px, calc(100vw - 32px));
       border-radius: 22px; display: none; flex-direction: column; color: #fff; font-family: var(--hud-font); overflow: hidden;
-      background: rgba(14, 20, 28, 0.55); }
+      background: rgba(22, 10, 6, 0.62); }
     #custom.on { display: flex; }
     .cz-head { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px 8px; }
     .cz-eyebrow { font-size: 13px; letter-spacing: 4px; text-transform: uppercase; color: var(--accent); font-weight: 600; }
@@ -335,11 +452,24 @@
     #touch .tc-enter { right: 6px; bottom: 120px; width: 78px; height: 78px; background: rgba(244,197,66,.5); border-color: rgba(255,230,150,.7); color: #10141a; }
     #touch .tc-talk { right: 104px; bottom: 96px; width: 68px; height: 68px; background: rgba(24,197,184,.45); }
     #touch.foot .tc-brake { display: none; }
+    #touch .tc-blinkL, #touch .tc-blinkR { bottom: 92px; width: 50px; height: 50px; font-size: 20px; letter-spacing: 0; background: rgba(40,160,80,.35); border-color: rgba(120,255,160,.5); }
+    #touch .tc-blinkL { right: 150px; }
+    #touch .tc-blinkR { right: 94px; }
+    #touch.foot .tc-blinkL, #touch.foot .tc-blinkR { display: none; }
+    /* turbo salto del roadster: negro con la franja roja que barre, como el coche fantástico */
+    #touch .tc-jump { display: none; right: 98px; bottom: 154px; width: 72px; height: 72px; font-size: 14px; color: #fff; border-color: rgba(255,90,70,.75);
+      background: radial-gradient(circle at 50% 120%, rgba(255,40,20,.35), transparent 60%), rgba(12,12,14,.72); overflow: hidden; }
+    #touch .tc-jump::after { content: ''; position: absolute; left: 14%; right: 14%; top: 64%; height: 5px; border-radius: 3px;
+      background: linear-gradient(90deg, transparent, #ff2a12 45%, #ffb199 50%, #ff2a12 55%, transparent); background-size: 200% 100%; animation: kitt 1.6s ease-in-out infinite alternate; }
+    #touch .tc-jump.on { background: rgba(255,60,30,.75); }
+    #touch.can-jump .tc-jump { display: block; }
+    @keyframes kitt { from { background-position: 100% 0; } to { background-position: 0 0; } }
+    @media (prefers-reduced-motion: reduce) { #touch .tc-jump::after { animation: none; } }
     #touch .tc-more { position: absolute; top: calc(env(safe-area-inset-top) + 12px); left: 50%; transform: translateX(-50%); margin-left: 190px;
       width: 46px; height: 34px; border-radius: 999px; font-size: 20px; line-height: 1; color: #fff; border: 1px solid rgba(255,255,255,.3);
       background: rgba(18,26,34,.45); font-family: inherit; font-weight: 800; }
     #touch .tc-menu { position: absolute; top: calc(env(safe-area-inset-top) + 54px); left: 50%; transform: translate(-50%, -6px); display: none;
-      grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 12px; border-radius: 18px; background: rgba(14,20,28,.82);
+      grid-template-columns: repeat(3, 1fr); gap: 8px; padding: 12px; border-radius: 18px; background: rgba(22,10,6,.86);
       border: 1px solid rgba(255,255,255,.2); box-shadow: 0 14px 36px rgba(0,0,0,.45); }
     #touch .tc-menu.on { display: grid; transform: translate(-50%, 0); }
     #touch .tc-menu button { font-family: inherit; font-size: 16px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #fff;
@@ -367,13 +497,18 @@
     body.touch #stars { top: 66px; right: calc(env(safe-area-inset-right) + 14px); }
     body.touch #stars i { width: 18px; height: 18px; }
     body.touch #money { top: 88px; right: calc(env(safe-area-inset-right) + 14px); font-size: 22px; }
-    body.touch #money-delta { top: 114px; right: calc(env(safe-area-inset-right) + 14px); font-size: 16px; }
+    body.touch #money-delta { top: 140px; right: calc(env(safe-area-inset-right) + 14px); font-size: 16px; }
     body.touch #objective { min-width: 0; width: min(330px, 40vw); top: 10px; padding: 6px 12px; gap: 2px 10px; }
     body.touch #objective .ot { font-size: 15px; }
     body.touch #objective .tm { font-size: 22px; }
     body.touch #dialog { bottom: 108px; width: min(460px, 46vw); padding: 10px 16px 12px; }
     body.touch #dialog .text { font-size: 17px; }
     body.touch #toast { top: 24%; font-size: 17px; padding: 8px 18px; }
+    body.touch #carcard { top: calc(24% + 48px); padding: 6px 16px 6px 8px; gap: 10px; }
+    body.touch #carcard canvas { width: 44px; height: 44px; }
+    body.touch #carcard .m { font-size: 20px; }
+    body.touch #carcard .l { display: none; }
+    body.touch #blinkers { right: auto; left: 50%; bottom: 104px; width: 120px; transform: translateX(-50%); gap: 40px; }
     body.touch #prompt { bottom: auto; top: 36%; font-size: 16px; padding: 5px 16px 5px 5px; }
     body.touch #prompt b { height: 28px; min-width: 28px; font-size: 13px; }
     body.touch #crosshair { top: 44%; }
@@ -382,7 +517,7 @@
     body.touch #touch-help { display: block; margin-top: 22px; font-size: 15px; color: #c8d4e0; letter-spacing: 1px; line-height: 1.8; text-align: center;
       font-weight: 500; padding: 12px 22px; border-radius: 18px; background: var(--glass); border: 1px solid var(--glass-edge); max-width: 90vw; }
     body.touch #touch-help b { color: #fff; }
-    body.touch #loader .title { font-size: clamp(44px, 12vh, 110px); }
+    body.touch #loader .title { font-size: clamp(34px, 9.5vh, 96px); }
     body.touch #loader .sub { margin-top: 12px; font-size: 12px; letter-spacing: 3px; }
     body.touch #loader .bar { margin-top: 14px; }
     body.touch #touch-help { margin-top: 14px; }
@@ -404,8 +539,134 @@
       #street { left: 14px; bottom: 182px; }
       #speedo { width: 128px; height: 128px; right: 14px; bottom: 14px; }
       #speedo .v { font-size: 40px; }
+      #blinkers { right: 14px; bottom: 152px; width: 128px; }
     }
-    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+    /* ---- Mapa grande con buscador (G o tocar el minimapa) ---- */
+    #minimap-wrap { pointer-events: auto; cursor: pointer; transition: transform .18s ease, box-shadow .18s ease; }
+    #minimap-wrap::after { content: 'Mapa · G'; position: absolute; left: 50%; bottom: -4px; transform: translate(-50%, 4px); padding: 3px 10px;
+      border-radius: 999px; font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #1a0a03; white-space: nowrap;
+      background: linear-gradient(180deg, #ffc233, #ff6a12); box-shadow: 0 4px 14px rgba(255,100,20,.45); opacity: 0; transition: opacity .18s, transform .18s; }
+    #minimap-wrap:hover { transform: scale(1.035); box-shadow: 0 12px 34px rgba(0,0,0,.35), 0 0 0 2px var(--lava), inset 0 1px 0 var(--glass-hi); }
+    #minimap-wrap:hover::after { opacity: 1; transform: translate(-50%, 0); }
+    #minimap-wrap:active { transform: scale(.98); }
+    body.touch #minimap-wrap::after { display: none; }
+    #touch .tc-map { position: absolute; left: calc(env(safe-area-inset-left) + 12px); top: 12px; width: 128px; height: 128px; border-radius: 50%;
+      background: transparent; border: 0; padding: 0; touch-action: manipulation; }
+    #touch .tc-map span { position: absolute; left: 50%; bottom: -7px; transform: translateX(-50%); padding: 1px 8px; border-radius: 999px;
+      font-family: inherit; font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #1a0a03;
+      background: linear-gradient(180deg, #ffc233, #ff6a12); box-shadow: 0 3px 10px rgba(0,0,0,.35); }
+    #touch .tc-map:active { background: rgba(255,120,40,.18); }
+    #touch .tc-menu [data-k="g"], #touch .tc-menu [data-k="v"] { grid-column: span 6; order: -1; }
+    #touch .tc-menu [data-k="g"] { background: rgba(255,106,18,.28); border-color: rgba(255,170,90,.55); }
+
+    #bigmap { position: fixed; inset: 0; z-index: 45; display: none; font-family: var(--hud-font); color: #fff; background: #0e2843; overflow: hidden; }
+    #bigmap.on { display: block; animation: bm-in .24s cubic-bezier(.16, 1, .3, 1); }
+    @keyframes bm-in { from { opacity: 0; transform: scale(1.025); } }
+    #bigmap canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+    #bigmap canvas:active { cursor: grabbing; }
+    #bigmap .bm-vig { position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(130% 95% at 50% 50%, transparent 58%, rgba(8,4,2,.6) 100%), linear-gradient(180deg, rgba(14,6,3,.72), rgba(14,6,3,0) 120px),
+        linear-gradient(0deg, rgba(14,6,3,.55), rgba(14,6,3,0) 110px); }
+    #bigmap .bm-top { position: absolute; top: calc(env(safe-area-inset-top) + 14px); left: calc(env(safe-area-inset-left) + 18px);
+      right: calc(env(safe-area-inset-right) + 18px); display: flex; align-items: flex-start; gap: 16px; }
+    #bigmap .bm-brand { flex: none; font-size: 30px; font-weight: 800; font-style: italic; text-transform: uppercase; line-height: .86; letter-spacing: .5px;
+      text-shadow: 0 2px 12px rgba(0,0,0,.6); padding-top: 3px; }
+    #bigmap .bm-brand em { font-style: inherit; color: var(--lava); }
+    #bigmap .bm-brand span { display: block; margin-top: 5px; font-size: 12px; font-style: normal; font-weight: 600; letter-spacing: 4px; color: var(--ember); }
+    #bigmap .bm-search { position: relative; flex: 1; max-width: 480px; margin: 0 auto; }
+    #bigmap .bm-q { width: 100%; font-family: inherit; font-size: 18px; font-weight: 600; color: #fff; padding: 11px 20px 11px 46px; border-radius: 999px; outline: none;
+      border: 1px solid rgba(255,150,70,.35); background: rgba(22,10,5,.82) no-repeat 17px 50% / 18px
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23ffb340' stroke-width='2.6' stroke-linecap='round'%3E%3Ccircle cx='10.5' cy='10.5' r='6.5'/%3E%3Cpath d='M15.5 15.5 21 21'/%3E%3C/svg%3E");
+      box-shadow: 0 12px 30px rgba(0,0,0,.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); transition: border-color .15s, box-shadow .15s; }
+    #bigmap .bm-q::placeholder { color: #c7b19d; }
+    #bigmap .bm-q:focus { border-color: var(--lava); box-shadow: 0 0 0 3px rgba(255,90,20,.3), 0 12px 30px rgba(0,0,0,.4); }
+    #bigmap .bm-results { position: absolute; left: 10px; right: 10px; top: calc(100% + 6px); list-style: none; display: none; max-height: 54vh; overflow-y: auto;
+      border-radius: 16px; background: rgba(18,8,4,.95); border: 1px solid rgba(255,150,70,.25); box-shadow: 0 20px 44px rgba(0,0,0,.55); }
+    #bigmap .bm-results.on { display: block; }
+    #bigmap .bm-results li + li button { border-top: 1px solid rgba(255,255,255,.06); }
+    #bigmap .bm-results button { width: 100%; display: flex; justify-content: space-between; align-items: baseline; gap: 14px; padding: 10px 18px; cursor: pointer;
+      background: none; border: 0; color: #f3e6d8; font-family: inherit; font-size: 17px; text-align: left; }
+    #bigmap .bm-results b { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    #bigmap .bm-results small { flex: none; font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #9fb6cc; }
+    #bigmap .bm-results small.biz { color: var(--ember); }
+    #bigmap .bm-results button:hover, #bigmap .bm-results button.act { background: linear-gradient(90deg, rgba(255,106,18,.26), rgba(255,106,18,.06)); color: #fff; }
+    #bigmap .bm-btn { width: 46px; height: 46px; flex: none; display: grid; place-items: center; border-radius: 50%; cursor: pointer; color: #fff;
+      font-family: inherit; font-size: 22px; font-weight: 800; line-height: 1; border: 1px solid rgba(255,150,70,.35); background: rgba(22,10,5,.82);
+      box-shadow: 0 10px 26px rgba(0,0,0,.4); transition: background .15s, transform .1s, border-color .15s; }
+    #bigmap .bm-btn:hover { background: rgba(255,90,20,.85); border-color: transparent; }
+    #bigmap .bm-btn:active { transform: scale(.93); }
+    #bigmap .bm-btn:focus-visible, #bigmap .bm-go:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    #bigmap .bm-zoom { position: absolute; right: calc(env(safe-area-inset-right) + 18px); top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 8px; }
+    #bigmap .bm-zoom .bm-btn { border-radius: 15px; }
+    #bigmap .bm-zoom [data-z="me"] { margin-top: 8px; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; color: var(--ember); }
+    #bigmap .bm-foot { position: absolute; left: calc(env(safe-area-inset-left) + 18px); bottom: calc(env(safe-area-inset-bottom) + 16px); display: flex; flex-direction: column; gap: 8px;
+      pointer-events: none; text-shadow: 0 1px 3px rgba(0,0,0,.8); }
+    #bigmap .bm-legend { display: flex; gap: 14px; font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #e9dccf; }
+    #bigmap .bm-legend i { display: inline-block; width: 11px; height: 11px; margin-right: 6px; vertical-align: -1px; }
+    #bigmap .bm-legend .me { background: #ff6a12; clip-path: polygon(50% 0, 100% 100%, 50% 78%, 0 100%); }
+    #bigmap .bm-legend .biz { background: #f4c542; border-radius: 3px; box-shadow: 0 0 0 1.5px #fff; }
+    #bigmap .bm-legend .site { background: var(--ember); transform: rotate(45deg) scale(.85); box-shadow: 0 0 0 1.5px #1a0a03; }
+    /* relieve: botón y leyenda de alturas y cuestas */
+    #bigmap .bm-zoom [data-z="relief"] { width: 58px; height: auto; margin: 0 -6px 8px; padding: 8px 0 7px; display: flex; flex-direction: column; align-items: center; gap: 3px;
+      font-size: 11px; letter-spacing: 1px; text-transform: uppercase; line-height: 1; }
+    #bigmap .bm-zoom [data-z="relief"] svg { width: 24px; height: 14px; fill: currentColor; opacity: .9; }
+    #bigmap .bm-zoom [data-z="relief"][aria-pressed="true"] { color: #1a0a03; border-color: transparent;
+      background: linear-gradient(180deg, #ffc233, #ff6a12); box-shadow: 0 8px 22px rgba(255,100,20,.5), inset 0 1px 0 rgba(255,255,255,.5); }
+    #bigmap .bm-relief { display: none; flex-direction: column; gap: 5px; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #f3e6d8; }
+    #bigmap.relief .bm-relief { display: flex; }
+    #bigmap.relief .bm-legend { display: none; }
+    #bigmap .bm-relief .ramp { display: block; width: 240px; height: 10px; border-radius: 5px; box-shadow: 0 0 0 1.5px rgba(255,255,255,.6), 0 2px 8px rgba(0,0,0,.4);
+      background: linear-gradient(90deg, #244a72 0%, #3fae7a 5%, #a8c64a 16.7%, #e8c547 33.3%, #f08c2e 50%, #d9452b 75%, #8e2a4a 100%); }
+    #bigmap .bm-relief .ticks { width: 240px; display: flex; justify-content: space-between; font-size: 11px; color: #e9dccf; letter-spacing: 0; }
+    #bigmap .bm-relief .steep { display: flex; gap: 14px; margin-top: 2px; }
+    #bigmap .bm-relief .steep i { display: inline-block; width: 20px; height: 5px; border-radius: 3px; margin-right: 6px; vertical-align: 2px; box-shadow: 0 0 0 2px rgba(16,7,3,.8); }
+    #bigmap .bm-relief .s1 { background: #ffe14d; }
+    #bigmap .bm-relief .s2 { background: #ff2d55; }
+    body.touch #bigmap .bm-relief { font-size: 10px; }
+    body.touch #bigmap .bm-relief .ramp, body.touch #bigmap .bm-relief .ticks { width: 170px; }
+    #bigmap .bm-scale { --w: 80px; font-size: 12px; font-weight: 700; letter-spacing: 1px; color: #e9dccf; }
+    #bigmap .bm-scale i { display: block; width: var(--w); height: 6px; margin-bottom: 3px; border: 2px solid #fff; border-top: 0; }
+    #bigmap .bm-hint { position: absolute; left: 50%; bottom: calc(env(safe-area-inset-bottom) + 22px); transform: translate(-50%, 10px); max-width: min(560px, 70vw);
+      padding: 9px 20px; border-radius: 999px; font-size: 16px; font-weight: 600; letter-spacing: .5px; text-align: center; opacity: 0; pointer-events: none;
+      background: rgba(22,10,5,.78); border: 1px solid rgba(255,255,255,.12); transition: opacity .2s, transform .2s; }
+    #bigmap .bm-hint.on { opacity: 1; transform: translate(-50%, 0); }
+    #bigmap .bm-hint.warn { color: #ffd28a; border-color: rgba(255,150,70,.5); }
+    #bigmap .bm-card { position: absolute; left: 50%; bottom: calc(env(safe-area-inset-bottom) + 18px); width: min(560px, calc(100vw - 260px)); min-width: 300px;
+      display: flex; align-items: center; gap: 18px; padding: 12px 12px 12px 22px; border-radius: 22px; opacity: 0; pointer-events: none;
+      transform: translate(-50%, 18px); transition: opacity .22s, transform .3s cubic-bezier(.16, 1, .3, 1);
+      background: linear-gradient(180deg, rgba(34,14,6,.94), rgba(18,8,4,.94)); border: 1px solid rgba(255,150,70,.32);
+      box-shadow: 0 22px 54px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08); }
+    #bigmap .bm-card.on { opacity: 1; pointer-events: auto; transform: translate(-50%, 0); }
+    #bigmap .bm-info { flex: 1; min-width: 0; }
+    #bigmap .bm-kind { display: block; font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--ember); }
+    #bigmap .bm-name { display: block; font-size: 25px; font-weight: 800; font-style: italic; line-height: 1.05; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #bigmap .bm-sub { display: block; font-size: 14px; color: #cbb8a7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #bigmap .bm-why { display: none; margin-top: 3px; font-size: 14px; font-weight: 700; color: #ffd28a; }
+    #bigmap .bm-card.blocked .bm-why { display: block; }
+    #bigmap .bm-go { flex: none; display: flex; align-items: center; gap: 8px; font-family: inherit; font-size: 20px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+      color: #1a0a03; padding: 13px 22px 13px 24px; border-radius: 16px; border: 0; cursor: pointer; background: linear-gradient(180deg, #ffc233, #ff6a12);
+      box-shadow: 0 6px 20px rgba(255,100,20,.45), inset 0 1px 0 rgba(255,255,255,.5); transition: transform .1s, box-shadow .15s, filter .15s; }
+    #bigmap .bm-go b { font-size: 22px; transition: transform .15s; }
+    #bigmap .bm-go:hover { box-shadow: 0 10px 28px rgba(255,100,20,.62), inset 0 1px 0 rgba(255,255,255,.5); filter: brightness(1.06); }
+    #bigmap .bm-go:hover b { transform: translateX(3px); }
+    #bigmap .bm-go:active { transform: translateY(1px) scale(.97); }
+    #bigmap .bm-go:disabled { cursor: not-allowed; color: #a08b7c; background: #3a2a21; box-shadow: none; filter: none; }
+    #bigmap .bm-go:disabled b { transform: none; }
+    body.touch #bigmap .bm-top { top: calc(env(safe-area-inset-top) + 10px); gap: 10px; }
+    body.touch #bigmap .bm-brand { font-size: 22px; }
+    body.touch #bigmap .bm-brand span { font-size: 10px; letter-spacing: 3px; }
+    body.touch #bigmap .bm-q { font-size: 16px; padding: 8px 16px 8px 40px; background-position: 14px 50%; }
+    body.touch #bigmap .bm-results { max-height: 58vh; }
+    body.touch #bigmap .bm-results button { padding: 8px 14px; font-size: 15px; }
+    body.touch #bigmap .bm-btn { width: 42px; height: 42px; font-size: 20px; }
+    body.touch #bigmap .bm-legend { display: none; }
+    body.touch #bigmap .bm-card { width: min(520px, calc(100vw - 150px)); min-width: 0; padding: 8px 8px 8px 16px; gap: 12px; border-radius: 18px; bottom: calc(env(safe-area-inset-bottom) + 10px); }
+    body.touch #bigmap .bm-name { font-size: 20px; }
+    body.touch #bigmap .bm-sub, body.touch #bigmap .bm-why { font-size: 12px; }
+    body.touch #bigmap .bm-go { font-size: 17px; padding: 11px 16px; }
+    body.touch #bigmap .bm-hint { font-size: 13px; bottom: calc(env(safe-area-inset-bottom) + 14px); }
+    @media (max-width: 760px) { #bigmap .bm-brand span { display: none; } #bigmap .bm-card { width: calc(100vw - 130px); min-width: 0; } }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } #bigmap.on { animation: none; } }
   </style>
 </head>
 <body>
@@ -415,9 +676,53 @@
   <div id="result"><div class="t"></div><div class="s"></div></div>
   <div id="custom" class="glass" aria-label="Personalizar personaje"></div>
   <div id="touch"></div>
-  <div id="rotate"><div class="ph"></div>Gira el móvil<small>Arrecife a Todo Gas se juega en horizontal</small></div>
+  <div id="rotate"><div class="ph"></div>Gira el móvil<small>Lava Game se juega en horizontal</small></div>
+  <div id="bigmap" role="dialog" aria-modal="true" aria-label="Mapa de Arrecife" aria-hidden="true">
+    <canvas></canvas>
+    <div class="bm-vig"></div>
+    <div class="bm-top">
+      <div class="bm-brand">Mapa<span>Arrecife</span></div>
+      <div class="bm-search">
+        <input class="bm-q" type="search" enterkeyhint="go" autocomplete="off" spellcheck="false" placeholder="Busca una calle o un negocio" aria-label="Busca una calle o un negocio">
+        <ul class="bm-results" role="listbox" aria-label="Resultados"></ul>
+      </div>
+      <button type="button" class="bm-btn bm-close" aria-label="Cerrar el mapa" title="Cerrar (Esc)">✕</button>
+    </div>
+    <div class="bm-zoom">
+      <button type="button" class="bm-btn" data-z="relief" aria-pressed="false" aria-label="Relieve: alturas y cuestas" title="Relieve: alturas y cuestas (R)"><svg viewBox="0 0 24 14" aria-hidden="true"><path d="M0 14 8 3l4 5 3-3 9 9z"/></svg>Relieve</button>
+      <button type="button" class="bm-btn" data-z="in" aria-label="Acercar">+</button>
+      <button type="button" class="bm-btn" data-z="out" aria-label="Alejar">−</button>
+      <button type="button" class="bm-btn" data-z="me" aria-label="Volver a donde estás">Yo</button>
+    </div>
+    <div class="bm-foot">
+      <div class="bm-legend"><span><i class="me"></i>Tú</span><span><i class="biz"></i>Negocios</span><span><i class="site"></i>Sitios</span></div>
+      <div class="bm-relief"><span>Altura sobre el mar (IGN)</span><i class="ramp"></i>
+        <div class="ticks"><span>0 m</span><span>15</span><span>30</span><span>45</span><span>60 m</span></div>
+        <div class="steep"><span><i class="s1"></i>Cuesta 4–8 %</span><span><i class="s2"></i>Más del 8 %</span></div></div>
+      <div class="bm-scale"><i></i><span>500 m</span></div>
+    </div>
+    <div class="bm-hint"></div>
+    <div class="bm-card" aria-live="polite">
+      <div class="bm-info"><small class="bm-kind"></small><b class="bm-name"></b><span class="bm-sub"></span><span class="bm-why"></span></div>
+      <button type="button" class="bm-go">Ir aquí <b aria-hidden="true">→</b></button>
+    </div>
+  </div>
 
   <div id="fade"></div>
+  <div id="lost" role="alertdialog" aria-labelledby="lost-t" aria-describedby="lost-d">
+    <div class="card glass">
+      <h2 id="lost-t">Sin memoria para los gráficos</h2>
+      <p id="lost-d">El aparato se ha quedado sin memoria y el navegador ha apagado el 3D. Pulsa y sigues en la misma calle, con menos calidad.</p>
+      <button type="button">Seguir jugando</button>
+    </div>
+  </div>
+  <div id="pausa" role="dialog" aria-modal="true" aria-labelledby="pausa-t">
+    <div class="card glass">
+      <h2 id="pausa-t">Pausa</h2>
+      <p>El juego está parado. Pulsa Esc (o Menú en el mando) para seguir.</p>
+      <button type="button">Seguir jugando</button>
+    </div>
+  </div>
   <div id="hud">
     <div id="minimap-wrap" class="glass"><div class="inner"><canvas id="minimap" width="420" height="420"></canvas></div></div>
     <div id="street"><span class="zone">Arrecife · Lanzarote</span><span id="street-name"></span></div>
@@ -425,9 +730,9 @@
       <svg viewBox="0 0 100 100" aria-hidden="true">
         <defs>
           <linearGradient id="gauge-grad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0" stop-color="#18c5b8" />
-            <stop offset=".6" stop-color="#f4c542" />
-            <stop offset="1" stop-color="#ff5a3c" />
+            <stop offset="0" stop-color="#ffc233" />
+            <stop offset=".6" stop-color="#ff7a1a" />
+            <stop offset="1" stop-color="#e01c0a" />
           </linearGradient>
         </defs>
         <path class="track" d="M50 8 A42 42 0 1 1 8 50" pathLength="100" />
@@ -435,6 +740,8 @@
       </svg>
       <div class="read"><div class="v" id="speed">0</div><div class="u">km/h</div></div>
     </div>
+    <div id="arma-hud" aria-label="Arma"></div>
+    <div id="carcard" class="glass" aria-live="polite"><canvas width="128" height="128"></canvas><div class="t"><span class="b"></span><span class="m"></span><span class="l"></span></div></div>
     <div id="clockwrap" class="glass"><div class="place">Islas Canarias</div><div class="clock" id="clock">12:00</div></div>
     <div id="toast" class="glass"></div>
     <div id="prompt" class="glass" aria-live="polite"></div>
@@ -449,27 +756,50 @@
     </button>
     <div id="money">0 €</div>
     <div id="money-delta"></div>
+    <div id="stones" class="glass" aria-label="Piedras de lava"><i></i><span id="stones-n">0</span><small id="stones-t">/ 0</small></div>
     <div id="objective" class="glass"><div class="arrow"></div><div class="ot"></div><div class="tm"></div><div class="ds"></div></div>
   </div>
 
   <div id="loader">
-    <div class="title">Arrecife <em>a todo gas</em></div>
+    <div class="title lava">Lava <em>Game</em></div>
+    <div class="tag">Arrecife · Lanzarote</div>
     <div class="sub" id="load-status">Cargando Arrecife…</div>
     <div class="bar"><i id="load-bar"></i></div>
     <div class="credit">Ortofoto PNOA © IGN · Fotos de calle Mapillary (CC BY-SA) · Calles © OpenStreetMap</div>
     <div class="controls">
       <b>W A S D</b> conducir / caminar &nbsp; <b>F</b> bajar · entrar · robar coche &nbsp; <b>ESPACIO</b> freno de mano<br>
-      <b>1 2 3 4</b> Noah · Michael · José · Iria &nbsp; <b>C</b> cámara &nbsp; <b>R</b> recolocar<br>
+      <b>1 2 3 4</b> Noah · Michael · José · Iria &nbsp; <b>C</b> cámara (también desde el asiento) &nbsp; <b>R</b> recolocar<br>
+      <b>Z</b> / <b>X</b> cambiar de arma &nbsp; <b>I</b> vista interior<br>
+      <b>O</b> trae el roadster &nbsp; <b>J</b> turbo salto (sube unos 20 m; cae en los tejados y se conduce por encima)<br>
+      <b>B</b> trae la moto &nbsp; <b>U</b> trae el quad &nbsp; <b>L</b> coche Lava (premio por reunir las piedras)<br>
       <b>CLIC</b> o <b>K</b> disparar &nbsp; <b>T</b> hablar &nbsp; <b>M</b> personalizar &nbsp; <b>P</b> modo foto<br>
       Las flechas de colores son <b>locales</b>: <b>F</b> en la puerta para entrar y <b>T</b> para hablar con su gente<br>
       Las columnas de luz son <b>misiones</b>: entra en ellas para empezar<br>
-      <b>N</b> día/noche &nbsp; <b>Q</b> calidad gráfica &nbsp; <b>V</b> quitar o poner el sonido
+      Las <b>piedras de lava</b> brillan en naranja: cógelas todas y te dan dinero<br>
+      <b>G</b> o clic en el minimapa: mapa grande para ir a cualquier calle o negocio<br>
+      <b>N</b> día/noche &nbsp; <b>Q</b> calidad gráfica &nbsp; <b>V</b> quitar o poner el sonido &nbsp; <b>ESC</b> pausa<br>
+      Con mando: <b>RT</b> acelerar &nbsp; <b>LT</b> frenar &nbsp; <b>Y</b> subir/bajar &nbsp; <b>X</b> salto &nbsp; <b>B</b> disparar &nbsp; <b>A</b> freno de mano &nbsp; <b>Vista</b> mapa &nbsp; <b>Menú</b> pausa
     </div>
     <div id="touch-help">
       <b>Pulgar izquierdo</b>: joystick para conducir o caminar<br>
-      <b>Botones derechos</b>: disparar · freno · bajar/subir · hablar<br>
+      <b>Botones derechos</b>: disparar · freno · bajar/subir · hablar · arma<br>
       En las <b>flechas de colores</b> se entra en los locales (botón amarillo)<br>
-      <b>···</b> arriba: cámara, ropa, hora, calidad, sonido y personajes
+      <b>Toca el minimapa</b> para ver el mapa grande e ir a cualquier calle o negocio<br>
+      <b>···</b> arriba: mapa, cámara, ropa, hora, calidad, sonido, pausa, coche Lava y personajes
+    </div>
+    <div id="start-pick">
+      <h3>¿Por dónde quieres empezar?</h3>
+      <div class="chips" role="group" aria-label="Sitios para empezar"></div>
+      <div class="row">
+        <input id="start-where" type="text" list="start-list" autocomplete="off" placeholder="…o escribe una calle o un sitio" aria-label="Escribe dónde quieres empezar">
+        <datalist id="start-list"></datalist>
+        <label id="start-demo"><input type="checkbox" id="start-nopolice"> Demo sin policía</label>
+        <button id="car-btn" type="button">🚗 Elige tu coche</button>
+      </div>
+      <div id="car-pick">
+        <div class="chips" id="car-models" role="group" aria-label="Modelos de coche"></div>
+        <div class="row" id="car-colors" role="group" aria-label="Colores"></div>
+      </div>
     </div>
     <button id="start-btn">Conducir</button>
     <div id="sponsor">
@@ -487,6 +817,7 @@
     </div>
   </div>
 
+  <script type="module" src="/src/registro.js"></script>
   <script type="module" src="/src/main.js"></script>
 </body>
 </html>

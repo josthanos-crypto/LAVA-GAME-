@@ -40,7 +40,7 @@ export function canvasTex(w, h, draw) {
 }
 
 // ── suelos de lienzo que se repiten (uno por tipo, compartidos) ──
-const FLOOR_SIZE = { wood: 2.4, dark: 2.4, tile: 1.2, terrazo: 2, checker: 1, stone: 2.4, cement: 3 };
+const FLOOR_SIZE = { wood: 2.4, dark: 2.4, tile: 1.2, terrazo: 2, checker: 1, stone: 2.4, cement: 3, barro: 1.32, arena: 3 };
 const floorCache = new Map();
 function floorMaterial(kind) {
   if (floorCache.has(kind)) return floorCache.get(kind);
@@ -85,6 +85,38 @@ function floorMaterial(kind) {
         g.beginPath(); g.moveTo(i * s, 0); g.lineTo(i * s, W); g.stroke();
         g.beginPath(); g.moveTo(0, i * s); g.lineTo(W, i * s); g.stroke();
       }
+    } else if (kind === 'barro') {
+      // baldosa de barro cocido (el suelo del Maccheroni): 4×4 losetas rojizas con la llaga clara
+      const n = 4, s = W / n;
+      for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) {
+        const v = (rnd() - 0.5) * 26;
+        g.fillStyle = `rgb(${168 + v},${86 + v * 0.7},${52 + v * 0.5})`;
+        g.fillRect(i * s, j * s, s, s);
+        // aguas del barro
+        for (let k = 0; k < 60; k++) {
+          g.fillStyle = `rgba(${rnd() < 0.5 ? '230,160,110' : '110,50,30'},${0.04 + rnd() * 0.08})`;
+          g.beginPath(); g.arc(i * s + rnd() * s, j * s + rnd() * s, 2 + rnd() * 9, 0, Math.PI * 2); g.fill();
+        }
+        // un brillo suave hacia una esquina, como la baldosa pulida por el uso
+        const sh = g.createLinearGradient(i * s, j * s, i * s + s, j * s + s);
+        sh.addColorStop(0, 'rgba(255,220,180,.1)'); sh.addColorStop(1, 'rgba(60,20,10,.12)');
+        g.fillStyle = sh; g.fillRect(i * s, j * s, s, s);
+      }
+      g.strokeStyle = 'rgba(214,194,168,.95)';
+      g.lineWidth = 5;
+      for (let i = 0; i <= n; i++) {
+        g.beginPath(); g.moveTo(i * s, 0); g.lineTo(i * s, W); g.stroke();
+        g.beginPath(); g.moveTo(0, i * s); g.lineTo(W, i * s); g.stroke();
+      }
+    } else if (kind === 'arena') {
+      // arena clara del terrero de bola canaria: grano fino y algún rastro del rastrillo
+      g.fillStyle = '#d9c28f'; g.fillRect(0, 0, W, W);
+      for (let k = 0; k < 9000; k++) {
+        g.fillStyle = `rgba(${rnd() < 0.5 ? '255,244,214' : '120,92,52'},${0.05 + rnd() * 0.12})`;
+        g.fillRect(rnd() * W, rnd() * W, 1 + rnd() * 2, 1 + rnd() * 2);
+      }
+      g.strokeStyle = 'rgba(130,100,60,.13)'; g.lineWidth = 2;
+      for (let i = 0; i < 16; i++) { const y = i * W / 16 + rnd() * 6; g.beginPath(); g.moveTo(0, y); g.bezierCurveTo(W * 0.3, y + 3, W * 0.7, y - 3, W, y); g.stroke(); }
     } else if (kind === 'terrazo') {
       g.fillStyle = '#e6e1d8'; g.fillRect(0, 0, W, W);
       for (let k = 0; k < 2600; k++) {
@@ -110,7 +142,7 @@ function floorMaterial(kind) {
     }
   });
   tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-  const glossy = kind === 'terrazo' || kind === 'tile' || kind === 'checker' || kind === 'stone';
+  const glossy = kind === 'terrazo' || kind === 'tile' || kind === 'checker' || kind === 'stone' || kind === 'barro';
   const mat = new THREE.MeshStandardMaterial({ map: tex, roughness: glossy ? 0.35 : 0.7, metalness: 0 });
   floorCache.set(kind, mat);
   return mat;

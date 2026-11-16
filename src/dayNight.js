@@ -4,6 +4,8 @@ import { windowGlow } from './realism.js';
 const DEG = Math.PI / 180;
 const smooth = THREE.MathUtils.smoothstep;
 const lerp = THREE.MathUtils.lerp;
+const SUN_DIR = new THREE.Vector3();
+const MOON_DIR = new THREE.Vector3(-0.35, 0.82, 0.45).normalize();   // la luna: alta, fría y tenue
 
 /**
  * Ciclo día/noche canario con sol real: el sol sale por el este (~7:00),
@@ -34,7 +36,9 @@ export class DayNight {
   static sunAt(mins, out = new THREE.Vector3()) {
     const h = mins / 60;
     const t = (h - 7.0) / 12.75;              // 0 al alba, 1 al ocaso
-    const elevDeg = Math.sin(t * Math.PI) * 72 - (t < 0 || t > 1 ? 12 : 0);
+    // el seno ya es negativo fuera de 0..1: así el sol baja seguido al ponerse (antes daba un salto de
+    // 12° a las 19:45 y la noche entraba de golpe, con un destello de exposición)
+    const elevDeg = Math.sin(t * Math.PI) * 72;
     const e = THREE.MathUtils.clamp(elevDeg, -25, 80) * DEG;
     const az = THREE.MathUtils.clamp(t, -0.15, 1.15) * Math.PI;
     out.set(Math.cos(az) * Math.cos(e), Math.sin(e), Math.sin(az) * Math.cos(e) * 0.55).normalize();
@@ -61,46 +65,43 @@ export class DayNight {
 
     // --- sol / luna ---
     // de noche la misma luz hace de luna: alta, fría y tenue
-    const lightDir = night > 0.5
-      ? new THREE.Vector3(-0.35, 0.82, 0.45).normalize()
-      : new THREE.Vector3(dir.x, Math.max(dir.y, Math.sin(7 * DEG)), dir.z).normalize();
+    // el paso de sol a luna es gradual (dirección, color e intensidad), no un corte en night = 0,5
+    const moon = smooth(night, 0.35, 0.65);
+    const lightDir = SUN_DIR.set(dir.x, Math.max(dir.y, Math.sin(7 * DEG)), dir.z).normalize().lerp(MOON_DIR, moon).normalize();
     this.sun.position.set(playerX + lightDir.x * 320, lightDir.y * 320, playerZ + lightDir.z * 320);
     this.sun.target.position.set(playerX, 0, playerZ);
     this.sun.target.updateMatrixWorld();
 
     const sunCol = this._c.setHex(0xfff3e2).lerp(this._c2.setHex(0xff8a3c), golden);
     const dayI = 3.1 * smooth(elevDeg, -1, 12);
-    if (night > 0.5) {
-      this.sun.color.setHex(0x9db4e0);
-      this.sun.intensity = lerp(0.08, 0.55, (night - 0.5) * 2);
-    } else {
-      this.sun.color.copy(sunCol);
-      this.sun.intensity = Math.max(0.05, dayI);
-    }
+    this.sun.color.copy(sunCol).lerp(this._c2.setHex(0xa9c0ee), moon);
+    this.sun.intensity = lerp(Math.max(0.05, dayI), lerp(0.5, 1.15, night), moon);
     this.sun.castShadow = this.allowShadows && (night < 0.35 || night > 0.85);
 
     // --- luz de cielo ---
-    this.hemi.intensity = lerp(0.4, 0.18, night);
-    this.hemi.color.setHex(0xbcd8f2).lerp(this._c2.setHex(0xffb38a), golden * 0.5).lerp(this._c2.setHex(0x203458), night);
-    this.hemi.groundColor.setHex(0x8a7a64).lerp(this._c2.setHex(0x0c0e12), night);
+    this.hemi.intensity = lerp(0.4, 0.55, night);
+    this.hemi.color.setHex(0xbcd8f2).lerp(this._c2.setHex(0xffb38a), golden * 0.5).lerp(this._c2.setHex(0x3a5384), night);
+    this.hemi.groundColor.setHex(0x8a7a64).lerp(this._c2.setHex(0x1a1e28), night);
     if (this.fill) {
-      this.fill.intensity = lerp(0.28, 0.05, night);
+      this.fill.intensity = lerp(0.28, 0.3, night);
       this.fill.position.set(playerX - dir.x * 100, 40, playerZ - dir.z * 100);
-      this.fill.color.setHex(night > 0.5 ? 0x304868 : 0x9fc0e6);
+      this.fill.color.setHex(0x9fc0e6).lerp(this._c2.setHex(0x4a6a98), moon);
     }
 
     // --- niebla del color del horizonte ---
     if (this.scene.fog) {
-      const fog = this._c.setHex(0xc9dbe6).lerp(this._c2.setHex(0xe0a77c), golden * 0.75).lerp(this._c2.setHex(0x0a1120), night);
+      // de noche la exposición sube a 1,35 (×2,2): el azul de la niebla va más oscuro para que el
+      // horizonte no salga como una banda clara sobre el cielo
+      const fog = this._c.setHex(0xc9dbe6).lerp(this._c2.setHex(0xe0a77c), golden * 0.75).lerp(this._c2.setHex(0x0c1320), night);
       this.scene.fog.color.copy(fog);
-      if (this.scene.fog.isFogExp2) this.scene.fog.density = lerp(0.00042, 0.0009, Math.max(golden * 0.6, night * 0.8));
+      if (this.scene.fog.isFogExp2) this.scene.fog.density = lerp(0.00042, 0.0006, Math.max(golden * 0.6, night * 0.8));
     }
 
     // exposición: de noche se abre un poco para leer la ciudad iluminada
-    this.renderer.toneMappingExposure = lerp(0.62, 1.1, night) + golden * (1 - night) * 0.22;
+    this.renderer.toneMappingExposure = lerp(0.62, 1.35, night) + golden * (1 - night) * 0.22;
 
     // --- farolas, ventanas y rótulos ---
-    const lampsOn = smooth(night, 0.3, 0.65);
+    const lampsOn = smooth(night, 0.04, 0.3);
     if (this.streetHeadMat) {
       this.streetHeadMat.emissive.setHex(0xffd9a0);
       this.streetHeadMat.emissiveIntensity = lampsOn * 6;

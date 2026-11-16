@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { flatPoly } from './world.js';
 import { buildHuman } from './humanModel.js';
 
 /**
@@ -115,13 +116,21 @@ export function buildBeach(scene, map, { few = false } = {}) {
   const N = few ? { sun: 18, bath: 14, swim: 4, walk: 6 } : { sun: 34, bath: 26, swim: 6, walk: 12 };
   const beach = map.beaches?.[0];
   if (!beach) return null;
+  // el grupo de la playa, antes que nada: la arena se le añade enseguida
+  const group = new THREE.Group();
+  group.name = 'playa';
   const sea = map.sea;
   const inWater = (x, z) => (sea && pointInPoly(sea.outer, x, z) && !sea.holes.some(h => pointInPoly(h, x, z)));
+  // ── arena seca: todo el polígono de la playa del Reducto, continuo hasta el agua ──
+  const arena = flatPoly(beach, SAND_Y, 0xd9d2c6);
+  if (arena) {
+    const m = new THREE.Mesh(arena, new THREE.MeshStandardMaterial({ color: 0xd9d2c6, roughness: 0.95, metalness: 0, vertexColors: true }));
+    m.receiveShadow = true;
+    group.add(m);
+  }
   const { shore, land } = splitShore(beach, inWater);
   if (!shore.length) return null;
   const rnd = rngSeed(2024);
-  const group = new THREE.Group();
-  group.name = 'playa';
   const mats = {
     pole: new THREE.MeshStandardMaterial({ color: 0xe8e2d4, roughness: 0.5, metalness: 0.3 }),
     frame: new THREE.MeshStandardMaterial({ color: 0xd0d4d8, roughness: 0.4, metalness: 0.6 }),

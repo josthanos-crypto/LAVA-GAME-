@@ -71,14 +71,40 @@ const TYPES = {
     cyl(0.22, 0.2, 0.8, 12, 0, 0.42, 0, 0x3a5a40),
     cyl(0.24, 0.24, 0.05, 12, 0, 0.84, 0, 0x2c3a2e),
   ]),
+  // sillón de resina con brazos (el color va por instancia: negro en el Maccheroni)
+  armchair: () => centred([
+    box(0.5, 0.05, 0.46, 0, 0.44, 0.02, WHITE),
+    box(0.5, 0.44, 0.05, 0, 0.66, -0.21, WHITE),
+    box(0.05, 0.05, 0.44, -0.24, 0.66, 0, WHITE), box(0.05, 0.05, 0.44, 0.24, 0.66, 0, WHITE),
+    box(0.05, 0.22, 0.05, -0.24, 0.55, 0.19, WHITE), box(0.05, 0.22, 0.05, 0.24, 0.55, 0.19, WHITE),
+    ...[[-0.21, -0.18], [0.21, -0.18], [-0.21, 0.2], [0.21, 0.2]].map(([x, z]) => box(0.05, 0.44, 0.05, x, 0.22, z, WHITE)),
+  ]),
+  // mesa cuadrada de tablero claro con pie de hierro negro
+  sqtable: () => centred([
+    box(0.7, 0.03, 0.7, 0, 0.74, 0, 0xe9e2d4),
+    cyl(0.035, 0.035, 0.7, 8, 0, 0.38, 0, 0x2a2c30),
+    box(0.56, 0.03, 0.06, 0, 0.015, 0, 0x2a2c30), box(0.06, 0.03, 0.56, 0, 0.015, 0, 0x2a2c30),
+  ]),
+  // sombrilla grande cuadrada: blanca por fuera y roja por dentro, mástil blanco
+  parasol: () => {
+    const top = new THREE.ConeGeometry(2.0, 0.45, 4, 1, true);
+    top.rotateY(Math.PI / 4); top.translate(0, 2.52, 0);
+    const under = new THREE.ConeGeometry(1.97, 0.44, 4, 1, true);
+    under.rotateY(Math.PI / 4); under.translate(0, 2.49, 0);
+    return centred([
+      cyl(0.03, 0.03, 2.6, 6, 0, 1.3, 0, 0xe8e4dc),
+      cyl(0.26, 0.28, 0.1, 10, 0, 0.05, 0, 0xd8d4cc),
+      tint(top, WHITE), tint(under, 0xc8462a),
+    ]);
+  },
 };
 // masa relativa: cuánto frena el coche y lo lejos que sale
-const MASS = { chair: 0.25, table: 0.5, umbrella: 0.4, bench: 1.6, bin: 0.6 };
-const RADIUS = { chair: 0.32, table: 0.42, umbrella: 0.35, bench: 0.9, bin: 0.26 };
+const MASS = { chair: 0.25, table: 0.5, umbrella: 0.4, bench: 1.6, bin: 0.6, armchair: 0.3, sqtable: 0.5, parasol: 0.5 };
+const RADIUS = { chair: 0.32, table: 0.42, umbrella: 0.35, bench: 0.9, bin: 0.26, armchair: 0.34, sqtable: 0.42, parasol: 0.35 };
 // a partir de esta velocidad de impacto (m/s) la pieza se hace pedazos
-const BREAK = { chair: 19, table: 22, umbrella: 99, bench: 26, bin: 23 };
+const BREAK = { chair: 19, table: 22, umbrella: 99, bench: 26, bin: 23, armchair: 20, sqtable: 22, parasol: 99 };
 // altura del centro cuando queda tirada de lado
-const LYING = { chair: 0.24, table: 0.4, umbrella: 0.55, bench: 0.36, bin: 0.22 };
+const LYING = { chair: 0.24, table: 0.4, umbrella: 0.55, bench: 0.36, bin: 0.22, armchair: 0.26, sqtable: 0.38, parasol: 0.6 };
 
 const _m = new THREE.Matrix4(), _q = new THREE.Quaternion(), _q2 = new THREE.Quaternion();
 const _v = new THREE.Vector3(), _up = new THREE.Vector3(), _one = new THREE.Vector3(1, 1, 1);
@@ -99,7 +125,7 @@ export class Props {
     for (const [t, arr] of Object.entries(byType)) {
       const { geo, half } = TYPES[t]();
       const mesh = new THREE.InstancedMesh(geo,
-        new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.55, metalness: 0.15, side: t === 'umbrella' ? THREE.DoubleSide : THREE.FrontSide }),
+        new THREE.MeshStandardMaterial({ vertexColors: true, roughness: 0.55, metalness: 0.15, side: t === 'umbrella' || t === 'parasol' ? THREE.DoubleSide : THREE.FrontSide }),
         arr.length);
       mesh.castShadow = true;
       mesh.receiveShadow = true;
@@ -390,6 +416,35 @@ export function makeHitSound() {
 /** dónde va cada pieza: terrazas de bares y cafeterías, bancos y papeleras */
 export function propLayout(map) {
   const out = [];
+  // nada de terrazas flotando: fuera lo que caiga en el mar
+  const inPoly = (P, x, z) => {
+    let c = false;
+    for (let i = 0, j = P.length - 1; i < P.length; j = i++) {
+      if ((P[i][1] > z) !== (P[j][1] > z) && x < (P[j][0] - P[i][0]) * (z - P[i][1]) / (P[j][1] - P[i][1]) + P[i][0]) c = !c;
+    }
+    return c;
+  };
+  const sea = map.sea;
+  const wet = (x, z) => !!sea && inPoly(sea.outer, x, z) && !sea.holes.some(h => inPoly(h, x, z));
+  // ni cafeterías ni bancos en medio de la carretera: rejilla de la calzada (3 m) para descartarlos
+  const CGRID = 3, carGrid = new Set();
+  for (const r of map.roads || []) {
+    if (r.ped || r.dirt || r.p.length < 2) continue;
+    const half = r.w / 2 + 0.3;
+    for (let i = 1; i < r.p.length; i++) {
+      const [ax, az] = r.p[i - 1], [bx, bz] = r.p[i];
+      const len = Math.hypot(bx - ax, bz - az), steps = Math.max(1, Math.ceil(len / 1.5));
+      for (let t = 0; t <= steps; t++) {
+        const x = ax + (bx - ax) * (t / steps), z = az + (bz - az) * (t / steps);
+        for (let dx = -half; dx <= half + 0.1; dx += 1.5) {
+          for (let dz = -half; dz <= half + 0.1; dz += 1.5) {
+            carGrid.add(Math.round((x + dx) / CGRID) + ',' + Math.round((z + dz) / CGRID));
+          }
+        }
+      }
+    }
+  }
+  const onRoad = (x, z) => carGrid.has(Math.round(x / CGRID) + ',' + Math.round(z / CGRID));
   const CHAIR = [0xb8bcc0, 0x2b2f33, 0xd8d2c4, 0x5a4636, 0x8a9096, 0xb03a2e];
   const SHADE = [0xe8e2d0, 0x2a4d6e, 0xd8cdb4, 0x8c2f2a, 0x3c6e47];
   (map.signs || []).filter(s => s.k === 'food').forEach((s, si) => {
@@ -415,5 +470,5 @@ export function propLayout(map) {
     if (n++ % 2 === 0) out.push({ t: 'bin', x: x + Math.cos(a || 0) * 1.3, z: z - Math.sin(a || 0) * 1.3, a: 0 });
   }
   for (const p of map.extraProps || []) out.push(p);
-  return out;
+  return out.filter(p => !wet(p.x, p.z) && !onRoad(p.x, p.z));
 }

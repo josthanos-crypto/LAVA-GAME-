@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
+import { calleRealLayout } from './zones.js';
+import { makeRoadIndex } from './roadIndex.js';
 
 /**
  * Detalle de ciudad canaria: en las azoteas, casetones de la escalera,
@@ -137,7 +139,7 @@ export function buildCityDetail(scene, map) {
   group.name = 'detalleCiudad';
   const roof = { hut: [], tank: [], heater: [], ac: [], ant: [] };
   for (const b of map.buildings || []) {
-    if (b.skip || b.civic === 'hotel' || b.h < 2.8) continue;
+    if (b.skip || b.ownRoof || b.civic === 'hotel' || b.h < 2.8) continue;
     const p = b.p, A = polyArea(p);
     if (A < 30 || A > 6000) continue;
     const r = rng(p[0][0] * 7.1 + p[0][1] * 3.3);
@@ -151,6 +153,8 @@ export function buildCityDetail(scene, map) {
     if (r() < 0.3) { const q = inside(p, r, 1.2); if (q) roof.ant.push([q[0], y, q[1], r() * Math.PI, 1]); }
   }
   const trees = { trunk: [], crown: [], drago: [] };
+  // los jardines de OpenStreetMap a veces pisan la calle: ahí no se planta nada
+  const roadIdx = makeRoadIndex(map.roads, { margin: 1.2 });
   for (const a of map.areas || []) {
     if (a.k !== 'park' && a.k !== 'garden') continue;
     const A = polyArea(a.p);
@@ -158,12 +162,21 @@ export function buildCityDetail(scene, map) {
     const n = Math.max(1, Math.min(60, Math.round(A / 240)));
     for (let k = 0; k < n; k++) {
       const q = inside(a.p, r, 2.2);
-      if (!q) continue;
+      if (!q || roadIdx.onRoad(q[0], q[1])) continue;
       if (A > 3000 && r() < 0.06) { trees.drago.push([q[0], 0.1, q[1], r() * 6, 0.9 + r() * 0.5]); continue; }
       const s = 0.75 + r() * 0.6;
       trees.trunk.push([q[0], 0.1, q[1], r() * 6, s]);
       trees.crown.push([q[0], 0.1 + 3.6 * s, q[1], r() * 6, s * (2.2 + r() * 0.6)]);
     }
+  }
+
+  // laureles de Indias en el eje de la Calle Real (vídeo de referencia 2020, min. 04:45–08:40)
+  const rr = rng(4242);
+  for (const [x, z] of calleRealLayout(map).trees) {
+    const s = 0.95 + rr() * 0.3;
+    trees.trunk.push([x, 0.1, z, rr() * 6, s]);
+    // copa alta, con el tronco despejado para pasar por debajo (como en el vídeo)
+    trees.crown.push([x, 1.7 + 3.6 * s, z, rr() * 6, s * (2.4 + rr() * 0.5)]);
   }
 
   const m4 = new THREE.Matrix4(), q4 = new THREE.Quaternion(), up = new THREE.Vector3(0, 1, 0), col = new THREE.Color();

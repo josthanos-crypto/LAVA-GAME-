@@ -12,6 +12,15 @@ const RANGE = 45;
 const FIRE_GAP = 0.22;
 const AIM_CONE = 0.32; // radianes de puntería asistida
 
+/** el inventario de armas: se cambia con Z / X (o el botón Arma del móvil) */
+export const ARMAS = [
+  { id: 'punos', name: 'Puños', icon: '✊', melee: true },
+  { id: 'pistola', name: 'Pistola', icon: '🔫', gap: 0.22, range: 45, pellets: 1, spread: 0.03 },
+  { id: 'escopeta', name: 'Escopeta', icon: '🔫', gap: 0.95, range: 26, pellets: 5, spread: 0.22 },
+  { id: 'metralleta', name: 'Metralleta', icon: '🔫', gap: 0.085, range: 48, pellets: 1, spread: 0.09 },
+  { id: 'rifle', name: 'Rifle', icon: '🎯', gap: 1.15, range: 110, pellets: 1, spread: 0.004, dmg: 2 },
+];
+
 export class Combat {
   constructor({ scene, peds, traffic, police, colliders, dialog, hud }) {
     this.scene = scene;
@@ -24,6 +33,8 @@ export class Combat {
     this.health = 100;
     this.fireT = 0;
     this.trigger = false;
+    this.weaponIdx = 1;      // se empieza con la pistola
+    this.onWeapon = null;    // aviso al HUD al cambiar de arma
     this.dead = false;
     this.overlayT = 0;
     this.onRespawn = null;
@@ -88,13 +99,37 @@ export class Combat {
     src.start();
   }
 
+  get weapon() { return ARMAS[this.weaponIdx]; }
+
+  /** cambia de arma (Z anterior, X siguiente) */
+  cycleWeapon(dir) {
+    this.weaponIdx = (this.weaponIdx + dir + ARMAS.length) % ARMAS.length;
+    this.onWeapon?.(this.weapon);
+  }
+
+  /** puñetazo: al peatón que tengas delante, a un paso */
+  punch(act) {
+    const f = act.forward();
+    const ox = act.pos.x, oz = act.pos.y;
+    for (const p of this.peds.peds) {
+      if (!p.road || p.state === 'down' || !p.group.visible) continue;
+      const dx = p.x - ox, dz = p.z - oz;
+      const d = Math.hypot(dx, dz);
+      if (d > 2.0 || dx * f.x + dz * f.y < d * 0.3) continue;
+      this.peds.shoot(p, dx / (d || 1), dz / (d || 1));
+      this.police.add(1);
+      if (!this.dialog.busy) this.dialog.say(p.name, panicLine(), 1.4);
+      return;
+    }
+  }
+
   /** elige objetivo dentro del cono de puntería; si no hay, dispara recto */
-  aim(ox, oz, fx, fz) {
+  aim(ox, oz, fx, fz, range = RANGE) {
     let best = null, bestScore = Infinity;
     const consider = (x, z, kind, ref) => {
       const dx = x - ox, dz = z - oz;
       const d = Math.hypot(dx, dz);
-      if (d < 0.5 || d > RANGE) return;
+      if (d < 0.5 || d > range) return;
       const ang = Math.acos(THREE.MathUtils.clamp((dx * fx + dz * fz) / d, -1, 1));
       if (ang > AIM_CONE) return;
       const score = ang * 30 + d;
@@ -108,25 +143,30 @@ export class Combat {
   }
 
   /** distancia hasta la primera pared en la dirección del disparo */
-  wallDistance(ox, oz, dx, dz) {
-    for (let s = 1; s < RANGE; s += 0.8) {
+  wallDistance(ox, oz, dx, dz, max = RANGE) {
+    for (let s = 1; s < max; s += 0.8) {
       if (this.colliders.circleContacts(ox + dx * s, oz + dz * s, 0.15, 'coast').length) return s;
     }
-    return RANGE;
+    return max;
   }
 
   fire(act, mode) {
+    const w = this.weapon;
+    for (let i = 0; i < (w.pellets || 1); i++) this.fireOne(act, mode, w, i);
+  }
+
+  fireOne(act, mode, w, pellet) {
     const f = act.forward();
     const side = mode === 'car' ? 0 : 0.25;
     const ox = act.pos.x + f.x * (mode === 'car' ? 2.6 : 0.5) + f.y * side;
     const oz = act.pos.y + f.y * (mode === 'car' ? 2.6 : 0.5) - f.x * side;
     const oy = mode === 'car' ? 1.1 : 1.35;
-    const [dx, dz] = this.aim(ox, oz, f.x, f.y);
-    const spread = (Math.random() - 0.5) * 0.03;
+    const [dx, dz] = this.aim(ox, oz, f.x, f.y, w.range);
+    const spread = (Math.random() - 0.5) * (w.spread ?? 0.03);
     const cdx = dx * Math.cos(spread) - dz * Math.sin(spread);
     const cdz = dx * Math.sin(spread) + dz * Math.cos(spread);
 
-    let range = this.wallDistance(ox, oz, cdx, cdz);
+    let range = this.wallDistance(ox, oz, cdx, cdz, w.range);
     const pedHit = this.peds.hitTest(ox, oz, cdx, cdz, range);
     const copHit = this.police.hitTest(ox, oz, cdx, cdz, range);
     let carHit = null;
@@ -143,13 +183,14 @@ export class Combat {
       this.police.add(1);
     } else if (copHit && copHit.dist <= range) {
       this.police.damage(copHit.car);
+      if (w.dmg > 1) this.police.damage(copHit.car);
       this.police.add(1);
     } else if (carHit) {
       this.traffic.panic(carHit, 10);
     }
 
-    // efectos
-    this.bang(0);
+    // efectos (la escopeta solo truena con el primer perdigón)
+    if (pellet === 0) this.bang(0);
     this.flash.position.set(ox, oy, oz);
     this.flash.intensity = 30;
     this.muzzle.position.set(ox, oy, oz);
@@ -252,8 +293,10 @@ export class Combat {
 
     this.fireT -= dt;
     if (this.trigger && this.fireT <= 0 && !this.altFire?.(mode)) {
-      this.fireT = FIRE_GAP;
-      this.fire(act, mode);
+      const w = this.weapon;
+      this.fireT = w.gap ?? FIRE_GAP;
+      if (w.melee) { this.fireT = 0.45; if (mode !== 'car') this.punch(act); }
+      else this.fire(act, mode);
     }
     // la salud se recupera despacio si no te buscan
     if (this.police.wanted === 0) this.health = Math.min(100, this.health + dt * 2);

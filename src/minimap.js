@@ -9,7 +9,7 @@
 
 const TILE = 250; // m
 
-const COL = {
+export const COL = {
   land: '#244a72',
   sea: '#0e2843',
   shore: '#3f79ad',
@@ -29,7 +29,7 @@ const ABBR = [
   [/^Calle /, 'C/ '], [/^Avenida /, 'Av. '], [/^Carretera /, 'Ctra. '], [/^Plaza /, 'Pza. '],
   [/^Camino /, 'Cno. '], [/^Pasaje /, 'Pje. '], [/^Paseo /, 'P.º '], [/^Callej[oó]n /, 'Cjón. '],
 ];
-const shortName = (n) => ABBR.reduce((s, [re, to]) => s.replace(re, to), n);
+export const shortName = (n) => ABBR.reduce((s, [re, to]) => s.replace(re, to), n);
 
 const GLYPH = { acampada: '★', reparto: 'R', carrera: 'C', esquinazo: 'E' };
 
