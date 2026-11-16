@@ -310,6 +310,10 @@ float terrainLift( float h ) {
 float terrainH( vec2 uv ) {
   return terrainLift( max( 0.0, texture( terrainMap, clamp( uv, 0.0, 1.0 ) ).r - terrainOff ) ) * terrainOn;
 }
+float terrainLap( vec2 uv, vec2 tx ) {
+  return terrainH( uv + vec2( tx.x, 0.0 ) ) + terrainH( uv - vec2( tx.x, 0.0 ) )
+    + terrainH( uv + vec2( 0.0, tx.y ) ) + terrainH( uv - vec2( 0.0, tx.y ) ) - 4.0 * terrainH( uv );
+}
 float terrainDY( vec3 wp ) {
 #if defined( TERRAIN_NONE )
   return 0.0;
@@ -328,9 +332,16 @@ float terrainDY( vec3 wp ) {
   // calles (que van en trozos pequeños). Se baja lo que se combaría ahí: curvatura x TERRAIN_SAG
   vec2 tx = 1.0 / vec2( textureSize( terrainMap, 0 ) );
   float cellM = terrainRect.z * tx.x;
-  float lap = terrainH( uv + vec2( tx.x, 0.0 ) ) + terrainH( uv - vec2( tx.x, 0.0 ) )
-    + terrainH( uv + vec2( 0.0, tx.y ) ) + terrainH( uv - vec2( 0.0, tx.y ) ) - 4.0 * h;
-  h -= max( 0.0, lap ) / ( cellM * cellM ) * TERRAIN_SAG;
+  float lap = terrainLap( uv, tx );
+  // (Version 134) En las cuestas fuertes (Cabildo, Rambla Medular) el suelo seguía asomando sobre el asfalto: la
+  // hondonada puede caer en medio del cuadro del suelo y no en su esquina, y un cuadro alabeado (una esquina más
+  // alta que la de enfrente) queda por encima en su diagonal. Se mira también medio cuadro alrededor y se baja lo
+  // del alabeo (torsión x L²/4, con margen).
+  vec2 hs = vec2( TERRAIN_SEG * 0.5 ) / terrainRect.zw;
+  lap = max( lap, max( max( terrainLap( uv + vec2( hs.x, 0.0 ), tx ), terrainLap( uv - vec2( hs.x, 0.0 ), tx ) ),
+    max( terrainLap( uv + vec2( 0.0, hs.y ), tx ), terrainLap( uv - vec2( 0.0, hs.y ), tx ) ) ) );
+  float tw = abs( terrainH( uv + tx ) + terrainH( uv - tx ) - terrainH( uv + vec2( tx.x, -tx.y ) ) - terrainH( uv + vec2( -tx.x, tx.y ) ) ) * 0.25;
+  h -= ( max( 0.0, lap ) * TERRAIN_SAG + tw * TERRAIN_SEG * TERRAIN_SEG * 0.3 ) / ( cellM * cellM );
   #endif
   return h - base;
   #endif
@@ -394,7 +405,7 @@ function inject(material, shader) {
   // suelo de malla gruesa (userData.terrainSeg = lado de su cuadrícula, m): la flecha de un lado diagonal
   // es curvatura x L²/8, con L = lado x √2, y un 30 % de margen
   const seg = material.userData?.terrainSeg;
-  const sag = seg ? `#define TERRAIN_SAG ${(seg * seg * 0.325).toFixed(1)}\n` : '';
+  const sag = seg ? `#define TERRAIN_SAG ${(seg * seg * 0.325).toFixed(1)}\n#define TERRAIN_SEG ${seg.toFixed(1)}\n` : '';
   const pars = (MODE_DEFINE[mode] || '') + sag + GLSL_PARS;
   vs = vs.includes('#include <common>') ? vs.replace('#include <common>', '#include <common>\n' + pars) : pars + vs;
   vs = vs.replace('#include <project_vertex>', GLSL_PROJECT).replace('#include <worldpos_vertex>', GLSL_WORLDPOS);

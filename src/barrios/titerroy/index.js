@@ -6,6 +6,7 @@
  */
 
 import { tuneDelegacion, buildDelegacion } from '../../delegacion.js';
+import { buildPuenteRayas } from '../../puenteRayas.js';
 import { tuneLaGuinda, buildLaGuinda } from '../../laGuinda.js';
 import { tuneFontanales, buildFontanales } from '../../fontanales.js';
 import { tuneFarmaciaPerdomo, buildFarmaciaPerdomo } from '../../farmaciaPerdomo.js';
@@ -92,6 +93,8 @@ export function prepararMapa(map) {
 
 /** primera fase: antes de crear los locales */
 export function construir({ scene, map, colliders }) {
+  // el paso de Tenderete: asfalto limpio y carriles pintados en la circunvalación que pasa por arriba
+  buildPuenteRayas(scene, map, ['Tenderete (Titerroy)']);
   // la Delegación del Gobierno (balcón verde, portada de dos arcos, almenas y banderas)
   buildDelegacion(scene, colliders);
   // la Panadería La Guinda (foto de agosto de 2022): el toldo naranja, el letrero de colores y el portal 12

@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { vestirLados } from './navesLados.js';
 
 /**
  * Añadidos de Arrecife para Lava Game (vienen de la versión GTA Canarias):
@@ -857,6 +858,7 @@ function buildBurgerKing(g) {
   const H = 7;
   K.box(-W / 2, W / 2, 0, H - 1.6, -D / 2, D / 2, 0x7b5a40);
   K.box(-W / 2, W / 2, H - 1.6, H, -D / 2 - 0.2, D / 2, 0xa3a7aa);
+  vestirLados(group, W, D, H, 'madera');   // (Version 134) la trasera y los costados, que eran lisos: navesLados.js
   const tex = facadeTex(W, H, (x, w, h) => {
     x.fillStyle = '#a3a7aa'; x.fillRect(0, 0, w, 1.6);
     x.strokeStyle = '#8c9093'; x.lineWidth = 0.04;
@@ -893,6 +895,7 @@ function buildDecathlon(g) {
   const K = kit(group);
   const H = 9;
   K.box(-W / 2, W / 2, 0, H, -D / 2, D / 2, 0xc6d0d8);
+  vestirLados(group, W, D, H, 'chapa');    // (Version 134) la trasera y los costados, que eran lisos: navesLados.js
   K.box(-W / 2, W / 2, H, H + 0.6, -D / 2, -D / 2 + 0.25, 0xd7dde2);
   // cajón de madera sobre la entrada, en el lado izquierdo de la fachada (+x local)
   const bw = Math.min(W * 0.48, 34), bx = W / 2 - bw / 2 - 2;

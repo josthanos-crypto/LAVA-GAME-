@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { buildAparcamientoAldi } from './aldiAparcamiento.js';
 
 /**
  * ALDI de San Francisco Javier — Rambla Medular 58 (calle El Forito s/n).
@@ -10,7 +11,7 @@ import * as THREE from 'three';
  * En el mapa el edificio venía como un bloque genérico de 4 m de alto; aquí se sube a
  * 7,6 m (lo que mide la nave de verdad), se pinta de blanco y se le pone lo que hace
  * que se reconozca: la franja azul corrida, el rótulo en la fachada larga, la entrada
- * con su marquesina y el aparcamiento de delante con las plazas pintadas.
+ * con su marquesina y las plazas de aparcamiento en línea de delante (aldiAparcamiento.js).
  *
  * La fachada larga da al este (al aparcamiento) y la calle El Forito pasa por detrás.
  * Coordenadas del juego: x = (lon + 13,55) · 97398, z = (28,9625 − lat) · 111320.
@@ -32,7 +33,6 @@ const AZUL = 0x0b3f8f;        // el azul del rótulo
 const BLANCO = 0xf3f2ee;      // la nave
 const GRIS = 0x8d9295;        // herrajes
 const CRISTAL = 0x2c3a42;     // el escaparate de la entrada
-const ASFALTO = 0x4c4c4a;
 
 /* ---------------------------------------------------------------- mapa */
 
@@ -96,7 +96,7 @@ function aldiLogoTexture() {
   return t;
 }
 
-export function buildAldiSfj(scene) {
+export function buildAldiSfj(scene, map) {
   const group = new THREE.Group();
   group.name = 'aldiSanFranciscoJavier';
 
@@ -127,33 +127,11 @@ export function buildAldiSfj(scene) {
   }
   for (const g of banda) group.add(new THREE.Mesh(g, std(AZUL, { roughness: 0.7 })));
 
-  // --- el aparcamiento de delante (asfalto) ---
-  const asfalto = new THREE.Mesh(
-    quadXZ([P(1.5, 2.4), P(LEN - 1.5, 2.4), P(LEN - 1.5, 12.5), P(1.5, 12.5)], 0.085),
-    std(ASFALTO, { roughness: 0.95, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 }),
-  );
-  asfalto.receiveShadow = true;
-  group.add(asfalto);
-
-  // --- las plazas pintadas ---
-  const pintura = std(0xe8e8e2, { roughness: 0.9 });
-  const PLAZA = 2.7;
-  const primera = 6.2;
-  const cuantas = 10;
-  for (let i = 0; i <= cuantas; i++) {
-    const [x, z] = P(primera + i * PLAZA, 7.2);
-    const g = new THREE.BoxGeometry(0.13, 0.03, 5.0);
-    g.rotateY(giro);
-    g.translate(x, 0.1, z);
-    group.add(new THREE.Mesh(g, pintura));
-  }
-  {
-    const [x, z] = P(primera + (cuantas * PLAZA) / 2, 9.6);
-    const g = new THREE.BoxGeometry(cuantas * PLAZA + 0.13, 0.03, 0.13);
-    g.rotateY(giro);
-    g.translate(x, 0.1, z);
-    group.add(new THREE.Mesh(g, pintura));
-  }
+  // --- el aparcamiento de delante ---
+  // (Version 134) La franja de asfalto con diez plazas en batería que había aquí no cabía entre la nave y la Rambla:
+  // quedaba pintada encima de la acera y de la calzada. Ahora son plazas en línea junto al bordillo, como en la
+  // foto aérea: aldiAparcamiento.js.
+  if (map) buildAparcamientoAldi(group, map, A, B);
 
   // --- la entrada: escaparate oscuro, marquesina blanca y el rótulo encima ---
   const U_ENT = LEN * 0.34;

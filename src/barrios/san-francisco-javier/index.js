@@ -9,6 +9,7 @@ import { desnivelesSanFranciscoJavier } from '../../desniveles/san-francisco-jav
 import { tuneAldiSfj, buildAldiSfj } from '../../aldiSfj.js';
 import { tuneNegociosSfj } from '../../negociosSfj.js';
 import { buildRotondaCabildo } from '../../rotondaCabildo.js';
+import { buildPuenteRayas } from '../../puenteRayas.js';
 import { tuneCalles } from './calles.js';
 import { tuneCalles2 } from './calles2.js';
 import { tuneCalles3 } from './calles3.js';
@@ -44,9 +45,11 @@ export function construir({ scene, map, colliders }) {
   // la playa del Reducto (x -820 a -700, z 450 a 540) y ya no se montan; el archivo sigue ahi por si hace falta:
   //   import { buildCabildoBridge } from '../../cabildoBridge.js';  buildCabildoBridge(scene, colliders);
   // el ALDI de Rambla Medular: franja azul, rótulo, entrada y aparcamiento
-  buildAldiSfj(scene);
+  buildAldiSfj(scene, map);
   // la rotonda del Cabildo: calzada circular limpia, acera, líneas y cinco pasos de cebra
   buildRotondaCabildo(scene, map);
+  // el puente del Cabildo: asfalto y rayas de carril en el tablero y rayas en la calle que pasa por debajo
+  buildPuenteRayas(scene, map, ['Cabildo']);
 
   return {};
 }

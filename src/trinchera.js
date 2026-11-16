@@ -289,9 +289,11 @@ export function instalarTrinchera(game) {
 /** el asfalto del fondo de la trinchera y de debajo del túnel */
 function asfaltoFondo() {
   return sueloTex(256, 4, (g, r, n) => {
-    g.fillStyle = '#4a4a48';
+    // (Version 134) el mismo tono que el asfalto de las calles (textures.js): antes era más claro y la bajada se veía
+    // como un rectángulo gris pegado a la carretera
+    g.fillStyle = '#373a3f';
     g.fillRect(0, 0, n, n);
-    for (let i = 0; i < 3000; i++) { const v = Math.round(55 + r() * 45); g.fillStyle = `rgb(${v},${v},${v - 2})`; g.fillRect(r() * n, r() * n, 1.5, 1.5); }
+    for (let i = 0; i < 3000; i++) { const v = Math.round(42 + r() * 42); g.fillStyle = `rgb(${v},${v + 2},${v + 4})`; g.fillRect(r() * n, r() * n, 1.5, 1.5); }
   });
 }
 

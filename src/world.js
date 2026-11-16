@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { applyOneWay, crossings } from './sentidos.js';
+import { applyOneWay, crossings, Calzada } from './sentidos.js';
 import { aplicarPlantas } from './plantas.js';
 import { roadMarks, cutLine } from './marcasViales.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
@@ -16,6 +16,7 @@ import { isTouchDevice } from './touch.js';
 import { applyExtras } from './extraData.js';
 import { zone, markZones, charcoPromenade } from './zones.js';
 import { makeRoadIndex } from './roadIndex.js';
+import { caraArriba } from './caraArriba.js';
 
 export async function loadMap(onProgress) {
   onProgress?.('Descargando mapa de Arrecife…', 10);
@@ -815,6 +816,9 @@ function shade(hex, k) {
 
 function buildStreetlights(map) {
   const spots = [];
+  // (Version 134) una farola no se pone si cae en la calzada de otra calle: en las carreteras de dos calzadas
+  // pegadas (la del Cabildo) salían farolas plantadas en mitad del asfalto, sobre la raya doble
+  const calz = new Calzada(map.roads);
   for (const r of map.roads) {
     if (!r.major) continue;
     let acc = 0, side = 1;
@@ -827,7 +831,8 @@ function buildStreetlights(map) {
         const t = d / len;
         const off = (r.w / 2 + 1.1) * side;
         // ángulo hacia la calzada para el brazo de la farola
-        spots.push([ax + dx * t + (-dz / len) * off, az + dz * t + (dx / len) * off, Math.atan2(dx / len * side, dz / len * side)]);
+        const lx = ax + dx * t + (-dz / len) * off, lz = az + dz * t + (dx / len) * off;
+        if (!calz.roadAt(lx, lz, 0.3, r)) spots.push([lx, lz, Math.atan2(dx / len * side, dz / len * side)]);
         side = -side;
         d += 28;
       }
@@ -1454,6 +1459,9 @@ export function buildWorld(scene, map, onProgress, renderer) {
     mergeGeometries(roadGeoms.map(g => g.toNonIndexed()), false),
     matPBR(asphalt, {}, 1.0)
   );
+  // (Version 134) en las curvas cerradas y en las bocas de las rotondas algún triángulo de la calzada quedaba del
+  // revés y no se pintaba; por el agujero asomaba la foto aérea como una mancha gris borrosa (caraArriba.js)
+  caraArriba(roadMesh.geometry);
   roadMesh.receiveShadow = true;
   scene.add(roadMesh);
 

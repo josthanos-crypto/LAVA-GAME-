@@ -11,6 +11,7 @@ import { tuneCentroComercialArgana, buildCentroComercialArgana } from '../../cen
 import { tuneIndustriasRosa, buildIndustriasRosa } from '../../industriasRosa.js';
 import { tuneMcDonaldsArgana, buildMcDonaldsArgana } from '../../mcdonaldsArgana.js';
 import { buildGasolineraTenderete } from '../../gasolineraTenderete.js';
+import { tuneLidlRepsol, buildLidlRepsol } from '../../lidlRepsol.js';
 import { tuneCalleTanganillo } from '../../calleTanganillo.js';
 import { tuneRellenoArgana } from '../../rellenoArgana.js';
 import { tuneOrtopediaCarmen, buildOrtopediaCarmen } from '../../ortopediaCarmen.js';
@@ -43,6 +44,8 @@ export function prepararMapa(map) {
   tuneIndustriasRosa(map);
   // el McDonald's de la zona del centro comercial: su parcela trae local propio
   tuneMcDonaldsArgana(map);
+  // el Lidl de la carretera de San Bartolomé y la Repsol de al lado: la marquesina no es un edificio
+  tuneLidlRepsol(map);
   // el atajo real del camino de tierra a la Calle Tenderete, que faltaba en el mapa
   tuneCalleTanganillo(map);
   // la franja de calles y casas entre la Calle Luján Pérez y el campo de arriba, que faltaba (era todo arena)
@@ -97,6 +100,8 @@ export function construir({ scene, colliders, map }) {
   buildMcDonaldsArgana(scene, colliders);
   // lo que faltaba del solar de la Repsol del arranque del circuito
   buildGasolineraTenderete(scene, colliders, map);
+  // el Lidl (entrada y rótulo) y su gasolinera Repsol con el lavadero de coches
+  buildLidlRepsol(scene, colliders, map);
   // la Ortopedia Carmen (foto de julio de 2019): el recerco de granito, el marco rojo y el rótulo con el árbol
   buildOrtopediaCarmen(scene, colliders, map);
   // la nave de Dos Cabras (vista de la calle de julio de 2025): la pared blanca alta, el portón con la cabra y la puerta pequeña

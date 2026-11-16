@@ -1678,3 +1678,35 @@ Version 133
 - Banco de pruebas de modelos: pruebas/banco.html (con el servidor de desarrollo), misma luz y cielo que el juego.
 - Archivos nuevos: ruedas.js, cocheDetalle.js, cocheAdornos.js, cocheLejos.js, matriculas.js, andares.js, rasgos.js.
   Cambiados: carModels.js, traffic.js, parked.js, peds.js, character.js, humanModel.js, humanHead.js.
+
+
+Version 134 - Carreteras y zonas que se veian mal: Cabildo, ALDI y Tenderete (16/11/2026)
+- Puente del Cabildo: el tablero era una losa gris lisa sin carriles. Ahora lleva el asfalto de las calles y las rayas
+  de sus dos calzadas, y la calle que pasa por debajo (las dos rampas y el paso) tambien tiene sus rayas. El asfalto
+  de la bajada tiene el mismo tono que la carretera (antes era un rectangulo mas claro). Archivo nuevo: puenteRayas.js.
+- Manchas grises borrosas sobre el asfalto (entrada y salida del Cabildo, subida a San Francisco Javier): eran
+  agujeros en la calzada. En las curvas cerradas y en las bocas de las rotondas algun triangulo de calzada quedaba del
+  reves y no se pintaba; ahora se les da la vuelta (caraArriba.js). Vale para toda la ciudad.
+- Farolas en mitad de la carretera: en las carreteras de dos calzadas pegadas (la del Cabildo) salian farolas sobre la
+  raya doble. Ya no se pone una farola si cae en la calzada de otra calle (world.js). Vale para toda la ciudad.
+- En las cuestas fuertes el suelo de la foto aerea baja un poco mas donde el terreno se dobla o se alabea (terrain.js),
+  para que no asome sobre las calles.
+- ALDI de la Rambla Medular: la franja de asfalto con plazas en bateria no cabia entre la nave y la calle (quedaba
+  pintada encima de la acera y de la calzada). Ahora hay plazas en linea junto al bordillo, como en la foto aerea
+  (aldiAparcamiento.js). Las 71 plazas de verdad del supermercado no estan en la calle: falta saber por donde se entra.
+- Paso de Tenderete (la circunvalacion sobre la calle de Titerroy): la carretera de arriba salia sin carriles, a
+  manchas y con un rectangulo gris sobre el tunel. Ahora tiene asfalto limpio y las rayas de sus calzadas.
+- McDonald's de Argana: la losa del aparcamiento quedaba levantada y torcida, tapando la acera y el paso de cebra de la
+  rotonda. Ahora es un suelo plano que sigue el terreno, con sus plazas, y no pisa la calle (mcdonaldsAparcamiento.js).
+- Burger King y Decathlon: la trasera y los costados eran cajones lisos de un color. Ahora llevan el despiece de la
+  chapa o los listones de madera, zocalo, remate y puertas de servicio (navesLados.js).
+- Lidl y gasolinera Repsol de la carretera de San Bartolome (lidlRepsol.js): el cuadrado blanco de la foto aerea es la
+  marquesina de la gasolinera, pero el juego levantaba ahi un bloque de tiendas. Ahora esta la marquesina grande en
+  su sitio, con seis isletas de surtidores y el poste, y el LAVADERO DE COCHES (tres boxes techados y aspiradores)
+  entre la marquesina y el Lidl. El Lidl es una nave blanca lisa de 7,5 m con entrada acristalada, marquesina y rotulo.
+  El sitio exacto y la forma del lavadero los tiene que confirmar Jose Manuel.
+- Sin tocar main.js ni index.html. Archivos nuevos: puenteRayas.js, caraArriba.js, aldiAparcamiento.js,
+  mcdonaldsAparcamiento.js, navesLados.js, lidlRepsol.js. Cambiados (solo el enganche o un ajuste pequeno): world.js,
+  terrain.js, trinchera.js, aldiSfj.js, mcdonaldsArgana.js, arrecifeExtras.js y los index.js de los barrios San
+  Francisco Javier, Titerroy y Argana Alta.
+- Pendiente: las tiendas de chinos (falta saber cuales son y que se ve mal) y el resto de naves de la zona industrial.

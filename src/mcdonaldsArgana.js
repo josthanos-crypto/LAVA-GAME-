@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { Kit, canvasTex } from './interiorKit.js';
 import { paveMaterial, asfalto } from './suelos.js';
 import { terrainY } from './terrain.js';
+import { buildAparcamientoMcDonalds } from './mcdonaldsAparcamiento.js';
 
 /**
  * McDonald's de Argana — la esquina del centro comercial (Argana Alta).
@@ -37,7 +38,11 @@ const PLAZA = 2.55;
 const CLARO = 0xe7e4dc, BLANCO = 0xf4f1e9, PARAPETO = 0xcfcbc0, ALU = 0x9aa0a4, CRISTAL = 0x39434a;
 
 /** quita el bloque genérico de la parcela: este modelo trae el local de verdad */
+/** las calles del mapa (las guarda tuneMcDonaldsArgana): el aparcamiento no se pinta encima de ellas */
+let CALLES = null;
+
 export function tuneMcDonaldsArgana(map) {
+  CALLES = map.roads;
   for (const b of map.buildings || []) {
     const p = b.p || [];
     if (p.length < 3) continue;
@@ -154,48 +159,9 @@ export function buildMcDonaldsArgana(scene, colliders) {
   }
 
   // ── el aparcamiento de delante, siguiendo el terreno ──
-  const tex = asfalto();
-  const rejilla = (sa, sb, ta, tb) => {
-    const ns = Math.max(1, Math.ceil((sb - sa) / 1.6)), nt = Math.max(1, Math.ceil((tb - ta) / 1.6));
-    const ps = [];
-    for (let i = 0; i <= ns; i++) {
-      for (let j = 0; j <= nt; j++) {
-        const [x, z] = M(sa + (sb - sa) * i / ns, ta + (tb - ta) * j / nt);
-        ps.push({ x, z, y: alto(x, z) });
-      }
-    }
-    const at = (i, j) => ps[i * (nt + 1) + j];
-    const pos = [], uv = [], mpt = tex.userData.mpt || 4;
-    for (let i = 0; i < ns; i++) {
-      for (let j = 0; j < nt; j++) {
-        for (const p of [at(i, j), at(i + 1, j + 1), at(i, j + 1), at(i, j), at(i + 1, j), at(i + 1, j + 1)]) {
-          pos.push(p.x, p.y, p.z);
-          uv.push(p.x / mpt, -p.z / mpt);
-        }
-      }
-    }
-    const geo = new THREE.BufferGeometry();
-    geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
-    geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
-    geo.computeVertexNormals();
-    return geo;
-  };
-  const asfaltar = (sa, sb, ta, tb, color, name) => {
-    const m = new THREE.Mesh(rejilla(sa, sb, ta, tb), paveMaterial(tex, color));
-    m.name = name; m.receiveShadow = true; scene.add(m);
-  };
-  asfaltar(-LEN / 2 - 8, LEN / 2 + 8, FRENTE - 20, FRENTE - 0.2, 0xffffff, 'mcdonaldsAparcamiento');
-  asfaltar(-LEN / 2 - 8, LEN / 2 + 8, FRENTE - 20, FRENTE - 17.5, 0xcfccc3, 'mcdonaldsAcera');
-
-  /** una raya de las plazas, tumbada sobre el asfalto */
-  const raya = (sa, ta, sb, tb) => {
-    const [x0, z0] = M(sa, ta), [x1, z1] = M(sb, tb);
-    const largo = Math.hypot(x1 - x0, z1 - z0);
-    const y = Math.max(alto(x0, z0), alto(x1, z1)) + 0.02;
-    k.box((x0 + x1) / 2, y, (z0 + z1) / 2, 0.1, 0.012, largo + 0.06, 0xeceae2,
-      { ry: Math.atan2(x1 - x0, z1 - z0), list: k.shell });
-  };
-  for (let s = -LEN / 2 - 6; s < LEN / 2 + 6; s += PLAZA) raya(s, FRENTE - 9, s, FRENTE - 4);
+  // (Version 134) La losa de antes llevaba la altura calculada a mano y el juego le sumaba otra vez la del terreno:
+  // quedaba levantada, tapando la acera y el paso de cebra de la rotonda. Ahora: mcdonaldsAparcamiento.js.
+  buildAparcamientoMcDonalds(scene, CALLES, M, { s0: -LEN / 2 - 8, s1: LEN / 2 + 8, t0: FRENTE - 20, t1: FRENTE - 0.2, plaza: PLAZA });
 
   // ── la azotea: climatización y lucernarios ──
   for (const [s, t] of [[-6, -4], [5, 6], [7, -9]]) {
