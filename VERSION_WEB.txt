@@ -1722,3 +1722,13 @@ Version 135 - Aparcamientos y autoservicio de la zona comercial de Tenderete (16
   esta la ventanilla) falta confirmarlo.
 - Archivo nuevo: aparcamientosTenderete.js. Cambiados: mcdonaldsAparcamiento.js, mcdonaldsArgana.js y el index.js
   del barrio Argana Alta. Sin tocar main.js ni index.html.
+
+
+Version 136 - El bazar de la esquina frente al Centro Comercial de Argana (16/11/2026)
+- En la esquina de la carretera de San Bartolome con la calle Tomas Morales, al lado de la fabrica Dos Cabras y
+  frente al Centro Comercial de Argana, la foto aerea ensena una nave de cubierta oscura que no venia en el mapa: en
+  el juego la esquina estaba vacia. Ahora esta la nave (unos 21 x 18 m): paredes claras, cubierta oscura, la banda roja
+  del rotulo y el escaparate en las dos caras que dan a la calle, la puerta con su marquesina y las plazas de delante.
+- EL NOMBRE NO ESTA CONFIRMADO. Jose Manuel cree que se llama "Seco Hogar" pero no esta seguro y no se ha podido
+  comprobar: el rotulo dice solo "BAZAR" y lo que vende. Cuando lo confirme se cambia en bazarArgana.js (NOMBRE).
+- Archivo nuevo: bazarArgana.js. Cambiado: el index.js del barrio Argana Alta. Sin tocar main.js ni index.html.
