@@ -10,26 +10,6 @@ import { byVisit, pick, fit, SANS, poster, apron, scissors } from './localesComm
 
 const MAGENTA = 0xc2185b;
 
-function ccSign(g, W, H) {
-  const bg = g.createLinearGradient(0, 0, 0, H);
-  bg.addColorStop(0, '#2a2f36'); bg.addColorStop(1, '#1a1e24');
-  g.fillStyle = bg; g.fillRect(0, 0, W, H);
-  // ramilletes de buganvilla a los lados
-  for (const cx of [H * 0.55, W - H * 0.55]) {
-    for (let i = 0; i < 16; i++) {
-      const a = i * 2.4, r = (i % 4) * H * 0.07;
-      g.fillStyle = ['#d81b78', '#c2185b', '#f06292', '#ad1457'][i % 4];
-      g.beginPath(); g.arc(cx + Math.cos(a) * r, H / 2 + Math.sin(a) * r, H * 0.1, 0, Math.PI * 2); g.fill();
-    }
-    g.fillStyle = '#7ac043'; g.beginPath(); g.arc(cx + H * 0.25, H * 0.75, H * 0.08, 0, Math.PI * 2); g.fill();
-  }
-  g.textAlign = 'center'; g.textBaseline = 'middle';
-  g.fillStyle = '#f06292';
-  fit(g, 'CENTRO COMERCIAL', W / 2, H * 0.27, W - H * 2.4, H * 0.2, '700', SANS);
-  g.fillStyle = '#ffffff';
-  fit(g, 'LAS BUGANVILLAS', W / 2, H * 0.62, W - H * 2.4, H * 0.48, '800', SANS);
-}
-
 function phonesWall(g, W, H) {
   g.fillStyle = '#10161c'; g.fillRect(0, 0, W, H);
   g.fillStyle = '#18a0d8'; g.fillRect(0, 0, W, 70);
@@ -74,8 +54,9 @@ export const BUGANVILLAS = {
   glyph: 'B',
   color: MAGENTA,
   doorWidth: 2.4,
+  // la fachada la monta buganvillas.js entera (letrero amarillo, persianas y cristales)
+  ownFront: true,
   door: { sign: 'Sakura' },
-  sign: { size: [7.2, 1.25], y: 3.7, px: [1280, 222], draw: ccSign, edge: 0x1a1e24 },
   light: { sun: 0xffffff, exposure: 0.84, sky: 0xf6f8fa, ground: 0x8a8278 },
   build(k, { canvasTex }) {
     const H = 3.4, T = (w, h, f) => canvasTex(w, h, f);

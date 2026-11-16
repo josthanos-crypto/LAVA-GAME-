@@ -1,0 +1,192 @@
+{
+  "version": 1,
+  "source": "public/map/arrecife.json",
+  "note": "Cada edificio, calle y cartel va entero al barrio de su centro: no se corta ninguna geometría, así que no hay costuras ni huecos. La suma de todos los archivos es exactamente arrecife.json.",
+  "layers": [
+    "buildings",
+    "roads",
+    "signs"
+  ],
+  "barrios": [
+    {
+      "id": "arrecife-centro",
+      "nombre": "Arrecife Centro",
+      "file": "map/arrecife-centro.json",
+      "caja": {
+        "x0": -950,
+        "x1": 894,
+        "z0": -178,
+        "z1": 900
+      },
+      "bbox": [
+        -1055.62,
+        889.06,
+        -360.76,
+        908.92
+      ],
+      "buildings": 370,
+      "roads": 501,
+      "signs": 161
+    },
+    {
+      "id": "valterra",
+      "nombre": "Valterra",
+      "file": "map/valterra.json",
+      "caja": {
+        "x0": 100,
+        "x1": 988,
+        "z0": -706,
+        "z1": 38
+      },
+      "bbox": [
+        46.6,
+        984.67,
+        -750.61,
+        -66.01
+      ],
+      "buildings": 95,
+      "roads": 135,
+      "signs": 16
+    },
+    {
+      "id": "san-francisco-javier",
+      "nombre": "San Francisco Javier",
+      "file": "map/san-francisco-javier.json",
+      "caja": {
+        "x0": -1799,
+        "x1": -1036,
+        "z0": -582,
+        "z1": 432
+      },
+      "bbox": [
+        -1809.39,
+        -1004.96,
+        -621.56,
+        621.93
+      ],
+      "buildings": 108,
+      "roads": 161,
+      "signs": 2
+    },
+    {
+      "id": "titerroy",
+      "nombre": "Titerroy",
+      "file": "map/titerroy.json",
+      "caja": {
+        "x0": -1232,
+        "x1": -25,
+        "z0": -1382,
+        "z1": -364
+      },
+      "bbox": [
+        -1259.66,
+        46.6,
+        -1479.12,
+        -314.1
+      ],
+      "buildings": 232,
+      "roads": 296,
+      "signs": 15
+    },
+    {
+      "id": "argana-alta",
+      "nombre": "Argana Alta",
+      "file": "map/argana-alta.json",
+      "caja": {
+        "x0": -2617,
+        "x1": -1003,
+        "z0": -2434,
+        "z1": -840
+      },
+      "bbox": [
+        -2630.13,
+        -1002.99,
+        -2366.22,
+        -803.04
+      ],
+      "buildings": 241,
+      "roads": 200,
+      "signs": 13
+    },
+    {
+      "id": "altavista",
+      "nombre": "Altavista",
+      "file": "map/altavista.json",
+      "caja": {
+        "x0": -238,
+        "x1": 498,
+        "z0": -2080,
+        "z1": -495
+      },
+      "bbox": [
+        -461.35,
+        607.14,
+        -2181.66,
+        -496.27
+      ],
+      "buildings": 148,
+      "roads": 152,
+      "signs": 7
+    },
+    {
+      "id": "maneje",
+      "nombre": "Maneje",
+      "file": "map/maneje.json",
+      "caja": {
+        "x0": -2200,
+        "x1": 472,
+        "z0": -3400,
+        "z1": -1035
+      },
+      "bbox": [
+        -1002.99,
+        -111,
+        -2280.8,
+        -1247.7
+      ],
+      "buildings": 35,
+      "roads": 86,
+      "signs": 0
+    },
+    {
+      "id": "playa-honda",
+      "nombre": "Playa Honda",
+      "file": "map/playa-honda.json",
+      "caja": {
+        "x0": -5320,
+        "x1": -2880,
+        "z0": -20,
+        "z1": 1500
+      },
+      "bbox": [
+        -5315.56,
+        -2633.3,
+        -13.9,
+        1541.8
+      ],
+      "buildings": 1695,
+      "roads": 433,
+      "signs": 33
+    },
+    {
+      "id": "resto",
+      "nombre": "Resto (fuera de los barrios)",
+      "file": "map/resto.json",
+      "caja": null,
+      "bbox": [
+        -4256.79,
+        3374.32,
+        -2730.98,
+        1122.71
+      ],
+      "buildings": 593,
+      "roads": 463,
+      "signs": 52
+    }
+  ],
+  "totals": {
+    "buildings": 3517,
+    "roads": 2427,
+    "signs": 299
+  }
+}

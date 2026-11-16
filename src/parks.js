@@ -462,6 +462,36 @@ const FLOWER = [0xc8452e, 0xe0b520, 0xd94f8a, 0xf0f0ea, 0x6a4ab0, 0xff7a45];
  * Parques, plazas, jardines, parques infantiles y canchas — realistas estilo Lanzarote.
  */
 export function buildParksAndPlazas(map, scene) {
+  // ¿este punto cae en la calzada de alguna calle? Los jardines de OpenStreetMap a veces pisan la
+  // carretera (como el parque de delante de la Policía Local): ahí no se planta nada
+  const CELL = 24;
+  const roadGrid = new Map();
+  for (const r of map.roads || []) {
+    if (r.ped || r.dirt) continue;
+    const half = r.w / 2 + 0.6;
+    for (let i = 0; i < r.p.length - 1; i++) {
+      const [ax, az] = r.p[i], [bx, bz] = r.p[i + 1];
+      const x0 = Math.floor((Math.min(ax, bx) - half) / CELL), x1 = Math.floor((Math.max(ax, bx) + half) / CELL);
+      const z0 = Math.floor((Math.min(az, bz) - half) / CELL), z1 = Math.floor((Math.max(az, bz) + half) / CELL);
+      for (let cx = x0; cx <= x1; cx++) {
+        for (let cz = z0; cz <= z1; cz++) {
+          const k = cx * 100003 + cz;
+          if (!roadGrid.has(k)) roadGrid.set(k, []);
+          roadGrid.get(k).push([ax, az, bx, bz, half]);
+        }
+      }
+    }
+  }
+  const onRoad = (x, z) => {
+    const list = roadGrid.get(Math.floor(x / CELL) * 100003 + Math.floor(z / CELL));
+    if (!list) return false;
+    for (const [ax, az, bx, bz, half] of list) {
+      const dx = bx - ax, dz = bz - az, L2 = dx * dx + dz * dz || 1;
+      const t = Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / L2));
+      if (Math.hypot(ax + dx * t - x, az + dz * t - z) < half) return true;
+    }
+    return false;
+  };
   // bancos y papeleras de parques y plazas: se pueden atropellar (props.js)
   const props = (map.extraProps ||= []);
   const benchAt = (x, z, rot) => ({ t: 'bench', x, z, a: rot + Math.PI });
@@ -501,6 +531,9 @@ export function buildParksAndPlazas(map, scene) {
     const [x0, x1, z0, z1] = bbox(a.p);
 
     if (a.k === 'park') {
+      // el parque-jardín de Aniagua (detrás del Buganvillas) se levanta a mano en
+      // buganvillas.js, con sus parterres y su parque infantil: aquí no se toca
+      if (a.p.length === 5 && Math.abs(a.p[0][0] + 749.01) < 0.6 && Math.abs(a.p[0][1] - 252.81) < 0.6) continue;
       // blanco + textura de hierba (el tinte lo da el mapa)
       const tint = rng() > 0.5 ? 0xf2f5e8 : 0xe8f0d8;
       const g = flatPoly(a.p, 0.12, tint);
@@ -538,6 +571,7 @@ export function buildParksAndPlazas(map, scene) {
           const [ax, az] = a.p[i], [bx, bz] = a.p[Math.min(i + 1, a.p.length - 1)];
           const mx = (ax + bx) / 2, mz = (az + bz) / 2;
           if (!pointInPoly(a.p, mx + (bz - az) * 0.02, mz - (bx - ax) * 0.02)) continue;
+          if (onRoad(mx, mz) || onRoad(ax, az) || onRoad(bx, bz)) continue;   // sin setos en la calzada
           const hedge = new THREE.Mesh(
             new THREE.BoxGeometry(Math.min(2.5, Math.hypot(bx - ax, bz - az) * 0.6), 0.55, 0.4),
             leaf,
@@ -553,7 +587,7 @@ export function buildParksAndPlazas(map, scene) {
       const nRocks = Math.min(14, Math.max(2, Math.floor(m2 / 800)));
       for (let i = 0; i < nRocks; i++) {
         const pt = sampleInPoly(a.p, rng);
-        if (!pt) continue;
+        if (!pt || onRoad(pt[0], pt[1])) continue;
         detail.add(makeVolcanicRock(pt[0], pt[1], 0.25 + rng() * 0.45, picon));
       }
 
@@ -561,7 +595,7 @@ export function buildParksAndPlazas(map, scene) {
       const nBeds = Math.min(6, Math.max(1, Math.floor(m2 / 1500)));
       for (let i = 0; i < nBeds; i++) {
         const pt = sampleInPoly(a.p, rng);
-        if (!pt) continue;
+        if (!pt || onRoad(pt[0], pt[1])) continue;
         detail.add(makeFlowerBed(pt[0], pt[1], 1.8 + rng() * 1.5, 1.0 + rng(), soil, FLOWER));
       }
 
@@ -668,18 +702,19 @@ export function buildParksAndPlazas(map, scene) {
       // mulch beds
       for (let i = 0; i < Math.min(5, Math.max(1, Math.floor(m2 / 200))); i++) {
         const pt = sampleInPoly(a.p, rng);
-        if (!pt) continue;
+        if (!pt || onRoad(pt[0], pt[1])) continue;
         detail.add(makeFlowerBed(pt[0], pt[1], 1.4 + rng(), 0.9 + rng() * 0.5, soil, FLOWER));
       }
       // piedras decorativas
       for (let i = 0; i < 4; i++) {
         const pt = sampleInPoly(a.p, rng);
-        if (pt) detail.add(makeVolcanicRock(pt[0], pt[1], 0.2 + rng() * 0.3, picon));
+        if (pt && !onRoad(pt[0], pt[1])) detail.add(makeVolcanicRock(pt[0], pt[1], 0.2 + rng() * 0.3, picon));
       }
-      // seto denso
+      // seto denso (nunca sobre la calzada)
       for (let i = 0; i < a.p.length - 1; i++) {
         if (rng() > 0.55) continue;
         const [ax, az] = a.p[i], [bx, bz] = a.p[i + 1];
+        if (onRoad((ax + bx) / 2, (az + bz) / 2) || onRoad(ax, az) || onRoad(bx, bz)) continue;
         const hedge = new THREE.Mesh(
           new THREE.BoxGeometry(Math.hypot(bx - ax, bz - az) * 0.7, 0.7, 0.35),
           leaf,
@@ -699,9 +734,11 @@ export function buildParksAndPlazas(map, scene) {
         const [ax, az] = a.p[i], [bx, bz] = a.p[i + 1];
         const len = Math.hypot(bx - ax, bz - az);
         if (len < 0.4) continue;
+        if (onRoad((ax + bx) / 2, (az + bz) / 2)) continue;   // la valla nunca sobre la calzada
+        // valla negra de barrotes, como la del parque infantil junto al quiosco
         const fence = new THREE.Mesh(
           new THREE.BoxGeometry(len, 1.0, 0.06),
-          matStd({ color: 0xd94f3d, roughness: 0.6, metalness: 0.2 }),
+          matStd({ color: 0x24262a, roughness: 0.55, metalness: 0.35 }),
         );
         fence.position.set((ax + bx) / 2, 0.55, (az + bz) / 2);
         fence.rotation.y = Math.atan2(bx - ax, bz - az);
@@ -710,6 +747,58 @@ export function buildParksAndPlazas(map, scene) {
       // banco de padres
       props.push(benchAt(cx - 5, cz, 0.3));
       props.push(binAt(cx - 4, cz + 1.5));
+      // el parque del paseo frente a la Calle Real (vistas al Castillo de San Gabriel):
+      // por dentro lleva la vallita de paneles de plástico azul, roja y amarilla de la
+      // foto de José Manuel, y su columpio doble con las patas en A
+      if (Math.hypot(cx - 138, cz - 480) < 4) {
+        const PANEL = [0x2a6db5, 0xc8452e, 0xe0b520].map(c => matStd({ color: c, roughness: 0.5 }));
+        const POST = matStd({ color: 0x3a3e44, roughness: 0.6 });
+        const inner = [[133.2, 475.2], [142.8, 475.2], [142.8, 484.8], [133.2, 484.8], [133.2, 475.2]];
+        let pi = 0;
+        for (let i = 0; i < inner.length - 1; i++) {
+          const [ax, az] = inner[i], [bx, bz] = inner[i + 1];
+          const len = Math.hypot(bx - ax, bz - az), ry = Math.atan2(bx - ax, bz - az);
+          const nPan = Math.floor(len / 1.62);
+          for (let j = 0; j < nPan; j++) {
+            const t0 = (j + 0.5) * 1.62 / len;
+            const px = ax + (bx - ax) * t0, pz = az + (bz - az) * t0;
+            // hueco de entrada por el lado del paseo (el oeste)
+            if (i === 3 && j === 2) continue;
+            const panel = new THREE.Mesh(new THREE.BoxGeometry(1.45, 0.72, 0.05), PANEL[pi++ % 3]);
+            panel.position.set(px, 0.52, pz);
+            panel.rotation.y = ry;
+            panel.castShadow = true;
+            detail.add(panel);
+            const post = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.85, 0.08), POST);
+            post.position.set(px + Math.sin(ry) * 0.78, 0.5, pz + Math.cos(ry) * 0.78);
+            detail.add(post);
+          }
+        }
+        // columpio doble con las patas en A
+        const STEEL = matStd({ color: 0x8d9298, roughness: 0.45, metalness: 0.4 });
+        for (const sx of [-2, 2]) {
+          for (const lean of [-0.42, 0.42]) {
+            const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.06, 2.6, 8), STEEL);
+            leg.position.set(cx + sx, 1.37, cz + 3.1 + lean * 1.1);
+            leg.rotation.x = lean;
+            leg.castShadow = true;
+            detail.add(leg);
+          }
+        }
+        const bar = new THREE.Mesh(new THREE.BoxGeometry(4.2, 0.09, 0.09), STEEL);
+        bar.position.set(cx, 2.55, cz + 3.1);
+        detail.add(bar);
+        for (const sx of [-1, 1]) {
+          for (const dc of [-0.28, 0.28]) {
+            const chain = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 1.85, 4), POST);
+            chain.position.set(cx + sx + dc, 1.6, cz + 3.1);
+            detail.add(chain);
+          }
+          const seat = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.07, 0.3), PANEL[(sx + 1) / 2]);
+          seat.position.set(cx + sx, 0.65, cz + 3.1);
+          detail.add(seat);
+        }
+      }
 
     } else if (a.k === 'pitch') {
       if (a.sportsDone) continue;   // campos, pistas y canchas: sports.js

@@ -9,16 +9,17 @@ import { windowGlow } from './realism.js';
  * fachada real, puerta de cristal y un aro de luz en la acera. Dentro: una
  * sala aparte con su luz y su cámara, y la gente del local, que te cuenta
  * lo suyo (T) y a veces te ofrece algo (otra T). F (o el botón del móvil)
- * para entrar y salir.
+ * para entrar y salir. En los que tienen sillas libres (plan.seats) te puedes sentar (T), pedir
+ * (plan.order: el plato llega a tu mesa y te lo comes) y levantarte (F).
  *
  * Los interiores se montan lejos del mapa (a unos 20 km), la primera vez que
  * entras: desde dentro no se ve la ciudad, y la ciudad sigue a lo suyo
  * alrededor de la puerta mientras estás dentro.
  */
 
-const FLOOR_Y = 0.17;            // a la altura del protagonista (character.js)
+const FLOOR_Y = 0.2;             // a la altura del protagonista (character.js)
 const BASE = 20000, GAP = 300;   // dónde va cada interior
-const DOOR_R = 2.3, EXIT_R = 1.5, TALK_R = 2.7;
+const DOOR_R = 2.3, EXIT_R = 1.5, TALK_R = 2.7, SEAT_R = 0.95;
 const FADE = 0.3;
 
 /**
@@ -67,6 +68,7 @@ export class Locales {
     this.pending = null;      // fundido en marcha
     this.offer = null;        // lo último que te han ofrecido (pedir, cortar el pelo...)
     this.talking = null;
+    this.seated = null;       // sentado a una mesa: { seat, phase: 'sat' | 'waiting' | 'eating' | 'done', t, plate, foot }
     this.jumped = false;      // la cámara tiene que saltar con el personaje
     this.promptText = '';
     this.proxy = {
@@ -104,30 +106,10 @@ export class Locales {
     this.signMats = [];
     this.markers = [];
     for (const d of this.defs) {
-      const { x, z, nx, nz, ry } = d.door;
-      const tx = -nz, tz = nx;
-      // puerta de cristal con su marco y tirador, pegada a la fachada
-      const dw = d.doorWidth || 1.7, dh = 2.35;
-      const dx = x + nx * 0.06, dz = z + nz * 0.06;
-      const g = new THREE.BoxGeometry(dw, dh, 0.05);
-      g.translate(0, dh / 2, 0); g.rotateY(ry); g.translate(dx, FLOOR_Y - 0.02, dz);
-      darkGlass.push(g);
-      const frame = d.frameColor ?? 0x2a2c30;
-      const part = (w, h, px, py) => {
-        const b = new THREE.BoxGeometry(w, h, 0.1);
-        b.translate(0, h / 2, 0); b.rotateY(ry); b.translate(dx + tx * px, FLOOR_Y - 0.02 + py, dz + tz * px);
-        solid.push(paint(b, frame));
-      };
-      part(0.08, dh + 0.08, -dw / 2, 0); part(0.08, dh + 0.08, dw / 2, 0); part(dw + 0.16, 0.08, 0, dh); part(0.05, dh, 0, 0);
-      for (const s of [-1, 1]) {
-        const hdl = new THREE.BoxGeometry(0.03, 0.5, 0.05);
-        hdl.translate(0, 0.25, 0); hdl.rotateY(ry); hdl.translate(dx + nx * 0.07 + tx * s * 0.12, FLOOR_Y + 0.85, dz + nz * 0.07 + tz * s * 0.12);
-        solid.push(paint(hdl, 0xc8ccd0));
-      }
-      // felpudo
-      const mat = new THREE.BoxGeometry(dw * 0.9, 0.02, 0.7);
-      mat.rotateY(ry); mat.translate(x + nx * 0.45, FLOOR_Y + 0.01, z + nz * 0.45);
-      solid.push(paint(mat, 0x2a2420));
+      const { x, z, nx, nz } = d.door;
+      // puerta de cristal con su marco y tirador, pegada a la fachada (salvo si el local trae su
+      // fachada entera, como el Maccheroni: maccheroni.js)
+      if (!d.ownFront) this.addDoor(d, solid, darkGlass);
       // rótulo
       if (d.sign) this.addSign(group, d);
       // aro de luz en la acera y flecha que flota encima
@@ -154,6 +136,33 @@ export class Locales {
     }
     this.scene.add(group);
     this.outside = group;
+  }
+
+  /** puerta de cristal con su marco, los tiradores y el felpudo */
+  addDoor(d, solid, darkGlass) {
+    const { x, z, nx, nz, ry } = d.door;
+    const tx = -nz, tz = nx;
+    const dw = d.doorWidth || 1.7, dh = 2.35;
+    const dx = x + nx * 0.06, dz = z + nz * 0.06;
+    const g = new THREE.BoxGeometry(dw, dh, 0.05);
+    g.translate(0, dh / 2, 0); g.rotateY(ry); g.translate(dx, FLOOR_Y - 0.02, dz);
+    darkGlass.push(g);
+    const frame = d.frameColor ?? 0x2a2c30;
+    const part = (w, h, px, py) => {
+      const b = new THREE.BoxGeometry(w, h, 0.1);
+      b.translate(0, h / 2, 0); b.rotateY(ry); b.translate(dx + tx * px, FLOOR_Y - 0.02 + py, dz + tz * px);
+      solid.push(paint(b, frame));
+    };
+    part(0.08, dh + 0.08, -dw / 2, 0); part(0.08, dh + 0.08, dw / 2, 0); part(dw + 0.16, 0.08, 0, dh); part(0.05, dh, 0, 0);
+    for (const s of [-1, 1]) {
+      const hdl = new THREE.BoxGeometry(0.03, 0.5, 0.05);
+      hdl.translate(0, 0.25, 0); hdl.rotateY(ry); hdl.translate(dx + nx * 0.07 + tx * s * 0.12, FLOOR_Y + 0.85, dz + nz * 0.07 + tz * s * 0.12);
+      solid.push(paint(hdl, 0xc8ccd0));
+    }
+    // felpudo
+    const mat = new THREE.BoxGeometry(dw * 0.9, 0.02, 0.7);
+    mat.rotateY(ry); mat.translate(x + nx * 0.45, FLOOR_Y + 0.01, z + nz * 0.45);
+    solid.push(paint(mat, 0x2a2420));
   }
 
   /** rótulo en caja: la cara de delante con su dibujo, los cantos del color del fondo */
@@ -210,8 +219,11 @@ export class Locales {
       setPose(npc, 0, false);
       return npc;
     });
+    // las sillas libres (las que no ocupa nadie del local)
+    const seats = (plan.seats || []).filter(st => !npcs.some(n => n.pose === 'sit' && Math.hypot(n.at[0] - st.at[0], n.at[1] - st.at[1]) < 0.3))
+      .map(st => ({ ...st, x: ox + st.at[0], z: oz + st.at[1] }));
     d.built = {
-      group, ox, oz, npcs, plan,
+      group, ox, oz, npcs, plan, seats,
       rooms: rooms.map(r => ({ x0: ox + r.x0, z0: oz + r.z0, x1: ox + r.x1, z1: oz + r.z1, h: r.h })),
       spawn: plan.spawn || [0, 0, 0], exit: plan.exit || [0, 0],
     };
@@ -221,6 +233,7 @@ export class Locales {
   /** F a pie: entrar o salir si estás en una puerta; devuelve true si se encarga */
   useDoor(foot) {
     if (this.pending) return true;
+    if (this.seated) { this.standUp(); return true; }
     if (this.inside) {
       const b = this.inside.built;
       if (Math.hypot(foot.pos.x - b.ox - b.exit[0], foot.pos.y - b.oz - b.exit[1]) < EXIT_R) {
@@ -269,6 +282,7 @@ export class Locales {
   }
 
   leave(foot) {
+    if (this.seated) this.standUp();
     const { x, z, nx, nz, ry } = this.inside.door;
     foot.placeAt(x + nx * 1.6, z + nz * 1.6, ry);
     this.inside = null;
@@ -280,6 +294,7 @@ export class Locales {
   /** fuera sin más (al reaparecer tras caer o ser detenido) */
   forceOut() {
     if (!this.inside && !this.pending) return;
+    if (this.seated) this.standUp();
     this.inside = null;
     this.pending = null;
     this.offer = null;
@@ -297,8 +312,22 @@ export class Locales {
 
   /** T: hablar con la gente del local (o aceptar lo que te ofrecen); true si se encarga */
   talk(foot) {
+    // un saludo suelto no estorba para sentarse o pedir: se corta; una conversación, se adelanta
+    const hello = this.dialog.busy && !this.dialog.queue.length && this.dialog.current?.hold !== undefined;
+    if (this.seated) {
+      if (this.dialog.busy && !hello) { this.dialog.skip(); return true; }
+      if (hello) this.dialog.next();
+      this.order();
+      return true;
+    }
     const n = this.npcNear(foot.pos.x, foot.pos.y);
     if (!this.inside && !n) return false;
+    const seat = !n && this.seatNear(foot.pos.x, foot.pos.y);
+    if (seat && (!this.dialog.busy || hello)) {
+      if (hello) this.dialog.next();
+      this.sit(foot, seat);
+      return true;
+    }
     // un saludo suelto se corta para empezar a hablar; una conversación, se adelanta
     const greeting = this.dialog.busy && !this.dialog.queue.length && this.dialog.current?.hold !== undefined;
     if (this.dialog.busy && !(greeting && n)) { this.dialog.skip(); return true; }
@@ -335,6 +364,85 @@ export class Locales {
       if (d < bd) { bd = d; best = n; }
     }
     return best;
+  }
+
+  /** la silla libre más cercana (dentro de un local con sillas) */
+  seatNear(x, z) {
+    if (!this.inside) return null;
+    let best = null, bd = SEAT_R;
+    for (const st of this.inside.built.seats) {
+      const d = Math.hypot(x - st.x, z - st.z);
+      if (d < bd) { bd = d; best = st; }
+    }
+    return best;
+  }
+
+  /** sentarse: la cadera a la altura del asiento, mirando a la mesa */
+  sit(foot, seat) {
+    foot.sitting = { x: seat.x, z: seat.z, heading: seat.face, y: (seat.seat ?? 0.47) - 0.93, eat: false };
+    foot.update(0, null, this.colliders);
+    this.seated = { seat, phase: 'sat', t: 0, plate: null, foot };
+    this.offer = null;
+    const o = this.orderFor(this.seated);
+    this.hooks.toast(o ? `Sentado · T: ${o.label.toLowerCase()} · F: levantarse` : 'Sentado · F: levantarse');
+  }
+
+  /** levantarse: un paso atrás desde la silla; el plato, si lo hay, se lo llevan */
+  standUp() {
+    const st = this.seated;
+    if (!st) return;
+    const s = st.seat;
+    st.foot.standUp(s.x - Math.sin(s.face) * 0.7, s.z - Math.cos(s.face) * 0.7);
+    if (st.plate) st.plate.parent?.remove(st.plate);
+    this.seated = null;
+    this.jumped = true;
+  }
+
+  /** lo que se pide desde esta silla: el de la mesa (patio de comidas: cada mesa es de un sitio) o el del local */
+  orderFor(st) {
+    return st?.seat?.order || this.inside?.built.plan.order || null;
+  }
+
+  /** pedir desde la mesa: el camarero lo apunta, lo traen al rato y te lo comes */
+  order() {
+    const st = this.seated, o = this.orderFor(st);
+    if (!o) return;
+    if (st.phase === 'waiting') { this.hooks.toast('Ya viene, ya viene…'); return; }
+    if (st.phase === 'eating') { this.hooks.toast('Despacito, que se disfruta'); return; }
+    const who = this.inside.built.npcs.find(n => n.name === o.who);
+    if (st.plate) { st.plate.parent?.remove(st.plate); st.plate = null; }
+    this.talking = who || null;
+    st.phase = 'ordering';
+    this.dialog.play(o.talk(this.ctx(who || { visits: 0 })), () => {
+      this.talking = null;
+      if (this.seated === st) { st.phase = 'waiting'; st.t = 0; }
+    });
+  }
+
+  /** el plato en la mesa, la comida y el final (cada fotograma, si estás sentado) */
+  updateSeat(dt) {
+    const st = this.seated, b = this.inside?.built, o = this.orderFor(st);
+    if (!st || !o) return;
+    st.t += dt;
+    if (st.phase === 'waiting' && st.t >= (o.wait ?? 6)) {
+      st.plate = o.plate(THREE);
+      const [px, py, pz] = st.seat.plate;
+      st.plate.position.set(px, py, pz);
+      b.group.add(st.plate);
+      st.phase = 'eating'; st.t = 0;
+      st.foot.sitting.eat = true;
+      if (o.served) this.dialog.say(o.who, o.served(), 2.4);
+    } else if (st.phase === 'eating') {
+      const k = Math.min(1, st.t / (o.eat ?? 12));
+      const food = st.plate?.userData.food;
+      if (food) { food.scale.set(1 - k * 0.85, Math.max(0.05, 1 - k), 1 - k * 0.85); food.visible = k < 0.98; }
+      if (k >= 1) {
+        st.phase = 'done';
+        st.foot.sitting.eat = false;
+        o.apply?.(this.hooks);
+        if (o.after) setTimeout(() => { if (this.seated === st && !this.dialog.busy) this.dialog.say(this.hooks.who().name, o.after(), 2.4); }, 600);
+      }
+    }
   }
 
   /** la cámara no se sale de la sala en la que estás; lift: si se queda pegada, sube para ver por encima */
@@ -379,6 +487,28 @@ export class Locales {
     renderer.toneMappingExposure = L.exposure ?? 0.82;
   }
 
+  /**
+   * conversación que se oye al acercarte (plan.overhear = { at, r, cool, lines }): cada frase lleva el nombre de quien
+   * la dice (gesticula mientras habla) y, si quiere, shock: [nombres] de quien se queda asombrado un rato
+   */
+  updateOverhear(b, foot) {
+    const oh = b.plan.overhear;
+    if (!oh) return;
+    const cur = this.dialog.current;
+    if (oh.live) {
+      if (cur?.shock) for (const n of b.npcs) if (cur.shock.includes(n.name)) n.shockUntil = this.t + 2.6;
+    } else if (!this.dialog.busy && !this.pending && this.t - (oh.last ?? -1e9) > (oh.cool ?? 60) &&
+      Math.hypot(foot.pos.x - b.ox - oh.at[0], foot.pos.y - b.oz - oh.at[1]) < oh.r) {
+      oh.live = true;
+      oh.last = this.t;
+      this.dialog.play(oh.lines.map(l => ({ ...l, hold: l.hold ?? 2.4 })), () => { oh.live = false; oh.last = this.t; });
+    }
+    for (const n of b.npcs) {
+      n.chatting = !!oh.live && !!cur && !!n.name && cur.who === n.name;
+      n.shock = this.t < (n.shockUntil || 0);
+    }
+  }
+
   /** act: el coche o el personaje (para saber qué gente de la calle animar) */
   update(dt, foot, mode, act = foot) {
     this.t += dt;
@@ -405,8 +535,10 @@ export class Locales {
     // dentro: la gente del local; fuera, la de la calle que tengas cerca
     if (this.inside) {
       const b = this.inside.built;
-      for (const n of b.npcs) animate(n, dt, t, foot, this.talking === n);
+      this.updateOverhear(b, foot);
+      for (const n of b.npcs) animate(n, dt, t, foot, this.talking === n || !!n.chatting);
       b.plan.update?.(dt, t);
+      this.updateSeat(dt);
     } else {
       for (const n of this.street) {
         if (Math.hypot(n.x - act.pos.x, n.z - act.pos.y) > 90) continue;
@@ -423,10 +555,15 @@ export class Locales {
       const n = this.npcNear(foot.pos.x, foot.pos.y);
       const talkText = n && !this.dialog.busy
         ? (this.offer?.npc === n ? `T|${n.offer.label}${n.offer.price ? ` · ${n.offer.price} €` : ''}` : `T|Hablar con ${n.name}`) : '';
-      if (this.inside) {
+      if (this.seated) {
+        const o = this.orderFor(this.seated), ph = this.seated.phase;
+        const ask = o && (ph === 'sat' ? `T|${o.label}` : ph === 'done' ? `T|${o.again || o.label}` : '');
+        text = [ask, ph === 'eating' || ph === 'ordering' ? '' : 'F|Levantarse'].filter(Boolean).join('||');
+      } else if (this.inside) {
         const b = this.inside.built;
         const out = Math.hypot(foot.pos.x - b.ox - b.exit[0], foot.pos.y - b.oz - b.exit[1]) < EXIT_R;
-        text = [out ? 'F|Salir a la calle' : '', talkText].filter(Boolean).join('||');
+        const seat = !n && this.seatNear(foot.pos.x, foot.pos.y);
+        text = [out ? 'F|Salir a la calle' : '', talkText, seat ? 'T|Sentarse' : ''].filter(Boolean).join('||');
       } else {
         const d = this.doorNear(foot.pos.x, foot.pos.y);
         text = d ? `F|Entrar en ${d.name}` : talkText;
@@ -442,7 +579,7 @@ export class Locales {
     // en el móvil no hay teclas: se dice el botón
     this.promptEl.innerHTML = text.split('||').map(part => {
       const [key, label] = part.split('|');
-      const btn = key === 'F' ? (label.startsWith('Salir') ? 'Salir' : 'Entrar') : 'Hablar';
+      const btn = key === 'F' ? (label.startsWith('Salir') || label.startsWith('Levantarse') ? 'Salir' : 'Entrar') : 'Hablar';
       return this.touch ? `<b class="btn">${btn}</b><span>${label}</span>` : `<b>${key}</b><span>${label}</span>`;
     }).join('<i class="sep"></i>');
     this.promptEl.classList.add('on');
@@ -450,6 +587,7 @@ export class Locales {
 
   /** texto del botón amarillo del móvil: dentro siempre Salir; en una puerta, Entrar; si no, null */
   get enterLabel() {
+    if (this.seated) return 'Levantarse';
     if (this.inside) return 'Salir';
     return this.promptText.startsWith('F|Entrar') ? 'Entrar' : null;
   }
@@ -526,7 +664,14 @@ function setPose(n, t, talking) {
         p.spine.rotation.x = 0;
       }
   }
-  if (talking) {
+  if (n.shock) {
+    // asombrada: manos arriba, el cuerpo de un lado a otro, medio raro
+    const w = Math.sin(t * 13 + n.phase);
+    p.armL.rotation.x = -1.45 + w * 0.22; p.armR.rotation.x = -1.35 - w * 0.22;
+    p.armL.rotation.z = -0.55; p.armR.rotation.z = 0.55;
+    p.spine.rotation.x = -0.14; p.spine.rotation.z = Math.sin(t * 8.5) * 0.09;
+    p.head.rotation.z = Math.sin(t * 16) * 0.14;
+  } else if (talking) {
     // habla con las manos
     p.armR.rotation.x = -0.55 + Math.sin(t * 3.1) * 0.25;
     p.armR.rotation.z = 0.2;
@@ -555,4 +700,5 @@ function animate(n, dt, t, foot, talking) {
   const hd = d < 7 ? clamp(wrap(toPlayer - n.heading), 0.8) : 0;
   n.parts.head.rotation.y += (hd - n.parts.head.rotation.y) * Math.min(1, dt * 5);
   setPose(n, t, talking);
+  if (!n.shock) { n.parts.head.rotation.z *= 0.85; n.parts.spine.rotation.z *= 0.85; }
 }

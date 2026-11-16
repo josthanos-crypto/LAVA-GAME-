@@ -10,7 +10,7 @@ import { findBuilding } from './civic.js';
  * lleva Michael) y el nuevo Tanatorio Arroyo de Juan de Quesada 31, con su
  * rótulo grande, las salas de velatorio y el patio canario para las
  * ceremonias. La fachada del tanatorio es la de la foto: casa terrera blanca
- * con zócalo y molduras gris lila; por el lateral que sube, una puerta y,
+ * con zócalo y molduras gris azulado (el tono de la foto de la delantera); por el lateral que sube, una puerta y,
  * un poco más arriba, la entrada a la oficina de Canary Consulting.
  * Los servicios son los que publican en su web (funerariaarroyo.es); el
  * teléfono, el mismo en los dos, es el de Michael.
@@ -115,6 +115,7 @@ export const FUNERARIA = {
 export const TANATORIO = {
   id: 'tanatorio',
   name: 'Tanatorio Arroyo',
+  keys: ['tanatorio', 'el tanatorio', 'funercanarias', 'velatorio'],
   glyph: 'T',
   color: 0x2f7a5f,
   doorWidth: 1.7,
@@ -217,7 +218,7 @@ function seaPainting(g, W, H) {
 }
 
 // ── la casa terrera de Juan de Quesada 31 (fachada y lateral, como en las fotos) ──
-const LILAC = 0xa9a5b8, WHITE = 0xf3f2ee, FRAME = 0x16181b, GLASS = 0x22303c;
+const LILAC = 0xa6acb9, WHITE = 0xf3f2ee, FRAME = 0x16181b, GLASS = 0x22303c;
 const CORNER = [684.8, -48.2];                 // esquina de Juan de Quesada con el lateral
 const N_FRONT = [0.726, 0.688], N_SIDE = [0.702, -0.712];
 
@@ -228,6 +229,7 @@ export function tuneTanatorio(map) {
   b.h = 4.3;
   b.f = [243, 242, 238];
   b.s = 0;
+  b.ownRoof = true;   // la azotea de la foto desde arriba (tanatorioAzotea.js), sin depósitos al azar
 }
 
 function blueplate(g, W, H) {
@@ -287,15 +289,16 @@ export function buildTanatorioFacade(scene, colliders) {
   F.box(0.2, 0, 0.05, 0.4, H, 0.06, LILAC).box(W - 0.2, 0, 0.05, 0.4, H, 0.06, LILAC);
   F.box(W / 2, 3.32, 0.05, W, 0.14, 0.06, LILAC);
   for (const x of [5.1, 9.9]) F.box(x, 3.32, 0.05, 0.3, 1.2, 0.06, LILAC);
-  F.box(W / 2, 4.5, 0.08, W + 0.2, 0.4, 0.14, LILAC).box(W / 2, 4.88, 0.1, W + 0.3, 0.06, 0.18, 0xbcb8c8);
+  F.box(W / 2, 4.5, 0.08, W + 0.2, 0.4, 0.14, LILAC).box(W / 2, 4.88, 0.1, W + 0.3, 0.06, 0.18, 0xbfc4ce);
   for (const x of [3.4, 11.6]) opening(F, x, 0.95, 1.5, 2.15, { transom: 0.5 });
   // la puerta la pone locales.js; aquí, su recercado y el montante de cristal
   F.box(7.5, 0, 0.03, 2.14, 3.3, 0.03, LILAC);
   opening(F, 7.5, 2.52, 1.7, 0.6, { mullion: false, surround: 0 });
   for (const x of [2.15, 4.65, 9.0, 12.85]) lamp(F, x, 2.88);
   F.pic(14.25, 2.95, 0.075, 0.6, 0.34, 0, 1, canvasTex(256, 146, blueplate));
-  ficus(F, 0.9, 1.2);
-  ficus(F, 14.1, 1.2);
+  // los dos árboles de la foto: uno delante de la casa de al lado y otro a la derecha de la puerta
+  ficus(F, -1.6, 1.2);
+  ficus(F, 8.9, 1.2);
   const t = [-N_FRONT[1], N_FRONT[0]];          // de la esquina hacia la izquierda
   place(F, [CORNER[0] + t[0] * W, CORNER[1] + t[1] * W], N_FRONT, 'fachada del tanatorio');
 

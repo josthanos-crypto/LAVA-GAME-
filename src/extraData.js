@@ -6,6 +6,28 @@
 import { PLACES, ROUNDABOUTS, islandR } from './places.js';
 import { markCivic } from './civic.js';
 import { SAN_GINES_PARK } from './sanGines.js';
+import { KIOSCO_MUSICA, KIOSCO_VERDE } from './parqueRamirez.js';
+import { PLAZA_PALMS, markPlazaStreets } from './plazaPalmas.js';
+import { ENTRADA_PALMS } from './charcoEntrada.js';
+import { PARQUE_HOSPITAL_PALMS } from './parqueHospital.js';
+import { ESCUELA_PALMS } from './escuelaPesca.js';
+import { PARKING_MEDICOS_PALMS, PARKING_MEDICOS_SPOTS } from './parkingMedicos.js';
+import { TANATORIO_SPOTS } from './tanatorioEntorno.js';
+import { CAMPO_ROADS, CAMPO_BUILDINGS, CAMPO_HOLE, CAMPO_PALMS } from './casaCampo.js';
+import { ANMARA_ROADS, ANMARA_BUILDINGS, ANMARA_PALMS } from './caminoAnmara.js';
+import { DINO_PALMS } from './parqueDino.js';
+import { SANJOSE_PALMS, SANJOSE_SPOTS } from './castilloSanJose.js';
+import { addFarmaciaGuenia } from './farmaciaGuenia.js';
+import { MILLARES_PALMS, tuneEsquinaMillares } from './esquinaMillares.js';
+import { tuneEscuelaZerolo } from './escuelaZerolo.js';
+
+// Las palmeras canarias del parque de Aniagua (buganvillas.js), en las jardineras que dan a la
+// calle: la hilera de la foto de Tagoror y las dos que flanquean el monumento.
+const ANIAGUA_PALMS = [
+  [-712.06, 261.40, 12.6], [-702.09, 260.49, 10.9], [-688.66, 259.25, 13.2], [-677.70, 258.26, 11.5],
+  [-684.17, 258.85, 11.8], [-659.40, 260.60, 10.6],
+  [-740.63, 256.38, 9.3], [-724.70, 254.92, 8.5],
+];
 
 // Charco de San Ginés: la laguna grande y la cuenca de levante
 export const CHARCO_WATER = [
@@ -43,6 +65,10 @@ export const REDUCTO_BEACH = [[-987.4, 481.2], [-941.3, 463.2], [-909.4, 450.2],
 /** añade al mapa lo que le faltaba */
 export function applyExtras(map) {
   map.places = PLACES;
+  // el bloque de la Farmacia Las Salinas (Calle Guenia 2), que no venía en el mapa
+  addFarmaciaGuenia(map);
+  // la esquina de Guenia con Manolo Millares: el bloque blanco de los comercios
+  tuneEsquinaMillares(map);
   map.inlandWater = CHARCO_WATER;
   map.beaches = [REDUCTO_BEACH, ...(map.beaches || [])];
   // palmeras en corro en las isletas grandes de las rotondas (y ninguna donde va la escultura)
@@ -57,6 +83,8 @@ export function applyExtras(map) {
     }
   });
   map.trees = trees;
+  // el colegio Antonio Zerolo: sus pabellones, antes de buscar el edificio de cada colegio
+  tuneEscuelaZerolo(map);
   // organismos, colegios y hoteles: su edificio y su color de fachada
   markCivic(map);
   markFamous(map);
@@ -64,8 +92,8 @@ export function applyExtras(map) {
 }
 
 /**
- * sitios con modelo propio: la iglesia de San Ginés (no se levanta como un
- * bloque más), el Puente de las Bolas (lleva sus muretes) y el parque de
+ * sitios con modelo propio: la iglesia de San Ginés y los kioscos del parque
+ * José Ramírez Cerdá (no se levantan como un bloque más), el Puente de las Bolas (lleva sus muretes) y el parque de
  * detrás de la iglesia
  */
 function markFamous(map) {
@@ -75,6 +103,52 @@ function markFamous(map) {
     const cx = b.p.reduce((s, q) => s + q[0], 0) / b.p.length, cz = b.p.reduce((s, q) => s + q[1], 0) / b.p.length;
     if (Math.hypot(cx - gx, cz - gz) < 30) { b.skip = true; b.sanGines = true; }
   }
+  // los dos kioscos del parque José Ramírez Cerdá (parqueRamirez.js): fuera sus bloques, el choque se queda
+  for (const b of map.buildings || []) {
+    const n = b.p.length - 1;
+    const cx = b.p.slice(0, n).reduce((s, q) => s + q[0], 0) / n, cz = b.p.slice(0, n).reduce((s, q) => s + q[1], 0) / n;
+    if ([KIOSCO_MUSICA, KIOSCO_VERDE].some(([x, z]) => Math.hypot(cx - x, cz - z) < 1.5)) b.skip = true;
+  }
+  markPlazaStreets(map);
+  // el campo de arriba, hasta la casa del camino de tierra (casaCampo.js): sus caminos, sus casas (con modelo
+  // propio) y el mapa se alarga hacia el norte para llegar
+  map.roads.push(...CAMPO_ROADS, ...ANMARA_ROADS);
+  map.buildings.push(...CAMPO_BUILDINGS, ...ANMARA_BUILDINGS);
+  map.meta.bounds.minZ = Math.min(map.meta.bounds.minZ, -3700);
+  map.groundHoles = [CAMPO_HOLE];
+  // el parque infantil del Parque Ramírez Cerdá, junto al quiosco: en el mapa venía como una tira
+  // torcida metida en la Avenida La Marina; en la realidad es un cuadrado vallado (vallas negras, parks.js)
+  for (const a of map.areas || []) {
+    if (a.k !== 'playground' || !a.p?.length) continue;
+    const [x0, z0] = a.p[0];
+    if (x0 > 120 && x0 < 160 && z0 > 460 && z0 < 490) {
+      a.p = [[131.5, 473.5], [144.5, 473.5], [144.5, 486.5], [131.5, 486.5], [131.5, 473.5]];
+    }
+  }
+  // las rotondas: sus arcos de calzada van en un solo sentido (antihorario, como en España), con ceda el
+  // paso en las entradas (senales.js, traffic.js), sin aceras cruzando (world.js) ni coches aparcados
+  // (parked.js mira noParking). Un arco es una calle con todos sus puntos dentro del círculo de la rotonda
+  // (places.js) o del óvalo del cruce de la Avenida de Naos con Juan de Quesada.
+  const GLORIETAS = [...ROUNDABOUTS.map(([x, z, r]) => [x, z, r + 6, r + 6]), [773.5, -135.5, 18, 31]];
+  for (const r of map.roads) {
+    if (r.ped || r.dirt || r.p.length < 2) continue;
+    const g = GLORIETAS.find(([cx, cz, rx, rz]) => r.p.every(([x, z]) => ((x - cx) / rx) ** 2 + ((z - cz) / rz) ** 2 <= 1));
+    if (!g) continue;
+    r.glorieta = 1;
+    r.noParking = 1;
+    const [ax, az] = r.p[0], [bx, bz] = r.p[1];
+    const mx = (ax + bx) / 2 - g[0], mz = (az + bz) / 2 - g[1];
+    // antihorario visto en el mapa (norte arriba, z hacia el sur): el producto cruzado sale negativo
+    r.gloFwd = mx * (bz - az) - mz * (bx - ax) < 0;
+  }
+  // la Avenida de Naos y la Olof Palme son avenidas de verdad: línea discontinua en el medio, bordes
+  // pintados, stop o ceda en las calles que desembocan y sin coches aparcados en la calzada
+  for (const r of map.roads) {
+    if (r.glorieta || r.ped || r.dirt) continue;
+    if (/^Avenida (De Naos|Olof Palme)$/i.test(r.name || '')) r.major = 1;
+  }
+  map.lotSpots = [...PARKING_MEDICOS_SPOTS, ...TANATORIO_SPOTS, ...SANJOSE_SPOTS];
+  map.extraPalms = [...PLAZA_PALMS, ...ENTRADA_PALMS, ...PARQUE_HOSPITAL_PALMS, ...ESCUELA_PALMS, ...PARKING_MEDICOS_PALMS, ...CAMPO_PALMS, ...ANMARA_PALMS, ...DINO_PALMS, ...SANJOSE_PALMS, ...ANIAGUA_PALMS, ...MILLARES_PALMS].map(([x, z, h], i) => [x, z, h ?? 7.5 + (i % 3), i * 2.1]);
   const bolas = (map.roads || []).find(r => /puente de las bolas/i.test(r.name || ''));
   if (bolas) {
     bolas.bolas = true;
@@ -84,6 +158,11 @@ function markFamous(map) {
       const touch = [r.p[0], r.p[r.p.length - 1]].some(([x, z]) => ends.some(([ex, ez]) => Math.hypot(x - ex, z - ez) < 0.6));
       if (touch) r.bolas = true;
     }
+  }
+  // la calzada que va del puente al Castillo de San Gabriel (lleva su suelo y sus muros, fortBridge.js)
+  for (const r of map.roads || []) {
+    if (!r.ped || r.bolas || r.w > 3.5) continue;
+    if (r.p.every(([x, z]) => x > 215 && x < 262 && z > 490 && z < 660)) r.calzada = true;
   }
   map.areas = [...(map.areas || []), { k: 'park', p: SAN_GINES_PARK }];
 }

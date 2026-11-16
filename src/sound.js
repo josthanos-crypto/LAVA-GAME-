@@ -1,3 +1,4 @@
+import { store } from './save.js';
 /**
  * Todo el sonido del juego sale por aquí: un solo AudioContext con el volumen
  * general y el botón de silencio (el navegador recuerda la elección; si no se
@@ -12,7 +13,7 @@ const VOLUME = 0.9;
 const IOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
 function readMuted() {
-  try { return localStorage.getItem(KEY) === 'no'; } catch { return false; }
+  return store.get(KEY) === 'no';
 }
 
 /** medio segundo de silencio en WAV: el <audio> mudo que en el iPhone abre la sesión de reproducción */
@@ -87,7 +88,7 @@ class Sound {
 
   setMuted(muted) {
     this.muted = muted;
-    try { localStorage.setItem(KEY, muted ? 'no' : 'si'); } catch { /* sin almacenamiento: vale para esta partida */ }
+    store.set(KEY, muted ? 'no' : 'si');
     if (muted) {
       const ctx = this.ctx;
       if (ctx) {
@@ -101,6 +102,12 @@ class Sound {
       this.unlock();
     }
     this.onChange?.(muted);
+  }
+
+  /** más bajito mientras está abierto el mapa grande */
+  duck(on) {
+    if (!this.ctx || this.muted) return;
+    this.out.gain.setTargetAtTime(on ? VOLUME * 0.3 : VOLUME, this.ctx.currentTime, 0.12);
   }
 
   /** quita o pone el sonido; devuelve si queda en silencio */
