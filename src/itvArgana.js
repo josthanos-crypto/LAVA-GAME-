@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { cinta, malla } from './puenteRayas.js';
+import { paveMaterial, asfalto } from './suelos.js';
 
 /**
  * La estación de ITV de Arrecife, en la subida a San Bartolomé (Argana Alta), entre la carretera y el Hospital
@@ -13,6 +14,9 @@ import { cinta, malla } from './puenteRayas.js';
  * Aquí se hace la estación: la nave abierta por las dos puntas con sus TRES LÍNEAS de inspección (se puede cruzar con
  * el coche), los fosos, los rodillos del frenómetro, los números de línea con su semáforo, los rótulos «ITV», la
  * caseta de recepción y las filas de espera con sus flechas.
+ *
+ * (Version 138) El recinto entero: firme de asfalto, aparcamiento entre la nave y la carretera, la VALLA DE REJILLA
+ * que lo rodea y la PUERTA, que está al lado del local de Remar (la nave de al lado), como dijo José Manuel.
  *
  * No lleva el nombre de la empresa que la explota ni horarios ni precios: solo «ITV» (no se inventan datos).
  * El sentido de paso (se entra por la punta de arriba, la de las filas pintadas) sale de la foto aérea; que lo
@@ -27,6 +31,14 @@ const V = [-0.638, 0.769];                 // de través, hacia la carretera
 const L = 19.9, W = 8.65, ALTO = 6.6, BOCA = 4.4;
 const LINEAS = [-5.3, 0, 5.3];             // el eje de cada línea de inspección
 const P = (s, v) => [C[0] + U[0] * s + V[0] * v, C[1] + U[1] * s + V[1] * v];
+
+// el recinto (s a lo largo de la nave, v hacia la carretera), medido sobre el mapa y la foto aérea
+const VALLA_V = 39;                        // la valla de la carretera (la calzada empieza en v = 42,6)
+const VALLA_HOSP = -16.5;                  // la valla del lado del hospital
+const FIN_S = -39;                         // el fondo, por la punta de la salida (la nave siguiente empieza en -42)
+const REMAR_S = 29.7;                      // donde empieza la nave de al lado (el local de Remar)
+const COLA_S = 54;                         // el fondo de las filas de espera
+const PUERTA = [21.5, 28.7];               // la puerta del recinto, pegada a la nave de Remar
 
 const BLANCO = 0xf2f1ec, AZUL = 0x1c4f9c, GRIS = 0x8f9498, HORMIGON = 0x9a9b98, AMARILLO = 0xf2c200, OSCURO = 0x23262a;
 
@@ -170,9 +182,9 @@ export function buildItvArgana(scene, colliders) {
     for (const [a, b] of [[-4, -3], [4, -3], [-4, 3], [4, 3]]) caja(s + a, v + b, 0, 0.14, 3, 0.14, GRIS);
     muro(s - 3, v - 2, s + 3, v - 2); muro(s + 3, v - 2, s + 3, v + 2); muro(s + 3, v + 2, s - 3, v + 2); muro(s - 3, v + 2, s - 3, v - 2);
   }
-  // el poste con el rótulo, hacia la carretera
+  // el poste con el rótulo, en la carretera, al lado de la puerta
   {
-    const s = -L - 6, v = W + 15;
+    const s = PUERTA[0] - 1.6, v = VALLA_V + 0.6;   // junto a la puerta del recinto
     caja(s, v, 0, 0.35, 6.2, 0.35, GRIS);
     caja(s, v, 4.4, 4.2, 1.8, 0.3, BLANCO, V);
     const tex = lienzo(384, 160, (c, w, h) => {
@@ -184,23 +196,120 @@ export function buildItvArgana(scene, colliders) {
     cartel(s + 0.17, v, 5.3, 4.0, 1.66, U, tex, 0.25);
   }
 
-  // ───────────── la explanada: las filas de espera y las flechas ─────────────
+  // ───────────── el recinto: firme, filas de espera, aparcamiento, valla y puerta (Version 138) ─────────────
+  // Medido sobre el mapa y la foto aérea: la carretera queda a 34 m de la pared de la nave (v = 42,6); la nave de
+  // al lado (la del local de Remar) empieza en s = 29,7 y deja libre, entre ella y la boca de la ITV, el paso por el
+  // que se entra desde la carretera; las filas de espera están más arriba, pegadas al lado del hospital.
   const blanco = [], flechas = [];
+  const Y = 0.105;                 // el firme del recinto, por debajo del suelo de la nave
   const linea = (s0, v0, s1, v1, hw = 0.06) => {
     const n = Math.max(2, Math.ceil(Math.hypot(s1 - s0, v1 - v0) / 2)), pts = [];
     for (let i = 0; i <= n; i++) pts.push(P(s0 + (s1 - s0) * i / n, v0 + (v1 - v0) * i / n));
-    cinta(blanco, pts, () => 0.125, hw, false);
+    cinta(blanco, pts, () => Y + 0.02, hw, false);
   };
-  for (const v of [-7.95, -2.65, 2.65, 7.95]) linea(L + 1.5, v, L + 27, v);          // las filas de la entrada
-  for (const v of [-7.95, -2.65, 2.65, 7.95]) linea(-L - 1.5, v, -L - 9, v);         // la salida
-  for (const v of LINEAS) {
-    linea(L + 2.2, v - 2.2, L + 2.2, v + 2.2, 0.15);                                   // la línea de «espere»
-    for (const s of [L + 9, L + 20, -L - 5]) {                                        // flechas en el sentido de paso
-      const at = (f, d) => { const [x, z] = P(s - f, v + d); return [x, 0.128, z]; };
-      flechas.push(...at(1.3, 0), ...at(0.2, 0.6), ...at(0.2, -0.6));
-      flechas.push(...at(0.2, 0.17), ...at(-1.2, 0.17), ...at(-1.2, -0.17), ...at(0.2, 0.17), ...at(-1.2, -0.17), ...at(0.2, -0.17));
-    }
+  /** flecha pintada en (s, v) apuntando hacia (ds, dv) */
+  const flecha = (s, v, ds, dv) => {
+    const at = (f, d) => { const [x, z] = P(s + ds * f - dv * d, v + dv * f + ds * d); return [x, Y + 0.022, z]; };
+    flechas.push(...at(1.3, 0), ...at(0.2, 0.6), ...at(0.2, -0.6));
+    flechas.push(...at(0.2, 0.17), ...at(-1.2, 0.17), ...at(-1.2, -0.17), ...at(0.2, 0.17), ...at(-1.2, -0.17), ...at(0.2, -0.17));
+  };
+  // el firme de asfalto de todo el recinto, en losas de 4 m
+  {
+    const pos = [], uv = [];
+    const losa = (s0, s1, v0, v1) => {
+      const ns = Math.ceil((s1 - s0) / 4), nv = Math.ceil((v1 - v0) / 4);
+      const pt = (i, j) => P(s0 + (s1 - s0) * i / ns, v0 + (v1 - v0) * j / nv);
+      for (let i = 0; i < ns; i++) for (let j = 0; j < nv; j++) {
+        for (const [x, z] of [pt(i, j), pt(i, j + 1), pt(i + 1, j), pt(i + 1, j), pt(i, j + 1), pt(i + 1, j + 1)]) { pos.push(x, Y, z); uv.push(x / 4, -z / 4); }
+      }
+    };
+    losa(FIN_S, REMAR_S - 0.7, VALLA_HOSP, VALLA_V);           // la nave, el aparcamiento y el paso de entrada
+    losa(REMAR_S - 0.7, COLA_S, VALLA_HOSP, 3.4);              // las filas de espera, detrás de la nave de Remar
+    losa(PUERTA[0], PUERTA[1], VALLA_V, VALLA_V + 3.4);        // el vado de la puerta, hasta la calzada
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+    g.computeVertexNormals();
+    const mat = paveMaterial(asfalto(), 0xd4d4d4);
+    mat.side = THREE.DoubleSide;
+    const firme = new THREE.Mesh(g, mat);
+    firme.name = 'itvArganaFirme'; firme.receiveShadow = true;
+    grupo.add(firme);
   }
+  // las filas de espera (tres carriles) y sus flechas hacia la nave
+  for (const v of [-14, -8.7, -3.3, 2]) linea(REMAR_S + 1.5, v, COLA_S - 2, v);
+  for (const v of [-11.35, -6, -0.65]) for (const sx of [36, 46]) flecha(sx, v, -1, 0);
+  // delante de cada boca, la raya de «espere», y a la salida las rayas y una flecha
+  for (const v of LINEAS) linea(L + 1.6, v - 2.2, L + 1.6, v + 2.2, 0.15);
+  for (const v of [-7.95, -2.65, 2.65, 7.95]) linea(-L - 1.5, v, -L - 8, v);
+  for (const v of LINEAS) flecha(-L - 5, v, -1, 0);
+  // el paso de entrada desde la puerta: dos flechas hacia dentro
+  for (const v of [32, 20]) flecha((PUERTA[0] + PUERTA[1]) / 2, v, 0, -1);
+  // el aparcamiento, entre la nave y la carretera: una fila contra la valla y otra contra la nave
+  let plazas = 0;
+  for (let sx = FIN_S + 2; sx <= PUERTA[0] - 2; sx += 2.5) { linea(sx, VALLA_V - 5.6, sx, VALLA_V - 0.6); plazas++; }
+  linea(FIN_S + 2, VALLA_V - 5.6, PUERTA[0] - 2, VALLA_V - 5.6);
+  for (let sx = -L + 1; sx <= L - 1; sx += 2.5) { linea(sx, W + 1.4, sx, W + 6.4); plazas++; }
+  linea(-L + 1, W + 6.4, L - 1, W + 6.4);
+  grupo.userData.plazas = plazas - 2;
+
+  // la valla de rejilla que rodea el recinto, con la puerta abierta al lado de la nave de Remar
+  {
+    const ALTA = 2.0, PANEL = 2.5;
+    const tex = lienzo(128, 128, (c, w, h) => {
+      c.clearRect(0, 0, w, h);
+      c.strokeStyle = '#6f7a72'; c.lineWidth = 3;
+      for (let x = 0; x <= w; x += 16) { c.beginPath(); c.moveTo(x, 0); c.lineTo(x, h); c.stroke(); }
+      for (let y = 0; y <= h; y += 21.3) { c.beginPath(); c.moveTo(0, y); c.lineTo(w, y); c.stroke(); }
+      c.lineWidth = 6; c.strokeRect(3, 3, w - 6, h - 6);
+    });
+    tex.wrapS = THREE.RepeatWrapping;
+    const pos = [], uv = [];
+    const tramo = (s0, v0, s1, v1) => {
+      const len = Math.hypot(s1 - s0, v1 - v0), n = Math.max(1, Math.round(len / PANEL));
+      for (let i = 0; i < n; i++) {
+        const a = P(s0 + (s1 - s0) * i / n, v0 + (v1 - v0) * i / n), b = P(s0 + (s1 - s0) * (i + 1) / n, v0 + (v1 - v0) * (i + 1) / n);
+        pos.push(a[0], 0.1, a[1], b[0], 0.1, b[1], b[0], 0.1 + ALTA, b[1], a[0], 0.1, a[1], b[0], 0.1 + ALTA, b[1], a[0], 0.1 + ALTA, a[1]);
+        uv.push(0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1);
+      }
+      for (let i = 0; i <= n; i++) caja(s0 + (s1 - s0) * i / n, v0 + (v1 - v0) * i / n, 0.1, 0.07, ALTA + 0.1, 0.07, 0x5f6a62);
+      muro(s0, v0, s1, v1);
+    };
+    tramo(FIN_S, VALLA_V, PUERTA[0], VALLA_V);                 // por la carretera, hasta la puerta
+    tramo(PUERTA[1], VALLA_V, PUERTA[1], 32.2);                // de la puerta a la esquina de la nave de Remar
+    tramo(REMAR_S + 0.3, 6.4, COLA_S, 3.4);                    // por detrás de la nave de Remar
+    tramo(COLA_S, 3.4, COLA_S, VALLA_HOSP);                    // el fondo de las filas de espera
+    tramo(COLA_S, VALLA_HOSP, FIN_S, VALLA_HOSP);              // el lado del hospital
+    tramo(FIN_S, VALLA_HOSP, FIN_S, VALLA_V);                  // el fondo de la salida
+    // las dos hojas de la puerta, abiertas hacia dentro
+    for (const sx of PUERTA) {
+      const dentro = sx === PUERTA[0] ? -1 : 1;
+      const a = P(sx, VALLA_V), b = P(sx + dentro * 0.4, VALLA_V - 3.5);
+      pos.push(a[0], 0.1, a[1], b[0], 0.1, b[1], b[0], 0.1 + ALTA, b[1], a[0], 0.1, a[1], b[0], 0.1 + ALTA, b[1], a[0], 0.1 + ALTA, a[1]);
+      uv.push(0, 0, 1.4, 0, 1.4, 1, 0, 0, 1.4, 1, 0, 1);
+      caja(sx, VALLA_V, 0.1, 0.14, ALTA + 0.3, 0.14, 0x4a534d);
+    }
+    const g = new THREE.BufferGeometry();
+    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+    g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+    g.computeVertexNormals();
+    const valla = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ map: tex, alphaTest: 0.35, transparent: false, side: THREE.DoubleSide, roughness: 0.7 }));
+    valla.name = 'itvArganaValla';
+    grupo.add(valla);
+  }
+
+  // el rótulo del local de al lado (Remar), que es por donde José Manuel dice que está la entrada
+  {
+    const tex = lienzo(512, 128, (c, w, h) => {
+      c.fillStyle = '#ffffff'; c.fillRect(0, 0, w, h);
+      c.fillStyle = '#1b4a9c'; c.fillRect(0, 0, w, 8); c.fillRect(0, h - 8, w, 8);
+      c.textAlign = 'center'; c.textBaseline = 'middle'; c.font = 'bold 92px Arial, Helvetica, sans-serif';
+      c.fillText('REMAR', w / 2, h / 2 + 4);
+    });
+    cartel(REMAR_S + 9, 31.9 + 0.3, 4.6, 7.2, 1.8, V, tex, 0.15);          // en la fachada de la carretera
+    cartel(REMAR_S - 0.3, 22, 4.6, 7.2, 1.8, menosU, tex, 0.15);          // en el costado que da al paso de entrada
+  }
+
   const pintura = new THREE.MeshStandardMaterial({ color: 0xeceae2, roughness: 0.85, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });
   for (const [pos, nombre] of [[blanco, 'itvArganaRayas'], [flechas, 'itvArganaFlechas']]) {
     const m = malla(pos, pintura);

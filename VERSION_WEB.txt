@@ -1744,3 +1744,14 @@ Version 137 - La ITV de la subida a San Bartolome (16/11/2026)
   El sentido de paso (se entra por la punta de las filas pintadas) sale de la foto aerea: falta que lo confirme Jose
   Manuel. Unos 2.800 triangulos y 9 llamadas de dibujo.
 - Archivo nuevo: itvArgana.js. Cambiado: el index.js del barrio Argana Alta. Sin tocar main.js ni index.html.
+
+
+Version 138 - El recinto de la ITV: aparcamiento, valla de rejilla y la puerta junto a Remar (16/11/2026)
+- La ITV de la subida a San Bartolome tiene ya su recinto completo: el firme de asfalto, el APARCAMIENTO entre la nave
+  y la carretera (una fila contra la valla y otra contra la nave, 37 plazas), la VALLA DE REJILLA que lo rodea y la
+  PUERTA, abierta, al lado de la nave del local de Remar, como dijo Jose Manuel. Por ese paso se entra desde la
+  carretera; las filas de espera estan mas arriba, pegadas al lado del hospital, y llevan a las tres lineas.
+- La nave de al lado lleva el rotulo "REMAR" en la fachada de la carretera y en el costado que da al paso de entrada.
+  Solo el nombre que dio Jose Manuel: sin logotipo ni mas datos. Falta que confirme que es esa nave.
+- Las plazas son las que caben, no el numero real. La valla choca (no se cruza con el coche); la puerta esta abierta.
+- Cambiado: itvArgana.js. Sin tocar main.js ni index.html.
