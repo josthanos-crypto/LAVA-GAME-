@@ -1789,3 +1789,24 @@ Version 141 - El parque comercial de la salida a Costa Teguise: IKEA, Electron y
 - Las demas naves del parque se quedan como estaban: falta saber que empresa es cada una (no se inventan nombres).
 - Archivo nuevo: parqueComercialPuerto.js. Cambiado: el index.js de "compartido" (esa zona no es de ningun barrio).
   Sin tocar main.js ni index.html.
+
+Version 142 - Los rotulos de las empresas del parque comercial de IKEA, la farmacia de Tenderete y el cafe de la Repsol (16/11/2026)
+- Parque comercial de la salida a Costa Teguise: 32 naves llevan ya el cartel con el nombre de su empresa (cartel
+  sencillo, blanco con letras azules: sin logotipos, telefonos ni nada mas). Los nombres y el sitio de cada una salen
+  del mapa de Google Maps mirado el 16/11/2026. SON DATOS DE INTERNET: Jose Manuel tiene que repasar la lista.
+  Supermercados Marcial, Keidea Muebles, Cash Unide, Nortysur Hogar, Maresa Logistica, Centro Logistico Spar, Carnes y
+  Embutidos Chacon, Distribuciones Viera, Tecfrinox, Taller Llave 12, Aluminios Carpaty, Remacan, Foncal, Distribuidora
+  Electrica Canaria, Fanfi Surf Outlet, Hosteleria Brito, Quimiventura, Ensuenos FLEX, Colchones en Canarias, CCC
+  Lanzarote, Marmoles Brito, Persianas Lanzarote, Edoglass, Hidramelca, Desatascos Timanfaya, Taller Tinajuma, Sothyr,
+  Transportes Vega Navarro, Quimicas Morales, Distribuciones Tierney, Hang On Lanzarote Climbing Centre y DHL Lanzarote.
+- Calle Tenderete (de la lista de Jose Manuel): el cartel verde con la cruz de la farmacia en la esquina con la calle
+  Saltona, y el de "Tenderete Cafe" en la tienda de la Repsol.
+- Sin poner: Multicentro (Tenderete 14) y Comercial Zonzamas (Tenderete 20). No salen en el mapa de Google y no se
+  sabe que nave es cada una.
+- Dudas que ha sacado el mapa de Google y que tiene que aclarar Jose Manuel (NO se ha cambiado nada):
+  * Remar: Google pone "Rastro Remar" en la Carretera de San Bartolome 29, unos 200 m mas abajo de la ITV. La nave
+    pegada a la ITV, donde esta ahora el rotulo REMAR, sale en Google como un concesionario (SZWAGEN).
+  * El bazar de la esquina frente al C.C. Argana: esa nave sale en Google como "MultiMotor". Por el lado del centro
+    comercial hay una tienda de hogar que se llama "Home Markt".
+- Archivos nuevos: parqueComercialEmpresas.js y rotulosTenderete.js. Cambiados: parqueComercialPuerto.js y el
+  index.js de "argana-alta". Sin tocar main.js ni index.html.

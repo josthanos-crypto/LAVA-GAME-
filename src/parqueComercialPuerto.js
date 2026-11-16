@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { cinta, malla } from './puenteRayas.js';
 import { buildAparcamientos } from './aparcamientosTenderete.js';
+import { buildRotulosEmpresas } from './parqueComercialEmpresas.js';
 
 /**
  * El parque comercial de la salida de Arrecife hacia Costa Teguise (Parque Industrial Arrecife Puerto: las calles
@@ -15,8 +16,8 @@ import { buildAparcamientos } from './aparcamientosTenderete.js';
  *  - Electron: la nave donde el mapa pone su rótulo, con el nombre en grande en las dos caras que dan a la calle.
  *  - Las canchas de pádel que enseña la foto aérea detrás de Electron: seis pistas con su cristal, su malla y su red.
  *  - Los aparcamientos de delante de las naves (aparcamientosTenderete.js: no pinta sobre calle, acera ni edificio).
- * Lo que NO se sabe todavía: qué empresa hay en cada una de las demás naves. No se inventan nombres: se quedan como
- * están hasta que José Manuel diga cuál es cada una.
+ * (Version 142) Las demás empresas: sus nombres salen del mapa de Google Maps y cada una lleva un cartel sencillo en
+ * su nave (parqueComercialEmpresas.js). Son datos de internet: José Manuel tiene que repasar la lista.
  *
  * Coordenadas del juego: x = (lon + 13,55) · 97398, z = (28,9625 − lat) · 111320.
  */
@@ -242,5 +243,7 @@ export function buildParqueComercialPuerto(scene, colliders, map) {
     ],
   });
   grupo.userData.plazas = aparca.userData.plazas;
+  // los rótulos de las demás empresas del parque, cada uno en su nave (parqueComercialEmpresas.js)
+  grupo.userData.rotulos = buildRotulosEmpresas(scene, map).userData.puestos;
   return grupo;
 }
