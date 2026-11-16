@@ -1763,3 +1763,15 @@ Version 139 - ITV: Remar y la puerta, en el lado de abajo (16/11/2026)
   recinto queda cerrado con la valla. Se entra por abajo, se sube por el aparcamiento hasta las filas de espera y se
   cruza la nave de arriba abajo (flechas pintadas). El aparcamiento sigue con 37 plazas.
 - Cambiado: itvArgana.js. Sin tocar main.js ni index.html.
+
+
+Version 140 - Los aparcamientos del Hospital Molina Orosa (16/11/2026)
+- El hospital tenia hecha la fachada, la entrada, las palmeras y las banderas, pero su aparcamiento era solo la foto
+  aerea del suelo. Ahora tiene los dos que ensena la foto aerea: la franja de delante de la fachada larga, a lo largo
+  del vial de la entrada, con las marquesinas de sombra sobre la fila de fuera, y la explanada de abajo, entre la
+  punta sur del hospital, la nave de Remar y la carretera. Firme de asfalto y plazas en bateria: 166 en total.
+- La franja de delante se queda corta por el lado de la ITV, que tiene su valla ahi. Las plazas son las que caben,
+  no el numero real.
+- El constructor de aparcamientos de la Version 135 sirve ya para cualquier sitio (buildAparcamientos).
+- Archivo nuevo: hospitalAparcamiento.js. Cambiados: aparcamientosTenderete.js y el index.js del barrio Argana Alta.
+  Sin tocar main.js ni index.html.

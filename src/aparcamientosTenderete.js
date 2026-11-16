@@ -83,12 +83,21 @@ function rectDe(poly) {
   return mejor;
 }
 
+/** los de la zona comercial de Tenderete */
 export function buildAparcamientosTenderete(scene, map) {
+  return buildAparcamientos(scene, map, { nombre: 'aparcamientosTenderete', solares: SOLARES, autoservicios: AUTOSERVICIOS, zona: [-1320, -1060, -1230, -980] });
+}
+
+/**
+ * (Version 140) Lo mismo para cualquier otro sitio: `solares` y `autoservicios` como los de arriba y `zona` =
+ * [x0, x1, z0, z1], el rectángulo donde se miran los edificios que no hay que pisar. Lo usa hospitalAparcamiento.js.
+ */
+export function buildAparcamientos(scene, map, { nombre, solares, autoservicios = [], zona }) {
   const grupo = new THREE.Group();
-  grupo.name = 'aparcamientosTenderete';
+  grupo.name = nombre;
   const calz = new Calzada(map.roads);
   // los edificios de la zona (también los que rehace otra pieza: su planta sigue ocupando el sitio)
-  const cerca = (map.buildings || []).filter(b => b.p?.length > 3 && b.p.some(([x, z]) => x > -1320 && x < -1060 && z > -1230 && z < -980));
+  const cerca = (map.buildings || []).filter(b => b.p?.length > 3 && b.p.some(([x, z]) => x > zona[0] && x < zona[1] && z > zona[2] && z < zona[3]));
   const enEdificio = (x, z, margen = 1.2) => cerca.some(b => dentroDe(b.p, x, z) || alBorde(b.p, x, z) < margen);
   const libre = (x, z) => !calz.roadAt(x, z, 2.8) && !enEdificio(x, z);
   const tex = asfalto();
@@ -96,7 +105,7 @@ export function buildAparcamientosTenderete(scene, map) {
   let plazas = 0;
 
   // ───────────── los solares: firme y plazas ─────────────
-  for (const s of SOLARES) {
+  for (const s of solares) {
     const A = s.eje, B = [-A[1], A[0]];
     const P = (a, b) => [s.centro[0] + A[0] * a + B[0] * b, s.centro[1] + A[1] * a + B[1] * b];
     // el firme, en celdas de 1,25 m (así el borde junto a las calles no sale a escalones grandes); solo las que caen
@@ -151,7 +160,7 @@ export function buildAparcamientosTenderete(scene, map) {
   // ───────────── el carril del autoservicio: una vuelta al local ─────────────
   const carril = new THREE.MeshStandardMaterial({ color: 0x3b3d40, roughness: 0.95, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 });
   const amarillo = new THREE.MeshStandardMaterial({ color: 0xf2c200, roughness: 0.8, polygonOffset: true, polygonOffsetFactor: -3, polygonOffsetUnits: -3 });
-  for (const au of AUTOSERVICIOS) {
+  for (const au of autoservicios) {
     const ed = cerca.find(b => dentroDe(b.p, au.en[0], au.en[1])) || cerca.slice().sort((p, q) => alBorde(p.p, ...au.en) - alBorde(q.p, ...au.en))[0];
     if (!ed) continue;
     const r = rectDe(ed.p);

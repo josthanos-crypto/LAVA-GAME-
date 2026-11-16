@@ -15,6 +15,7 @@ import { tuneLidlRepsol, buildLidlRepsol } from '../../lidlRepsol.js';
 import { buildAparcamientosTenderete } from '../../aparcamientosTenderete.js';
 import { buildBazarArgana } from '../../bazarArgana.js';
 import { tuneItvArgana, buildItvArgana } from '../../itvArgana.js';
+import { buildAparcamientoHospital } from '../../hospitalAparcamiento.js';
 import { tuneCalleTanganillo } from '../../calleTanganillo.js';
 import { tuneRellenoArgana } from '../../rellenoArgana.js';
 import { tuneOrtopediaCarmen, buildOrtopediaCarmen } from '../../ortopediaCarmen.js';
@@ -113,6 +114,8 @@ export function construir({ scene, colliders, map }) {
   buildBazarArgana(scene, colliders);
   // la estación de ITV, entre la carretera de San Bartolomé y el hospital
   buildItvArgana(scene, colliders);
+  // los aparcamientos del hospital Molina Orosa: delante de la fachada y la explanada de abajo
+  buildAparcamientoHospital(scene, map);
   // la Ortopedia Carmen (foto de julio de 2019): el recerco de granito, el marco rojo y el rótulo con el árbol
   buildOrtopediaCarmen(scene, colliders, map);
   // la nave de Dos Cabras (vista de la calle de julio de 2025): la pared blanca alta, el portón con la cabra y la puerta pequeña
