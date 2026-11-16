@@ -14,6 +14,7 @@ import { buildGasolineraTenderete } from '../../gasolineraTenderete.js';
 import { tuneLidlRepsol, buildLidlRepsol } from '../../lidlRepsol.js';
 import { buildAparcamientosTenderete } from '../../aparcamientosTenderete.js';
 import { buildBazarArgana } from '../../bazarArgana.js';
+import { tuneItvArgana, buildItvArgana } from '../../itvArgana.js';
 import { tuneCalleTanganillo } from '../../calleTanganillo.js';
 import { tuneRellenoArgana } from '../../rellenoArgana.js';
 import { tuneOrtopediaCarmen, buildOrtopediaCarmen } from '../../ortopediaCarmen.js';
@@ -48,6 +49,8 @@ export function prepararMapa(map) {
   tuneMcDonaldsArgana(map);
   // el Lidl de la carretera de San Bartolomé y la Repsol de al lado: la marquesina no es un edificio
   tuneLidlRepsol(map);
+  // la ITV de la subida a San Bartolomé: fuera el bloque genérico de su nave
+  tuneItvArgana(map);
   // el atajo real del camino de tierra a la Calle Tenderete, que faltaba en el mapa
   tuneCalleTanganillo(map);
   // la franja de calles y casas entre la Calle Luján Pérez y el campo de arriba, que faltaba (era todo arena)
@@ -108,6 +111,8 @@ export function construir({ scene, colliders, map }) {
   buildAparcamientosTenderete(scene, map);
   // el bazar de la esquina de la carretera de San Bartolomé con Tomás Morales, frente al C.C. Argana
   buildBazarArgana(scene, colliders);
+  // la estación de ITV, entre la carretera de San Bartolomé y el hospital
+  buildItvArgana(scene, colliders);
   // la Ortopedia Carmen (foto de julio de 2019): el recerco de granito, el marco rojo y el rótulo con el árbol
   buildOrtopediaCarmen(scene, colliders, map);
   // la nave de Dos Cabras (vista de la calle de julio de 2025): la pared blanca alta, el portón con la cabra y la puerta pequeña

@@ -1732,3 +1732,15 @@ Version 136 - El bazar de la esquina frente al Centro Comercial de Argana (16/11
 - EL NOMBRE NO ESTA CONFIRMADO. Jose Manuel cree que se llama "Seco Hogar" pero no esta seguro y no se ha podido
   comprobar: el rotulo dice solo "BAZAR" y lo que vende. Cuando lo confirme se cambia en bazarArgana.js (NOMBRE).
 - Archivo nuevo: bazarArgana.js. Cambiado: el index.js del barrio Argana Alta. Sin tocar main.js ni index.html.
+
+
+Version 137 - La ITV de la subida a San Bartolome (16/11/2026)
+- La estacion de ITV, entre la carretera de San Bartolome y el Hospital Doctor Jose Molina Orosa. Su nave venia en el
+  mapa pero el juego la levantaba como un bloque generico de tiendas. Ahora es la estacion: nave abierta por las dos
+  puntas con TRES LINEAS de inspeccion que se cruzan con el coche, fosos, rodillos del frenometro, numeros de linea
+  con su semaforo, rotulos "ITV", la caseta de recepcion con marquesina verde azulada, el poste hacia la carretera y
+  las filas de espera pintadas con sus flechas, como en la foto aerea.
+- Solo pone "ITV / Inspeccion Tecnica de Vehiculos": sin el nombre de la empresa, horarios ni precios (no se inventan).
+  El sentido de paso (se entra por la punta de las filas pintadas) sale de la foto aerea: falta que lo confirme Jose
+  Manuel. Unos 2.800 triangulos y 9 llamadas de dibujo.
+- Archivo nuevo: itvArgana.js. Cambiado: el index.js del barrio Argana Alta. Sin tocar main.js ni index.html.
