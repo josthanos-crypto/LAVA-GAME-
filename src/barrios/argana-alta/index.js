@@ -12,6 +12,7 @@ import { tuneIndustriasRosa, buildIndustriasRosa } from '../../industriasRosa.js
 import { tuneMcDonaldsArgana, buildMcDonaldsArgana } from '../../mcdonaldsArgana.js';
 import { buildGasolineraTenderete } from '../../gasolineraTenderete.js';
 import { tuneLidlRepsol, buildLidlRepsol } from '../../lidlRepsol.js';
+import { buildAparcamientosTenderete } from '../../aparcamientosTenderete.js';
 import { tuneCalleTanganillo } from '../../calleTanganillo.js';
 import { tuneRellenoArgana } from '../../rellenoArgana.js';
 import { tuneOrtopediaCarmen, buildOrtopediaCarmen } from '../../ortopediaCarmen.js';
@@ -102,6 +103,8 @@ export function construir({ scene, colliders, map }) {
   buildGasolineraTenderete(scene, colliders, map);
   // el Lidl (entrada y rótulo) y su gasolinera Repsol con el lavadero de coches
   buildLidlRepsol(scene, colliders, map);
+  // los aparcamientos con sus plazas (McDonald's, Burger King, Decathlon y Mercadona) y los carriles de autoservicio
+  buildAparcamientosTenderete(scene, map);
   // la Ortopedia Carmen (foto de julio de 2019): el recerco de granito, el marco rojo y el rótulo con el árbol
   buildOrtopediaCarmen(scene, colliders, map);
   // la nave de Dos Cabras (vista de la calle de julio de 2025): la pared blanca alta, el portón con la cabra y la puerta pequeña

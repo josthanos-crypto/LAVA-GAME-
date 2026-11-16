@@ -161,7 +161,7 @@ export function buildMcDonaldsArgana(scene, colliders) {
   // ── el aparcamiento de delante, siguiendo el terreno ──
   // (Version 134) La losa de antes llevaba la altura calculada a mano y el juego le sumaba otra vez la del terreno:
   // quedaba levantada, tapando la acera y el paso de cebra de la rotonda. Ahora: mcdonaldsAparcamiento.js.
-  buildAparcamientoMcDonalds(scene, CALLES, M, { s0: -LEN / 2 - 8, s1: LEN / 2 + 8, t0: FRENTE - 20, t1: FRENTE - 0.2, plaza: PLAZA });
+  buildAparcamientoMcDonalds(scene, CALLES, M, { s0: -LEN / 2 - 8, s1: LEN / 2 + 8, t0: FRENTE - 20, t1: FRENTE - 0.2, plaza: PLAZA, fondo: 13.5 });
 
   // ── la azotea: climatización y lucernarios ──
   for (const [s, t] of [[-6, -4], [5, 6], [7, -9]]) {

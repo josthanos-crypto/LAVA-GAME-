@@ -13,11 +13,14 @@ import { cinta, malla } from './puenteRayas.js';
  * Ahora es un suelo plano que sube con el terreno como todo lo demás, un poco por debajo de la calzada, y no se
  * pinta donde hay calle o acera. Mismo solar y mismas plazas que antes.
  *
+ * (Version 135) `fondo` = a cuántos metros de la fachada empiezan las plazas: se separan para dejar sitio al carril
+ * del autoservicio que da la vuelta al local (aparcamientosTenderete.js).
+ *
  * M(s, t) da el punto del solar (s a lo largo de la fachada, t hacia el fondo); el rectángulo es s0…s1 · t0…t1.
  */
 const Y_ASFALTO = 0.12;   // entre el suelo de la foto (0,10) y las calzadas (0,14)
 
-export function buildAparcamientoMcDonalds(scene, roads, M, { s0, s1, t0, t1, plaza }) {
+export function buildAparcamientoMcDonalds(scene, roads, M, { s0, s1, t0, t1, plaza, fondo = 8.8 }) {
   const calz = roads ? new Calzada(roads) : null;
   const enCalle = (x, z) => !!calz?.roadAt(x, z, 2.8);   // la calzada y su acera
   const rejilla = (ta, tb, y) => {
@@ -48,7 +51,7 @@ export function buildAparcamientoMcDonalds(scene, roads, M, { s0, s1, t0, t1, pl
   // las plazas: una raya de 5 m cada «plaza» metros, donde no hay calle
   const pos = [];
   for (let s = s0 + 2; s < s1 - 2; s += plaza) {
-    const pts = [0, 1, 2, 3].map(k => M(s, t1 - 8.8 + k * 5 / 3));
+    const pts = [0, 1, 2, 3].map(k => M(s, t1 - fondo + k * 5 / 3));
     if (pts.some(([x, z]) => enCalle(x, z))) continue;
     cinta(pos, pts, () => Y_ASFALTO + 0.012, 0.05, false);
   }
