@@ -337,9 +337,9 @@ function drawBalcony(ctx, x, y, w) {
 }
 
 /** Fachada de planta superior: ventana + contraventana + balcón canario */
-export function facadeTexture(aniso = 8) {
+export function facadeTexture(aniso = 8, { wall = '#f5f2ec', shutter = null, balcony = true, frame = '#ebe5da' } = {}) {
   const [c, ctx] = canvas(128, 128, 4);
-  ctx.fillStyle = '#f5f2ec';
+  ctx.fillStyle = wall;
   ctx.fillRect(0, 0, 128, 128);
   // estuco: manchas suaves y churretes bajo el alféizar
   for (let i = 0; i < 140; i++) {
@@ -358,13 +358,19 @@ export function facadeTexture(aniso = 8) {
   // recercado de la ventana (moldura canaria)
   ctx.fillStyle = 'rgba(0,0,0,0.12)';
   ctx.fillRect(35, 23, 60, 70);
-  ctx.fillStyle = '#ebe5da';
+  ctx.fillStyle = frame;
   ctx.fillRect(34, 22, 60, 70);
   drawGlass(ctx, 40, 27, 48, 58);
-  const shut = Math.random() < 0.5 ? '#2f6b5a' : '#3a6a8c';
+  const shut = shutter || (Math.random() < 0.5 ? '#2f6b5a' : '#3a6a8c');
   drawShutter(ctx, 27, 27, 12, 58, shut);
   drawShutter(ctx, 89, 27, 12, 58, shut);
-  drawBalcony(ctx, 30, 30, 68);
+  if (balcony) drawBalcony(ctx, 30, 30, 68);
+  else {
+    // sin balcón: reja baja de forja delante de la ventana
+    ctx.fillStyle = '#2a2e32';
+    for (let i = 0; i <= 10; i++) ctx.fillRect(40 + i * 4.8, 71, 1.1, 15);
+    ctx.fillRect(40, 70, 48, 1.6);
+  }
   // línea de forjado entre plantas
   ctx.fillStyle = 'rgba(0,0,0,0.07)';
   ctx.fillRect(0, 124, 128, 4);
@@ -375,6 +381,18 @@ export function facadeTexture(aniso = 8) {
   tex.userData.orm = maps.orm;
   tex.userData.bump = maps.bump;
   return tex;
+}
+
+/**
+ * Tres fachadas distintas para que las manzanas no salgan todas con la misma ventana:
+ * verde con balcón, azul con reja (sin balcón) y madera sobre pared más cálida.
+ */
+export function facadeVariants(aniso = 8) {
+  return [
+    facadeTexture(aniso, { shutter: '#2f6b5a' }),
+    facadeTexture(aniso, { shutter: '#3a6a8c', balcony: false, wall: '#f7f4ee' }),
+    facadeTexture(aniso, { shutter: '#6b4a2c', wall: '#f2ebdc', frame: '#e6dccb' }),
+  ];
 }
 
 function stripBase(S) {
@@ -480,7 +498,82 @@ function drawGarageDoor(ctx, x, w = 100) {
   ctx.fillRect(x, 92, w, 16);
 }
 
-/** Plantas bajas: comercios, residencial, industrial */
+/** bar o cafetería: frente de madera oscura, toldo a rayas ocre y cristales con luz cálida dentro */
+function drawCafe(ctx, x) {
+  ctx.fillStyle = '#4a3326';
+  ctx.fillRect(x + 2, 14, 124, 94);
+  ctx.fillStyle = '#2b2f36';
+  ctx.fillRect(x + 6, 16, 116, 18);
+  ctx.fillStyle = 'rgba(255,255,255,0.1)';
+  ctx.fillRect(x + 6, 16, 116, 3);
+  for (let i = 0; i < 12; i++) {
+    ctx.fillStyle = i % 2 ? '#c99a3a' : '#f1e8d2';
+    ctx.fillRect(x + 2 + i * 10.5, 34, 10.5, 9);
+    ctx.beginPath();
+    ctx.arc(x + 7.25 + i * 10.5, 43, 5.25, 0, Math.PI);
+    ctx.fill();
+  }
+  for (const wx of [x + 8, x + 78]) {
+    ctx.fillStyle = '#20282e';
+    ctx.fillRect(wx, 50, 42, 56);
+    const warm = ctx.createLinearGradient(0, 50, 0, 106);
+    warm.addColorStop(0, '#8a6a3a');
+    warm.addColorStop(1, '#3a2c1c');
+    ctx.fillStyle = warm;
+    ctx.fillRect(wx + 3, 53, 36, 50);
+    ctx.fillStyle = 'rgba(255,225,160,0.35)';
+    ctx.fillRect(wx + 6, 56, 30, 10);
+    ctx.fillStyle = 'rgba(160,190,210,0.2)';
+    ctx.fillRect(wx + 3, 53, 36, 50);
+  }
+  ctx.fillStyle = '#2a2420';
+  ctx.fillRect(x + 54, 50, 20, 58);
+  ctx.fillStyle = '#3e5a6a';
+  ctx.fillRect(x + 57, 54, 14, 30);
+}
+
+/** local cerrado: persiana metálica bajada, con el cajón del rótulo apagado encima */
+function drawPersiana(ctx, x, w = 100) {
+  ctx.fillStyle = '#3a3f44';
+  ctx.fillRect(x + 2, 14, w - 4, 20);
+  ctx.fillStyle = '#8d9398';
+  ctx.fillRect(x + 2, 36, w - 4, 72);
+  ctx.strokeStyle = 'rgba(0,0,0,0.25)';
+  ctx.lineWidth = 0.8;
+  for (let y = 38; y < 106; y += 3) {
+    ctx.beginPath();
+    ctx.moveTo(x + 3, y);
+    ctx.lineTo(x + w - 3, y);
+    ctx.stroke();
+  }
+  ctx.fillStyle = 'rgba(0,0,0,0.18)';
+  ctx.fillRect(x + 2, 34, w - 4, 4);
+  ctx.fillStyle = 'rgba(60,50,40,0.2)';
+  ctx.fillRect(x + 2, 96, w - 4, 12);
+}
+
+/** oficina o banco: cristalera azulada de arriba abajo con montantes de aluminio */
+function drawOffice(ctx, x) {
+  ctx.fillStyle = '#20282e';
+  ctx.fillRect(x + 2, 14, 124, 94);
+  ctx.fillStyle = '#1d3c6e';
+  ctx.fillRect(x + 2, 14, 124, 18);
+  const gg = ctx.createLinearGradient(x, 34, x + 124, 108);
+  gg.addColorStop(0, '#4a6a86');
+  gg.addColorStop(0.5, '#34506a');
+  gg.addColorStop(1, '#2a4258');
+  ctx.fillStyle = gg;
+  ctx.fillRect(x + 4, 34, 120, 72);
+  ctx.fillStyle = 'rgba(230,236,240,0.14)';
+  ctx.fillRect(x + 4, 34, 120, 20);
+  ctx.fillStyle = 'rgba(255,245,220,0.18)';
+  ctx.fillRect(x + 36, 70, 56, 34);
+  ctx.fillStyle = '#b8bec4';
+  for (let i = 0; i <= 4; i++) ctx.fillRect(x + 3 + i * 30, 34, 2, 72);
+  ctx.fillRect(x + 4, 68, 120, 2);
+}
+
+/** Plantas bajas: comercios (dos tiras distintas), residencial, industrial */
 export function groundStrips(aniso = 8) {
   const S = 3;
   const [c1, ctx1] = stripBase(S);
@@ -514,8 +607,17 @@ export function groundStrips(aniso = 8) {
   drawDoor(ctx3, 460, '#555a60');
   fineGrain(ctx3, 0.05, 0.4);
 
+  // segunda tira de comercios: cafetería, local cerrado, portal, oficina y tienda con toldo naranja
+  const [c4, ctx4] = stripBase(S);
+  drawCafe(ctx4, 0);
+  drawPersiana(ctx4, 128, 86);
+  drawDoor(ctx4, 218, '#4a5560');
+  drawOffice(ctx4, 256);
+  drawShop(ctx4, 384, '#c46a1b', true);
+  fineGrain(ctx4, 0.05, 0.4);
+
   const out = {};
-  for (const [k, c] of [['shop', c1], ['res', c2], ['ind', c3]]) {
+  for (const [k, c] of [['shop', c1], ['shop2', c4], ['res', c2], ['ind', c3]]) {
     const tex = toTex(c, 1, aniso);
     const maps = pbrMaps(c, { rough: 0.86, roughVar: 0.12, glass: isGlass, aniso });
     tex.userData.orm = maps.orm;
@@ -617,5 +719,159 @@ export function plateTexture(text) {
   ctx.strokeRect(1, 1, 254, 54);
   const tex = new THREE.CanvasTexture(c);
   tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
+// ── Charco de San Ginés: casas blancas, carpintería pintada y zócalo de piedra volcánica ──
+// (aproximación artística; los colores vienen de zones.js)
+
+/** zócalo de piedra volcánica oscura a ras de suelo */
+function drawPlinth(ctx, W, y0, H) {
+  ctx.fillStyle = '#5a554f';
+  ctx.fillRect(0, y0, W, H - y0);
+  for (let y = y0; y < H; y += 7) {
+    let x = -Math.random() * 10;
+    while (x < W) {
+      const w = 8 + Math.random() * 12, v = 38 + Math.floor(Math.random() * 30);
+      ctx.fillStyle = `rgb(${v},${v - 3},${v - 6})`;
+      ctx.beginPath();
+      ctx.ellipse(x + w / 2, y + 3.5, w / 2 - 0.8, 3, (Math.random() - 0.5) * 0.3, 0, Math.PI * 2);
+      ctx.fill();
+      x += w;
+    }
+  }
+  ctx.fillStyle = 'rgba(255,255,255,0.18)';
+  ctx.fillRect(0, y0, W, 1.2);
+}
+
+/** puerta de madera pintada de cuarterones, con su dintel blanco */
+function drawPaintedDoor(ctx, x, w, color, dark) {
+  ctx.fillStyle = '#e9e4da';
+  ctx.fillRect(x - 3, 30, w + 6, 70);
+  ctx.fillStyle = color;
+  ctx.fillRect(x, 34, w, 66);
+  ctx.strokeStyle = dark;
+  ctx.lineWidth = 1.2;
+  const leaves = w > 30 ? 2 : 1;
+  for (let l = 0; l < leaves; l++) {
+    const lx = x + l * (w / leaves);
+    for (const py of [38, 62]) ctx.strokeRect(lx + 3, py, w / leaves - 6, 20);
+  }
+  if (leaves === 2) { ctx.beginPath(); ctx.moveTo(x + w / 2, 34); ctx.lineTo(x + w / 2, 100); ctx.stroke(); }
+  ctx.fillStyle = '#d4b04a';
+  ctx.fillRect(x + w * (leaves === 2 ? 0.45 : 0.8), 66, 1.6, 3);
+}
+
+/** ventana de madera pintada: marco y contraventanas del color de la casa */
+function drawPaintedWindow(ctx, x, y, w, h, color, dark, shutters = true) {
+  ctx.fillStyle = '#ebe6dc';
+  ctx.fillRect(x - 3, y - 3, w + 6, h + 6);
+  drawGlass(ctx, x, y, w, h);
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 2.6;
+  ctx.strokeRect(x + 1.3, y + 1.3, w - 2.6, h - 2.6);
+  ctx.beginPath(); ctx.moveTo(x + w / 2, y + 1); ctx.lineTo(x + w / 2, y + h - 1); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x + 1, y + h * 0.42); ctx.lineTo(x + w - 1, y + h * 0.42); ctx.stroke();
+  if (shutters) {
+    drawShutter(ctx, x - w * 0.32 - 3, y, w * 0.3, h, color);
+    drawShutter(ctx, x + w + 3, y, w * 0.3, h, color);
+  }
+  ctx.fillStyle = dark;
+  ctx.fillRect(x - 4, y + h + 2, w + 8, 2.5);
+}
+
+function charcoWall(ctx, W, H) {
+  ctx.fillStyle = '#f7f5f0';
+  ctx.fillRect(0, 0, W, H);
+  for (let i = 0; i < 120; i++) {
+    ctx.fillStyle = Math.random() < 0.5 ? 'rgba(190,182,168,0.07)' : 'rgba(255,255,255,0.1)';
+    ctx.beginPath();
+    ctx.ellipse(Math.random() * W, Math.random() * H, 4 + Math.random() * 12, 2 + Math.random() * 6, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  noise(ctx, 1800, 0.015, 0.04, 0.3, 1.1);
+}
+
+/** planta baja del Charco: 16 m en cuatro módulos (puertas, ventanas y una puerta de dos hojas) */
+export function charcoGroundStrip(carp, green = false, aniso = 8) {
+  const S = 3;
+  const [c, ctx] = canvas(512, 128, S);
+  charcoWall(ctx, 512, 128);
+  const col = green ? carp.green : carp.blue, dark = green ? carp.greenDark : carp.blueDark;
+  drawPaintedDoor(ctx, 18, 30, col, dark);
+  drawPaintedWindow(ctx, 70, 42, 34, 40, col, dark);
+  drawPaintedWindow(ctx, 160, 42, 34, 40, col, dark);
+  drawPaintedDoor(ctx, 218, 30, col, dark);
+  drawPaintedDoor(ctx, 286, 46, col, dark);
+  drawPaintedWindow(ctx, 370, 42, 34, 40, col, dark, false);
+  drawPaintedDoor(ctx, 440, 30, col, dark);
+  // churretes y salitre sobre el zócalo
+  const dirt = ctx.createLinearGradient(0, 86, 0, 104);
+  dirt.addColorStop(0, 'rgba(120,110,95,0)');
+  dirt.addColorStop(1, 'rgba(120,110,95,0.2)');
+  ctx.fillStyle = dirt;
+  ctx.fillRect(0, 86, 512, 18);
+  drawPlinth(ctx, 512, 100, 128);
+  fineGrain(ctx, 0.04, 0.4);
+  const tex = toTex(c, 1, aniso);
+  const maps = pbrMaps(c, { rough: 0.86, roughVar: 0.12, glass: isGlass, aniso });
+  tex.userData.orm = maps.orm;
+  tex.userData.bump = maps.bump;
+  return tex;
+}
+
+/** planta alta del Charco: ventana de madera pintada con contraventanas, sin balcón */
+export function charcoFacadeTexture(carp, green = false, aniso = 8) {
+  const [c, ctx] = canvas(128, 128, 4);
+  charcoWall(ctx, 128, 128);
+  const col = green ? carp.green : carp.blue, dark = green ? carp.greenDark : carp.blueDark;
+  drawPaintedWindow(ctx, 44, 28, 40, 54, col, dark);
+  ctx.fillStyle = 'rgba(0,0,0,0.06)';
+  ctx.fillRect(0, 124, 128, 4);
+  fineGrain(ctx, 0.04, 0.4);
+  const tex = toTex(c, 1, aniso);
+  const maps = pbrMaps(c, { rough: 0.88, roughVar: 0.1, glass: isGlass, aniso, bumpBlur: 1.2 });
+  tex.userData.orm = maps.orm;
+  tex.userData.bump = maps.bump;
+  return tex;
+}
+
+/**
+ * planta alta del Charco con balcón de madera pintado (azul en el vídeo de referencia 2020,
+ * min. 11:00–16:15): puerta balconera, suelo del balcón, balaustres y pasamanos
+ */
+export function charcoBalconyTexture(carp, aniso = 8) {
+  const [c, ctx] = canvas(128, 128, 4);
+  charcoWall(ctx, 128, 128);
+  const col = carp.blue, dark = carp.blueDark;
+  // puerta balconera de dos hojas con montante
+  ctx.fillStyle = '#ebe6dc';
+  ctx.fillRect(41, 14, 46, 96);
+  drawGlass(ctx, 44, 17, 40, 74);
+  ctx.strokeStyle = col;
+  ctx.lineWidth = 2.6;
+  ctx.strokeRect(45.3, 18.3, 37.4, 71.4);
+  ctx.beginPath(); ctx.moveTo(64, 18); ctx.lineTo(64, 90); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(45, 34); ctx.lineTo(83, 34); ctx.stroke();
+  // balcón corrido: suelo, balaustres torneados y pasamanos
+  ctx.fillStyle = dark;
+  ctx.fillRect(14, 106, 100, 6);
+  ctx.fillStyle = 'rgba(0,0,0,0.22)';
+  ctx.fillRect(14, 112, 100, 4);
+  ctx.fillStyle = col;
+  ctx.fillRect(14, 72, 100, 5);
+  for (let x = 17; x < 112; x += 6.2) {
+    ctx.fillRect(x, 77, 2.4, 29);
+    ctx.fillRect(x - 0.6, 86, 3.6, 3);
+  }
+  ctx.fillRect(14, 72, 4, 34);
+  ctx.fillRect(110, 72, 4, 34);
+  ctx.fillStyle = 'rgba(255,255,255,0.12)';
+  ctx.fillRect(14, 72, 100, 1.4);
+  fineGrain(ctx, 0.04, 0.4);
+  const tex = toTex(c, 1, aniso);
+  const maps = pbrMaps(c, { rough: 0.86, roughVar: 0.1, glass: isGlass, aniso, bumpBlur: 1.2 });
+  tex.userData.orm = maps.orm;
+  tex.userData.bump = maps.bump;
   return tex;
 }

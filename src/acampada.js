@@ -17,7 +17,7 @@ const HIT = ['¡Ño, qué fresquito!', '¡Esto es represión jabonosa!', '¡Me h
 const SEA = ['¡Pues ahora acampamos en La Graciosa!', '¡El agua está buenísima, venid!', '¡Esto no es una retirada, es una excursión!', '¡Que alguien salve mi ukelele!', '¡Seguimos protestando… desde el agua!', '¡Mira, una vieja! ¡Hola, vieja!'];
 const CHANT = ['¡No nos moverán!', '¡Paz, amor y mojo!', '¡El parque es del pueblo!', '¡Menos curro, más surf!'];
 
-const STAND_Y = 0.19;
+const STAND_Y = 0.24;
 const SWIM_Y = -1.2;
 const R = 0.42;
 const HOSE_LEN = 22;

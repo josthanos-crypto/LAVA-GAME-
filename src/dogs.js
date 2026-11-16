@@ -11,7 +11,7 @@ import { sound } from './sound.js';
  * balas no van con ellos.
  */
 
-const Y0 = 0.19;                 // altura de la acera
+const Y0 = 0.24;                 // altura de la acera
 const COATS = [0x9a4a1e, 0x7e3814, 0x1e1612, 0x5a3420, 0xb0703a, 0x6a5a52, 0x9a4a1e];
 const HIPS = [[-0.052, 0.155], [0.052, 0.155], [-0.052, -0.165], [0.052, -0.165]];
 const _m = new THREE.Matrix4(), _p = new THREE.Matrix4(), _w = new THREE.Matrix4(), _q = new THREE.Quaternion(), _e = new THREE.Euler(0, 0, 0, 'YXZ');
@@ -208,7 +208,7 @@ export class Dachshunds {
   /** ni coches ni personas: brinco hacia un lado y a seguir */
   dodge(d, dt, px, pz, ctx) {
     const dx = d.x - px, dz = d.z - pz, dist = Math.hypot(dx, dz) || 0.01;
-    if (ctx.driving) {
+    if (ctx.driving && !ctx.flying) {
       const v = ctx.carVel, sp = ctx.carSpeed || 0;
       const coming = sp > 1.5 && (v.x * -dx + v.y * -dz) / (dist * sp) > 0.2;
       if (d.hop <= 0 && dist < 2.6 + sp * 0.22 && (coming || dist < 2.2)) {

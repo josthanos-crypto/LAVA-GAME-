@@ -1,8 +1,10 @@
+import * as THREE from 'three';
+import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { makeCar, pickModel, BRAND_SHARE } from './carModels.js';
 
 /**
- * Coches aparcados en las calles, medio subidos al bordillo como en las calles
- * estrechas de Arrecife. Solo existen cerca del jugador: al alejarte se
+ * Coches aparcados correctamente: en línea junto al bordillo, dentro de la
+ * calzada y con su plaza pintada (solo en calles con anchura de sobra). Solo existen cerca del jugador: al alejarte se
  * recogen y al volver aparecen los mismos en el mismo sitio. Se pueden robar
  * y, si les das un golpe, se desplazan.
  */
@@ -30,7 +32,9 @@ export class ParkedCars {
     let id = 0;
     (map.roads || []).forEach((r, ri) => {
       // solo calles normales con sitio para que pase el tráfico al lado
-      if (r.ped || r.major || r.p.length < 2 || r.w < 6) return;
+      // aparcar correctamente: en linea junto al bordillo, dentro de la calzada; solo
+      // en calles con anchura para que el trafico pase al lado (antes iban medio subidos a la acera)
+      if (r.ped || r.major || r.noParking || r.p.length < 2 || r.w < 7.6) return;
       const side = hash(ri * 7.3) < 0.5 ? 1 : -1;
       let total = 0;
       for (let i = 1; i < r.p.length; i++) total += Math.hypot(r.p[i][0] - r.p[i - 1][0], r.p[i][1] - r.p[i - 1][1]);
@@ -42,7 +46,7 @@ export class ParkedCars {
         while (next < acc + len && next < total - 11) {
           const t = (next - acc) / len;
           const ux = (bx - ax) / len, uz = (bz - az) / len;
-          const off = r.w / 2 + 0.15;
+          const off = r.w / 2 - 1.05;
           const x = ax + (bx - ax) * t + uz * off * side;
           const z = az + (bz - az) * t - ux * off * side;
           id++;
@@ -53,10 +57,9 @@ export class ParkedCars {
           if (type === 'taxi') continue;
           // sin meterse en fachadas: se prueba el morro, el centro y la zaga
           if (colliders && [-1.5, 0, 1.5].some(o => colliders.circleContacts(x + ux * o, z + uz * o, 1.0).length)) continue;
-          const flip = hash(id * 2.3) < 0.5;
-          const heading = Math.atan2(ux, uz) + (flip ? Math.PI : 0);
-          // la rueda de la acera queda más alta: se inclina hacia la calzada
-          const roll = CURB / 1.55 * side * (flip ? -1 : 1);
+          // aparcados en el sentido de su lado (a la derecha de la marcha), rectos y sin inclinar
+          const heading = Math.atan2(ux, uz) + (side > 0 ? 0 : Math.PI);
+          const roll = 0;
           // cx, cz: el centro de la calzada a su altura
           const brand = hash(id * 4.7) < BRAND_SHARE;
           const spot = { id, x, z, heading, roll, type, color, brand, taken: false, cx: x - uz * off * side, cz: z + ux * off * side };
@@ -68,6 +71,42 @@ export class ParkedCars {
         acc += len;
       }
     });
+    // las plazas de la calle, pintadas en el asfalto (la raya de fuera y las dos de los extremos)
+    const bayGeoms = [];
+    for (const sp of this.spots) {
+      const dx = sp.x - sp.cx, dz = sp.z - sp.cz;
+      const dL = Math.hypot(dx, dz) || 1;
+      const ox = dx / dL, oz = dz / dL;          // hacia el bordillo
+      const fx = Math.sin(sp.heading), fz = Math.cos(sp.heading);
+      const mk = (w, d, px, pz) => {
+        const g = new THREE.BoxGeometry(w, 0.012, d);
+        g.rotateY(sp.heading);
+        g.translate(px, 0.148, pz);
+        bayGeoms.push(g);
+      };
+      mk(0.08, 5.2, sp.x + ox * 1.02, sp.z + oz * 1.02);
+      for (const e of [-2.6, 2.6]) mk(1.95, 0.08, sp.x + fx * e - ox * 0.0, sp.z + fz * e);
+    }
+    if (bayGeoms.length) {
+      const m = new THREE.Mesh(
+        mergeGeometries(bayGeoms, false),
+        new THREE.MeshStandardMaterial({ color: 0xcfcdc6, roughness: 0.85 }),
+      );
+      m.receiveShadow = true;
+      scene.add(m);
+    }
+    // aparcamientos con sus plazas pintadas (map.lotSpots: [x, z, rumbo]): derechos, sin bordillo
+    for (const [x, z, heading] of map.lotSpots || []) {
+      id++;
+      if (hash(id * 3.1) > 0.9) continue;    // alguna plaza libre
+      const { type, color } = pickModel(hash(id * 5.7), hash(id * 9.1));
+      if (type === 'taxi') continue;
+      const spot = { id, x, z, heading, roll: 0, type, color, brand: hash(id * 4.7) < BRAND_SHARE, taken: false, cx: x, cz: z, lot: true };
+      this.spots.push(spot);
+      const k = Math.floor(x / CELL) + ',' + Math.floor(z / CELL);
+      if (!this.grid.has(k)) this.grid.set(k, []);
+      this.grid.get(k).push(spot);
+    }
   }
 
   /** coches aparcados que hay ahora mismo en la calle */
@@ -88,7 +127,8 @@ export class ParkedCars {
         for (const s of this.grid.get((cx + i) + ',' + (cz + j)) || []) {
           if (s.taken) continue;
           const d = Math.hypot(s.x - px, s.z - pz);
-          if (d < NEAR) want.push([d, s]);
+          // los del aparcamiento van antes que los de la calle: así se ve lleno, como en las fotos
+          if (d < NEAR) want.push([s.lot ? d - 40 : d, s]);
         }
       }
     }
@@ -108,7 +148,11 @@ export class ParkedCars {
       this.active.set(spot, car);
     }
     // de lejos, sin llantas ni matrículas
-    for (const [spot, car] of this.active) car.group.userData.setDetail?.(Math.hypot(spot.x - px, spot.z - pz) < 70);
+    for (const [spot, car] of this.active) {
+      const d = Math.hypot(spot.x - px, spot.z - pz);
+      car.group.userData.setDetail?.(d < 70);
+      car.group.userData.setDist?.(d);   // de lejos, la carrocería ligera (Version 133)
+    }
   }
 
   setLights(night) {
@@ -136,6 +180,7 @@ export class ParkedCars {
     spot.taken = true;
     car.group.rotation.z = 0;
     car.group.userData.setDetail?.(true);
+    car.group.userData.setDist?.(0);
     return {
       mesh: car.group, body: car.body, wheels: car.wheels, dims: car.dims,
       type: spot.type, color: spot.color, brand: spot.brand, x: spot.x, z: spot.z, heading: spot.heading,

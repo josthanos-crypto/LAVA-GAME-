@@ -70,8 +70,11 @@ export class RoadGraph {
         const cur = node(r.p[i][0], r.p[i][1], r.major);
         if (cur !== prev) {
           const d = Math.hypot(this.x[cur] - this.x[prev], this.z[cur] - this.z[prev]);
-          this.adj[prev].push([cur, d]);
-          this.adj[cur].push([prev, d]);
+          // en contra de un sentido único (sentidos.js) se puede (la policía te sigue igual), pero cuesta
+          // el cuádruple: el GPS y las patrullas prefieren el camino legal
+          const fwd = r.ow < 0 ? 4 : 1, back = r.ow > 0 ? 4 : 1;
+          this.adj[prev].push([cur, d * fwd]);
+          this.adj[cur].push([prev, d * back]);
         }
         prev = cur;
       }
