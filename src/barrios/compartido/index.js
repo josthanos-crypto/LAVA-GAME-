@@ -24,6 +24,8 @@ import { ajustarCalles } from '../../ajusteCalles.js';
 import { buildWalkIndex } from '../../aceras.js';
 import { buildParadasGuagua } from '../../paradasGuagua.js';
 import { tuneParqueComercialPuerto, buildParqueComercialPuerto } from '../../parqueComercialPuerto.js';
+import { buildRamblaArboles } from '../../ramblaArboles.js';
+import { tuneRamblaFaltaba, buildRamblaFaltaba } from '../../ramblaFaltaba.js';
 
 export const BARRIO = {
   id: 'compartido',
@@ -39,6 +41,8 @@ export function prepararMapa(map) {
   map.quiebros = redondearQuiebros();
   // el parque comercial de la salida a Costa Teguise (IKEA, Electron): no es de ningún barrio
   tuneParqueComercialPuerto(map);
+  // lo que faltaba a lo largo de la Rambla Medular (junto a la comisaría, el cuartel): no venía en el mapa
+  tuneRamblaFaltaba(map);
   // aceras libres: las calles se ajustan a lo que dejan las fachadas y, si no basta, la fachada se echa atrás
   // (ajusteCalles.js). Va aquí, al final, para respetar los edificios que los barrios marcan como hechos a mano.
   // El índice de aceras (aceras.js) se hizo antes con las anchuras viejas: se rehace.
@@ -65,6 +69,10 @@ export function construir({ scene, map, colliders, touch, story }) {
   const paradas = buildParadasGuagua(scene, map, colliders);
   // el parque comercial de la salida a Costa Teguise: IKEA, Electron, las canchas de pádel y los aparcamientos
   buildParqueComercialPuerto(scene, colliders, map);
+  // la Rambla Medular: el paseo del centro con sus dos filas de árboles
+  buildRamblaArboles(scene, colliders, map);
+  // el aparcamiento de verdad del ALDI y los rótulos de la zona de la comisaría
+  buildRamblaFaltaba(scene, colliders, map);
   // rotondas con su isleta y su escultura
   const roundabouts = buildRoundabouts(scene, colliders);
   // edificios y sitios con nombre de toda la ciudad (cabildo, comisarías, hoteles, colegios...)

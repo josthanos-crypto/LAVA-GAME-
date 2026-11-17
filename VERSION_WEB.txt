@@ -1908,3 +1908,23 @@ Version 147 - Argana calle a calle contra la foto oficial: HiperDino y MediaMark
   hospital, la ITV y las casas de alrededor) coincide con la foto. Falta repasar igual el resto de Argana.
 - Archivos nuevos: mercadonaMarquesinas.js y arganaFaltaba.js. Cambiados: hiperdinoArgana.js, centroComercialArgana.js,
   startPlaces.js y el index.js de "argana-alta". Sin tocar main.js ni index.html.
+
+Version 148 - La Rambla Medular con sus arboles, la zona de la Policia Nacional, el cuartel y el aparcamiento del ALDI (17/11/2026)
+- Repaso contra la ortofoto oficial del IGN de toda la Rambla Medular, Altavista, la zona de la Comisaria de la Policia
+  Nacional y el Castillo de San Gabriel.
+- Rambla Medular: en la realidad lleva, de punta a punta, un paseo central con dos filas de arboles de copa redonda.
+  En el juego ese centro estaba vacio. Ahora se planta solo siguiendo el mapa: 445 arboles y el paseo de solado rojizo
+  entre las dos calzadas (un arbol cada 8,5 m; en el movil, la mitad). Los troncos chocan.
+- Junto a la Comisaria de la Policia Nacional faltaban y se han puesto: la nave gris de la esquina de la Rambla con la
+  calle Velacho, las 21 casetas del solar de detras, el edificio oscuro de la rotonda de la avenida de Naos y el local
+  blanco del muelle. La comisaria ya estaba y esta en su sitio.
+- Rotulos de esa zona, sacados del mapa de Google Maps (que Jose Manuel los repase): Electrofube, Cuatro Hojas, Cofarca
+  Lanzarote, Efectos Navales San Gines, Pinturas & Decoraciones de Leon, Inoxnaval Lanzarote y Bodegas Torres.
+- El cuartel del principio de la Rambla (Acuartelamiento Marques de Herrera): los diez edificios del lado de la
+  circunvalacion, que no venian en el mapa. Lisos y sin rotulo.
+- ALDI: resuelto lo que quedaba pendiente. Su aparcamiento de verdad esta al SUR de la tienda, entre la calle El Forito
+  y la Rambla, con una marquesina larga de sombra: firme, 66 plazas y la marquesina.
+- Altavista (de la Rambla a la circunvalacion) y el Castillo de San Gabriel con sus dos puentes coinciden con la foto:
+  no se ha tocado nada. Las fachadas no se han podido repasar (no hay fotos a pie de calle desde la nube).
+- Archivos nuevos: ramblaArboles.js y ramblaFaltaba.js. Cambiado: el index.js de "compartido". Sin tocar main.js ni
+  index.html.
