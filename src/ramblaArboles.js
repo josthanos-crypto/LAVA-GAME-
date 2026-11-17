@@ -43,7 +43,7 @@ export function buildRamblaArboles(scene, colliders, map) {
     return mejor;
   };
 
-  const arboles = [], paseo = [];
+  const arboles = [], paseo = [], centros = [];
   ramblas.forEach((r, ri) => {
     let tramo = [], resto = 0;
     const cortar = () => { if (tramo.length > 1) cinta(paseo, tramo, () => 0.13, 2, false); tramo = []; };
@@ -63,7 +63,7 @@ export function buildRamblaArboles(scene, colliders, map) {
           const tx = mx + nx * t, tz = mz + nz * t;
           if (!calz.roadAt(tx, tz, 1.2)) arboles.push([tx, tz]);
         }
-        if (libre >= 3.2) tramo.push([mx, mz]); else cortar();
+        if (libre >= 3.2) { tramo.push([mx, mz]); centros.push([mx, mz, ux, uz, libre]); } else cortar();
       }
       resto = (resto + Math.ceil(Math.max(0, len - resto) / PASO) * PASO) - len;
     }
@@ -98,6 +98,8 @@ export function buildRamblaArboles(scene, colliders, map) {
     grupo.add(tronco, copa);
   }
   grupo.userData.arboles = lista.length;
+  // el centro del paseo, punto a punto: [x, z, dirección x, dirección z, sitio libre a cada lado] (ramblaGimnasio.js)
+  grupo.userData.centros = centros;
   scene.add(grupo);
   return grupo;
 }

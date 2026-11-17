@@ -5,7 +5,12 @@ const lerp = THREE.MathUtils.lerp;
 
 // el volcán está de verdad lejos, hacia Timanfaya (oeste-noroeste); se dibuja más cerca
 // y a escala para que quepa en la vista, con el mismo tamaño y dirección aparentes
-const ANCHOR = new THREE.Vector3(-5800, -70, -2300);
+// (Version 149) El ancla estaba en (-5800, -2300), pegada a Playa Honda: desde Arrecife se veía bien, pero dentro de
+// Playa Honda el volcán y sus conos de al lado caían encima de la zona industrial y del aeropuerto y tapaban las
+// naves. Ahora está tres veces más lejos en la misma dirección y se dibuja tres veces más grande (LEJOS): desde
+// Arrecife se ve igual que antes y desde Playa Honda queda al fondo, fuera del pueblo.
+const LEJOS = 3;
+const ANCHOR = new THREE.Vector3(-5800 * LEJOS, -70, -2300 * LEJOS);
 const DRAW_DIST = 2500;
 const RADIUS = 1900, HEIGHT = 820;
 
@@ -157,7 +162,7 @@ export class Volcano {
     const d = this._v.copy(ANCHOR).sub(camera.position);
     const k = DRAW_DIST / d.length();
     g.position.copy(camera.position).addScaledVector(d, k);
-    g.scale.setScalar(k);
+    g.scale.setScalar(k * LEJOS);
 
     // calima del aire: de día azulada, al anochecer se funde con el cielo
     this.bodyMat.emissive.copy(fogColor || this._c.setHex(0x9fb4c6)).multiplyScalar(lerp(0.3, 0.06, night));

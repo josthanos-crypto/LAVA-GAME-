@@ -16,6 +16,7 @@ import { tuneCalles } from './calles.js';
 import { tuneCalles2 } from './calles2.js';
 import { tuneResto } from './resto.js';
 import { blanquear } from '../compartido/blanquear.js';
+import { buildPlayaHondaFoto } from '../../playaHondaFoto.js';
 
 export const BARRIO = {
   id: 'playa-honda',
@@ -61,6 +62,8 @@ export function construir({ scene, colliders, map }) {
   buildNaveCash(scene, colliders, map);
   // el quitamiedos de la LZ-301 a la entrada del pueblo
   buildEntradaHonda(scene, bordeEntrada, map);
+  // la foto aérea oficial como suelo de Playa Honda (antes, arena pintada)
+  buildPlayaHondaFoto(scene);
 
   return {};
 }

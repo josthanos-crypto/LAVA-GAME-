@@ -1928,3 +1928,27 @@ Version 148 - La Rambla Medular con sus arboles, la zona de la Policia Nacional,
   no se ha tocado nada. Las fachadas no se han podido repasar (no hay fotos a pie de calle desde la nube).
 - Archivos nuevos: ramblaArboles.js y ramblaFaltaba.js. Cambiado: el index.js de "compartido". Sin tocar main.js ni
   index.html.
+
+Version 149 - Repaso de todo el juego contra la foto oficial: Playa Honda con su foto aerea, el volcan en su sitio, maquinas de deporte en la Rambla, el jardin del Castillo de San Jose y las naves que faltaban (17/11/2026)
+- Se ha comparado el mapa entero del juego con la ortofoto oficial del IGN: el centro (Charco, Calle Real, Reducto),
+  la marina, el puerto de Los Marmoles, el Castillo de San Jose, Titerroy, Maneje, San Francisco Javier, la zona
+  industrial del nordeste y Playa Honda. La planta (donde esta cada edificio y cada calle) coincide casi en todo.
+- Playa Honda: la foto aerea del juego no llegaba hasta alli y el suelo era arena pintada. Ahora lleva la ortofoto
+  oficial (PNOA, (c) Instituto Geografico Nacional de Espana, CC BY 4.0): public/honda/honda.jpg y honda-m.jpg (movil).
+  Se ven los solares, los aparcamientos y los campos de alrededor.
+- El volcan del fondo estaba colocado pegado a Playa Honda: dentro del pueblo, el y sus conos de al lado caian encima
+  de la zona industrial y del aeropuerto y tapaban las naves. Ahora esta tres veces mas lejos en la misma direccion y
+  tres veces mas grande: desde Arrecife se ve igual que antes y en Playa Honda queda al fondo.
+- Rambla Medular: seis grupos de maquinas de hacer deporte en el paseo, entre los arboles (el volante, el de andar, el
+  banco de abdominales y las barras, con su suelo de caucho). EL SITIO DE CADA GRUPO NO ES EL REAL: se reparten solos a
+  lo largo de la Rambla; cuando Jose Manuel diga donde estan, se ponen ahi (lista SITIOS de ramblaGimnasio.js).
+- Castillo de San Jose: ya estaba hecho a mano (castillo, explanada, aparcamiento, palmeras). Faltaba el jardin de
+  picon con matas redondas de toda la loma, que se ve en la foto: 204 matas (verdes y pajizas), sin pisar la carretera
+  ni el aparcamiento.
+- Naves que faltaban en el mapa (sin nombre): dos en la zona industrial del nordeste de Arrecife y nueve en las zonas
+  industriales de Playa Honda (faltabaCiudad.js).
+- Sin repasar todavia: El Cable y la costa entre Arrecife y Playa Honda, y el extremo sur de Playa Honda. Las fachadas
+  no se pueden repasar desde la nube (no hay fotos a pie de calle); la franja del norte de Arrecife y el extremo este
+  siguen con suelo de arena pintada (la foto aerea del juego tampoco llega).
+- Archivos nuevos: ramblaGimnasio.js, sanJoseJardin.js, faltabaCiudad.js y playaHondaFoto.js. Cambiados:
+  ramblaArboles.js, volcano.js y los index.js de "compartido" y "playa-honda". Sin tocar main.js ni index.html.

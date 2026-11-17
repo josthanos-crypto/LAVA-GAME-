@@ -25,6 +25,9 @@ import { buildWalkIndex } from '../../aceras.js';
 import { buildParadasGuagua } from '../../paradasGuagua.js';
 import { tuneParqueComercialPuerto, buildParqueComercialPuerto } from '../../parqueComercialPuerto.js';
 import { buildRamblaArboles } from '../../ramblaArboles.js';
+import { buildRamblaGimnasio } from '../../ramblaGimnasio.js';
+import { buildSanJoseJardin } from '../../sanJoseJardin.js';
+import { tuneFaltabaCiudad } from '../../faltabaCiudad.js';
 import { tuneRamblaFaltaba, buildRamblaFaltaba } from '../../ramblaFaltaba.js';
 
 export const BARRIO = {
@@ -43,6 +46,8 @@ export function prepararMapa(map) {
   tuneParqueComercialPuerto(map);
   // lo que faltaba a lo largo de la Rambla Medular (junto a la comisaría, el cuartel): no venía en el mapa
   tuneRamblaFaltaba(map);
+  // las naves que faltaban en los polígonos industriales (nordeste de Arrecife y Playa Honda)
+  tuneFaltabaCiudad(map);
   // aceras libres: las calles se ajustan a lo que dejan las fachadas y, si no basta, la fachada se echa atrás
   // (ajusteCalles.js). Va aquí, al final, para respetar los edificios que los barrios marcan como hechos a mano.
   // El índice de aceras (aceras.js) se hizo antes con las anchuras viejas: se rehace.
@@ -70,7 +75,11 @@ export function construir({ scene, map, colliders, touch, story }) {
   // el parque comercial de la salida a Costa Teguise: IKEA, Electron, las canchas de pádel y los aparcamientos
   buildParqueComercialPuerto(scene, colliders, map);
   // la Rambla Medular: el paseo del centro con sus dos filas de árboles
-  buildRamblaArboles(scene, colliders, map);
+  const rambla = buildRamblaArboles(scene, colliders, map);
+  // las máquinas de hacer deporte del paseo de la Rambla
+  buildRamblaGimnasio(scene, colliders, rambla.userData.centros);
+  // el jardín de picón con matas de la loma del Castillo de San José
+  buildSanJoseJardin(scene, map);
   // el aparcamiento de verdad del ALDI y los rótulos de la zona de la comisaría
   buildRamblaFaltaba(scene, colliders, map);
   // rotondas con su isleta y su escultura
