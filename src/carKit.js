@@ -205,10 +205,14 @@ export function addDoor(group) {
     }
     put(sideGeo(win, true).translate(out - 0.025, 0, 0), DOOR_GLASS);
   }
-  const up = !!s.doorUp;   // puerta que se levanta hacia arriba y afuera (el roadster), con la bisagra en el borde de arriba
+  // (Version 151) puertas de tijera (el roadster): la bisagra va DELANTE, junto al pilar, y la puerta sube girando
+  // hacia arriba y hacia delante sin salirse de su plano, como en los deportivos de verdad. Antes se abrían como
+  // alas, girando sobre el borde de arriba, y José Manuel pidió que se levantaran como las de un coche real.
+  const up = !!s.doorUp;
+  const yH = y0 + (yB - y0) * 0.72;   // altura de la bisagra
   const pivot = new THREE.Group();
-  pivot.position.set(out, up ? yB : 0, zF);
-  if (up) door.position.y = -yB;
+  pivot.position.set(out, up ? yH : 0, zF);
+  if (up) door.position.y = -yH;
   pivot.add(door);
   pivot.visible = false;
   // el hueco que deja la puerta al abrirse (por encima, el cristal de la carrocería ya parece el habitáculo)
@@ -229,22 +233,51 @@ export function addDoor(group) {
     hole2.scale.x = -1;
     ud.body.add(pivot2, hole2);
   }
+  // el amortiguador de gas que sujeta cada puerta de tijera: del marco (fijo) a la puerta (se mueve con ella)
+  const struts = [];
+  if (up) {
+    const ACERO = new THREE.MeshStandardMaterial({ color: 0xb9bec4, roughness: 0.3, metalness: 0.9 });
+    for (const pv of [pivot, pivot2]) {
+      const g = new THREE.CylinderGeometry(0.013, 0.013, 1, 6);
+      g.rotateX(Math.PI / 2);       // a lo largo de z, para orientarlo con lookAt
+      g.translate(0, 0, 0.5);
+      const m = new THREE.Mesh(g, ACERO);
+      m.visible = false;
+      ud.body.add(m);
+      struts.push({ m, pv, lado: pv === pivot ? 1 : -1 });
+    }
+  }
+  const _a = new THREE.Vector3(), _b = new THREE.Vector3(), _z = new THREE.Vector3(0, 0, 1);
   ud.door = {
     open: 0,
     set(a) {
       this.open = a;
       if (up) {
-        // se levanta girando sobre el borde de arriba, hasta casi plana sobre el coche, y se estira un poco
-        pivot.rotation.z = Math.sign(out) * a * 1.95;
-        pivot.scale.y = 1 + a * 1.1;
+        // primero sale un palmo hacia fuera y luego sube girando por delante, hasta unos 70°
+        const fuera = Math.min(1, a / 0.3), sube = Math.max(0, (a - 0.12) / 0.88);
+        pivot.position.x = out + Math.sign(out) * fuera * 0.09;
+        pivot.rotation.z = Math.sign(out) * fuera * 0.09;
+        pivot.rotation.x = sube * 1.22;
       } else pivot.rotation.y = -a * 1.15;   // hasta unos 66°, hacia fuera
       pivot.visible = a > 0.002;
       hole.visible = a > 0.03;
       if (pivot2) {
         pivot2.rotation.z = -pivot.rotation.z;
-        pivot2.scale.y = pivot.scale.y;
+        pivot2.rotation.x = pivot.rotation.x;
+        pivot2.position.x = -pivot.position.x;
         pivot2.visible = pivot.visible;
         hole2.visible = hole.visible;
+      }
+      for (const st of struts) {
+        st.m.visible = a > 0.05;
+        if (!st.m.visible) continue;
+        // un extremo en el marco, bajo la bisagra; el otro, en la cara de dentro de la puerta
+        st.pv.updateMatrix();
+        _a.set(st.lado * (out - 0.07), y0 + (yB - y0) * 0.3, zF - 0.1);
+        _b.set(-0.07, 0, -(zF - zR) * 0.42).applyMatrix4(st.pv.matrix);
+        st.m.position.copy(_a);
+        st.m.scale.z = _a.distanceTo(_b);
+        st.m.quaternion.setFromUnitVectors(_z, _b.sub(_a).normalize());
       }
     },
     // distancia del centro del coche al hueco de la puerta, y dónde cae a lo largo

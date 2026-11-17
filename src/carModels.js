@@ -499,14 +499,34 @@ function extras(s, at) {
     add(box(0.5, 0.08, 0.6, 0, c.yt + 0.05, 1.1, K.black, 0.06));
   }
   if (s.seats) {
+    // (Version 151) asientos de cubo de verdad, en vez de tres cajas: banqueta y respaldo redondeados con sus
+    // orejas a los lados, reposacabezas, y detrás de cada uno el arco antivuelco de tubo
+    const redondo = (w, h, d, x, y, z, col, rx = 0) => {
+      const g = new THREE.SphereGeometry(0.5, 9, 6);
+      g.scale(w, h, d);
+      if (rx) g.rotateX(rx);
+      g.translate(x, y, z);
+      return colored(g, col);
+    };
+    const TUBO = [0.48, 0.5, 0.54];      // el acero de los arcos
     for (const sx of [-1, 1]) {
-      const z = -0.62;
-      add(box(0.46, 0.16, 0.45, sx * 0.36, 0.68, z + 0.15, K.seat));
-      add(box(0.46, 0.55, 0.12, sx * 0.36, 0.95, z - 0.12, K.seat, -0.22));
-      add(box(0.26, 0.16, 0.1, sx * 0.36, 1.28, z - 0.2, K.seat, -0.22));
-      // arco antivuelco
-      add(box(0.06, 0.34, 0.06, sx * 0.36, 1.08, z - 0.38, K.black));
+      const z = -0.62, x = sx * 0.36;
+      add(redondo(0.48, 0.2, 0.52, x, 0.68, z + 0.15, K.seat));                 // la banqueta
+      add(redondo(0.44, 0.66, 0.16, x, 0.97, z - 0.13, K.seat, -0.22));          // el respaldo
+      for (const o of [-0.21, 0.21]) {
+        add(redondo(0.1, 0.5, 0.2, x + o, 0.95, z - 0.08, K.seat, -0.22));       // las orejas del respaldo
+        add(redondo(0.1, 0.16, 0.44, x + o, 0.72, z + 0.15, K.seat));            // y las de la banqueta
+      }
+      add(redondo(0.24, 0.17, 0.11, x, 1.3, z - 0.22, K.seat, -0.22));           // el reposacabezas
+      // arco antivuelco: medio aro de tubo, detrás del asiento
+      const aro = new THREE.TorusGeometry(0.17, 0.025, 5, 9, Math.PI);
+      aro.translate(x, 1.12, z - 0.4);
+      add(colored(aro, TUBO));
+      for (const o of [-0.17, 0.17]) add(box(0.05, 0.2, 0.05, x + o, 1.02, z - 0.4, TUBO));
     }
+    // la consola del centro, entre los dos asientos, con la palanca
+    add(box(0.16, 0.14, 0.7, 0, 0.72, -0.4, K.interior));
+    add(box(0.035, 0.12, 0.035, 0, 0.84, -0.2, TUBO));
     // salpicadero y volante (conductor a la izquierda: +x)
     add(box(1.3, 0.12, 0.3, 0, 0.86, 0.1, K.interior));
     const w = new THREE.TorusGeometry(0.17, 0.025, 6, 18);

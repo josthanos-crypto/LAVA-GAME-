@@ -1965,3 +1965,12 @@ Version 150 - La franja del norte de Arrecife con su foto aerea; repaso completo
   este del mapa (pasado el puerto) sigue con suelo de arena pintada.
 - Archivo nuevo: norteFoto.js. Cambiado: el index.js de "compartido". Fotos nuevas en public/norte/. Sin tocar
   main.js ni index.html.
+
+Version 151 - El roadster: puertas de tijera y asientos de verdad (17/11/2026)
+- Las puertas del roadster (Chispa Orbita) se abrian como alas, girando sobre el borde de arriba y estirandose. Ahora
+  son puertas de tijera, como las de los deportivos de verdad: la bisagra va delante, junto al pilar; la puerta sale
+  un palmo hacia fuera y sube girando hacia arriba y hacia delante, sin salirse de su plano, hasta unos 70 grados.
+  Las dos puertas a la vez, como antes, y cada una con su amortiguador de gas a la vista.
+- Asientos de cubo redondeados (banqueta, respaldo con orejas y reposacabezas) en vez de tres cajas, arcos antivuelco
+  de tubo detras de cada asiento y la consola del centro con la palanca. (Tambien en el otro descapotable.)
+- Archivos cambiados: carKit.js y carModels.js. Sin tocar main.js ni index.html.
