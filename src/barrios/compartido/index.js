@@ -21,6 +21,8 @@ import { desnivelesResto } from '../../desniveles/resto.js';
 import { redondearQuiebros } from '../../desniveles/quiebros.js';
 import { applyOneWay } from '../../sentidos.js';
 import { ajustarCalles } from '../../ajusteCalles.js';
+import { tuneAparcadosArgana } from '../../aparcadosArgana.js';
+import { buildExplanadaReducto } from '../../explanadaReducto.js';
 import { buildWalkIndex } from '../../aceras.js';
 import { buildParadasGuagua } from '../../paradasGuagua.js';
 import { tuneParqueComercialPuerto, buildParqueComercialPuerto } from '../../parqueComercialPuerto.js';
@@ -56,6 +58,8 @@ export function prepararMapa(map) {
   // El índice de aceras (aceras.js) se hizo antes con las anchuras viejas: se rehace.
   applyOneWay(map);
   map.ajusteCalles = ajustarCalles(map);
+  // Argana Alta: las calles estrechas de sentido único, con coches aparcados en línea (después de medir las aceras)
+  tuneAparcadosArgana(map);
   buildWalkIndex(map.roads);
 }
 
@@ -73,6 +77,8 @@ export function construirPrimero({ scene, map, colliders, story }) {
 export function construir({ scene, map, colliders, touch, story }) {
   // aeropuerto de Lanzarote (ACE), borde suroeste de Arrecife
   const aeropuerto = buildAeropuerto(scene);
+  // la explanada de aparcar de junto al Cabildo, al oeste del Reducto (capturas de «recursos»)
+  buildExplanadaReducto(scene, map);
   // las paradas de guagua reales de toda la ciudad (OpenStreetMap), con su nombre; las guaguas paran en ellas
   const paradas = buildParadasGuagua(scene, map, colliders);
   // el parque comercial de la salida a Costa Teguise: IKEA, Electron, las canchas de pádel y los aparcamientos

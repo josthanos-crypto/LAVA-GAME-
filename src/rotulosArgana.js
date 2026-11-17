@@ -13,7 +13,8 @@ import { buildRotulosEmpresas } from './parqueComercialEmpresas.js';
  *
  * SIN CARTEL, a propósito:
  *  - Cocodelanz (-1168, -1341): cae en la nave de Fuji y Kiwa, junto a la rotonda.
- *  - MultiMotor (-1529, -1048): entre la nave de Dos Cabras y la del «BAZAR» de bazarArgana.js.
+ *  - MultiMotor (-1529, -1048): (Version 155) es la nave de bazarArgana.js, que ya lleva su rótulo (se ve en el vídeo
+ *    del recorrido de José Manuel).
  *  - Hortofrutícola Altavista (-1616, -1085): su pared da a un callejón y el cartel no se veía.
  *
  * Para quitar o cambiar uno, se toca su línea: [nombre, x, z] en coordenadas del juego.

@@ -2027,3 +2027,24 @@ Version 154 - El recorrido Repsol - casa con los fotogramas de Jose Manuel (17/1
   de Argana): se han mirado 20 fotogramas de los 513, no todos.
 - Archivos: tendereteAvenida.js y rotondaConcha.js (nuevos), casaParcela.js, casaCampo.js, places.js y roundabouts.js
   (una linea cada uno) y barrios/argana-alta/index.js. Sin tocar main.js ni index.html.
+
+Version 155 - Todas las imagenes de "recursos" que se pueden abrir (17/11/2026)
+- Repasados los 513 fotogramas del recorrido (uno de cada cinco), los cinco trozos de "Argana hasta Tanatorio" y las
+  capturas del Reducto. No se han podido abrir: IMG_0397, IMG_0398 e IMG_0399 (900 imagenes de 4 a 8 MB, el conector
+  se corta), tres capturas grandes (el Cabildo y "playa del reducto hacer la playa") y los videos .MOV. En
+  Downloads\gta canarias queda "CONVERTIR FOTOGRAMAS.bat", que hace copias pequenas en JPG para poder verlas.
+- Argana Alta: en los videos las calles del barrio son de un solo carril con coches aparcados en linea, a los dos
+  lados o a uno. En el juego no habia ni un coche. Ahora 134 calles llevan sus coches aparcados (64 a los dos lados,
+  70 a un lado), con la acera estrecha de verdad. El carril que queda es justo, como en la calle real.
+- La nave de al lado de Dos Cabras, que llevaba el rotulo "BAZAR": en el video es MultiMotor (fachada gris con
+  cristalera, nombre en rojo y la banda naranja "COMPRAMOS TU COCHE PAGO INMEDIATO"). Cambiado. El video confirma
+  tambien que la tienda de hogar es Deko Hogar (se lee "DEKO" en la nave).
+- La explanada de aparcar de junto al Cabildo, al oeste del Reducto (las capturas de Street View): firme y plazas
+  pintadas donde solo estaba la foto aerea. El edificio de la cupula no se ha tocado.
+- Comprobado sin cambios: el asfalto de la calle Campoamor acaba donde en la foto oficial (hacia z = -2600).
+- Pendiente de que lo diga Jose Manuel: al oeste del Cabildo el mapa trae un bloque de 9,5 m donde la foto ensena un
+  aparcamiento al aire libre (no se ha quitado). Vistos en los videos y sin poner: Lanzarote Express, el rotulo de
+  Optimus en su fachada, el salon recreativo de la rotonda de la concha y la plazuela de las palmeras del final de
+  la calle Tenderete.
+- Archivos: aparcadosArgana.js y explanadaReducto.js (nuevos), bazarArgana.js, rotulosArgana.js y
+  barrios/compartido/index.js (dos lineas). Sin tocar main.js ni index.html.
