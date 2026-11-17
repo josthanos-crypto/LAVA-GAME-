@@ -1850,3 +1850,28 @@ Version 144 - Argana: Multicentro y Comercial Zonzamas y prueba en tamano movil 
 - ALDI: no se ha cambiado. La foto aerea y el mapa ensenan que su aparcamiento no esta en la calle (parece estar en
   la cubierta o debajo, con una rampa por la punta sur): falta que Jose Manuel diga como es.
 - Archivos cambiados: parqueComercialEmpresas.js y rotulosArgana.js. Sin tocar main.js ni index.html.
+
+Version 145 - El campo de arriba (la casa del camino de tierra) en su sitio de verdad y con la foto aerea oficial (17/11/2026)
+- Lo que pasaba: la casa, los vecinos, los muros, los caminos y las fincas se calcaron en su dia de fotos sin escala
+  ni coordenadas y se colgaron del punto que da Apple Maps para la direccion, que cae unos 62 m al sureste de la casa
+  de verdad. Todo el campo estaba corrido entre 30 y 60 m, y el suelo era un llano rojo pintado (de esa zona el juego
+  no tenia foto aerea).
+- El suelo del campo es ahora la ortofoto oficial (PNOA, (c) Instituto Geografico Nacional de Espana, CC BY 4.0),
+  bajada del servicio del IGN: public/campo/campo.jpg (todo el campo) y public/campo/casa.jpg (500 x 400 m alrededor
+  de la casa, con mas detalle; en el movil no se carga). Se ven los barrancos, las pistas y las fincas de picon.
+- Todo lo que habia hecho se ha RECOLOCADO sobre esa foto, sin rehacerlo ni borrarlo (campoReal.js): en el caserio de
+  la casa es un traslado limpio (53,5 m al oeste y 33,5 m al norte) y encaja al metro con la foto: la casa del tejado
+  rojo con la piscina al oeste y el cuarto de tejas, los vecinos, los muros y las calles. Las casas del camino, el
+  cruce grande, las fincas de picon y el caserio de la lancha se han movido cada uno lo que le tocaba.
+- La casa es la del tejado rojo, unos 62 m al noroeste de la casa blanca donde cae el enlace de Apple Maps. Si Jose
+  Manuel dice que no es esa, se cambia en campoReal.js.
+- Fuera las casas "detectadas" a ojo de la parte de abajo (z > -2740): ahi el juego ya tenia las calles y casas reales
+  del norte de Arrecife, y sobre la foto de verdad se veian fuera de sitio. Los enarenados pintados tampoco se ponen:
+  ya salen en la foto, con su forma de verdad.
+- El sitio "Camino de tierra" de la pantalla de inicio va a la calle de delante de la casa, en su sitio nuevo.
+- NO hecho: el caserio de la lancha ANMARA UNO no se sabe donde esta de verdad (en su sitio del juego la foto oficial
+  no ensena casas); las alturas del terreno de esa zona siguen siendo aproximadas; no se han podido usar los videos e
+  imagenes de la carpeta "recursos" (en el PC de casa solo aparece ahi una foto aerea de Argana) ni el Catastro (no
+  deja entrar desde la nube).
+- Archivo nuevo: campoReal.js. Cambiados: casaCampo.js y caminoAnmara.js (solo el enganche). Fotos nuevas en
+  public/campo/. Sin tocar main.js ni index.html.

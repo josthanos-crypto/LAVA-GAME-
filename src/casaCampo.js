@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { Kit, canvasTex } from './interiorKit.js';
 import { paveMesh, paveMaterial, polyTris, bandTris, tierra, tierraCamino, lightSlabs, picon } from './suelos.js';
 import { makeCar } from './carModels.js';
+import { recolocarCalles, recolocarCasas, recolocarPunto, mover, casaDeAbajo, escenaReal, choquesReales } from './campoReal.js';
 import { CAMPO_CASAS, CAMPO_AUTO, CAMPO_PISCINAS, CAMPO_MUROS, CAMPO_CAMINOS, CAMPO_CALLES, CAMPO_ENARENADOS } from './campoDatos.js';
 
 /**
@@ -29,31 +30,33 @@ const rotRect = (x, z, w, d, deg) => {
 };
 
 /** los caminos de tierra (world.js no los asfalta: dirt) y las calles nuevas de la ciudad, para el mapa */
-export const CAMPO_ROADS = [
+// (Version 145) todo pasa por campoReal.js, que lo pone en su sitio de la foto oficial
+export const CAMPO_ROADS = recolocarCalles([
   ...CAMPO_CAMINOS.map(c => ({ name: 'Camino de tierra', w: c.w, major: 0, dirt: 1, p: c.p })),
   ...CAMPO_CALLES.map(c => ({ ...(c.name ? { name: c.name } : {}), w: c.w, major: 0, p: c.p })),
-];
+]);
 
 // los edificios: la casa y su cuarto con modelo propio (skip, ownRoof); las demás, como las del resto de Arrecife
 const HOUSE = { p: rect(HX0, HZ0, HX1, HZ1), h: HH };
 const ANNEX = { p: rect(-2028.5, -3304, -2020, -3295.2), h: 3 };
 const WHITE_F = [244, 242, 236];
-export const CAMPO_BUILDINGS = [
+export const CAMPO_BUILDINGS = recolocarCasas([
   ...[HOUSE, ANNEX].map(b => ({ ...b, k: 'gen', skip: true, ownRoof: true })),
   ...CAMPO_CASAS.map(([x0, z0, x1, z1, h, f]) => ({ p: rect(x0, z0, x1, z1), h, k: 'res', f: f || WHITE_F })),
-  ...CAMPO_AUTO.map(([x, z, w, d, a, h]) => ({ p: rotRect(x, z, w, d, a), h, k: 'res' })),
-];
+  // sin las «detectadas» de abajo: ahí están ya las casas reales del norte de Arrecife (campoReal.js)
+  ...CAMPO_AUTO.filter(c => !casaDeAbajo(c)).map(([x, z, w, d, a, h]) => ({ p: rotRect(x, z, w, d, a), h, k: 'res' })),
+]);
 
 /** el sitio para empezar (y para el mapa grande): en la calle de delante de la casa, junto a la cancela */
-export const CAMPO_START = { at: [-2016, -3290], look: [-2002, -3305] };
+export const CAMPO_START = { at: mover(-2016, -3290), look: mover(-2002, -3305) };
 
 /** palmeras junto a las casas blancas del este del camino (foto bajando hacia la ciudad), para map.extraPalms */
 export const CAMPO_PALMS = [[-1888, -2925, 8], [-1858, -2922, 7], [-1826, -2924, 9], [-1772, -2928, 7.5],
-  [-1810, -2868, 8], [-1745, -2832, 7], [-1716, -2778, 8.5], [-1690, -2735, 7]];
+  [-1810, -2868, 8], [-1745, -2832, 7], [-1716, -2778, 8.5], [-1690, -2735, 7]].map(recolocarPunto);
 
 /** el camino en coche desde el final de la Calle Campoamor hasta la cancela (para las pruebas) */
 export const CAMPO_RUTA = [[-2057, -2366], [-2055, -2470], [-2052, -2546], [-2050, -2590], [-1997, -2603], [-1957, -2611],
-  [-1922.6, -2645], [-1888, -2672], ...CAMPO_CAMINOS[0].p.slice(1, 20), [-2016, -3290]];
+  [-1922.6, -2645], [-1888, -2672], ...CAMPO_CAMINOS[0].p.slice(1, 20), [-2016, -3290]].map(recolocarPunto);
 
 // la tierra del campo (un rectángulo); el suelo del juego deja ahí un hueco
 const CAMPO = { x0: -2700, x1: 0, z0: -3700, z1: -2385 };
@@ -512,7 +515,9 @@ const segDist = (x, z, [ax, az], [bx, bz]) => {
   return Math.hypot(x - ax - dx * t, z - az - dz * t);
 };
 
-export function buildCasaCampo(scene, colliders) {
+export function buildCasaCampo(sceneDeVerdad, choquesDeVerdad) {
+  // (Version 145) cada pieza se pone en su sitio de la foto oficial al añadirla (campoReal.js)
+  const scene = escenaReal(sceneDeVerdad), colliders = choquesReales(choquesDeVerdad);
   // el suelo: tierra marrón en todo el campo, los enarenados de picón negro y los caminos más claros
   scene.add(campoGround());
   const piconTex = picon();

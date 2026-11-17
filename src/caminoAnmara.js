@@ -3,6 +3,7 @@ import { Kit, canvasTex } from './interiorKit.js';
 import { paveMesh, bandTris, tierraCamino } from './suelos.js';
 import { makeCar } from './carModels.js';
 import { plateTexture } from './textures.js';
+import { recolocarCalles, recolocarCasas, recolocarPunto, escenaReal, choquesReales } from './campoReal.js';
 
 /**
  * El caserío del camino de tierra de las fotos de José Manuel (24 fotos de octubre de 2026): la pista de
@@ -21,23 +22,24 @@ const WHITE = 0xf2f0ea, WHITE_F = [244, 242, 236];
 // y el ramal que sale hacia el este por delante de la nave
 const CALLE = { p: [[-1405, -3318], [-1398, -3344], [-1393, -3374], [-1391, -3404], [-1390, -3424]], w: 5 };
 const RAMAL = { p: [[-1398, -3344], [-1370, -3348], [-1335, -3352], [-1302, -3354]], w: 4 };
-export const ANMARA_ROADS = [CALLE, RAMAL].map(c => ({ name: 'Camino de tierra', w: c.w, major: 0, dirt: 1, p: c.p }));
+// (Version 145) todo pasa por campoReal.js, que lo pone en su sitio de la foto oficial
+export const ANMARA_ROADS = recolocarCalles([CALLE, RAMAL].map(c => ({ name: 'Camino de tierra', w: c.w, major: 0, dirt: 1, p: c.p })));
 
 // las casas: las de las fotos con modelo propio (skip, ownRoof) y las blancas del fondo como las del resto
 const BALCON = rect(-1420, -3342, -1406, -3330);     // la casa del balcón oscuro (foto 1)
 const VERDE = rect(-1422, -3376, -1407, -3360);      // la casa de las persianas verdes (foto 2)
 const NAVE = rect(-1380, -3408, -1354, -3390);       // la nave del portón crema (foto 4)
 const CASA25 = rect(-1382, -3368, -1366, -3352);     // la casa de la verja negra del 25 (foto 3)
-export const ANMARA_BUILDINGS = [
+export const ANMARA_BUILDINGS = recolocarCasas([
   ...[{ p: BALCON, h: 6.2 }, { p: VERDE, h: 6.4 }, { p: NAVE, h: 5 }].map(b => ({ ...b, k: 'gen', skip: true, ownRoof: true })),
   { p: CASA25, h: 5.8, k: 'res', f: WHITE_F },
   { p: rect(-1352, -3344, -1336, -3330), h: 6, k: 'res', f: WHITE_F },
   { p: rect(-1322, -3348, -1306, -3334), h: 3.6, k: 'res', f: [238, 233, 222] },
   { p: rect(-1412, -3310, -1400, -3300), h: 3.4, k: 'res', f: WHITE_F },
-];
+]);
 
 /** palmeras junto a las casas del ramal (fotos 20 y 23), para map.extraPalms */
-export const ANMARA_PALMS = [[-1362, -3362, 8], [-1340, -3328, 7.5], [-1300, -3360, 7]];
+export const ANMARA_PALMS = [[-1362, -3362, 8], [-1340, -3328, 7.5], [-1300, -3360, 7]].map(recolocarPunto);
 
 /** el nombre pintado en el casco, en azul como el de las fotos */
 function nombreLancha() {
@@ -306,7 +308,8 @@ function aparcado(scene, colliders, type, color, x, z, ry, name, { plate = null,
   for (const [a, b, e, f] of [[-hw, -hd, hw, -hd], [hw, -hd, hw, hd], [hw, hd, -hw, hd], [-hw, hd, -hw, -hd]]) colliders.addSegment(x + a, z + b, x + e, z + f);
 }
 
-export function buildCaminoAnmara(scene, colliders) {
+export function buildCaminoAnmara(sceneDeVerdad, choquesDeVerdad) {
+  const scene = escenaReal(sceneDeVerdad), colliders = choquesReales(choquesDeVerdad);
   // la pista de tierra con sus rodadas, como los caminos del campo (la tierra de debajo ya la pone casaCampo)
   const tierraTex = tierraCamino();
   for (const R of [CALLE, RAMAL]) {

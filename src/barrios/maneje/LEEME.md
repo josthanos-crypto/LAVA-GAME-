@@ -23,10 +23,20 @@ Es el barrio del noroeste y, hacia el norte, el campo de arriba de Arrecife.
   (3 m) se oye su conversación (`plan.overhear`, locales.js). Sin nombre de negocio.
 - El resto de Maneje (calles y casas) sale del mapa, como el resto de la ciudad.
 
+## En su sitio de verdad (Version 145)
+
+Todo el campo estaba corrido entre 30 y 60 m (se calcó de fotos sin coordenadas y se colgó del punto que da Apple
+Maps para la dirección, que cae 62 m al sureste de la casa). `../../campoReal.js` pone la ortofoto oficial del IGN
+como suelo (`public/campo/`) y recoloca sobre ella lo que hacen `casaCampo.js` y `caminoAnmara.js`, sin rehacerlo:
+los números de esos dos archivos siguen siendo los antiguos y pasan por `mover()`. La casa es la del tejado rojo
+con la piscina al oeste, en (-2055.5, -3337.5). **Para añadir algo nuevo ahí**, mídelo sobre la foto oficial (WMS
+del IGN, ver CLAUDE.md) y constrúyelo directamente en la escena de verdad, no en la recolocada. El caserío de la
+lancha ANMARA UNO sigue sin sitio real conocido.
+
 ## Archivos suyos
 
 ```
-casaCampo.js  campoDatos.js  caminoAnmara.js  gasolineraManeje.js (en src/)
+casaCampo.js  campoDatos.js  caminoAnmara.js  campoReal.js  gasolineraManeje.js (en src/)
 ```
 
 ## Probar
