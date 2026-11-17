@@ -172,7 +172,8 @@ hacer algo que ya hacen los extras, se apaga allí la parte repetida (como se hi
    Los dos scripts de `extras/` también están ya publicados en los dos enlaces; si cambia alguno,
    súbelo en `files` (`"extras/<archivo>": "extras/<archivo>"`) en los dos.
    **Demo** (partida nueva cada vez, sin policía, no guarda nada):
-   https://claude.ai/artifact/D3HVvFiQLNiFQShTpExSpa — se publica con `file_path` = dist/demo.html,
+   https://claude.ai/artifact/D3HVvFiQLNiFQShTpExSpa (el 17/11/2026 ese enlace ya no existe: si hace falta demo,
+   publicar una nueva con todo `dist/` y apuntar aquí su enlace) — se publica con `file_path` = dist/demo.html,
    `root` = dist y el js nuevo en `files` (el resto ya está). `demo.html` lo genera `vite.config.js`;
    el modo demo está en `src/save.js` (también vale `?nueva` en la dirección).
 2. **ZIP para la web** (canaryislandconsulting.es/juego/): carpeta `juego/` con todo

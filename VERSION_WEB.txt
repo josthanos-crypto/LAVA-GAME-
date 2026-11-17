@@ -1836,7 +1836,7 @@ Version 143 - Argana: el Centro Comercial Argana, Deko Hogar, Kiwoko y mas rotul
 - Archivos nuevos: ccArgana.js y rotulosArgana.js. Cambiado: el index.js de "argana-alta". Sin tocar main.js ni
   index.html.
 
-Version 144 - Argana: Multicentro y Comercial Zonzamas, prueba en movil y demo al dia (17/11/2026)
+Version 144 - Argana: Multicentro y Comercial Zonzamas y prueba en tamano movil (17/11/2026)
 - Calle Tenderete: los carteles de Multicentro y Comercial Zonzamas, los dos que faltaban de la lista de Jose Manuel.
   Google Maps los pone en Tenderete 12 ("Multi Centro") y Tenderete 20, sobre la fila de naves que ya estaba hecha con
   sus videos: el de Multicentro va en la fachada del 928 Hybrid Club y el de Zonzamas en la nave negra de Mitsubishi,
@@ -1845,7 +1845,8 @@ Version 144 - Argana: Multicentro y Comercial Zonzamas, prueba en movil y demo a
 - Los carteles pueden salir de la pared lo que haga falta (quinto dato de cada linea de la lista).
 - Probado en tamano movil (844 x 390) en el Centro Comercial Argana: carga sin errores; todo lo nuevo de Argana son
   unos 8.600 triangulos y 37 llamadas de dibujo. Falta probarlo en un movil de verdad.
-- El enlace de la demo se ha puesto al dia con esta version.
+- La demo NO se ha puesto al dia: su enlace (D3HVvFiQLNiFQShTpExSpa) ya no existe. Si Jose Manuel quiere demo, se
+  publica una nueva y se apunta aqui su enlace.
 - ALDI: no se ha cambiado. La foto aerea y el mapa ensenan que su aparcamiento no esta en la calle (parece estar en
   la cubierta o debajo, con una rampa por la punta sur): falta que Jose Manuel diga como es.
 - Archivos cambiados: parqueComercialEmpresas.js y rotulosArgana.js. Sin tocar main.js ni index.html.
