@@ -7,6 +7,11 @@ El barrio del noroeste, en la salida hacia San Bartolomé.
 
 ### HiperDino Argana — Calle Tenderete 7
 
+> **En su sitio de verdad (Version 147).** La planta de OpenStreetMap es la de la nave vieja, que ya no existe. La de
+> ahora está 57 m más cerca de la Calle Tenderete y mide 79 × 67 m (ortofoto oficial del IGN): `MOVER` en
+> hiperdinoArgana.js traslada todo el modelo y el del MediaMarkt. Ya no hay aparcamiento ni muro de lamas delante
+> de la cara larga (ahí está la acera de Tenderete); el aparcamiento es el del testero, hacia la Calle Iguazú.
+
 > **Cambio pedido por José Manuel (Version 91):** la **fachada** de la tienda (escaparate, marquesina,
 > entrada de clientes y rótulo grande) está en el testero que da a la **Calle Iguazú**, al lado del
 > MediaMarkt, y el **portón del garaje / muelle de carga** en la cara larga de la **Calle Tenderete**
@@ -282,3 +287,11 @@ Seguidilla (solo se mira).
   Zaranda, Miguel Hernández, Felo Monzón, Santiago Amón, Valle Inclán y alrededores con las vistas de Google y el kit de
   Altavista. Rótulos: Multicentimo, Bar Pizzería, Aluminios, Bar Cafetería El Barrio y Autoescuela Marco. Faltan unos 93
   tramos sin vistas de Google cerca. Los colegios (Alonso Quesada) y las canchas se dejan como estaban.
+
+## Repaso contra la foto oficial (Version 147)
+
+Con la ortofoto del IGN (WMS, ver `../../campoReal.js` en CLAUDE.md) se ha comparado el mapa del juego de la
+circunvalación a la Calle Tenderete y del hospital al Centro Comercial Argana. Arreglado: el HiperDino y el
+MediaMarkt (estaban en el solar de al lado), las marquesinas del aparcamiento del Mercadona de abajo
+(`../../mercadonaMarquesinas.js`, eran bloques de pisos), las naves del desguace de detrás del hospital y la
+depuradora de detrás del Decathlon (`../../arganaFaltaba.js`). Falta repasar igual el resto del barrio.

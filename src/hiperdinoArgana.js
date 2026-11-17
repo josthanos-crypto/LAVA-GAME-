@@ -32,11 +32,21 @@ import { terrainY } from './terrain.js';
  * al aparcamiento y a la calle; el fondo (B–C) queda hacia el noroeste.
  */
 
-const A = [-1320.8, -1455.3];
-const D = [-1270.3, -1365.2];
-const B = [-1360.9, -1432.8];
-const LEN = Math.hypot(D[0] - A[0], D[1] - A[1]);            // 103,3 m de fachada
-const WID = Math.hypot(B[0] - A[0], B[1] - A[1]);            // 46,0 m de fondo
+// (Version 147) La nave, en su sitio de verdad. OpenStreetMap trae aquí la planta de la nave VIEJA, que ya no existe
+// (hoy es un solar de materiales); la de ahora se levantó unos 57 m más cerca de la Calle Tenderete, donde este
+// archivo ponía el aparcamiento. Medido sobre la ortofoto oficial del IGN (PNOA, noviembre de 2026): la esquina de la
+// cara larga con el testero de la tienda cae en (-1236,1, -1410,7). Todo el modelo se traslada entero (`MOVER`); la
+// planta vieja (`CENTRO_OSM`) solo sirve para quitar su bloque del mapa. Lo mismo en centroComercialArgana.js.
+export const MOVER = [34.2, -45.5];
+// y con las medidas de la nave de ahora: 79 m de cara larga y 67 m de fondo (la vieja del mapa medía 103 × 46)
+const A = [-1308.9 + MOVER[0], -1434.1 + MOVER[1]];
+const D = [-1270.3 + MOVER[0], -1365.2 + MOVER[1]];
+const B = [-1367.3 + MOVER[0], -1401.3 + MOVER[1]];
+// Delante de la cara larga ya no cabe el aparcamiento de tres filas ni el muro de lamas: ahí está la acera de la
+// Calle Tenderete. El aparcamiento de verdad es el del testero (el del MediaMarkt, centroComercialArgana.js).
+const APARCAMIENTO_DELANTE = false;
+const LEN = Math.hypot(D[0] - A[0], D[1] - A[1]);            // 79 m de cara larga
+const WID = Math.hypot(B[0] - A[0], B[1] - A[1]);            // 67 m de fondo
 const U = [(D[0] - A[0]) / LEN, (D[1] - A[1]) / LEN];        // a lo largo de la fachada
 const N = [U[1], -U[0]];                                     // hacia fuera (aparcamiento y calle)
 const RY = Math.atan2(U[0], U[1]) + Math.PI / 2;
@@ -44,6 +54,7 @@ const RY2 = RY + Math.PI / 2;                                // el ancho va por 
 /** punto en coordenadas de la nave: u a lo largo de la fachada, v hacia el aparcamiento */
 const P = (u, v) => [A[0] + U[0] * u + N[0] * v, A[1] + U[1] * u + N[1] * v];
 const CENTRO = P(LEN / 2, -WID / 2);
+const CENTRO_OSM = [-1315.6, -1399.0];   // el centro de la planta vieja del mapa
 
 const ALTO = 7.4;                 // la nave (desde la calle se ve un piso y la franja de ventanas)
 const ESQ = 26;                   // el bloque alto del extremo de la calle
@@ -68,7 +79,7 @@ export function tuneHiperdinoArgana(map) {
     let cx = 0, cz = 0;
     for (const q of p) { cx += q[0]; cz += q[1]; }
     cx /= p.length; cz /= p.length;
-    if (Math.hypot(cx - CENTRO[0], cz - CENTRO[1]) < 16) {
+    if (Math.hypot(cx - CENTRO_OSM[0], cz - CENTRO_OSM[1]) < 16) {
       b.skip = true;
       b.hiperdino = true;
     }
@@ -77,7 +88,7 @@ export function tuneHiperdinoArgana(map) {
   const signs = map.signs || [];
   for (let i = signs.length - 1; i >= 0; i--) {
     const s = signs[i];
-    if (Math.hypot(s.x - CENTRO[0], s.z - CENTRO[1]) < 70 && /dino/i.test(s.name || '')) signs.splice(i, 1);
+    if (Math.hypot(s.x - CENTRO_OSM[0], s.z - CENTRO_OSM[1]) < 70 && /dino/i.test(s.name || '')) signs.splice(i, 1);
   }
 }
 
@@ -303,7 +314,7 @@ export function buildHiperdinoArgana(scene, colliders) {
     m.name = name; m.receiveShadow = true; scene.add(m);
   };
   asfaltar(0, LEN, 0, 4.4, 0xcfccc3, 'hiperdinoAcera');
-  asfaltar(2, LEN - 2, 4.4, V_LAMAS, 0xffffff, 'hiperdinoAparcamiento');
+  if (APARCAMIENTO_DELANTE) asfaltar(2, LEN - 2, 4.4, V_LAMAS, 0xffffff, 'hiperdinoAparcamiento');
 
   /** una raya de las plazas, tumbada sobre el asfalto */
   const raya = (u0, v0, u1, v1) => {
@@ -313,18 +324,20 @@ export function buildHiperdinoArgana(scene, colliders) {
     k.box((x0 + x1) / 2, y, (z0 + z1) / 2, 0.1, 0.012, largo + 0.06, 0xeceae2,
       { ry: Math.atan2(x1 - x0, z1 - z0), list: k.shell });
   };
-  for (let u = 6; u < LEN - 6; u += PLAZA) {
+  for (let u = 6; APARCAMIENTO_DELANTE && u < LEN - 6; u += PLAZA) {
     // delante del portón no se pinta plaza: es la zona de maniobra del camión
     if (Math.abs(u - MUELLE) < 8.4) continue;
     for (const [a, b] of FILAS) raya(u, a, u, b);
   }
   // la zona de carga, marcada en el firme: dos líneas y la boca de la rampa
-  for (const du of [-7.4, 7.4]) raya(MUELLE + du, 0.9, MUELLE + du, 12.6);
-  raya(MUELLE - 7.4, 12.6, MUELLE + 7.4, 12.6);
+  if (APARCAMIENTO_DELANTE) {
+    for (const du of [-7.4, 7.4]) raya(MUELLE + du, 0.9, MUELLE + du, 12.6);
+    raya(MUELLE - 7.4, 12.6, MUELLE + 7.4, 12.6);
+  }
 
   // ── el muro de lamas blancas hacia la acera de Tenderete, con el hueco de la entrada de camiones ──
   const modulo = 2.4;
-  for (const [u0, u1] of [[2.4, MUELLE - 7.2], [MUELLE + 7.2, LEN - 2.4]]) {
+  for (const [u0, u1] of APARCAMIENTO_DELANTE ? [[2.4, MUELLE - 7.2], [MUELLE + 7.2, LEN - 2.4]] : []) {
     for (let u = u0; u < u1 - 0.3; u += modulo) {
       const ue = Math.min(u + modulo, u1);
       const [x0, z0] = P(u, V_LAMAS), [x1, z1] = P(ue, V_LAMAS);

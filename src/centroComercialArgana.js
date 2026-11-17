@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { Kit, canvasTex } from './interiorKit.js';
 import { paveMaterial, asfalto } from './suelos.js';
 import { terrainY } from './terrain.js';
+import { MOVER } from './hiperdinoArgana.js';
 
 /**
  * El MediaMarkt del Parque Comercial de Argana — Calle Tenderete 7 (Argana Alta).
@@ -20,11 +21,13 @@ import { terrainY } from './terrain.js';
  * van con las demás de la ciudad (map.extraPalms, world.js).
  */
 
-const A = [-1320.8, -1455.3];
-const D = [-1270.3, -1365.2];
-const B = [-1360.9, -1432.8];
-const LEN = Math.hypot(D[0] - A[0], D[1] - A[1]);            // 103,3 m de fachada
-const WID = Math.hypot(B[0] - A[0], B[1] - A[1]);            // 46,0 m de fondo
+// (Version 147) la nave está 57 m más cerca de la Calle Tenderete que la planta vieja de OpenStreetMap: ver hiperdinoArgana.js
+// y con las medidas de la nave de ahora: 79 m de cara larga y 67 m de fondo (la vieja del mapa medía 103 × 46)
+const A = [-1308.9 + MOVER[0], -1434.1 + MOVER[1]];
+const D = [-1270.3 + MOVER[0], -1365.2 + MOVER[1]];
+const B = [-1367.3 + MOVER[0], -1401.3 + MOVER[1]];
+const LEN = Math.hypot(D[0] - A[0], D[1] - A[1]);            // 79 m de cara larga
+const WID = Math.hypot(B[0] - A[0], B[1] - A[1]);            // 67 m de fondo
 const U = [(D[0] - A[0]) / LEN, (D[1] - A[1]) / LEN];        // a lo largo de la fachada
 const N = [U[1], -U[0]];                                     // hacia fuera (aparcamiento)
 const RY = Math.atan2(U[0], U[1]) + Math.PI / 2;

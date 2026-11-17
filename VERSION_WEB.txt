@@ -1888,3 +1888,23 @@ Version 146 - El relieve de verdad en el campo de arriba (17/11/2026)
 - Sin probar en un movil de verdad. El caserio de la lancha ANMARA UNO sigue sin sitio real conocido.
 - Archivos cambiados: terrain.js y campoReal.js. Nuevos: pruebas/terreno_norte.py y public/map/terreno-norte.json.
   Sin tocar main.js ni index.html.
+
+Version 147 - Argana calle a calle contra la foto oficial: HiperDino y MediaMarkt en su sitio, marquesinas y lo que faltaba (17/11/2026)
+- Se ha comparado el mapa del juego con la ortofoto oficial del IGN (PNOA) en la zona comercial de Argana, de la
+  circunvalacion a la calle Tenderete y del hospital al Centro Comercial Argana. Lo que no cuadraba:
+- HiperDino y MediaMarkt (calle Tenderete 7): OpenStreetMap trae ahi la planta de la nave VIEJA, que ya no existe
+  (hoy es un solar de materiales). La de ahora esta unos 57 m mas cerca de la calle Tenderete, justo donde el juego
+  ponia el aparcamiento. La nave se ha movido entera a su sitio y con sus medidas de verdad (79 x 67 m; antes 103 x
+  46): la cara larga, con el porton, a la calle Tenderete; la tienda y el MediaMarkt, al aparcamiento que da a la
+  calle Iguazu, como dijo Jose Manuel. Fuera el aparcamiento de tres filas y el muro de lamas de delante de la cara
+  larga: ahi esta la acera.
+- Aparcamiento del Mercadona de abajo: las tres cubiertas largas son marquesinas de sombra para los coches, pero el
+  mapa las traia como edificios y el juego levantaba tres bloques de pisos. Ahora son marquesinas sobre pilares, con
+  126 plazas pintadas debajo; se pasa con el coche por debajo.
+- Faltaban y se han puesto: las cuatro naves largas del desguace de neumaticos de detras del hospital (sin nombre) y
+  la depuradora de detras del Decathlon (siete depositos redondos y la balsa).
+- El sitio "HiperDino Argana" de la pantalla de inicio mira ya a la tienda de verdad.
+- Lo demas de esa zona (Decathlon, Burger King, McDonald's, Mercadona, Lidl, las naves de la calle Tenderete, el
+  hospital, la ITV y las casas de alrededor) coincide con la foto. Falta repasar igual el resto de Argana.
+- Archivos nuevos: mercadonaMarquesinas.js y arganaFaltaba.js. Cambiados: hiperdinoArgana.js, centroComercialArgana.js,
+  startPlaces.js y el index.js de "argana-alta". Sin tocar main.js ni index.html.

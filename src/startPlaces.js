@@ -66,7 +66,7 @@ export function startPlaces(map, locales) {
     { id: 'campo', label: 'Camino de tierra', keys: ['camino de tierra', 'campo', 'casa', 'mi casa', 'tierra'], at: CAMPO_START.at, look: CAMPO_START.look },
     { id: 'hospital', label: 'Parque del Hospital Insular', keys: ['hospital insular', 'parque del hospital', 'insular', 'parking de los medicos'], at: [704, -79.5], look: [689, -81] },
     // el HiperDino de Argana Alta, en la Calle Tenderete (hiperdinoArgana.js): el coche aparece en la calle, de cara a la tienda
-    { id: 'hiperdino', label: 'HiperDino Argana', keys: ['hiperdino', 'hiper dino', 'argana', 'argana alta', 'supermercado'], at: [-1280, -1313], look: [-1300, -1349] },
+    { id: 'hiperdino', label: 'HiperDino Argana', keys: ['hiperdino', 'hiper dino', 'argana', 'argana alta', 'supermercado'], at: [-1280, -1313], look: [-1262, -1385] },
     // Playa Honda (barrios/playa-honda): en la Avenida Mamerto Cabrera, mirando a la entrada de Conforama
     { id: 'honda', label: 'Playa Honda', keys: ['playa honda', 'honda', 'conforama', 'mamerto cabrera'], at: [-3790, 552], look: [-3822, 548] },
   ];

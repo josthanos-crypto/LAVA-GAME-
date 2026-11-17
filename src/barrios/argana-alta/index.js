@@ -19,6 +19,8 @@ import { buildAparcamientoHospital } from '../../hospitalAparcamiento.js';
 import { buildRotulosTenderete } from '../../rotulosTenderete.js';
 import { tuneCcArgana, buildCcArgana } from '../../ccArgana.js';
 import { buildRotulosArgana } from '../../rotulosArgana.js';
+import { tuneMarquesinasMercadona, buildMarquesinasMercadona } from '../../mercadonaMarquesinas.js';
+import { tuneArganaFaltaba, buildArganaFaltaba } from '../../arganaFaltaba.js';
 import { tuneCalleTanganillo } from '../../calleTanganillo.js';
 import { tuneRellenoArgana } from '../../rellenoArgana.js';
 import { tuneOrtopediaCarmen, buildOrtopediaCarmen } from '../../ortopediaCarmen.js';
@@ -55,6 +57,10 @@ export function prepararMapa(map) {
   tuneLidlRepsol(map);
   // el Centro Comercial Argana y las naves de Deko Hogar y Kiwoko: no venían en el mapa
   tuneCcArgana(map);
+  // las marquesinas del aparcamiento del Mercadona de abajo: no son bloques de pisos
+  tuneMarquesinasMercadona(map);
+  // las naves que faltaban en el mapa (comparado con la foto oficial)
+  tuneArganaFaltaba(map);
   // la ITV de la subida a San Bartolomé: fuera el bloque genérico de su nave
   tuneItvArgana(map);
   // el atajo real del camino de tierra a la Calle Tenderete, que faltaba en el mapa
@@ -127,6 +133,10 @@ export function construir({ scene, colliders, map }) {
   buildCcArgana(scene, colliders, map);
   // los rótulos de los demás negocios de la zona comercial de Argana
   buildRotulosArgana(scene, map);
+  // las tres marquesinas de sombra del aparcamiento del Mercadona de abajo
+  buildMarquesinasMercadona(scene, colliders, map);
+  // la depuradora de detrás del Decathlon: los depósitos redondos y la balsa
+  buildArganaFaltaba(scene, colliders);
   // la Ortopedia Carmen (foto de julio de 2019): el recerco de granito, el marco rojo y el rótulo con el árbol
   buildOrtopediaCarmen(scene, colliders, map);
   // la nave de Dos Cabras (vista de la calle de julio de 2025): la pared blanca alta, el portón con la cabra y la puerta pequeña
