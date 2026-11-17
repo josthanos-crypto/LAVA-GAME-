@@ -2080,3 +2080,17 @@ Version 157 - El Recinto Ferial, el Parque Tematico y su fuente (17/11/2026)
   juegos del parque infantil uno a uno, y los edificios del parque (salen como bloques genericos).
 - Archivos: recintoFerial.js y reductoFoto.js (nuevos), explanadaReducto.js, barrios/compartido/index.js y las fotos
   public/reducto/zona.jpg y zona-m.jpg (PNOA, IGN, CC BY 4.0). Sin tocar main.js ni index.html.
+
+Version 158 - La Avenida Fred Olsen, a lo largo de la Playa del Reducto (17/11/2026)
+- Comparada la avenida con la foto aerea oficial del IGN. Nuevo:
+  * El carril bici rojo del lado del mar, entre la calzada y el paseo, desde la rotonda del Barlovento hacia el este
+    (unos 320 m, hasta donde se acaba el rojo en la foto), con su raya del medio.
+  * Bancos blancos junto al carril, uno cada 16 m. En la foto son rectangulos blancos junto a cada palmera: no se ha
+    visto a pie de calle como son; aqui son un banco blanco sencillo.
+  * En la arena: la torre blanca del socorrista con su rampa, las dos pasarelas de madera que bajan del paseo (la
+    primera con su tarima) y las palmeras sueltas de la playa que faltaban.
+  * El suelo de toda esa franja, con la foto aerea oficial a 20 cm por punto.
+- Sin hacer: las fachadas de los edificios de la avenida (hacen falta fotos a pie de calle), el chiringuito de techo
+  oscuro de junto al quiosco octogonal (no se sabe que es) y las fuentes nuevas (no se sabe donde estan).
+- Archivos: avenidaFredOlsen.js (nuevo), reductoFoto.js (una funcion compartida), barrios/compartido/index.js y las
+  fotos public/reducto/avenida.jpg y avenida-m.jpg (PNOA, IGN, CC BY 4.0). Sin tocar main.js ni index.html.

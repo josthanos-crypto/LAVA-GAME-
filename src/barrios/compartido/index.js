@@ -26,6 +26,7 @@ import { buildExplanadaReducto } from '../../explanadaReducto.js';
 import { tuneRecorridoHonda, buildRecorridoHonda } from '../../recorridoHonda.js';
 import { tuneRecintoFerial, buildRecintoFerial } from '../../recintoFerial.js';
 import { tuneReductoFoto, buildReductoFoto } from '../../reductoFoto.js';
+import { tuneAvenidaFredOlsen, buildAvenidaFredOlsen } from '../../avenidaFredOlsen.js';
 import { buildWalkIndex } from '../../aceras.js';
 import { buildParadasGuagua } from '../../paradasGuagua.js';
 import { tuneParqueComercialPuerto, buildParqueComercialPuerto } from '../../parqueComercialPuerto.js';
@@ -60,6 +61,8 @@ export function prepararMapa(map) {
   tuneRecintoFerial(map);
   // esa zona (Recinto Ferial, Cabildo y Parque Temático) con la foto aérea oficial como suelo, y el parque sin césped
   tuneReductoFoto(map);
+  // la Avenida Fred Olsen a lo largo de la Playa del Reducto: foto aérea de suelo y las palmeras de la arena
+  tuneAvenidaFredOlsen(map);
   // aceras libres: las calles se ajustan a lo que dejan las fachadas y, si no basta, la fachada se echa atrás
   // (ajusteCalles.js). Va aquí, al final, para respetar los edificios que los barrios marcan como hechos a mano.
   // El índice de aceras (aceras.js) se hizo antes con las anchuras viejas: se rehace.
@@ -93,6 +96,8 @@ export function construir({ scene, map, colliders, touch, story }) {
   // el Recinto Ferial: la cubierta con el escenario y el aparcamiento
   buildRecintoFerial(scene, colliders, map);
   buildReductoFoto(scene, colliders);
+  // la Avenida Fred Olsen: carril bici rojo, bancos, torre del socorrista y pasarelas de la playa
+  buildAvenidaFredOlsen(scene, colliders);
   // las paradas de guagua reales de toda la ciudad (OpenStreetMap), con su nombre; las guaguas paran en ellas
   const paradas = buildParadasGuagua(scene, map, colliders);
   // el parque comercial de la salida a Costa Teguise: IKEA, Electron, las canchas de pádel y los aparcamientos

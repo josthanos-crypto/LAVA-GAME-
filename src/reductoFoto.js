@@ -35,12 +35,13 @@ export function tuneReductoFoto(map) {
   if (Array.isArray(map.fountains)) map.fountains = map.fountains.filter(f => !(Math.abs(f[0] + 1184) < 16 && Math.abs(f[1] - 598) < 14));
 }
 
-function suelo(scene) {
+/** un suelo con una foto aérea: `R` = rectángulo, `archivo` = public/reducto/<archivo>.jpg (y `-m` para el móvil) */
+export function sueloConFoto(scene, R, archivo, nombre) {
   const modelo = scene.getObjectByName('sueloFinoHonda')?.children.find(m => m.isMesh);
   if (!modelo) return null;
   const movil = isTouchDevice(), celda = movil ? 16 : 8;
   const base = import.meta.env.BASE_URL || './';
-  const tex = new THREE.TextureLoader().load(base + 'reducto/zona' + (movil ? '-m' : '') + '.jpg');
+  const tex = new THREE.TextureLoader().load(base + 'reducto/' + archivo + (movil ? '-m' : '') + '.jpg');
   tex.colorSpace = THREE.SRGBColorSpace;
   tex.anisotropy = 8;
   tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;
@@ -49,16 +50,16 @@ function suelo(scene) {
   mat.color.set(0xffffff);
   mat.userData = { ...modelo.material.userData, terrainSeg: celda };
   const grupo = new THREE.Group();
-  grupo.name = 'sueloReducto';
-  const W = ZONA.x1 - ZONA.x0, H = ZONA.z1 - ZONA.z0;
-  for (let x = ZONA.x0; x < ZONA.x1; x += TESELA) {
-    for (let z = ZONA.z0; z < ZONA.z1; z += TESELA) {
-      const x1 = Math.min(x + TESELA, ZONA.x1), z1 = Math.min(z + TESELA, ZONA.z1);
+  grupo.name = nombre;
+  const W = R.x1 - R.x0, H = R.z1 - R.z0;
+  for (let x = R.x0; x < R.x1; x += TESELA) {
+    for (let z = R.z0; z < R.z1; z += TESELA) {
+      const x1 = Math.min(x + TESELA, R.x1), z1 = Math.min(z + TESELA, R.z1);
       const g = new THREE.PlaneGeometry(x1 - x, z1 - z, Math.ceil((x1 - x) / celda), Math.ceil((z1 - z) / celda));
       g.rotateX(-Math.PI / 2);
       g.translate((x + x1) / 2, -0.35, (z + z1) / 2);
       const p = g.getAttribute('position'), uv = g.getAttribute('uv');
-      for (let i = 0; i < p.count; i++) uv.setXY(i, (p.getX(i) - ZONA.x0) / W, 1 - (p.getZ(i) - ZONA.z0) / H);
+      for (let i = 0; i < p.count; i++) uv.setXY(i, (p.getX(i) - R.x0) / W, 1 - (p.getZ(i) - R.z0) / H);
       const m = new THREE.Mesh(g, mat);
       m.receiveShadow = true;
       grupo.add(m);
@@ -102,7 +103,7 @@ function fuente(scene, colliders) {
 }
 
 export function buildReductoFoto(scene, colliders) {
-  const s = suelo(scene);
+  const s = sueloConFoto(scene, ZONA, 'zona', 'sueloReducto');
   const f = fuente(scene, colliders);
   return { suelo: s, fuente: f };
 }
