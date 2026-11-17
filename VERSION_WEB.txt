@@ -1990,3 +1990,24 @@ Version 152 - La casa del camino de tierra, en su parcela de verdad (17/11/2026)
   (al fondo del todo de la parcela); la terraza con la pergola sigue en la cara oeste de la casa y en las fotos parece
   dar al sur, sobre la piscina; la casa vecina del oeste sale mas alta de lo que es.
 - Archivos cambiados: campoReal.js y casaCampo.js. Sin tocar main.js ni index.html.
+
+Version 153 - La parcela de la casa del campo, como en los fotogramas de la llegada (17/11/2026)
+- Con los fotogramas de la llegada (recursos, IMG_5113) y la foto oficial del IGN se ha rehecho, en su sitio, la parte
+  de la parcela que va de la casa hacia el sur. Antes era el patio antiguo girado y la puerta del garaje y el arbol
+  caian al reves.
+- El bloque blanco del fondo: el garaje al oeste, con la puerta seccional mirando al OESTE, su rampa de hormigon y la
+  explanada de grava gris delante (ya no es negra); el cuarto del tejado de losetas rosas al este.
+- EL ARBOL queda en la esquina de abajo a la derecha del bloque (sureste), junto al muro que da a la pista, como dijo
+  Jose Manuel. En ese muro van las vetas de oxido, la luz, las macetas, las garrafas, la mesa, el casco de barca, los
+  pales y la hormigonera.
+- El patio: baldosa, la piscina con su entrada de escalones al norte, el jardin de cesped al este con la pergola de
+  chapa, la jardinera redonda, el busto, las tumbonas y los delfines en los muros. La cancela queda entre el muro del
+  oeste y el garaje.
+- La terraza con la pergola y la ventana redonda pasa a la cara SUR de la casa, sobre el patio.
+- La casa vecina del oeste salia de tres plantas (dato del Catastro): en los fotogramas se ve mas baja que la terraza
+  y se queda en una planta. El muro blanco alto que cerraba la explanada era un error: queda un murete bajo.
+- Sin comprobar: el redondel gris del jardin (en la foto aerea no se distingue que es) y la cancela (en los fotogramas
+  solo se ve un hueco oscuro con un marco de hierro). La terraza sale 2,6 m de la fachada; en la foto aerea parece
+  estar metida dentro de la planta de la casa.
+- Archivos: casaParcela.js (nuevo), casaCampo.js, campoReal.js, campoDatos.js y barrios/maneje/index.js (una linea).
+  Sin tocar main.js ni index.html.

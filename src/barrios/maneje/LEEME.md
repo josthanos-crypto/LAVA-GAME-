@@ -36,7 +36,7 @@ lancha ANMARA UNO sigue sin sitio real conocido.
 ## Archivos suyos
 
 ```
-casaCampo.js  campoDatos.js  caminoAnmara.js  campoReal.js  gasolineraManeje.js (en src/)
+casaCampo.js  campoDatos.js  caminoAnmara.js  campoReal.js  casaParcela.js  gasolineraManeje.js (en src/)
 ```
 
 ## Probar
@@ -73,3 +73,7 @@ y del campo de arriba en un 12 % más o menos.
 Cubre Guadalajara, Guanareme, Caracas, Veracruz, Moterrey, Maracaibo, Tindaya, Tegaso, Telésforo Bravo, Granada y
 alrededores: casas terreras blancas, adosados crema de dos plantas y solares. Rótulo: Bar Pablo. Unos 150 tramos sin vistas
 de Google cerca se quedan como estaban. Bandera `map.manejeCalles`.
+
+(Version 153) `../../casaParcela.js`: la parcela de la casa, de la casa hacia el sur, en su sitio de verdad (garaje con
+la puerta al oeste, explanada de grava, el árbol en la esquina sureste, patio con la piscina y el jardín). Sustituye al
+patio girado de casaCampo.js; `tuneParcela` baja la casa vecina del oeste a una planta.

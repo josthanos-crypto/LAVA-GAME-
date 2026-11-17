@@ -8,6 +8,7 @@
 
 import { buildCasaCampo } from '../../casaCampo.js';
 import { buildCaminoAnmara } from '../../caminoAnmara.js';
+import { tuneParcela } from '../../casaParcela.js';
 import { desnivelesManeje } from '../../desniveles/maneje.js';
 import { prepararGasolineraManeje, buildGasolineraManeje } from '../../gasolineraManeje.js';
 import { tuneCalles } from './calles.js';
@@ -33,6 +34,8 @@ export function prepararMapa(map) {
   tuneCalles3(map);
   // el resto de las calles de casas, con el patrón del barrio
   tuneResto(map);
+  // la vecina de la casa del campo, a su altura de verdad (casaParcela.js)
+  tuneParcela(map);
 }
 
 /** primera fase: antes de crear los locales */

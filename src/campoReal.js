@@ -28,7 +28,7 @@ import { isTouchDevice } from './touch.js';
  * Coordenadas del juego: x = (lon + 13,55) · 97398, z = (28,9625 − lat) · 111320.
  */
 
-const ACTIVO = true;
+export const ACTIVO = true;
 
 /** el rectángulo del campo (el mismo de casaCampo.js) y el del detalle de la casa */
 const CAMPO = { x0: -2700, x1: 0, z0: -3700, z1: -2385 };
@@ -81,22 +81,27 @@ export function mover(x, z) {
 //    cuarto de vuelta, enteros, para que queden al SUR (lo que miraba al norte pasa a mirar al oeste, como la
 //    puerta del garaje en sus fotos);
 //  - el resto del caserío sigue con el desplazamiento de `CONTROL`, que es el que encaja con la foto.
-const PATIO_DE = [-2009.5, -3294.6];     // esquina del patio pegada a la casa, en los números de casaCampo.js
-const PATIO_A = [-1996, -3295];          // esa misma esquina en la realidad: muro este de la parcela, pared sur de la casa
-/** el sitio de verdad de un punto del patio o del garaje de casaCampo.js */
-export const alPatioReal = (x, z) => [+(PATIO_A[0] + (z - PATIO_DE[1])).toFixed(2), +(PATIO_A[1] - (x - PATIO_DE[0])).toFixed(2)];
-/** un grupo que pone en su sitio todo lo que se le meta del patio y del garaje (giro de un cuarto de vuelta) */
-export function grupoPatioReal() {
+// (Version 153) La parcela mide 14 m de ancho (de x = -2010 a -1996) y el patio de casaCampo.js medía 21,4: al
+// girarlo se estrecha a lo ancho (`ancho`) para que quepa entero dentro de sus muros, con el garaje pegado al muro
+// del oeste y la puerta dando a la explanada. Y baja 3 m para dejar sitio a la terraza, que va en la cara sur.
+export const PATIO = { de: [-2009.5, -3294.6], a: [-1996, -3292], ancho: 14 / 21.4 };
+// la terraza con la pérgola: casaCampo.js la tenía en la cara oeste; va en la cara sur, sobre el patio
+export const TERRAZA = { de: [-2009.5, -3302.3], a: [-2002.5, -3295], ancho: 1 };
+/** el sitio de verdad de un punto de una pieza girada: `de` = punto de casaCampo.js, `a` = ese punto en la realidad */
+export const giro = ({ de, a, ancho = 1 }) => (x, z) => [+(a[0] + ancho * (z - de[1])).toFixed(2), +(a[1] - (x - de[0])).toFixed(2)];
+export const alPatioReal = giro(PATIO);
+/** un grupo que pone en su sitio todo lo que se le meta (giro de un cuarto de vuelta, y el ancho) */
+export function grupoGirado(nombre, { de, a, ancho = 1 }) {
   const g = new THREE.Group();
-  g.name = 'patioCasaReal';
-  if (!ACTIVO) return g;
+  g.name = nombre;
   g.rotation.y = Math.PI / 2;
-  g.position.set(PATIO_A[0] - PATIO_DE[1], 0, PATIO_A[1] + PATIO_DE[0]);
+  g.scale.z = ancho;
+  g.position.set(a[0] - ancho * de[1], 0, a[1] + de[0]);
   g.updateMatrix();
   return g;
 }
 /** la parcela de verdad (casa, patio y garaje), con un margen: ahí no van casas genéricas ni matojos */
-export const enCasaReal = (x, z) => ACTIVO && x < -1994.5 && ((x > -2010.5 && z > -3317.5 && z < -3294) || (x > -2019 && z >= -3295.5 && z < -3270));
+export const enCasaReal = (x, z) => ACTIVO && x < -1994.5 && ((x > -2010.5 && z > -3317.5 && z < -3294) || (x > -2023 && z >= -3295.5 && z < -3266));
 /** la casa del tejado rojo con piscina (donde estuvo por error la casa en la Version 145): una casa más del caserío */
 export const CASA_TEJADO_ROJO = { p: [[-2063, -3348], [-2049, -3348], [-2049, -3328], [-2063, -3328], [-2063, -3348]], h: 6.3 };
 
