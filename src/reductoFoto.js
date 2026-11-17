@@ -41,7 +41,8 @@ export function sueloConFoto(scene, R, archivo, nombre) {
   if (!modelo) return null;
   const movil = isTouchDevice(), celda = movil ? 16 : 8;
   const base = import.meta.env.BASE_URL || './';
-  const tex = new THREE.TextureLoader().load(base + 'reducto/' + archivo + (movil ? '-m' : '') + '.jpg');
+  // `archivo` sin carpeta = public/reducto/; con carpeta (p. ej. 'hospital/trasera'), tal cual
+  const tex = new THREE.TextureLoader().load(base + (archivo.includes('/') ? archivo : 'reducto/' + archivo) + (movil ? '-m' : '') + '.jpg');
   tex.colorSpace = THREE.SRGBColorSpace;
   tex.anisotropy = 8;
   tex.wrapS = tex.wrapT = THREE.ClampToEdgeWrapping;

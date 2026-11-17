@@ -2094,3 +2094,19 @@ Version 158 - La Avenida Fred Olsen, a lo largo de la Playa del Reducto (17/11/2
   oscuro de junto al quiosco octogonal (no se sabe que es) y las fuentes nuevas (no se sabe donde estan).
 - Archivos: avenidaFredOlsen.js (nuevo), reductoFoto.js (una funcion compartida), barrios/compartido/index.js y las
   fotos public/reducto/avenida.jpg y avenida-m.jpg (PNOA, IGN, CC BY 4.0). Sin tocar main.js ni index.html.
+
+Version 159 - La parte de atras del Hospital Molina Orosa (calle Santiago Aleman) (17/11/2026)
+- Leidas las tres transcripciones de recursos\nuevas\clips_0-20s (las hizo otra herramienta, OpenCode) y vistas sus
+  hojas de fotogramas. Solo cubren los 20 primeros segundos de cada video:
+  * "hospital hiperdino": "Estamos dentro del hospital... y por la parte de detras... la calle Santiago Aleman".
+  * IMG_0423: sin voz en esos 20 s; una rotonda junto al puerto, una guagua y la Escuela de Arte.
+  * IMG_0424: "Salimos del parking del LIDL y voy a ir por la subida de San Bartolome, que es la que no tienes tu
+    muy clara". La subida empieza despues del segundo 20: ese trozo no esta todavia.
+- Nuevo en el juego: la parte de atras del hospital, que no tenia nada. El aparcamiento largo de entre el hospital y
+  la calle Santiago Aleman, con sus filas y sus coches; los dos aparcamientos del noroeste; y el suelo de toda esa
+  parte con la foto aerea oficial del IGN a 20 cm por punto.
+- Sin hacer: la valla verde y la marquesina de la entrada de atras (se ven en el video, no en la foto aerea) y la
+  subida de San Bartolome (falta el resto del video). En recursos\nuevas queda PARA_OPENCODE.md con el encargo para
+  sacar los tres videos enteros (un fotograma por segundo y la transcripcion completa) en Descargas.
+- Archivos: hospitalTrasera.js (nuevo), reductoFoto.js (una linea), barrios/argana-alta/index.js y las fotos
+  public/hospital/trasera.jpg y trasera-m.jpg (PNOA, IGN, CC BY 4.0). Sin tocar main.js ni index.html.
