@@ -8,16 +8,15 @@ import { buildAparcamientos } from './aparcamientosTenderete.js';
  * En el juego ahí solo estaba la foto aérea. Medida sobre la ortofoto oficial del IGN; el firme y las plazas los
  * pone `buildAparcamientos` (no pinta sobre calle, acera ni edificio). El número de plazas es el que cabe, no el real.
  *
- * PENDIENTE: al otro lado de la rotonda, al oeste del Cabildo, el mapa trae un bloque de 9,5 m (centro en -1351, 582)
- * donde la foto oficial enseña un aparcamiento al aire libre. No se ha quitado: hay que preguntárselo a José Manuel.
+ * (Version 157) Al otro lado de la rotonda está el Recinto Ferial: ver recintoFerial.js.
  *
  * El edificio de la cúpula (la antigua discoteca) NO se toca: José Manuel dijo que no se pusiera (Version 101f).
  */
 const SOLARES = [
   // junto a la rotonda, donde aparcan los coches en la foto
   { nombre: 'explanadaReductoNorte', centro: [-1318, 678], eje: [0.21, 0.978], largo: 40, ancho: 15 },
-  // la explanada grande del suroeste, hasta el muro del mar
-  { nombre: 'explanadaReductoSur', centro: [-1492, 808], eje: [0.94, 0.34], largo: 62, ancho: 26 },
+  // (Version 157) la explanada grande del suroeste ya no lleva firme pintado: se salía sobre el mar; ahora el suelo
+  // de toda la zona es la foto aérea oficial (reductoFoto.js), que enseña el asfalto y sus rayas de verdad
 ];
 
 export function buildExplanadaReducto(scene, map) {

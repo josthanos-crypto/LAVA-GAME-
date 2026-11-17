@@ -2063,3 +2063,20 @@ Version 156 - El recorrido Deiland Plaza (Playa Honda) - autovia - Arrecife - ta
   palmeras del arcen de la autovia (hay que comprobar cuantas tiene ya el juego), el edificio beis de la entrada,
   los bancos blancos y las esculturas oxidadas del paseo, y las fachadas del centro una a una.
 - Archivos: recorridoHonda.js (nuevo) y barrios/compartido/index.js (tres lineas). Sin tocar main.js ni index.html.
+
+Version 157 - El Recinto Ferial, el Parque Tematico y su fuente (17/11/2026)
+- Jose Manuel aclaro que el "edificio" de al oeste del Cabildo no es un edificio: es el Recinto Ferial (Avenida Fred
+  Olsen, donde se monta el escenario del Carnaval; confirmado tambien buscandolo). El juego tenia ahi un bloque de
+  pisos de 9,5 m que tapaba el aparcamiento. Ahora es la cubierta gris sobre pilares, con el fondo cerrado y la
+  tarima del escenario, y debajo el aparcamiento al aire libre con sus filas y sus coches. Sin rotulos.
+- Toda esa zona (Recinto Ferial, plaza del Cabildo, rotonda de la Vela Latina y Parque Tematico) lleva de suelo la
+  foto aerea oficial del IGN a 20 cm por punto (antes, la foto general, borrosa).
+- El Parque Tematico salia como un cesped verde con arboles redondos. Ahora se ve como es: picon negro y rojo,
+  los paseos y las plazas de losa con su dibujo, el parque infantil y la zona de juegos.
+- La fuente del parque: el estanque en forma de pajarita con su borde blanco y sus chorros (antes, un surtidor
+  generico).
+- Corregido de la Version 155: el firme pintado de la explanada grande se salia sobre el mar; quitado.
+- Sin hacer: las fuentes nuevas que dice Jose Manuel (no salen en la foto aerea ni he encontrado donde estan), los
+  juegos del parque infantil uno a uno, y los edificios del parque (salen como bloques genericos).
+- Archivos: recintoFerial.js y reductoFoto.js (nuevos), explanadaReducto.js, barrios/compartido/index.js y las fotos
+  public/reducto/zona.jpg y zona-m.jpg (PNOA, IGN, CC BY 4.0). Sin tocar main.js ni index.html.
