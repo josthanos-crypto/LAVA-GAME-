@@ -85,6 +85,8 @@ function cartelTex(texto, tipo) {
 /**
  * cuelga los carteles en las naves; devuelve el grupo (userData.puestos = cuántos se han podido poner).
  * Cada empresa es [nombre, x, z] o [nombre, x, z, 'farmacia']. `zona` = [x0, x1, z0, z1] donde se buscan las paredes.
+ * Un quinto dato, si hace falta, es cuánto sale el cartel de la pared (m): para las naves que llevan su fachada
+ * hecha por delante del bloque del mapa.
  */
 export function buildRotulosEmpresas(scene, map, empresas = EMPRESAS, zona = ZONA, nombreGrupo = 'parqueComercialRotulos') {
   const ZONA = zona;
@@ -107,7 +109,7 @@ export function buildRotulosEmpresas(scene, map, empresas = EMPRESAS, zona = ZON
     });
   }
   let puestos = 0;
-  for (const [nombre, x, z, tipo] of empresas) {
+  for (const [nombre, x, z, tipo, fuera = 0.2] of empresas) {
     let mejor = null;
     for (const l of lados) {
       const t = Math.max(0, Math.min(l.len, (x - l.a[0]) * l.d[0] + (z - l.a[1]) * l.d[1]));
@@ -136,7 +138,7 @@ export function buildRotulosEmpresas(scene, map, empresas = EMPRESAS, zona = ZON
     const alto = Math.min((l.b.h || 6) - 0.9, 4.8) - fila * (ALTO + 0.15);
     const g = new THREE.PlaneGeometry(ancho, ALTO);
     g.rotateY(Math.atan2(l.n[0], l.n[1]));
-    g.translate(l.a[0] + l.d[0] * t + l.n[0] * 0.2, Math.max(1.6, alto), l.a[1] + l.d[1] * t + l.n[1] * 0.2);
+    g.translate(l.a[0] + l.d[0] * t + l.n[0] * fuera, Math.max(1.6, alto), l.a[1] + l.d[1] * t + l.n[1] * fuera);
     const tex = cartelTex(nombre, tipo);
     const m = new THREE.Mesh(g, new THREE.MeshStandardMaterial({ map: tex, roughness: 0.55, emissive: 0xffffff, emissiveMap: tex, emissiveIntensity: 0.12 }));
     m.name = 'rotulo:' + nombre;
