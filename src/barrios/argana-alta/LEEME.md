@@ -295,3 +295,7 @@ circunvalación a la Calle Tenderete y del hospital al Centro Comercial Argana. 
 MediaMarkt (estaban en el solar de al lado), las marquesinas del aparcamiento del Mercadona de abajo
 (`../../mercadonaMarquesinas.js`, eran bloques de pisos), las naves del desguace de detrás del hospital y la
 depuradora de detrás del Decathlon (`../../arganaFaltaba.js`). Falta repasar igual el resto del barrio.
+
+(Version 154) `../../tendereteAvenida.js`: la Calle Tenderete de abajo (hasta la rotonda de la Repsol) como avenida con
+mediana y coches aparcados; `../../rotondaConcha.js`: la concha blanca de esa rotonda. Sacado de los fotogramas del
+recorrido de José Manuel.

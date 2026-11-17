@@ -30,6 +30,7 @@ import { tuneArepasFactory, buildArepasFactory } from '../../arepasFactory.js';
 import { desnivelesArganaAlta } from '../../desniveles/argana-alta.js';
 import { tuneHospitalMolinaOrosa, buildHospitalMolinaOrosa } from '../../hospitalMolinaOrosa.js';
 import { tunePalacioDeportes, buildPalacioDeportes } from '../../palacioDeportes.js';
+import { tuneTendereteAvenida, buildTendereteAvenida } from '../../tendereteAvenida.js';
 import { tuneCalles } from './calles.js';
 import { tuneArriba } from './arriba.js';
 import { tuneAbajo2 } from './abajo2.js';
@@ -87,6 +88,8 @@ export function prepararMapa(map) {
   tuneAbajo3(map);
   // el resto de las calles de casas, con el patrón del barrio
   tuneResto(map);
+  // la Calle Tenderete, de la circunvalación a la rotonda de la Repsol: avenida con mediana y coches aparcados
+  tuneTendereteAvenida(map);
   // ajustar rutas: marcar carreteras principales para rutas más cortas
   const roads = map.roads || [];
   for (const r of roads) {
@@ -125,6 +128,8 @@ export function construir({ scene, colliders, map }) {
   buildBazarArgana(scene, colliders);
   // la estación de ITV, entre la carretera de San Bartolomé y el hospital
   buildItvArgana(scene, colliders);
+  // la mediana, las farolas y las rayas de la avenida de la Calle Tenderete
+  buildTendereteAvenida(scene, colliders, map);
   // los aparcamientos del hospital Molina Orosa: delante de la fachada y la explanada de abajo
   buildAparcamientoHospital(scene, map);
   // los rótulos que faltaban en la calle Tenderete: la farmacia de la esquina con Saltona y la cafetería de la Repsol

@@ -2011,3 +2011,19 @@ Version 153 - La parcela de la casa del campo, como en los fotogramas de la lleg
   estar metida dentro de la planta de la casa.
 - Archivos: casaParcela.js (nuevo), casaCampo.js, campoReal.js, campoDatos.js y barrios/maneje/index.js (una linea).
   Sin tocar main.js ni index.html.
+
+Version 154 - El recorrido Repsol - casa con los fotogramas de Jose Manuel (17/11/2026)
+- Repasado el recorrido con los fotogramas de "recursos" (IMG_5153, uno de cada tramo, y la llegada).
+- Calle Tenderete, de la circunvalacion a la rotonda de la Repsol: en el juego era una calle de 8 m. Ahora es la
+  avenida de verdad: 18 m, dos carriles por sentido, mediana con bordillo, tierra roja, matas y farolas altas de
+  tubo, y coches aparcados en linea a los dos lados. La mediana se abre en los cruces y en los pasos de peatones.
+- La rotonda de la Repsol y el HiperDino: llevaba una escultura inventada. Ahora es la de verdad: isleta de adoquin
+  rojo con la jardinera blanca en forma de concha.
+- La pista de tierra por la que se llega a casa (de la bifurcacion al garaje y a la pista del este) no estaba: ya
+  esta, con sus rodadas. El sitio "Camino de tierra" de la pantalla de inicio deja el coche en esa pista, delante
+  del garaje, que es adonde se llega de verdad.
+- Sin hacer: la calle estrecha de Argana Alta con coches aparcados a los dos lados (no se ha podido saber con
+  seguridad que calle del mapa es), y las fachadas una a una (naves blancas con canteria gris de Tenderete, casas
+  de Argana): se han mirado 20 fotogramas de los 513, no todos.
+- Archivos: tendereteAvenida.js y rotondaConcha.js (nuevos), casaParcela.js, casaCampo.js, places.js y roundabouts.js
+  (una linea cada uno) y barrios/argana-alta/index.js. Sin tocar main.js ni index.html.

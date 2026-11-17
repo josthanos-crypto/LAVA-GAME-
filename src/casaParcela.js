@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { Kit } from './interiorKit.js';
-import { paveMesh, polyTris, discTris, lightSlabs } from './suelos.js';
+import { paveMesh, polyTris, bandTris, discTris, lightSlabs, tierraCamino } from './suelos.js';
 
 /**
  * (Version 153) La parcela de la casa de José Manuel, de la casa hacia el sur, en su sitio de verdad.
@@ -35,6 +35,13 @@ export function tuneParcela(map) {
     if (Math.hypot(cx + 2017, cz + 3305.5) < 7) { b.h = 3.6; b.plantas = 1; }
   }
 }
+
+/**
+ * La pista de tierra por la que se llega a casa (fotograma 488 del recorrido y foto oficial): sale de la bifurcación
+ * del camino, pasa por delante del garaje y del muro del sur y acaba en la pista del este. No estaba en el juego.
+ */
+export const PISTA_GARAJE = { name: 'Camino de tierra', w: 4, major: 0, dirt: 1,
+  p: [[-2069.5, -3249], [-2050, -3252.8], [-2026, -3259.5], [-2011, -3263.3], [-1999, -3267], [-1992, -3270]] };
 
 function lienzo(base, [v0, v1], tinte, mpt) {
   const c = document.createElement('canvas');
@@ -152,6 +159,19 @@ function patio(k, scene, delfin) {
   }
 }
 
+/** la pista de tierra de la llegada, con sus dos rodadas */
+function pista(scene) {
+  const P = PISTA_GARAJE.p;
+  suelo(scene, bandTris(P, PISTA_GARAJE.w), 0.12, tierraCamino(), 0xffffff, 'caminoTierra');
+  for (const off of [-0.85, 0.85]) {
+    const line = P.map(([x, z], i) => {
+      const [ax, az] = P[Math.max(0, i - 1)], [bx, bz] = P[Math.min(P.length - 1, i + 1)], L = Math.hypot(bx - ax, bz - az) || 1;
+      return [x - (bz - az) / L * off, z + (bx - ax) / L * off];
+    });
+    suelo(scene, bandTris(line, 0.45), 0.125, tierraCamino(), 0xe8dccf, 'rodadaCamino');
+  }
+}
+
 /** la explanada de grava de delante del garaje y del muro del sur, y lo que hay tirado al oeste (fotogramas 9 a 13) */
 function explanada(k, scene) {
   suelo(scene, polyTris([[-2015.5, -3281], [X0 - 0.15, -3281], [X0 - 0.15, ZS + 0.15], [X1, ZS + 0.15], [-1994.6, -3268.4], [-2003, -3266], [-2012, -3262], [-2019, -3263.5], [-2018.5, -3271]]),
@@ -169,6 +189,7 @@ export function buildParcela(scene, colliders, { delfin, oxido } = {}) {
   bloque(k);
   muroSur(k, oxido?.());
   patio(k, scene, delfin);
+  pista(scene);
   explanada(k, scene);
   const { group, segs } = k.build('casaParcela');
   scene.add(group);

@@ -3,7 +3,7 @@ import { Kit, canvasTex } from './interiorKit.js';
 import { paveMesh, paveMaterial, polyTris, bandTris, tierra, tierraCamino, lightSlabs, picon } from './suelos.js';
 import { makeCar } from './carModels.js';
 import { recolocarCalles, recolocarCasas, recolocarPunto, casaDeAbajo, escenaReal, choquesReales, alPatioReal, grupoGirado, giro, PATIO, TERRAZA, enCasaReal, CASA_TEJADO_ROJO, ACTIVO } from './campoReal.js';
-import { buildParcela, PARCELA_EDIFICIOS } from './casaParcela.js';
+import { buildParcela, PARCELA_EDIFICIOS, PISTA_GARAJE } from './casaParcela.js';
 import { CAMPO_CASAS, CAMPO_AUTO, CAMPO_PISCINAS, CAMPO_MUROS, CAMPO_CAMINOS, CAMPO_CALLES, CAMPO_ENARENADOS } from './campoDatos.js';
 
 /**
@@ -36,6 +36,8 @@ export const CAMPO_ROADS = recolocarCalles([
   ...CAMPO_CAMINOS.map(c => ({ name: 'Camino de tierra', w: c.w, major: 0, dirt: 1, p: c.p })),
   ...CAMPO_CALLES.map(c => ({ ...(c.name ? { name: c.name } : {}), w: c.w, major: 0, p: c.p })),
 ]);
+// (Version 154) la pista por la que se llega al garaje, ya en su sitio de verdad (casaParcela.js)
+if (ACTIVO) CAMPO_ROADS.push(PISTA_GARAJE);
 
 // los edificios: la casa y su cuarto con modelo propio (skip, ownRoof); las demás, como las del resto de Arrecife
 const HOUSE = { p: rect(HX0, HZ0, HX1, HZ1), h: HH };
@@ -59,7 +61,8 @@ export const CAMPO_BUILDINGS = [
 
 /** el sitio para empezar (y para el mapa grande): en la calle de delante de la casa, junto a la cancela */
 // (Version 152) en la calle de verdad, delante de la casa (la calle pasa por el norte)
-export const CAMPO_START = { at: [-2003, -3321.5], look: [-2002, -3305] };
+// (Version 154) en la explanada del garaje, que es adonde se llega en coche (fotogramas de la llegada)
+export const CAMPO_START = ACTIVO ? { at: [-2019, -3261.5], look: [-2009, -3271] } : { at: [-2003, -3321.5], look: [-2002, -3305] };
 
 /** palmeras junto a las casas blancas del este del camino (foto bajando hacia la ciudad), para map.extraPalms */
 export const CAMPO_PALMS = [[-1888, -2925, 8], [-1858, -2922, 7], [-1826, -2924, 9], [-1772, -2928, 7.5],
