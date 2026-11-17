@@ -1974,3 +1974,19 @@ Version 151 - El roadster: puertas de tijera y asientos de verdad (17/11/2026)
 - Asientos de cubo redondeados (banqueta, respaldo con orejas y reposacabezas) en vez de tres cajas, arcos antivuelco
   de tubo detras de cada asiento y la consola del centro con la palanca. (Tambien en el otro descapotable.)
 - Archivos cambiados: carKit.js y carModels.js. Sin tocar main.js ni index.html.
+
+Version 152 - La casa del camino de tierra, en su parcela de verdad (17/11/2026)
+- Jose Manuel confirmo sobre la foto oficial numerada que su casa es la de la esquina sureste del caserio (la "2"):
+  justo donde caia su enlace de Apple Maps y donde el juego la tenia desde el principio. En la Version 145 se movio
+  por error, con todo el caserio, a la casa del tejado rojo. Corregido: la casa vuelve a su sitio. El resto del
+  caserio (vecinos, muros, calles) no se toca: ese si estaba bien recolocado.
+- La parcela es larga de norte a sur: la casa arriba, dando a la calle; en medio, el patio con la piscina; al fondo, el
+  garaje y la explanada. En el juego el patio y el garaje estaban al OESTE de la casa: se han girado un cuarto de
+  vuelta, enteros (sin rehacerlos), y ahora quedan al SUR, con la puerta del garaje mirando al oeste, como en los
+  fotogramas de la llegada (carpeta "recursos", que Jose Manuel copio de OneDrive a Descargas).
+- La casa del tejado rojo con piscina queda como una casa mas del caserio. El sitio "Camino de tierra" de la pantalla
+  de inicio va a la calle de delante de la casa (la que pasa por el norte).
+- Sin afinar todavia (hace falta mirar mas fotogramas): el garaje queda unos 8 m al noroeste de donde esta de verdad
+  (al fondo del todo de la parcela); la terraza con la pergola sigue en la cara oeste de la casa y en las fotos parece
+  dar al sur, sobre la piscina; la casa vecina del oeste sale mas alta de lo que es.
+- Archivos cambiados: campoReal.js y casaCampo.js. Sin tocar main.js ni index.html.

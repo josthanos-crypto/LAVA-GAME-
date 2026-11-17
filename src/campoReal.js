@@ -71,6 +71,35 @@ export function mover(x, z) {
   return [+(x + dx).toFixed(2), +(z + dz).toFixed(2)];
 }
 
+// ───────────── la casa de José Manuel, en su parcela de verdad (Version 152) ─────────────
+// José Manuel confirmó (17/11/2026, sobre la foto oficial numerada) que su casa es la de la esquina sureste del
+// caserío: justo donde caía su enlace de Apple Maps y donde casaCampo.js tenía la casa desde el principio. En la
+// Version 145 se movió por error, con todo el caserío, a la casa del tejado rojo. Ahora:
+//  - la casa NO se mueve (sus números de casaCampo.js ya son los de verdad);
+//  - la parcela es larga de norte a sur: la casa arriba, dando a la calle; en medio, el patio con la piscina; al
+//    fondo, el garaje y la explanada. casaCampo.js tenía el patio y el garaje al OESTE de la casa: se giran un
+//    cuarto de vuelta, enteros, para que queden al SUR (lo que miraba al norte pasa a mirar al oeste, como la
+//    puerta del garaje en sus fotos);
+//  - el resto del caserío sigue con el desplazamiento de `CONTROL`, que es el que encaja con la foto.
+const PATIO_DE = [-2009.5, -3294.6];     // esquina del patio pegada a la casa, en los números de casaCampo.js
+const PATIO_A = [-1996, -3295];          // esa misma esquina en la realidad: muro este de la parcela, pared sur de la casa
+/** el sitio de verdad de un punto del patio o del garaje de casaCampo.js */
+export const alPatioReal = (x, z) => [+(PATIO_A[0] + (z - PATIO_DE[1])).toFixed(2), +(PATIO_A[1] - (x - PATIO_DE[0])).toFixed(2)];
+/** un grupo que pone en su sitio todo lo que se le meta del patio y del garaje (giro de un cuarto de vuelta) */
+export function grupoPatioReal() {
+  const g = new THREE.Group();
+  g.name = 'patioCasaReal';
+  if (!ACTIVO) return g;
+  g.rotation.y = Math.PI / 2;
+  g.position.set(PATIO_A[0] - PATIO_DE[1], 0, PATIO_A[1] + PATIO_DE[0]);
+  g.updateMatrix();
+  return g;
+}
+/** la parcela de verdad (casa, patio y garaje), con un margen: ahí no van casas genéricas ni matojos */
+export const enCasaReal = (x, z) => ACTIVO && x < -1994.5 && ((x > -2010.5 && z > -3317.5 && z < -3294) || (x > -2019 && z >= -3295.5 && z < -3270));
+/** la casa del tejado rojo con piscina (donde estuvo por error la casa en la Version 145): una casa más del caserío */
+export const CASA_TEJADO_ROJO = { p: [[-2063, -3348], [-2049, -3348], [-2049, -3328], [-2063, -3328], [-2063, -3348]], h: 6.3 };
+
 /** un punto [x, z, ...resto] (palmeras, sitios): se mueve y conserva lo demás */
 export const recolocarPunto = (p) => { const [x, z] = mover(p[0], p[1]); return [x, z, ...p.slice(2)]; };
 
@@ -142,6 +171,7 @@ function moverObjeto(o) {
         _v.setFromMatrixPosition(_m);
         const [dx, dz] = desplazamiento(_v.x, _v.z);
         _m.elements[12] += dx; _m.elements[14] += dz;
+        if (enCasaReal(_v.x + dx, _v.z + dz)) _m.makeScale(0, 0, 0);   // dentro de la parcela de la casa no hay matojos
         q.setMatrixAt(i, _m);
       }
       q.instanceMatrix.needsUpdate = true;

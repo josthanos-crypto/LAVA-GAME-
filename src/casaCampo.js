@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { Kit, canvasTex } from './interiorKit.js';
 import { paveMesh, paveMaterial, polyTris, bandTris, tierra, tierraCamino, lightSlabs, picon } from './suelos.js';
 import { makeCar } from './carModels.js';
-import { recolocarCalles, recolocarCasas, recolocarPunto, mover, casaDeAbajo, escenaReal, choquesReales } from './campoReal.js';
+import { recolocarCalles, recolocarCasas, recolocarPunto, casaDeAbajo, escenaReal, choquesReales, alPatioReal, grupoPatioReal, enCasaReal, CASA_TEJADO_ROJO } from './campoReal.js';
 import { CAMPO_CASAS, CAMPO_AUTO, CAMPO_PISCINAS, CAMPO_MUROS, CAMPO_CAMINOS, CAMPO_CALLES, CAMPO_ENARENADOS } from './campoDatos.js';
 
 /**
@@ -40,15 +40,24 @@ export const CAMPO_ROADS = recolocarCalles([
 const HOUSE = { p: rect(HX0, HZ0, HX1, HZ1), h: HH };
 const ANNEX = { p: rect(-2028.5, -3304, -2020, -3295.2), h: 3 };
 const WHITE_F = [244, 242, 236];
-export const CAMPO_BUILDINGS = recolocarCasas([
-  ...[HOUSE, ANNEX].map(b => ({ ...b, k: 'gen', skip: true, ownRoof: true })),
-  ...CAMPO_CASAS.map(([x0, z0, x1, z1, h, f]) => ({ p: rect(x0, z0, x1, z1), h, k: 'res', f: f || WHITE_F })),
-  // sin las «detectadas» de abajo: ahí están ya las casas reales del norte de Arrecife (campoReal.js)
-  ...CAMPO_AUTO.filter(c => !casaDeAbajo(c)).map(([x, z, w, d, a, h]) => ({ p: rotRect(x, z, w, d, a), h, k: 'res' })),
-]);
+// (Version 152) la casa se queda donde estaba (es su sitio de verdad) y el cuarto va con el patio, al sur
+const enParcela = (b) => { const n = b.p.length - 1; return enCasaReal(b.p.slice(0, n).reduce((t, q) => t + q[0], 0) / n, b.p.slice(0, n).reduce((t, q) => t + q[1], 0) / n); };
+export const CAMPO_BUILDINGS = [
+  { ...HOUSE, k: 'gen', skip: true, ownRoof: true },
+  { ...ANNEX, p: ANNEX.p.map(([x, z]) => alPatioReal(x, z)), k: 'gen', skip: true, ownRoof: true },
+  // las demás, recolocadas con el caserío; fuera las que caerían dentro de la parcela de la casa
+  ...recolocarCasas([
+    ...CAMPO_CASAS.map(([x0, z0, x1, z1, h, f]) => ({ p: rect(x0, z0, x1, z1), h, k: 'res', f: f || WHITE_F })),
+    // sin las «detectadas» de abajo: ahí están ya las casas reales del norte de Arrecife (campoReal.js)
+    ...CAMPO_AUTO.filter(c => !casaDeAbajo(c)).map(([x, z, w, d, a, h]) => ({ p: rotRect(x, z, w, d, a), h, k: 'res' })),
+  ]).filter(b => !enParcela(b)),
+  // la casa del tejado rojo, una más del caserío
+  { ...CASA_TEJADO_ROJO, k: 'res', f: WHITE_F, c: [150, 72, 60] },
+];
 
 /** el sitio para empezar (y para el mapa grande): en la calle de delante de la casa, junto a la cancela */
-export const CAMPO_START = { at: mover(-2016, -3290), look: mover(-2002, -3305) };
+// (Version 152) en la calle de verdad, delante de la casa (la calle pasa por el norte)
+export const CAMPO_START = { at: [-2003, -3321.5], look: [-2002, -3305] };
 
 /** palmeras junto a las casas blancas del este del camino (foto bajando hacia la ciudad), para map.extraPalms */
 export const CAMPO_PALMS = [[-1888, -2925, 8], [-1858, -2922, 7], [-1826, -2924, 9], [-1772, -2928, 7.5],
@@ -56,7 +65,7 @@ export const CAMPO_PALMS = [[-1888, -2925, 8], [-1858, -2922, 7], [-1826, -2924,
 
 /** el camino en coche desde el final de la Calle Campoamor hasta la cancela (para las pruebas) */
 export const CAMPO_RUTA = [[-2057, -2366], [-2055, -2470], [-2052, -2546], [-2050, -2590], [-1997, -2603], [-1957, -2611],
-  [-1922.6, -2645], [-1888, -2672], ...CAMPO_CAMINOS[0].p.slice(1, 20), [-2016, -3290]].map(recolocarPunto);
+  [-1922.6, -2645], [-1888, -2672], ...CAMPO_CAMINOS[0].p.slice(1, 20), [-2016, -3290]].map(recolocarPunto).concat([[-2040, -3322], [-2003, -3321.5]]);
 
 // la tierra del campo (un rectángulo); el suelo del juego deja ahí un hueco
 const CAMPO = { x0: -2700, x1: 0, z0: -3700, z1: -2385 };
@@ -193,7 +202,10 @@ function garaje(k, scene) {
     const m = paveMesh(polyTris(r.slice(0, 4)), 0.1, gravel, 0xcfcac2);
     if (m) { m.name = 'piconGaraje'; scene.add(m); }
   }
-  // la pared de piedra seca y los matojos secos del campo del suroeste (foto de la casa del muro de bloques)
+}
+
+/** la pared de piedra seca y los matojos secos del campo del suroeste (foto de la casa del muro de bloques) */
+function piedraSeca(k) {
   for (let i = 0; i < 26; i++) {
     const t = i / 25, x = -2052 + t * 19, z = -3239.5 + t * 4.5 + Math.sin(i * 1.7) * 0.25;
     k.ball(x, 0.22 + (i % 2) * 0.26, z, 0.26 + (i % 3) * 0.06, [0x5b4a3e, 0x8a7a66, 0x4a403a][i % 3], { sx: 1.25, sy: 0.75, seg: 5 });
@@ -540,14 +552,20 @@ export function buildCasaCampo(sceneDeVerdad, choquesDeVerdad) {
     }
   }
   const k = new Kit();
-  casa(k);
-  patio(k, scene);
+  // (Version 152) la casa va en su sitio de verdad, sin mover, y el patio con el garaje giran al sur de la casa
+  // (campoReal.js); lo demás del caserío se recoloca con `scene` y `colliders`, como hasta ahora
+  const kCasa = new Kit(), kPatio = new Kit();
+  const grupoPatio = grupoPatioReal();
+  const enPatio = { add: (...objs) => { for (const o of objs) if (o) grupoPatio.add(o); } };
+  casa(kCasa);
+  patio(kPatio, enPatio);
   muros(k);
   // las dos autocaravanas, el coche amarillo y el blanco, en el solar de picón junto a la casa blanca del norte (fotos de
   // la parte de atrás y desde la azotea hacia el noroeste)
   camper(k, -2022, -3354);
   camper(k, -2017.5, -3354);
-  garaje(k, scene);
+  garaje(kPatio, enPatio);
+  piedraSeca(k);
   cruce(k);
   torres(k, scene);
   entradaFinca(k);
@@ -587,6 +605,13 @@ export function buildCasaCampo(sceneDeVerdad, choquesDeVerdad) {
   const { group, segs } = k.build('casaCampo');
   scene.add(group);
   for (const sg of segs) colliders.addSegment(...sg);
+  const casaHecha = kCasa.build('casaCampoCasa');
+  sceneDeVerdad.add(casaHecha.group);
+  for (const sg of casaHecha.segs) choquesDeVerdad.addSegment(...sg);
+  const patioHecho = kPatio.build('casaCampoPatio');
+  grupoPatio.add(patioHecho.group);
+  sceneDeVerdad.add(grupoPatio);
+  for (const [ax, az, bx, bz] of patioHecho.segs) choquesDeVerdad.addSegment(...alPatioReal(ax, az), ...alPatioReal(bx, bz));
   // el coche amarillo aparcado contra la valla de malla verde del solar, mirando al norte (foto desde el coche en el
   // cruce del noroeste)
   const car = makeCar('hatch', 0xe7d84a);
