@@ -231,6 +231,38 @@ function smoothSanJose(grid, meta) {
   }
 }
 
+/**
+ * (Version 146) El relieve de verdad del campo de arriba. `map/terreno-norte.json` trae el MDT05 del IGN (el mismo
+ * LiDAR que el resto, CC BY 4.0, bajado el 17/11/2026 del servicio WCS del IGN) para la franja del norte que le
+ * faltaba al juego: de z = -3631 a z = -2701, con las mismas columnas y la misma malla de 10 m que terreno.json.
+ * Sustituye a lo que rellena `extendNorth` (una cuesta inventada): al norte de z = -2760 manda el dato real y de
+ * ahí a z = -2710 se funde con lo que ya había (se llevan menos de 1 m). Si el archivo no llega, se queda lo de antes.
+ */
+async function relieveNorteReal(grid, meta) {
+  const Z_REAL = -2760, Z_VIEJO = -2710;
+  try {
+    const n = await (await fetch('map/terreno-norte.json')).json();
+    if (!n?.b64 || n.nx !== meta.nx || n.cell !== meta.cell || Math.abs(n.x0 - meta.x0) > 0.01 || Math.abs(n.z0 - meta.z0) > 0.01) return false;
+    const bin = atob(n.b64), bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    const cm = new Uint16Array(bytes.buffer);
+    if (cm.length < n.nx * n.nz) return false;
+    const filas = Math.min(n.nz, meta.nz);
+    for (let j = 0; j < filas; j++) {
+      const z = n.z0 + j * n.cell;
+      const w = z <= Z_REAL ? 1 : z >= Z_VIEJO ? 0 : (Z_VIEJO - z) / (Z_VIEJO - Z_REAL);
+      if (w <= 0) continue;
+      for (let i = 0; i < n.nx; i++) {
+        const k = j * n.nx + i, real = cm[k] / 100;
+        grid[k] += (real - grid[k]) * w;
+      }
+    }
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
 export async function loadTerrain(map) {
   try {
     const meta = await (await fetch('map/terreno.json')).json();
@@ -244,6 +276,8 @@ export async function loadTerrain(map) {
     const raw = new Float32Array(n);
     for (let i = 0; i < n; i++) raw[i] = cm[i] / 100;
     const grid = extendNorth(raw, meta);
+    // (Version 146) y encima, donde lo hay, el relieve de verdad del norte
+    await relieveNorteReal(grid, meta);
     const N = meta.nx * meta.nz;
     smoothSanJose(grid, meta);
     flattenWater(grid, meta, map);

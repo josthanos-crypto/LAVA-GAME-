@@ -14,6 +14,7 @@ import { isTouchDevice } from './touch.js';
  *  - El suelo del campo es la ortofoto oficial (PNOA, © Instituto Geográfico Nacional de España, CC BY 4.0), bajada
  *    del servicio del IGN el 17/11/2026: `public/campo/campo.jpg` (todo el campo, 1,3 m por punto) y
  *    `public/campo/casa.jpg` (500 × 400 m alrededor de la casa, 0,33 m por punto; en el móvil no se carga).
+ *  - (Version 146) El relieve de esa zona es ya el de verdad (terrain.js, `map/terreno-norte.json`).
  *  - Todo lo que había hecho se RECOLOCA sobre esa foto, sin rehacerlo: `mover(x, z)` da el sitio de verdad de cada
  *    punto antiguo. Los puntos de control (`CONTROL`) están medidos comparando lo calcado con la foto oficial: en el
  *    caserío de la casa es un traslado limpio (53,5 m al oeste y 33,5 m al norte) y encaja al metro; hacia el sur
@@ -181,27 +182,31 @@ function fotoDeSuelo(malla) {
   malla.material.userData.terrainSeg = 15;
   malla.material.needsUpdate = true;
   const piezas = [malla];
-  if (!isTouchDevice()) {
-    // el detalle de alrededor de la casa: una malla de 10 m un pelo por encima
-    const S = 10, nx = Math.round((DETALLE.x1 - DETALLE.x0) / S), nz = Math.round((DETALLE.z1 - DETALLE.z0) / S);
-    const pos = [], uv = [], idx = [];
-    for (let j = 0; j <= nz; j++) for (let i = 0; i <= nx; i++) { pos.push(DETALLE.x0 + i * S, 0.075, DETALLE.z0 + j * S); uv.push(i / nx, 1 - j / nz); }
-    for (let j = 0; j < nz; j++) for (let i = 0; i < nx; i++) { const a = j * (nx + 1) + i, b = a + nx + 1; idx.push(a, b, b + 1, a, b + 1, a + 1); }
-    const g = new THREE.BufferGeometry();
-    g.setIndex(idx);
-    g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
-    g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
-    g.computeVertexNormals();
-    const m = malla.material.clone();
-    m.map = cargar('casa.jpg');
-    m.vertexColors = false;      // esta malla no lleva color por vértice
-    m.polygonOffsetFactor = -2; m.polygonOffsetUnits = -2;
-    m.userData = { ...malla.material.userData, terrainSeg: S };
-    const detalle = new THREE.Mesh(g, m);
-    detalle.receiveShadow = true;
-    detalle.name = 'tierraCampoDetalle';
-    piezas.push(detalle);
+  // Alrededor de la casa, una malla fina (5 m) un pelo por encima: con el relieve de verdad la de 15 m tapaba a
+  // trozos las calles del caserío. En el ordenador lleva la foto de detalle; en el móvil, la misma foto general.
+  const movil = isTouchDevice();
+  const S = 5, nx = Math.round((DETALLE.x1 - DETALLE.x0) / S), nz = Math.round((DETALLE.z1 - DETALLE.z0) / S);
+  const pos = [], uv = [], idx = [];
+  for (let j = 0; j <= nz; j++) for (let i = 0; i <= nx; i++) {
+    const x = DETALLE.x0 + i * S, z = DETALLE.z0 + j * S;
+    pos.push(x, 0.075, z);
+    if (movil) uv.push(x / mpt, -z / mpt); else uv.push(i / nx, 1 - j / nz);
   }
+  for (let j = 0; j < nz; j++) for (let i = 0; i < nx; i++) { const a = j * (nx + 1) + i, b = a + nx + 1; idx.push(a, b, b + 1, a, b + 1, a + 1); }
+  const g = new THREE.BufferGeometry();
+  g.setIndex(idx);
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  g.computeVertexNormals();
+  const m = malla.material.clone();
+  if (!movil) m.map = cargar('casa.jpg');
+  m.vertexColors = false;      // esta malla no lleva color por vértice
+  m.polygonOffsetFactor = -2; m.polygonOffsetUnits = -2;
+  m.userData = { ...malla.material.userData, terrainSeg: S };
+  const detalle = new THREE.Mesh(g, m);
+  detalle.receiveShadow = true;
+  detalle.name = 'tierraCampoDetalle';
+  piezas.push(detalle);
   return piezas;
 }
 

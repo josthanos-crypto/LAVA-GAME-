@@ -1875,3 +1875,16 @@ Version 145 - El campo de arriba (la casa del camino de tierra) en su sitio de v
   deja entrar desde la nube).
 - Archivo nuevo: campoReal.js. Cambiados: casaCampo.js y caminoAnmara.js (solo el enganche). Fotos nuevas en
   public/campo/. Sin tocar main.js ni index.html.
+
+Version 146 - El relieve de verdad en el campo de arriba (17/11/2026)
+- Las cuestas de la zona de la casa del camino de tierra eran inventadas (una rampa suave puesta a ojo, porque los
+  datos del terreno se acababan antes). Ahora son las de verdad: el MDT05 del IGN (el mismo LiDAR del resto del juego,
+  CC BY 4.0), bajado de su servicio para la franja del norte que faltaba: public/map/terreno-norte.json.
+- La casa queda en su ladera, con las lomas detras y la bajada hacia Arrecife y el mar delante, como en las fotos.
+- El suelo de alrededor de la casa es mas fino (malla de 5 m) para que las calles del caserio no queden tapadas a
+  trozos con las cuestas nuevas; tambien en el movil (alli con la foto general, sin la de detalle).
+- pruebas/terreno_norte.py genera ese archivo en cualquier ordenador (solo necesita Python): lo llama HACER_V146.bat.
+  Si no se puede bajar, el juego sigue con el relieve de antes, sin fallar.
+- Sin probar en un movil de verdad. El caserio de la lancha ANMARA UNO sigue sin sitio real conocido.
+- Archivos cambiados: terrain.js y campoReal.js. Nuevos: pruebas/terreno_norte.py y public/map/terreno-norte.json.
+  Sin tocar main.js ni index.html.
