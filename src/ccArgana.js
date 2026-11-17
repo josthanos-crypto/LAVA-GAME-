@@ -18,6 +18,8 @@ import { buildRotulosEmpresas } from './parqueComercialEmpresas.js';
  *    José Manuel: una tienda de hogar, cruzando la calle desde el centro comercial y haciendo esquina con la
  *    carretera. EL NOMBRE SALE DE GOOGLE MAPS: que lo confirme.
  *  - Kiwoko (tienda de animales): la nave pegada por detrás a la de Deko Hogar (56 × 30 m).
+ *  - La nave grande de cubierta clara que hay calle Iguazú arriba, después de la de Deko Hogar (47 × 53 m). Tampoco
+ *    venía en el mapa. Va lisa, con dos portones y SIN NOMBRE: Google no dice qué empresa es.
  * Las tiendas de dentro del centro comercial (Worten, Toy Planet, Optimus…) también salen de Google Maps: llevan un
  * cartel sencillo con su nombre, sin logotipos. Que José Manuel repase la lista.
  *
@@ -33,11 +35,13 @@ import { buildRotulosEmpresas } from './parqueComercialEmpresas.js';
 const A = [0.6289, -0.7776], B = [0.7776, 0.6289];
 const P = (o, a, b) => [+(o[0] + A[0] * a + B[0] * b).toFixed(2), +(o[1] + A[1] * a + B[1] * b).toFixed(2)];
 
-/** las tres naves: esquina de abajo-izquierda (hacia la rotonda y hacia la calle Iguazú), largo, ancho y alto */
+/** las naves: esquina de abajo-izquierda (hacia la rotonda y hacia la calle Iguazú), largo, ancho y alto */
 const NAVES = {
   cc: { o: [-1441, -1131], largo: 116, ancho: 51.7, alto: 9, pared: 0xeeeeea, zocalo: 0x8b9094, remate: 0x5a6068 },
   deko: { o: [-1520.03, -1107.6], largo: 120.8, ancho: 25.8, alto: 7, pared: 0xf1f0ec, zocalo: 0x8b9094, remate: 0xb9bdc0 },
   kiwoko: { o: [-1543.36, -1126.47], largo: 55.9, ancho: 29.7, alto: 7, pared: 0xefeee9, zocalo: 0x8b9094, remate: 0xb9bdc0 },
+  // la nave de cubierta clara que sigue a la de Deko Hogar calle Iguazú arriba: sin nombre (Google no le pone ninguno)
+  norte: { o: [-1456.7, -1228.9], largo: 46.5, ancho: 52.8, alto: 8, pared: 0xe9e6dc, zocalo: 0x8b9094, remate: 0xa9a59a },
 };
 
 /** las tiendas del centro comercial que salen en Google Maps, con el punto donde las pone */
@@ -51,7 +55,7 @@ export const TIENDAS_CC = [
   ['OLA Zapatería', -1374.1, -1190.4],
 ];
 
-/** retoques al mapa antes de levantar la ciudad: los tres bloques que no venían */
+/** retoques al mapa antes de levantar la ciudad: los bloques que no venían */
 export function tuneCcArgana(map) {
   if (map.ccArgana) return;
   map.ccArgana = true;
@@ -256,6 +260,15 @@ export function buildCcArgana(scene, colliders, map) {
     if (punta) { rotulo(punta, 0, n.alto - 2, 11, 2.3, nombre, 0.25); cristalera(punta, 0, 14, 3.2, 0xb9bdc0); }
     const atras = ladoHacia(L, [-B[0], -B[1]]);
     if (atras) rotulo(atras, 0, n.alto - 2, 11, 2.3, nombre, 0.25);
+  }
+
+  // ───────────── la nave de arriba, sin nombre ─────────────
+  if (hechas.norte) {
+    const { n, L } = hechas.norte;
+    cubierta(n, 0, n.largo, 0, n.ancho, new THREE.MeshStandardMaterial({ color: 0xd8d2c2, roughness: 0.9, side: THREE.DoubleSide }));
+    // dos portones de chapa en la cara de la calle Iguazú
+    const calle = ladoHacia(L, B);
+    if (calle) for (const al of [-11, 9]) caja(calle.m[0] + calle.d[0] * al + calle.n[0] * 0.2, 0, calle.m[1] + calle.d[1] * al + calle.n[1] * 0.2, 5, 4.4, 0.1, 0x7f868c, calle.d);
   }
 
   if (piezas.length) {
