@@ -28,6 +28,7 @@ import { buildRamblaArboles } from '../../ramblaArboles.js';
 import { buildRamblaGimnasio } from '../../ramblaGimnasio.js';
 import { buildSanJoseJardin } from '../../sanJoseJardin.js';
 import { tuneFaltabaCiudad } from '../../faltabaCiudad.js';
+import { tuneNorteFoto, buildNorteFoto } from '../../norteFoto.js';
 import { tuneRamblaFaltaba, buildRamblaFaltaba } from '../../ramblaFaltaba.js';
 
 export const BARRIO = {
@@ -48,6 +49,8 @@ export function prepararMapa(map) {
   tuneRamblaFaltaba(map);
   // las naves que faltaban en los polígonos industriales (nordeste de Arrecife y Playa Honda)
   tuneFaltabaCiudad(map);
+  // la franja del norte, con la foto aérea oficial en vez de la arena pintada
+  tuneNorteFoto(map);
   // aceras libres: las calles se ajustan a lo que dejan las fachadas y, si no basta, la fachada se echa atrás
   // (ajusteCalles.js). Va aquí, al final, para respetar los edificios que los barrios marcan como hechos a mano.
   // El índice de aceras (aceras.js) se hizo antes con las anchuras viejas: se rehace.
@@ -80,6 +83,8 @@ export function construir({ scene, map, colliders, touch, story }) {
   buildRamblaGimnasio(scene, colliders, rambla.userData.centros);
   // el jardín de picón con matas de la loma del Castillo de San José
   buildSanJoseJardin(scene, map);
+  // el suelo de la franja del norte de Arrecife, con su foto aérea
+  buildNorteFoto(scene);
   // el aparcamiento de verdad del ALDI y los rótulos de la zona de la comisaría
   buildRamblaFaltaba(scene, colliders, map);
   // rotondas con su isleta y su escultura

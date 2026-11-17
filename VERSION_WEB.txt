@@ -1952,3 +1952,16 @@ Version 149 - Repaso de todo el juego contra la foto oficial: Playa Honda con su
   siguen con suelo de arena pintada (la foto aerea del juego tampoco llega).
 - Archivos nuevos: ramblaGimnasio.js, sanJoseJardin.js, faltabaCiudad.js y playaHondaFoto.js. Cambiados:
   ramblaArboles.js, volcano.js y los index.js de "compartido" y "playa-honda". Sin tocar main.js ni index.html.
+
+Version 150 - La franja del norte de Arrecife con su foto aerea; repaso completo del mapa (17/11/2026)
+- La foto aerea del juego se acababa al norte de la zona industrial: de ahi hacia arriba (lo de encima de Argana y de
+  Maneje, la zona industrial del nordeste y el arranque de la carretera de Tahiche) el suelo era arena pintada. Ahora
+  lleva la ortofoto oficial (PNOA, (c) Instituto Geografico Nacional de Espana, CC BY 4.0): public/norte/oeste.jpg y
+  este.jpg (y sus versiones "-m" para el movil).
+- Repasados tambien contra la foto y sin cambios (coinciden): El Cable y la costa entre Arrecife y Playa Honda, y el
+  sur de Playa Honda. Con esto queda repasada la planta de todo el mapa del juego.
+- Probado en tamano movil (Rambla, Playa Honda y el norte): carga sin errores y lo nuevo se ve.
+- Sigue sin poder repasarse desde la nube: las fachadas, calle a calle (no llegan fotos a pie de calle). Y el extremo
+  este del mapa (pasado el puerto) sigue con suelo de arena pintada.
+- Archivo nuevo: norteFoto.js. Cambiado: el index.js de "compartido". Fotos nuevas en public/norte/. Sin tocar
+  main.js ni index.html.
