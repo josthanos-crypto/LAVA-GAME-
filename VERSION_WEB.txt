@@ -2048,3 +2048,18 @@ Version 155 - Todas las imagenes de "recursos" que se pueden abrir (17/11/2026)
   la calle Tenderete.
 - Archivos: aparcadosArgana.js y explanadaReducto.js (nuevos), bazarArgana.js, rotulosArgana.js y
   barrios/compartido/index.js (dos lineas). Sin tocar main.js ni index.html.
+
+Version 156 - El recorrido Deiland Plaza (Playa Honda) - autovia - Arrecife - tanatorio (17/11/2026)
+- Vistos los 262 fotogramas del video (PC de Arrecife, Desktop\lavagame recursos\fotogramas_recorrido_8min), en 22
+  hojas de 12. El recorrido: aparcamiento de fuera del Deiland Plaza, autovia LZ-2, rotonda de entrada a Arrecife,
+  Fred Olsen, el centro, Lancelot Playa, Gran Hotel, la avenida, el parque y el Puente de las Bolas, el paseo de
+  Naos, la rotonda del marlin y el tanatorio.
+- Nuevo, porque sale en el video y no estaba:
+  * El aparcamiento de fuera del Deiland Plaza: firme, dos filas en bateria y sus coches.
+  * El cartel de piedra "MUNICIPIO DE ARRECIFE" al incorporarse a la autovia.
+  * Las letras blancas "ARRECIFE" sobre su muro de piedra en la rotonda de entrada, con la bandera de Espana.
+  * Las jardineras blancas en forma de bola de la avenida, pasado el Gran Hotel (15, en la acera del parque).
+- Visto en el video y sin hacer todavia: la gasolinera DISA y el portico de carteles de la autovia, las filas de
+  palmeras del arcen de la autovia (hay que comprobar cuantas tiene ya el juego), el edificio beis de la entrada,
+  los bancos blancos y las esculturas oxidadas del paseo, y las fachadas del centro una a una.
+- Archivos: recorridoHonda.js (nuevo) y barrios/compartido/index.js (tres lineas). Sin tocar main.js ni index.html.

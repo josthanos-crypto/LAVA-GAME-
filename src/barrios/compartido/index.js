@@ -23,6 +23,7 @@ import { applyOneWay } from '../../sentidos.js';
 import { ajustarCalles } from '../../ajusteCalles.js';
 import { tuneAparcadosArgana } from '../../aparcadosArgana.js';
 import { buildExplanadaReducto } from '../../explanadaReducto.js';
+import { tuneRecorridoHonda, buildRecorridoHonda } from '../../recorridoHonda.js';
 import { buildWalkIndex } from '../../aceras.js';
 import { buildParadasGuagua } from '../../paradasGuagua.js';
 import { tuneParqueComercialPuerto, buildParqueComercialPuerto } from '../../parqueComercialPuerto.js';
@@ -60,6 +61,8 @@ export function prepararMapa(map) {
   map.ajusteCalles = ajustarCalles(map);
   // Argana Alta: las calles estrechas de sentido único, con coches aparcados en línea (después de medir las aceras)
   tuneAparcadosArgana(map);
+  // el aparcamiento de fuera del Deiland Plaza, con sus coches (vídeo del recorrido Playa Honda → tanatorio)
+  tuneRecorridoHonda(map);
   buildWalkIndex(map.roads);
 }
 
@@ -79,6 +82,8 @@ export function construir({ scene, map, colliders, touch, story }) {
   const aeropuerto = buildAeropuerto(scene);
   // la explanada de aparcar de junto al Cabildo, al oeste del Reducto (capturas de «recursos»)
   buildExplanadaReducto(scene, map);
+  // del vídeo Deiland Plaza → tanatorio: aparcamiento del Deiland, cartel del municipio, letras ARRECIFE y jardineras
+  buildRecorridoHonda(scene, colliders, map);
   // las paradas de guagua reales de toda la ciudad (OpenStreetMap), con su nombre; las guaguas paran en ellas
   const paradas = buildParadasGuagua(scene, map, colliders);
   // el parque comercial de la salida a Costa Teguise: IKEA, Electron, las canchas de pádel y los aparcamientos
