@@ -1810,3 +1810,26 @@ Version 142 - Los rotulos de las empresas del parque comercial de IKEA, la farma
     comercial hay una tienda de hogar que se llama "Home Markt".
 - Archivos nuevos: parqueComercialEmpresas.js y rotulosTenderete.js. Cambiados: parqueComercialPuerto.js y el
   index.js de "argana-alta". Sin tocar main.js ni index.html.
+
+Version 143 - Argana: el Centro Comercial Argana, Deko Hogar, Kiwoko y mas rotulos (17/11/2026)
+- El Centro Comercial Argana (el de Worten, entre la calle Iguazu y la calle Jose Lopez Betancort) NO estaba en el
+  juego: solo se veia la foto del suelo. Ahora esta la nave (116 x 52 m) con las placas solares en la cubierta, la
+  entrada acristalada con su marquesina, el nombre en tres caras y su aparcamiento con plazas hacia la rotonda (123).
+- Tiendas del centro comercial con su cartel sencillo (nombres del mapa de Google Maps): Worten, Toy Planet, Statum
+  Cafe, Optimus Arrecife, Musical Panchito, Books & Papers y OLA Zapateria.
+- Deko Hogar: la nave larga del otro lado de la calle Iguazu (121 x 26 m), con su entrada y el nombre. Es, casi
+  seguro, la tienda de hogar que Jose Manuel recordaba como "seco hogar" (cruzando la calle desde el centro comercial,
+  haciendo esquina con la carretera). El nombre sale de Google Maps: que lo confirme.
+- Kiwoko (tienda de animales): la nave pegada por detras a la de Deko Hogar.
+- Mas rotulos en la zona (Google Maps, mirado el 17/11/2026; que Jose Manuel repase la lista): Home Markt (junto al
+  Lidl), SZWAGEN Centro Multimarca, Centro Asistencial Lanzarote, Viguetas Lanzarote, Rastro Remar, Hortofruticola
+  Altavista, Auto Laca Canarias, Norai Autoservicio y Maycan Arrecife.
+- Sin cartel, a proposito, porque caen sobre naves ya hechas con los videos de Jose Manuel: Comercial Zonzamas
+  (Tenderete 20: cae en la nave negra de Mitsubishi), Multicentro (Tenderete 12: cae donde el juego tiene el 928
+  Hybrid Club), Cocodelanz (nave de Fuji y Kiwa) y MultiMotor (junto a Dos Cabras).
+- Remar: el rotulo REMAR junto a la ITV se queda como dijo Jose Manuel. Google pone ahi la "Iglesia Cuerpo de Cristo"
+  y el "Rastro Remar" unos 200 m mas abajo (ahora tambien con su cartel).
+- La nave del rotulo "BAZAR" (Version 136, esquina con Tomas Morales) NO se ha tocado: si la tienda de chinos era
+  Deko Hogar, hay que decidir que cartel lleva esa nave (Google pone al lado "MultiMotor").
+- Archivos nuevos: ccArgana.js y rotulosArgana.js. Cambiado: el index.js de "argana-alta". Sin tocar main.js ni
+  index.html.

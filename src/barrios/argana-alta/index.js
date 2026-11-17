@@ -17,6 +17,8 @@ import { buildBazarArgana } from '../../bazarArgana.js';
 import { tuneItvArgana, buildItvArgana } from '../../itvArgana.js';
 import { buildAparcamientoHospital } from '../../hospitalAparcamiento.js';
 import { buildRotulosTenderete } from '../../rotulosTenderete.js';
+import { tuneCcArgana, buildCcArgana } from '../../ccArgana.js';
+import { buildRotulosArgana } from '../../rotulosArgana.js';
 import { tuneCalleTanganillo } from '../../calleTanganillo.js';
 import { tuneRellenoArgana } from '../../rellenoArgana.js';
 import { tuneOrtopediaCarmen, buildOrtopediaCarmen } from '../../ortopediaCarmen.js';
@@ -51,6 +53,8 @@ export function prepararMapa(map) {
   tuneMcDonaldsArgana(map);
   // el Lidl de la carretera de San Bartolomé y la Repsol de al lado: la marquesina no es un edificio
   tuneLidlRepsol(map);
+  // el Centro Comercial Argana y las naves de Deko Hogar y Kiwoko: no venían en el mapa
+  tuneCcArgana(map);
   // la ITV de la subida a San Bartolomé: fuera el bloque genérico de su nave
   tuneItvArgana(map);
   // el atajo real del camino de tierra a la Calle Tenderete, que faltaba en el mapa
@@ -119,6 +123,10 @@ export function construir({ scene, colliders, map }) {
   buildAparcamientoHospital(scene, map);
   // los rótulos que faltaban en la calle Tenderete: la farmacia de la esquina con Saltona y la cafetería de la Repsol
   buildRotulosTenderete(scene, map);
+  // el Centro Comercial Argana (con su aparcamiento y sus tiendas), Deko Hogar y Kiwoko
+  buildCcArgana(scene, colliders, map);
+  // los rótulos de los demás negocios de la zona comercial de Argana
+  buildRotulosArgana(scene, map);
   // la Ortopedia Carmen (foto de julio de 2019): el recerco de granito, el marco rojo y el rótulo con el árbol
   buildOrtopediaCarmen(scene, colliders, map);
   // la nave de Dos Cabras (vista de la calle de julio de 2025): la pared blanca alta, el portón con la cabra y la puerta pequeña
