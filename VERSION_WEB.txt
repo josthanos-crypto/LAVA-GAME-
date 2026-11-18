@@ -2136,3 +2136,20 @@ Version 160 - La Casa Amarilla y la rotonda grande de entrada, junto al Cabildo 
   fotos grandes de IMG_0397/0398/0399 (falta pasar CONVERTIR FOTOGRAMAS.bat).
 - Archivos: casaAmarilla.js y rotondaEntrada.js (nuevos), shops.js (una linea), barrios/arrecife-centro/index.js y
   barrios/compartido/index.js (los enganches). Sin tocar main.js ni index.html.
+
+
+Version 161 - Los coches, de una pieza en los puentes (se acabo el coche "acordeon") (18/11/2026)
+- Lo vio Jose Manuel junto al puente del Cabildo: el coche parado tenia la chapa, los cristales y hasta las letras
+  del rotulo en zigzag, "como un acordeon". Pasaba en los puentes y pasos a distinto nivel: ahi la carretera se hunde
+  (o se sube) en el dibujo punto a punto, y en el talud de los lados, que es una cuesta muy fuerte, a cada trozo de
+  chapa le tocaba bajar una cosa distinta.
+- Ahora los coches, las motos y los quads (el tuyo, los del trafico, los aparcados y la policia) bajan y suben en esos
+  cruces de una pieza: el coche entero baja lo que le toca, se inclina con la rampa y se ladea con el talud, sin
+  deformarse. En el resto de la ciudad no cambia nada.
+- Sin arreglar: la gente que anda por esos taludes sigue deformandose un poco (se nota mucho menos que en un coche).
+- Los .bat: Jose Manuel no quiere .bat ya usados por ahi. Desde esta version cada .bat nuevo se borra solo al terminar
+  bien, y solo queda un "HACER" (el de la ultima version, que hace lo de todas las anteriores). Para los viejos esta
+  "BORRAR BAT USADOS.bat" (en Descargas\gta canarias): un doble clic, los borra y se borra el tambien. No se tocan
+  JUGAR.bat ni game\ABRIR-JUEGO.bat.
+- Archivos: cocheTrinchera.js (nuevo), carModels.js y motos.js (el enganche, dos lineas cada uno).
+  Sin tocar main.js ni index.html.

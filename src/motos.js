@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { contactShadowTexture, plateTexture } from './textures.js';
 import { buildHuman } from './humanModel.js';
+import { rigidoEnTrinchera } from './cocheTrinchera.js';
 
 /**
  * Motos y quads, con marca y modelo inventados (carModels.js, BIKES): la moto naked Tinajo Rayo 650 y el
@@ -314,5 +315,6 @@ export function makeBike(kind, color, { rider = false } = {}) {
     for (const m of B.lights.head) m.emissiveIntensity = night * 2.9;
     for (const m of B.lights.tail) m.emissiveIntensity = night * 2.05;
   };
+  rigidoEnTrinchera(group);   // en los puentes, de una pieza (cocheTrinchera.js)
   return { group, body, wheels: B.wheels, headlights: B.lights.head, taillights: B.lights.tail, dims: B.dims, model: kind, brand: false };
 }

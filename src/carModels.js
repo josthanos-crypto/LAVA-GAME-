@@ -10,6 +10,7 @@ import { LUNA, ensuciar, tulipas, halos, pinza } from './cocheDetalle.js';
 import { cocheLejos, RESTO_LEJOS, LUCES_LEJOS, setLucesLejos, distanciaLejos } from './cocheLejos.js';
 import { matriculaAzar, matriculaTex, MATRICULA_ALTO } from './matriculas.js';
 import { adornos, retrovisor } from './cocheAdornos.js';
+import { rigidoEnTrinchera } from './cocheTrinchera.js';
 
 /**
  * Coches por secciones: a lo largo del coche se colocan secciones
@@ -1408,6 +1409,8 @@ export function makeCar(type = 'sedan', bodyColor, { brand = false, rider = fals
     for (const p of pivotes) p.visible = c;
     lejos.visible = !c;
   };
+  // en los puentes (trinchera.js) el coche baja y se inclina de una pieza, sin arrugarse (cocheTrinchera.js)
+  rigidoEnTrinchera(group);
   return { group, body, wheels, headlights, taillights, dims: M.dims, model: type, brand: branded };
 }
 
