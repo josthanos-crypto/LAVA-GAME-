@@ -20,6 +20,8 @@ Ayuntamiento y la zona de Manolo Millares hasta Las Salinas.
 - **Castillo de San Gabriel y Puente de las Bolas** (`fortBridge.js`).
 - **Ayuntamiento** con su fachada y torrecilla (`ayuntamiento.js`) y el alcalde en la
   puerta, que se llama con T (`mayor.js`).
+- **Casa Amarilla** (León y Castillo 6, `casaAmarilla.js`, Version 160): fachada de azulejo mostaza con el
+  balcón, las banderas y el reloj, como en la foto.
 - **Casa Fajardo** (`casaFajardo.js`), **edificio Atlántida** (Multicines,
   `atlantida.js`) y **El Maccheroni** con su terraza (`maccheroni.js`).
 - **Playa del Reducto**: arena, sombrillas y gente (`beach.js`), la regata de vela

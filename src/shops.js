@@ -73,6 +73,7 @@ function calleRealFaces(map) {
   for (const b of map.buildings) {
     const p = b.p;
     if (Math.abs(p[0][0] - 110) > 140 || Math.abs(p[0][1] - 280) > 220) continue;
+    if (b.casaAmarilla) continue;   // la Casa Amarilla lleva su fachada de la foto, sin rótulo de tienda (casaAmarilla.js)
     let area = 0;
     for (let i = 0; i < p.length - 1; i++) area += p[i][0] * p[i + 1][1] - p[i + 1][0] * p[i][1];
     const o = area >= 0 ? 1 : -1;

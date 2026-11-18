@@ -2110,3 +2110,29 @@ Version 159 - La parte de atras del Hospital Molina Orosa (calle Santiago Aleman
   sacar los tres videos enteros (un fotograma por segundo y la transcripcion completa) en Descargas.
 - Archivos: hospitalTrasera.js (nuevo), reductoFoto.js (una linea), barrios/argana-alta/index.js y las fotos
   public/hospital/trasera.jpg y trasera-m.jpg (PNOA, IGN, CC BY 4.0). Sin tocar main.js ni index.html.
+
+
+Version 160 - La Casa Amarilla y la rotonda grande de entrada, junto al Cabildo (18/11/2026)
+- La Casa Amarilla (antigua sede del Cabildo, Calle Leon y Castillo 6), como en la foto de la fachada de
+  recursos\CASAAMARILLA: zocalo de piedra salmon, paredes de azulejo amarillo mostaza puesto como ladrillo, esquinas
+  y cornisas blancas, puerta central abierta con montante de forja, dos ventanas altas con contraventanas de madera
+  oscura, tres ventanas de arco arriba (la del centro con balcon de balaustres), tres mastiles con bandera (dos
+  amarillas y una blanca, lisas) y el fronton con la torrecilla del reloj. Antes era un bloque gris de una planta.
+  Los costados y la trasera no salen en la foto: van en blanco liso con ventanas sencillas (sin comprobar).
+  El rotulo generico de banco que el juego le colgaba encima pasa al edificio siguiente de la Calle Real.
+- La rotonda grande de entrada a Arrecife (Rambla Medular / Manolo Millares / LZ-2, junto al Cabildo), como en la
+  captura de recursos\SUBIDA EL CAVILDO y la foto aerea del IGN: isleta de picon negro de 75 m con bordillo, sus tres
+  palmeras al norte y tres corros de matas bajas, sin escultura. Antes el centro era solo la foto del suelo.
+  Sin hacer de esa captura: el quitamiedos con la cuneta de hormigon (no se sabe de donde a donde va).
+- "Argana hasta Tanatorio": no son 1.495 fotogramas sino 14.843 (cinco videos, uno cada 0,15 s). Repasados 57
+  repartidos por todo el recorrido. Lo que se ve y ya esta en el juego: la rotonda de la concha, McDonald's, Multi
+  Centro, ALDI, las calles estrechas con coches aparcados a los dos lados y el Castillo de San Jose. Rotulos que se
+  leen y NO estan puestos porque falta saber el sitio exacto (que lo diga Jose Manuel): Fruteria y Supermercado
+  Madina, gasolinera DISA, Petroprix, The Functional Club, Maycan Neumaticos, Flora Floristeria, Bar-Cafeteria El
+  Puente, Costa Azul Sushi, Duque Hermanos, Marisqueria Los Troncos, Suministros San Gines y la esquina de
+  "Video Juegos / Gamer Store". La cubierta de chapa con muro blanco, verja negra y palmeras del fotograma
+  03_IMG_0403/1500 NO es el Recinto Ferial (esta al otro lado de la calle): sin situar.
+- Sigue pendiente: la subida de San Bartolome (falta el video entero: recursos\nuevas\completo aun no existe) y las
+  fotos grandes de IMG_0397/0398/0399 (falta pasar CONVERTIR FOTOGRAMAS.bat).
+- Archivos: casaAmarilla.js y rotondaCabildo.js (nuevos), shops.js (una linea), barrios/arrecife-centro/index.js y
+  barrios/compartido/index.js (los enganches). Sin tocar main.js ni index.html.

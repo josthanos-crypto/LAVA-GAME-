@@ -40,6 +40,7 @@ import { tuneGranHotel, buildGranHotel } from '../../granHotel.js';
 import { tuneElAlmacen, buildElAlmacen } from '../../elAlmacen.js';
 import { tuneHotelLancelot, buildHotelLancelot } from '../../hotelLancelot.js';
 import { tuneMasLugares, buildMasLugares } from './masLugares.js';
+import { tuneCasaAmarilla, buildCasaAmarilla } from '../../casaAmarilla.js';
 import { desnivelesArrecifeCentro } from '../../desniveles/arrecife-centro.js';
 
 export const BARRIO = {
@@ -80,6 +81,8 @@ export function prepararMapa(map) {
   tuneHotelLancelot(map);
   // y los lugares nuevos de las fotos de internet que vienen después (masLugares.js)
   tuneMasLugares(map);
+  // la Casa Amarilla (León y Castillo 6): el bloque del mapa pasa a tener su fachada de la foto
+  tuneCasaAmarilla(map);
 }
 
 /** primera fase: antes de crear los locales */
@@ -107,6 +110,8 @@ export function construir({ scene, map, colliders, touch }) {
   const parqueRamirez = buildParqueRamirez(scene);
   // la estatua del Pollo de Arrecife (Heraclio Niz Mesa), al final de la Calle Real
   buildEstatuas(scene, colliders);
+  // la Casa Amarilla, con su fachada de azulejo y el reloj
+  buildCasaAmarilla(scene, map);
   // el edificio Atlántida (Multicines, C/ León y Castillo 42) como en la foto
   const atlantida = buildAtlantida(scene);
   buildFajardo(scene);

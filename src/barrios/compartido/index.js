@@ -25,6 +25,7 @@ import { tuneAparcadosArgana } from '../../aparcadosArgana.js';
 import { buildExplanadaReducto } from '../../explanadaReducto.js';
 import { tuneRecorridoHonda, buildRecorridoHonda } from '../../recorridoHonda.js';
 import { tuneRecintoFerial, buildRecintoFerial } from '../../recintoFerial.js';
+import { tuneRotondaCabildo, buildRotondaCabildo } from '../../rotondaCabildo.js';
 import { tuneReductoFoto, buildReductoFoto } from '../../reductoFoto.js';
 import { tuneAvenidaFredOlsen, buildAvenidaFredOlsen } from '../../avenidaFredOlsen.js';
 import { buildWalkIndex } from '../../aceras.js';
@@ -59,6 +60,8 @@ export function prepararMapa(map) {
   tuneNorteFoto(map);
   // el Recinto Ferial (junto al Cabildo): no es un bloque de pisos, es la cubierta de las fiestas con su aparcamiento
   tuneRecintoFerial(map);
+  // la rotonda grande de entrada, junto al Cabildo: sus tres palmeras
+  tuneRotondaCabildo(map);
   // esa zona (Recinto Ferial, Cabildo y Parque Temático) con la foto aérea oficial como suelo, y el parque sin césped
   tuneReductoFoto(map);
   // la Avenida Fred Olsen a lo largo de la Playa del Reducto: foto aérea de suelo y las palmeras de la arena
@@ -95,6 +98,8 @@ export function construir({ scene, map, colliders, touch, story }) {
   buildRecorridoHonda(scene, colliders, map);
   // el Recinto Ferial: la cubierta con el escenario y el aparcamiento
   buildRecintoFerial(scene, colliders, map);
+  // la isleta de picón de la rotonda grande de entrada (no venía en la lista de rotondas)
+  buildRotondaCabildo(scene);
   buildReductoFoto(scene, colliders);
   // la Avenida Fred Olsen: carril bici rojo, bancos, torre del socorrista y pasarelas de la playa
   buildAvenidaFredOlsen(scene, colliders);
