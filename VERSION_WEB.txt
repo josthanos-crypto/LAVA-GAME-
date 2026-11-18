@@ -2134,5 +2134,5 @@ Version 160 - La Casa Amarilla y la rotonda grande de entrada, junto al Cabildo 
   03_IMG_0403/1500 NO es el Recinto Ferial (esta al otro lado de la calle): sin situar.
 - Sigue pendiente: la subida de San Bartolome (falta el video entero: recursos\nuevas\completo aun no existe) y las
   fotos grandes de IMG_0397/0398/0399 (falta pasar CONVERTIR FOTOGRAMAS.bat).
-- Archivos: casaAmarilla.js y rotondaCabildo.js (nuevos), shops.js (una linea), barrios/arrecife-centro/index.js y
+- Archivos: casaAmarilla.js y rotondaEntrada.js (nuevos), shops.js (una linea), barrios/arrecife-centro/index.js y
   barrios/compartido/index.js (los enganches). Sin tocar main.js ni index.html.
