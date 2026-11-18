@@ -9,6 +9,7 @@
 import { buildCasaCampo } from '../../casaCampo.js';
 import { buildCaminoAnmara } from '../../caminoAnmara.js';
 import { tuneParcela } from '../../casaParcela.js';
+import { tuneBajadaCortazar, buildBajadaCortazar } from '../../bajadaCortazar.js';
 import { desnivelesManeje } from '../../desniveles/maneje.js';
 import { prepararGasolineraManeje, buildGasolineraManeje } from '../../gasolineraManeje.js';
 import { tuneCalles } from './calles.js';
@@ -28,6 +29,8 @@ export function prepararMapa(map) {
   map.desnivelesManeje = desnivelesManeje();
   // el bar de la gasolinera (Moeve, Carretera San Bartolomé): su fachada se queda donde está
   prepararGasolineraManeje(map);
+  // la bajada del camino de tierra al barrio (calle Julio Cortázar): asfalto y coches aparcados, como en el vídeo
+  tuneBajadaCortazar(map);
   // calle a calle con las vistas de la calle (kitCalles.js de Altavista)
   tuneCalles(map);
   tuneCalles2(map);
@@ -39,13 +42,15 @@ export function prepararMapa(map) {
 }
 
 /** primera fase: antes de crear los locales */
-export function construir({ scene, colliders }) {
+export function construir({ scene, colliders, map }) {
   // el campo de arriba: el camino de tierra hasta la casa de las fotos desde la azotea
   buildCasaCampo(scene, colliders);
   // el caserío del camino de tierra de Anmara (la lancha ANMARA UNO, la casa de las persianas verdes...)
   buildCaminoAnmara(scene, colliders);
   // la fachada y la terraza del bar de la gasolinera (por dentro es un local: gasolineraManeje.js)
   buildGasolineraManeje(scene, colliders);
+  // el cruce en T del final de la bajada: STOP, contenedores, la grúa desmontada y el coche abandonado
+  buildBajadaCortazar(scene, colliders, map);
 
   return {};
 }

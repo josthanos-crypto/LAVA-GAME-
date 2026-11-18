@@ -2153,3 +2153,23 @@ Version 161 - Los coches, de una pieza en los puentes (se acabo el coche "acorde
   JUGAR.bat ni game\ABRIR-JUEGO.bat.
 - Archivos: cocheTrinchera.js (nuevo), carModels.js y motos.js (el enganche, dos lineas cada uno).
   Sin tocar main.js ni index.html.
+
+
+Version 162 - La bajada de tu camino de tierra al barrio (calle Julio Cortazar) (18/11/2026)
+- Repasado entero lo convertido del video IMG_0397 (fotogramas 1 a 232; el conversor se paro ahi): es la salida en
+  coche del camino de tierra hacia el sur. Situado sobre la foto aerea del IGN: baja por la calle Julio Cortazar, la
+  del borde este del barrio (casas solo a la derecha, solar de lava a la izquierda), hasta el cruce en T del STOP.
+- En el juego esa calle venia entera como camino de tierra. Ahora, desde el edificio de la esquina para abajo, es
+  calle asfaltada con aceras y coches aparcados en linea a la derecha, como en el video.
+- En el cruce del final, lo que se ve en los fotogramas 204 a 216: el poste con el STOP y el prohibido girar a la
+  izquierda, los cuatro contenedores de la izquierda (verde, dos negros y amarillo), el solar vallado de la derecha
+  con la grua torre amarilla desmontada, y el coche plateado abandonado con su pegatina rosa.
+- Comprobado tambien el arreglo de la Version 161 en otro puente (Pereyra Galviaty): el coche baja entero.
+- Sin hacer: el color crema del edificio de la esquina, la valla de chapa ondulada y la casa del portal 65 (no se
+  sabe el sitio exacto), y las fachadas una a una. En el video no se lee ninguna placa de calle ni rotulo de negocio.
+- OJO, para que lo diga Jose Manuel: el mapa trae una carretera asfaltada que cruza el solar de lava de al lado (de
+  la esquina del camino hacia el sureste) y otra por en medio de la manzana; en el video ahi no hay carretera. No se
+  han quitado.
+- Falta por ver: el resto de IMG_0397 (233 a 300), IMG_0398, IMG_0399 y las capturas grandes: hay que pasar
+  CONVERTIR FOTOGRAMAS.bat y dejar la ventana abierta hasta que ponga "Terminado".
+- Archivos: bajadaCortazar.js (nuevo) y barrios/maneje/index.js (el enganche). Sin tocar main.js ni index.html.
