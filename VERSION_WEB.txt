@@ -2173,3 +2173,19 @@ Version 162 - La bajada de tu camino de tierra al barrio (calle Julio Cortazar) 
 - Falta por ver: el resto de IMG_0397 (233 a 300), IMG_0398, IMG_0399 y las capturas grandes: hay que pasar
   CONVERTIR FOTOGRAMAS.bat y dejar la ventana abierta hasta que ponga "Terminado".
 - Archivos: bajadaCortazar.js (nuevo) y barrios/maneje/index.js (el enganche). Sin tocar main.js ni index.html.
+
+
+Version 163 - La entrada de atras del Hospital Molina Orosa (19/11/2026)
+- Del video "hospital hiperdino" (recursos\nuevas\clips_0-20s, segundo 4): lo que se ve desde el aparcamiento largo de
+  la calle Santiago Aleman y que faltaba desde la Version 159.
+- El pabellon de la entrada venia en el mapa 6,4 m mas ancho de la cuenta y llegaba hasta los coches aparcados. Se ha
+  echado atras esa cara (medido sobre la foto aerea del IGN) y ahora cabe el vial de la puerta.
+- Nuevo: el murete blanco con la barandilla verde de malla al borde del aparcamiento, el vial con las dos plazas
+  azules y el rayado amarillo, la marquesina gris sobre columnas redondas, la cristalera del vestibulo y los tres
+  lucernarios en piramide con su linterna de cristal.
+- Sin hacer: en la realidad el vial queda mas bajo que el aparcamiento; en el juego va a la misma altura. La senal de
+  prohibido aparcar y las palmeras de esa esquina no se han puesto.
+- Mirado tambien: el conector nuevo de Microsoft 365 (OneDrive) esta vacio; no hay recursos ahi. En los dos PC no hay
+  recursos nuevos desde el 18/11. El conversor de fotos sigue sin pasar de la foto 260 de 900.
+- Archivos: hospitalEntradaTrasera.js (nuevo) y barrios/argana-alta/index.js (el enganche). Sin tocar main.js ni
+  index.html.

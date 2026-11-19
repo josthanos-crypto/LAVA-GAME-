@@ -17,6 +17,7 @@ import { buildBazarArgana } from '../../bazarArgana.js';
 import { tuneItvArgana, buildItvArgana } from '../../itvArgana.js';
 import { buildAparcamientoHospital } from '../../hospitalAparcamiento.js';
 import { tuneHospitalTrasera, buildHospitalTrasera } from '../../hospitalTrasera.js';
+import { tuneHospitalEntradaTrasera, buildHospitalEntradaTrasera } from '../../hospitalEntradaTrasera.js';
 import { buildRotulosTenderete } from '../../rotulosTenderete.js';
 import { tuneCcArgana, buildCcArgana } from '../../ccArgana.js';
 import { buildRotulosArgana } from '../../rotulosArgana.js';
@@ -81,6 +82,8 @@ export function prepararMapa(map) {
   tuneHospitalMolinaOrosa(map);
   // la parte de atrás del hospital (calle Santiago Alemán): foto aérea de suelo y los coches de sus aparcamientos
   tuneHospitalTrasera(map);
+  // la entrada de atrás: el pabellón se echa atrás para dejar sitio al vial de la puerta
+  tuneHospitalEntradaTrasera(map);
   // el Palacio de Deportes de la calle Seguidilla: la caja alta de chapa gris a su altura
   tunePalacioDeportes(map);
   // calle a calle con las vistas de la calle (kitCalles.js de Altavista): la parte de abajo, junto a Titerroy
@@ -137,6 +140,8 @@ export function construir({ scene, colliders, map }) {
   buildAparcamientoHospital(scene, map);
   // los aparcamientos de detrás del hospital, del lado de la calle Santiago Alemán
   buildHospitalTrasera(scene, map);
+  // el vial, el murete con la barandilla verde, la marquesina y los lucernarios de la entrada de atrás
+  buildHospitalEntradaTrasera(scene, colliders, map);
   // los rótulos que faltaban en la calle Tenderete: la farmacia de la esquina con Saltona y la cafetería de la Repsol
   buildRotulosTenderete(scene, map);
   // el Centro Comercial Argana (con su aparcamiento y sus tiendas), Deko Hogar y Kiwoko
