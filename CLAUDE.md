@@ -200,6 +200,18 @@ hacer algo que ya hacen los extras, se apaga allí la parte repetida (como se hi
    `zipfile` de Python, cada archivo como `juego/<ruta dentro de dist>`). Ya incluye `ortho-m/`
    (copiado a `public/ortho-m/` en la Version 12).
    Se le manda con SendUserFile.
+   **Subirlo a la web desde aquí** (conector de Hostinger; hecho por primera vez el 19/11/2026 con la Version 163): la
+   web es `canaryislandconsulting.es` (usuario `u778984572`) y el juego va en `public_html/juego/`. Primero se mira qué
+   hay (`hosting_files_list-website-and-directories`, carpeta `juego`) y se sube **solo lo nuevo o cambiado**: el js
+   nuevo de `assets/`, las carpetas de fotos nuevas y, **al final**, `demo.html` e `index.html`. Se sube con
+   `hosting_files_generate-upload-url` (da una dirección y dos claves que caducan: no guardarlas en el repositorio) y
+   el protocolo TUS con `curl`, a `juego/<ruta>`. **No se toca** lo que no es del juego compilado: `.htaccess`,
+   `registro.php`, `confirmar.php`, `admin-registros.php`, `privacidad.html` y la carpeta `datos/` (el registro de
+   usuarios y su base de datos). El js viejo se deja (no se borra nada) y la página anterior se guarda como
+   `juego/index-anterior-vNNN.html` para poder volver atrás. La red del entorno tiene que permitir
+   `srv1471-files.hstgr.io` y `canaryislandconsulting.es` (ya añadidos al entorno «Lava Game (vistas de calle)»). La
+   CDN de Hostinger recomprime los JPG al servirlos (el tamaño no coincide con el subido: es normal); el js y los json
+   sí salen idénticos. Después se comprueba con `curl` que cada archivo que pide el juego da 200.
 3. **PC de casa** (conector PC_Casa): la copia del juego está en
    `Downloads\gta canarias\game` (`src\`, `index.html`, `VERSION_WEB.txt`). Antes de
    cambiar nada, copia los archivos que vas a tocar en `_copia_antes_<tema>`. Sube cada

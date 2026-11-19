@@ -2189,3 +2189,9 @@ Version 163 - La entrada de atras del Hospital Molina Orosa (19/11/2026)
   recursos nuevos desde el 18/11. El conversor de fotos sigue sin pasar de la foto 260 de 900.
 - Archivos: hospitalEntradaTrasera.js (nuevo) y barrios/argana-alta/index.js (el enganche). Sin tocar main.js ni
   index.html.
+- SUBIDO A LA WEB (19/11/2026): la Version 163 esta en canaryislandconsulting.es/juego/. Se subio desde la sesion con
+  el conector de Hostinger: el juego nuevo (assets/index-DGNIdJJ4.js), las fotos aereas nuevas (campo, honda, norte,
+  reducto, hospital), map/terreno-norte.json y, al final, demo.html e index.html. No se toco el registro de usuarios
+  (los .php, .htaccess, privacidad.html y la carpeta datos). La pagina anterior (Version 133) queda guardada en
+  juego/index-anterior-v133.html y su js no se ha borrado. Comprobado: los 29 archivos que pide el juego dan 200 y el
+  js y los json salen identicos a los subidos. No se pudo abrir la web real en el navegador de pruebas.
