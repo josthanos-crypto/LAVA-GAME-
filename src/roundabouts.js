@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { ROUNDABOUTS, SCULPTURES, islandR } from './places.js';
 import { buildHuman } from './humanModel.js';
+import { concha } from './rotondaConcha.js';
 
 /**
  * Rotondas de Arrecife: isleta con bordillo, picón negro o rojo, cardones,
@@ -396,6 +397,7 @@ export function buildRoundabouts(scene, colliders) {
     if (kind === 'barlovento') { barlovento(S, cx, cz, r); core = 1.6; }
     else if (kind === 'vela') { velaLatina(S, cx, cz, r); core = 6.5; }
     else if (kind === 'marlin') { marlin(S, cx, cz, r); core = 4.2; }
+    else if (kind === 'concha') core = concha(S, cx, cz, ri, TOP, { tinted, place });
     else {
       const H = Math.min(6.5, 2.6 + ri * 0.32);
       GENERIC[i % GENERIC.length](S, cx, cz, H, r);

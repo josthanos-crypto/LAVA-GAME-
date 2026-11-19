@@ -229,6 +229,12 @@ export class PostFX {
     this.gtao.updateGtaoMaterial({ radius: 2.2, distanceExponent: 1.2, thickness: 1.5, distanceFallOff: 1, scale: 1, samples: 12, screenSpaceRadius: false });
     this.gtao.updatePdMaterial({ lumaPhi: 10, depthPhi: 2, normalPhi: 3, radius: 6, rings: 2, samples: 12 });
     this.bloom = new UnrealBloomPass(new THREE.Vector2(w, h), 0.22, 0.55, 0.92);
+    // un solo píxel con un valor imposible (NaN, p. ej. un brillo metálico muy cerca de la cámara en la vista
+    // desde el asiento) se extendía con el desenfoque del resplandor y dejaba media pantalla negra: se limpia
+    const hp = this.bloom.materialHighPassFilter;
+    hp.fragmentShader = hp.fragmentShader.replace('vec4 texel = texture2D( tDiffuse, vUv );',
+      'vec4 texel = texture2D( tDiffuse, vUv );\n\t\t\tif ( any( isnan( texel ) ) || any( isinf( texel ) ) ) texel = vec4( 0.0 );\n\t\t\ttexel = max( texel, vec4( 0.0 ) );');
+    hp.needsUpdate = true;
     this.output = new OutputPass();
     this.grade = new ShaderPass(GradeShader);
     this.smaa = new SMAAPass(w * renderer.getPixelRatio(), h * renderer.getPixelRatio());

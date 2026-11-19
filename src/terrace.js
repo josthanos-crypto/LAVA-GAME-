@@ -15,7 +15,7 @@ import { area } from './dogs.js';
  * patineta.
  */
 
-const FLOOR_Y = 0.17;
+const FLOOR_Y = 0.2;
 const D = 7.6, H0 = 3.25, H1 = 2.8;   // fondo del techado y alturas junto a la fachada y delante
 
 /** fachada del edificio que da a la plaza: esquina A, a lo largo u, hacia fuera n, largo L */

@@ -15,7 +15,7 @@ const FACADE = [[243.42, 311.27], [262.88, 335.29]];
 // el parque de detrás de la iglesia (zona verde que el mapa no traía)
 export const SAN_GINES_PARK = [[281, 344], [296, 325], [312, 330], [320, 342], [306, 358], [288, 357], [281, 344]];
 
-const WHITE = 0xf1eee6, BASALT = 0x3b3734, TILE = 0xa4573c, DARK = 0x1c1a19, WOOD = 0x4a2f1f, BRONZE = 0x6b5a2e;
+const WHITE = 0xf1eee6, BASALT = 0x4b4038, TILE = 0xa4573c, DARK = 0x1c1a19, WOOD = 0x4a2f1f, BRONZE = 0x6b5a2e;
 
 function colored(g, hex, j = 0) {
   const geo = g.index ? g.toNonIndexed() : g;
@@ -52,12 +52,15 @@ function archShape(w, h) {
   s.lineTo(-r, 0);
   return s;
 }
-/** arco plano pegado a una pared que mira a +x (fachada) o a ±z (laterales) */
-function arch(w, h, face) {
-  const g = new THREE.ShapeGeometry(archShape(w, h), 8);
+/** pieza plana (en el plano XY) pegada a una pared que mira a −a (fachada) o a ±b (laterales) */
+function facing(g, face) {
   if (face === 'front') g.rotateY(-Math.PI / 2);
   else if (face === 'left') g.rotateY(Math.PI);
   return g;
+}
+/** arco plano pegado a una pared */
+function arch(w, h, face) {
+  return facing(new THREE.ShapeGeometry(archShape(w, h), 8), face);
 }
 
 /** nave con tejado a dos aguas: a ∈ [0, L], b ∈ [b0, b1], pared hasta h y cumbrera a h + rh */
@@ -139,14 +142,35 @@ function church(out, b) {
     out.stone.push(F.put(new THREE.BoxGeometry(0.55, H + 4.6, 0.55), ta + da, (H + 4.6) / 2, tb + db, BASALT, 0.12));
   }
   for (const y of [6, 11.5, H, H + 4.5]) out.stone.push(F.put(new THREE.BoxGeometry(T + 0.4, 0.35, T + 0.4), ta, y, tb, BASALT, 0.08));
-  // campanario: cuatro huecos en arco con su campana
+  // campanario: dos huecos en arco por cara, cada uno con su campana (como en la postal)
   out.walls.push(F.put(new THREE.BoxGeometry(T - 0.3, 4.4, T - 0.3), ta, H + 2.3, tb, WHITE));
-  for (const [da, db, face] of [[-T / 2, 0, 'front'], [T / 2, 0, 'back'], [0, -T / 2, 'left'], [0, T / 2, 'right']]) {
-    const g = arch(1.7, 3.1, face === 'back' ? 'front' : face);
-    if (face === 'back') g.rotateY(Math.PI);
-    out.walls.push(F.put(g, ta + da * 1.01, H + 0.6, tb + db * 1.01, DARK));
-    const bell = new THREE.SphereGeometry(0.55, 12, 8, 0, Math.PI * 2, 0, Math.PI * 0.6);
-    out.stone.push(F.put(bell, ta + da * 0.75, H + 2.2, tb + db * 0.75, BRONZE));
+  const FACES = [[-T / 2, 0, 'front'], [T / 2, 0, 'back'], [0, -T / 2, 'left'], [0, T / 2, 'right']];
+  const onFace = (face) => {
+    const g = face === 'back' ? 'front' : face;
+    return (mk) => { const q = mk(g); if (face === 'back') q.rotateY(Math.PI); return q; };
+  };
+  for (const [da, db, face] of FACES) {
+    const mk = onFace(face);
+    for (const s of [-0.95, 0.95]) {
+      const oa = da ? 0 : s, ob = da ? s : 0;
+      out.walls.push(F.put(mk(f => arch(1.2, 2.8, f)), ta + da * 1.01 + oa, H + 0.7, tb + db * 1.01 + ob, DARK));
+      const bell = new THREE.SphereGeometry(0.42, 12, 8, 0, Math.PI * 2, 0, Math.PI * 0.6);
+      out.stone.push(F.put(bell, ta + da * 0.8 + oa, H + 2.3, tb + db * 0.8 + ob, BRONZE));
+    }
+    // reloj entre las dos fajas de en medio, y un ventanuco abajo
+    const disc = (r) => mk(f => facing(new THREE.CircleGeometry(r, 24), f));
+    out.walls.push(F.put(disc(1.0), ta + da * 1.012, 8.75, tb + db * 1.012, BASALT));
+    out.walls.push(F.put(disc(0.82), ta + da * 1.02, 8.75, tb + db * 1.02, 0xf8f6ef));
+    for (const [len, turn] of [[0.66, 0], [0.48, 1.9]]) {
+      const hand = new THREE.PlaneGeometry(0.09, len);
+      hand.translate(0, len / 2, 0);
+      hand.rotateZ(-turn);
+      out.walls.push(F.put(mk(f => facing(hand, f)), ta + da * 1.03, 8.75, tb + db * 1.03, DARK));
+    }
+    if (face === 'front') {
+      out.walls.push(F.put(mk(f => arch(1.0, 1.5, f)), ta + da * 1.012, 2.9, tb, BASALT));
+      out.walls.push(F.put(mk(f => arch(0.7, 1.2, f)), ta + da * 1.02, 3.05, tb, DARK));
+    }
   }
   // tambor, cúpula blanca, linterna y cruz
   out.walls.push(F.put(new THREE.CylinderGeometry(2.3, 2.45, 1.2, 8), ta, H + 5.3, tb, WHITE));
@@ -160,7 +184,7 @@ function church(out, b) {
 }
 
 /** laurel de Indias: tronco grueso y copa redonda y tupida */
-function laurel(out, x, z, s, k) {
+export function laurel(out, x, z, s, k) {
   const h = 2.6 * s;
   const t = new THREE.CylinderGeometry(0.3 * s, 0.45 * s, h, 8);
   t.translate(x, h / 2, z);

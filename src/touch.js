@@ -22,10 +22,12 @@ const BUTTONS = [
   ['brake', ' ', 'Freno', true],
   ['enter', 'f', 'Bajar', false],
   ['talk', 't', 'Hablar', false],
+  ['weapon', 'x', 'Arma', false],
+  ['jump', 'j', 'Salto', false],
 ];
 const MENU = [
-  ['c', 'Cámara'], ['m', 'Ropa'], ['n', 'Hora'], ['q', 'Calidad'],
-  ['p', 'Foto'], ['r', 'Recolocar'], ['v', 'Silenciar'], ['1', 'Noah'], ['2', 'Michael'], ['3', 'José'], ['4', 'Iria'],
+  ['g', 'Mapa'], ['c', 'Cámara'], ['i', 'Interior'], ['m', 'Ropa'], ['n', 'Hora'], ['q', 'Calidad'],
+  ['p', 'Foto'], ['r', 'Recolocar'], ['o', 'Roadster'], ['b', 'Moto'], ['u', 'Quad'], ['l', 'Lava'], ['Escape', 'Pausa'], ['v', 'Silenciar'], ['1', 'Noah'], ['2', 'Michael'], ['3', 'José'], ['4', 'Iria'],
 ];
 
 export class TouchControls {
@@ -38,6 +40,7 @@ export class TouchControls {
       <div class="tc-stick"><i></i></div>
       <div class="tc-btns">${BUTTONS.map(([id, , label]) => `<button type="button" class="tc-b tc-${id}" data-id="${id}">${label}</button>`).join('')}</div>
       <button type="button" class="tc-more" aria-label="Más opciones">···</button>
+      <button type="button" class="tc-map" aria-label="Abrir el mapa grande"><span>Mapa</span></button>
       <div class="tc-menu">${MENU.map(([k, l]) => `<button type="button" data-k="${k}">${l}</button>`).join('')}</div>`;
     this.zone = root.querySelector('.tc-zone');
     this.knob = root.querySelector('.tc-stick');
@@ -74,6 +77,12 @@ export class TouchControls {
       b.addEventListener('lostpointercapture', up);
     }
     root.querySelector('.tc-more').addEventListener('click', () => this.menu.classList.toggle('on'));
+    // tocar el minimapa abre el mapa grande
+    root.querySelector('.tc-map').addEventListener('click', () => {
+      this.menu.classList.remove('on');
+      key('keydown', 'g');
+      key('keyup', 'g');
+    });
     this.menu.addEventListener('click', (e) => {
       const b = e.target.closest('button');
       if (!b) return;
@@ -116,10 +125,13 @@ export class TouchControls {
 
   /**
    * cada fotograma: oculta lo que no toca y cambia los textos según estés en
-   * coche o a pie (enterLabel: en un local, el botón amarillo dice Entrar o Salir)
+   * coche o a pie (enterLabel: en un local, el botón amarillo dice Entrar o Salir;
+   * canJump: vas en el roadster y sale el botón de Salto)
    */
-  update(mode, hidden, fireLabel = 'Disparar', enterLabel = null) {
+  update(mode, hidden, fireLabel = 'Disparar', enterLabel = null, canJump = false) {
     this.root.classList.toggle('off', hidden);
+    // el botón de salto, solo en el coche que lo lleva
+    this.root.classList.toggle('can-jump', canJump && mode === 'car');
     if (this.fireLabel !== fireLabel) {
       this.fireLabel = fireLabel;
       this.root.querySelector('.tc-fire').textContent = fireLabel;

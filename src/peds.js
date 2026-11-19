@@ -1,7 +1,9 @@
 import * as THREE from 'three';
 import { buildHuman } from './humanModel.js';
+import { andar, reposo } from './andares.js';
 import { randomName } from './dialogue.js';
 import { ROUNDABOUTS } from './places.js';
+import { Calzada, PasoIndex, WALK_OFF } from './sentidos.js';
 
 const SKIN = [0xf1d3b8, 0xe8c4a2, 0xd9a882, 0xc28a62, 0x9a6844, 0x6e4a32, 0x4a3022];
 const HAIR = [0x1e1712, 0x1e1712, 0x3a2a1c, 0x5a4028, 0x8a6a3a, 0xc8a86a, 0xb04a2a, 0x2a2420];
@@ -15,7 +17,9 @@ const PANTS = [0x2c3440, 0x34465c, 0x6b5844, 0x3d4f5c, 0x8a8f96, 0xc8b89a, 0x1e2
 const SHOES = [0xf2f2f2, 0x1e1e20, 0x6a4a30, 0x3a4a6a, 0xd8271c];
 const SHOES_F = [0xf2f2f2, 0x1e1e20, 0xc8a27a, 0xd8271c, 0xe8b4c8, 0x8a6a4a];
 const BAGS = [0x1c1c1e, 0x6a4a30, 0xc8a27a, 0x8a2a2a, 0x2c4f86, 0xe8e4da];
-const WALK_Y = 0.19; // a la altura de la acera
+const WALK_Y = 0.24; // a la altura de la acera (calzada 0,14 + bordillo de 10 cm)
+const ROAD_Y = 0.15; // cruzando por el paso, a la altura de la calzada
+const CROSS_WAIT = 6; // segundos que esperan como mucho a que pare un coche antes de cruzar
 const BODY_R = 0.42; // radio para impactos y atropellos
 // aparecen entre R0 y R1 metros del jugador; más allá de FAR vuelven a salir cerca
 const R0 = 16, R1 = 90, FAR = 110;
@@ -72,9 +76,21 @@ export function samplePedLooks(n, seed = 1) {
 const POOL_GEO = new THREE.CircleGeometry(1, 20);
 POOL_GEO.rotateX(-Math.PI / 2);
 
-function buildPedMesh() {
+function buildPedMesh(detail = 1) {
   const look = randomPedLook();
+  // en el PC la gente de la calle va con el detalle del protagonista (dedos, bolsillos, cordones)
+  look.detail = detail;
   const h = buildHuman(look);
+  // de lejos (Version 133): la misma persona con unos 2.000 triángulos, movida por el mismo esqueleto
+  const l = buildHuman({ ...look, detail: 0 });
+  const lejos = new THREE.SkinnedMesh(l.mesh.geometry, l.mesh.material);
+  lejos.bind(h.mesh.skeleton, h.mesh.bindMatrix);
+  lejos.boundingSphere = h.mesh.boundingSphere;
+  lejos.castShadow = true;
+  lejos.receiveShadow = true;
+  lejos.visible = false;
+  h.group.add(lejos);
+  h.lejos = lejos;
   // giro primero (rumbo) y luego inclinación local (caer de espaldas)
   h.group.rotation.order = 'YXZ';
   h.old = look.old;
@@ -87,11 +103,17 @@ function buildPedMesh() {
  * velocidad del coche).
  */
 export class Peds {
-  constructor(scene, roads, { count = 90 } = {}) {
+  constructor(scene, roads, { count = 90, detail = 1 } = {}) {
     this.scene = scene;
     // caminan por todas las calles; las peatonales y las avenidas, más concurridas
-    this.roads = roads.filter(r => r.p.length >= 2);
+    // (por el arcén de las autovías no pasea nadie: no hay acera de verdad)
+    this.roads = roads.filter(r => r.p.length >= 2 && !(r.w >= 13 && !r.ped));
     this.pedRoads = this.roads.filter(r => r.ped || r.major);
+    // red peatonal (sentidos.js): la calzada no se pisa salvo por los pasos de peatones
+    this.calz = new Calzada(roads);
+    this.pasos = new PasoIndex(roads._pasos || []);
+    this.crossers = [];   // quién está cruzando o esperando en un paso: el tráfico les cede (traffic.js)
+    this.traffic = null;
     // tramos por casillas, para salir cerca del jugador (los anillos de las
     // rotondas no: su acera de dentro es la isleta)
     this.cells = new Map();
@@ -109,8 +131,10 @@ export class Peds {
     this.colliders = null;
     this.onEvent = null; // (tipo, peatón) → 'runover' | 'bumped'
     this.peds = [];
+    // a partir de aquí se ve el cuerpo ligero (más cerca en el móvil, que va con detail 1)
+    this.lejos2 = (detail > 1 ? 24 : 15) ** 2;
     for (let i = 0; i < count; i++) {
-      const m = buildPedMesh();
+      const m = buildPedMesh(detail);
       m.group.visible = false;
       scene.add(m.group);
       this.peds.push({
@@ -129,6 +153,7 @@ export class Peds {
   spawnNear(p, px, pz, fwd) {
     p.state = 'walk';
     p.air = false;
+    p.onCar = null; p.cross = null; p.waited = 0; p.swapCd = 4; p.carDist = 0; p.paso = null; p.dev = 0;
     p.group.rotation.x = 0;
     if (p.pool) p.pool.visible = false;
     this.unpair(p);
@@ -145,18 +170,30 @@ export class Peds {
       if (!cell) continue;
       const [r, seg] = cell[Math.floor(Math.random() * cell.length)];
       // las calles peatonales (Calle Real, paseos) se llenan; las avenidas, bastante; el resto, menos
-      if (Math.random() > (r.ped ? 1 : r.major ? 0.35 : 0.12)) continue;
+      // (y por los caminos de tierra del campo, nadie)
+      if (r.dirt || Math.random() > (r.ped ? 1 : r.major ? 0.35 : 0.12)) continue;
       const [ax, az] = r.p[seg], [bx, bz] = r.p[seg + 1];
       const t0 = Math.random();
       const qx = ax + (bx - ax) * t0, qz = az + (bz - az) * t0;
       const dq = Math.hypot(qx - px, qz - pz);
       if (dq < R0 - 4 || dq > R1 + 15 || !hidden(qx, qz)) continue;
+      // donde hay pocas calles (el campo del norte) no se amontonan todos en la misma acera:
+      // como mucho dos por tramo de calle de la casilla, hasta 10 (18 en las peatonales)
+      const qk = cellKey(qx, qz), here = this.perCell?.get(qk) || 0;
+      if (here >= Math.min(r.ped ? 18 : 10, 2 + cell.length * 2)) continue;
+      // nunca aparecen en la calzada de otra calle (cruces, calles pegadas): se prueba la otra acera y,
+      // si tampoco, ese tramo se queda sin gente
+      let side = Math.random() < 0.5 ? 1 : -1;
+      const bad = (sd) => this.railOnRoad(r, seg, t0, sd) || this.inWall(...this.railPoint(r, seg, t0, sd));
+      if (bad(side)) side = -side;
+      if (bad(side)) continue;
+      this.perCell?.set(qk, here + 1);
       p.road = r;
       p.seg = seg;
       p.t = t0;
       p.pause = 6 + Math.random() * 30;
       p.dir = Math.random() < 0.5 ? 1 : -1;
-      p.side = Math.random() < 0.5 ? 1 : -1;
+      p.side = side;
       p.lane = 0;
       p.name = randomName();
       p.group.visible = true;
@@ -172,9 +209,13 @@ export class Peds {
     if (!free.length) return false;
     const L = free[Math.floor(Math.random() * free.length)];
     if (Math.hypot(L.x - px, L.z - pz) < R0 || !hidden(L.x, L.z)) return false;
+    // (no se une a quien está cruzando, ni donde su sitio, un paso más adentro, pisaría la calzada)
+    if (L.onCar || L.cross) return false;
+    const [mx, mz] = this.railPoint(L.road, L.seg, L.t, L.side, 0.68);
+    if (this.calz.roadAt(mx, mz, 0.15)) return false;
     p.leader = L;
     L.mate = p;
-    Object.assign(p, { road: L.road, seg: L.seg, t: L.t, dir: L.dir, side: L.side, speed: L.speed, lane: 0.68 });
+    Object.assign(p, { road: L.road, seg: L.seg, t: L.t, dir: L.dir, side: L.side, speed: L.speed, lane: 0.68, cross: L.cross, onCar: L.onCar });
     p.name = randomName();
     p.group.visible = true;
     return true;
@@ -263,12 +304,26 @@ export class Peds {
     const px = player.pos.x, pz = player.pos.y;
     const t = performance.now() * 0.001;
     const fast = ctx.driving && ctx.carSpeed > 4;
+    this.crossers.length = 0;
+    this.playerCar = ctx.driving && ctx.carSpeed > 2.5 ? { x: px, z: pz, vx: ctx.carVel.x, vz: ctx.carVel.y } : null;
 
     // al empezar salen ya repartidos por todas partes (la pantalla de carga lo tapa)
     const fwd = this.started && player.heading !== undefined ? [Math.sin(player.heading), Math.cos(player.heading)] : null;
     this.started = true;
+    // gente que ya hay en cada casilla, para repartir a los que salen de nuevo (spawnNear)
+    this.perCell = new Map();
+    for (const p of this.peds) {
+      if (!p.road || !p.group.visible) continue;
+      const k = cellKey(p.x, p.z);
+      this.perCell.set(k, (this.perCell.get(k) || 0) + 1);
+    }
     for (const p of this.peds) {
       if (!p.road) { this.spawnNear(p, px, pz, fwd); continue; }
+      // el tronco vuelve a su sitio; si anda o corre, andares.js lo mueve otra vez más abajo
+      reposo(p);
+      // de lejos, el cuerpo ligero
+      const far = (p.x - px) ** 2 + (p.z - pz) ** 2 > this.lejos2;
+      if (far !== p.esLejos) { p.esLejos = far; p.mesh.visible = !far; p.lejos.visible = far; }
 
       if (p.state === 'down') { this.unpair(p); this.updateDown(p, dt, px, pz); continue; }
       if (p.state === 'flee') this.unpair(p);
@@ -292,15 +347,14 @@ export class Peds {
         }
         p.x = nx; p.z = nz;
         p.heading = Math.atan2(p.vx, p.vz);
-        const swing = Math.sin(t * 13 + p.phase) * 0.8;
-        p.legL.rotation.x = swing; p.legR.rotation.x = -swing;
-        p.armL.rotation.x = -swing; p.armR.rotation.x = swing;
+        // huye corriendo (andares.js): zancada larga, talón arriba y el cuerpo echado hacia delante
+        andar(p, t * 13 + p.phase, { zancada: 1, correr: 1 });
         if (p.timer <= 0 && Math.hypot(p.x - px, p.z - pz) > 45) { p.road = null; p.group.visible = false; continue; }
       } else if (p.leader) {
         // acompañante: camina al lado del otro y, cuando se paran, charlan
         const L = p.leader;
         if (L.state === 'walk') {
-          Object.assign(p, { road: L.road, seg: L.seg, t: L.t, dir: L.dir, side: L.side, state: 'walk' });
+          Object.assign(p, { road: L.road, seg: L.seg, t: L.t, dir: L.dir, side: L.side, state: 'walk', cross: L.cross, onCar: L.onCar, dev: L.dev, devU: L.devU });
           this.place(p, t);
         } else if (L.state === 'idle' || L.state === 'talk') {
           p.state = 'idle';
@@ -321,6 +375,8 @@ export class Peds {
       } else {
         this.walk(p, dt, t);
         p.pause -= dt;
+        // en plena calzada no se paran (ni al móvil ni a charlar): siguen hasta la acera
+        if (p.pause <= 0 && (p.onCar || p.cross || p.waited > 0)) p.pause = 0.6;
         if (p.pause <= 0 && p.state === 'walk') {
           p.state = 'idle';
           p.timer = 3 + Math.random() * 9;
@@ -334,7 +390,8 @@ export class Peds {
       // coche del jugador: atropello si va rápido, empujón si va despacio
       const dpx = p.x - px, dpz = p.z - pz;
       const dp = Math.hypot(dpx, dpz);
-      if (ctx.driving && dp < 2.0) {
+      // (en pleno turbo salto el roadster pasa por encima)
+      if (ctx.driving && !ctx.flying && dp < 2.0) {
         if (fast) {
           const v = ctx.carVel;
           this.knock(p, v.x * 0.9 + (dpx / (dp || 1)) * 2, v.y * 0.9 + (dpz / (dp || 1)) * 2, 2.5 + ctx.carSpeed * 0.18);
@@ -352,17 +409,67 @@ export class Peds {
       }
       if (dp > FAR) { this.spawnNear(p, px, pz, fwd); continue; }
 
-      p.group.position.set(p.x, WALK_Y + (p.state === 'walk' ? Math.abs(Math.sin(t * p.speed * 5.2 + p.phase)) * 0.025 : 0), p.z);
+      const onAsphalt = p.onCar || (p.cross && p.cross.k > 0.12 && p.cross.k < 0.88);
+      p.group.position.set(p.x, (onAsphalt ? ROAD_Y : WALK_Y) + (p.state === 'walk' ? Math.abs(Math.sin(t * p.speed * 5.2 + p.phase)) * 0.025 : 0), p.z);
       p.group.rotation.y = p.heading;
       p.group.rotation.x = 0;
     }
   }
 
+  /** el punto de la acera de la calle r (tramo seg, fracción t) por el lado side */
+  railPoint(r, seg, t, side, lane = 0) {
+    const a = r.p[seg], b = r.p[seg + 1];
+    const len = Math.hypot(b[0] - a[0], b[1] - a[1]) || 0.001;
+    const off = side * ((r.ped ? r.w * 0.2 : r.w / 2 + WALK_OFF) + lane);
+    return [a[0] + (b[0] - a[0]) * t - ((b[1] - a[1]) / len) * off, a[1] + (b[1] - a[1]) * t + ((b[0] - a[0]) / len) * off];
+  }
+
+  /** ¿ese punto de la acera pisa la calzada de alguna calle con coches? (la calle que pisa, o null) */
+  railOnRoad(r, seg, t, side) {
+    const [x, z] = this.railPoint(r, seg, t, side);
+    return this.calz.roadAt(x, z, 0.15);
+  }
+
+  /** ¿ese punto choca con la pared de un edificio? (la acera se mete por debajo de una fachada) */
+  inWall(x, z) {
+    return !!this.colliders && this.colliders.circleContacts(x, z, 0.3).length > 0;
+  }
+
+  /** ¿viene un coche (del tráfico o el del jugador) hacia el punto (x, z) por la calle road? */
+  carComing(x, z, road) {
+    const near = (ox, oz, vx, vz) => {
+      const dx = x - ox, dz = z - oz, d = Math.hypot(dx, dz);
+      if (d > 20 || d < 2.5) return false;
+      const v = Math.hypot(vx, vz);
+      return v > 1.6 && (dx * vx + dz * vz) / (d * v) > 0.75;
+    };
+    if (this.playerCar && near(this.playerCar.x, this.playerCar.z, this.playerCar.vx, this.playerCar.vz)) return true;
+    if (!this.traffic) return false;
+    for (const list of this.traffic.lists) for (const o of list) {
+      if (!o.road || (o.road !== road && o.next?.road !== road)) continue;
+      if (Math.abs(o.x - x) > 20 || Math.abs(o.z - z) > 20) continue;
+      if (near(o.x, o.z, Math.sin(o.heading) * o.v, Math.cos(o.heading) * o.v)) return true;
+    }
+    return false;
+  }
+
+  /** se queda quieto en el bordillo mirando a la calle, y avisa al tráfico de que quiere cruzar */
+  waitAtKerb(p, dt, road, lookX, lookZ) {
+    p.waited += dt;
+    p.heading = Math.atan2(lookX, lookZ);
+    for (const limb of [p.legL, p.legR, p.armL, p.armR]) limb.rotation.x *= 0.8;
+    this.crossers.push({ x: p.x, z: p.z, road, wide: road.w / 2 + 2.6 });
+  }
+
   walk(p, dt, t) {
+    if (p.cross) { this.crossStep(p, dt, t); return; }
     const pts = p.road.p;
+    const seg0 = p.seg, t0 = p.t;
     const a = pts[p.seg], b = pts[p.seg + 1];
     const len = Math.hypot(b[0] - a[0], b[1] - a[1]) || 0.001;
-    p.t += (p.speed * p.dir * dt) / len;
+    // por el paso se cruza a buen ritmo, sin entretenerse
+    const step = p.speed * (p.onCar ? 1.4 : 1) * dt;
+    p.t += (step * p.dir) / len;
     if (p.t > 1) {
       if (p.seg + 1 < pts.length - 1) { p.seg++; p.t = 0; }
       else { p.dir = -1; p.t = 1; }
@@ -370,7 +477,79 @@ export class Peds {
       if (p.seg > 0) { p.seg--; p.t = 1; }
       else { p.dir = 1; p.t = 0; }
     }
+    // ¿el paso siguiente pisa la calzada de una calle? Solo se entra por un paso de peatones y con los
+    // coches parados o lejos; si no hay paso, media vuelta por la misma acera
+    const [nx, nz] = this.railPoint(p.road, p.seg, p.t, p.side, p.lane || 0);
+    let rd = this.calz.roadAt(nx, nz, 0.15);
+    if (!rd && p.mate) {
+      // el acompañante va un paso más adentro: su sitio tampoco puede pisar la calzada
+      const [mx, mz] = this.railPoint(p.road, p.seg, p.t, p.side, 0.68);
+      rd = this.calz.roadAt(mx, mz, 0.15);
+    }
+    // contra una pared (la acera pasa por debajo de un edificio): media vuelta, como sin paso
+    if (!rd && !p.onCar && (this.inWall(nx, nz) || (p.mate && this.inWall(...this.railPoint(p.road, p.seg, p.t, p.side, 0.68))))) {
+      p.seg = seg0; p.t = t0; p.dir = -p.dir;
+      this.place(p, t);
+      return;
+    }
+    if (rd && !p.onCar) {
+      // (el paso tiene que ser de la calle que se va a cruzar, no el de la boca de la propia)
+      const paso = this.pasos.on(nx, nz, 1.6, rd);
+      if (!paso) {
+        p.seg = seg0; p.t = t0; p.dir = -p.dir;
+      } else if (p.waited < CROSS_WAIT && this.carComing(paso.x, paso.z, rd)) {
+        p.seg = seg0; p.t = t0;
+        this.waitAtKerb(p, dt, rd, nx - p.x, nz - p.z);
+        return;
+      } else { p.onCar = rd; p.paso = paso; p.carDist = 0; p.waited = 0; }
+    } else if (rd) {
+      p.carDist += step;
+      this.crossers.push({ x: nx, z: nz, road: rd, wide: rd.w / 2 + 2.6 });
+      // un paso no es tan largo: si sigue en el asfalto es que la acera se mete por otra calle; se vuelve
+      if (p.carDist > rd.w + 9) { p.dir = -p.dir; p.carDist = -rd.w - 9; }
+    } else {
+      p.onCar = null; p.waited = 0;
+      // ¿hay un paso un poco más adelante? Se va arrimando ya a sus bandas
+      const [lx, lz] = this.railPoint(p.road, p.seg, Math.max(0, Math.min(1, p.t + (p.dir * 2.5) / len)), p.side, p.lane || 0);
+      const rdA = this.calz.roadAt(lx, lz, 0.15);
+      p.paso = rdA ? this.pasos.on(lx, lz, 1.6, rdA) : null;
+      if (p.swapCd > 0) p.swapCd -= dt;
+      else if (!p.road.ped) this.trySwap(p);
+    }
+    // por el paso se va por el centro de las bandas, aunque la acera llegue algo torcida o desplazada
+    const c = p.paso;
+    const want = c ? Math.max(-2.2, Math.min(2.2, -((nx - c.x) * c.ux + (nz - c.z) * c.uz))) : 0;
+    if (c) p.devU = c;
+    p.dev += (want - (p.dev || 0)) * Math.min(1, dt * 2.5);
     this.place(p, t);
+  }
+
+  /** al pasar junto a un paso de peatones de su propia calle, a veces cruza a la otra acera */
+  trySwap(p) {
+    const a = p.road.p[p.seg], b = p.road.p[p.seg + 1];
+    const c = this.pasos.at(a[0] + (b[0] - a[0]) * p.t, a[1] + (b[1] - a[1]) * p.t, 1.2);
+    if (!c || c.road !== p.road) return;
+    p.swapCd = 9;
+    if (Math.random() > 0.4 || this.railOnRoad(p.road, p.seg, p.t, -p.side)) return;
+    p.cross = { from: p.side, k: 0, w: p.road.w + WALK_OFF * 2, paso: c };
+    p.waited = 0;
+  }
+
+  /** cruce de una acera a la otra por el paso: espera a que paren los coches y cruza derecho */
+  crossStep(p, dt, t) {
+    const c = p.cross, road = p.road;
+    if (c.k === 0 && p.waited < CROSS_WAIT && this.carComing(c.paso.x, c.paso.z, road)) {
+      const a = road.p[p.seg], b = road.p[p.seg + 1];
+      this.waitAtKerb(p, dt, road, a[0] + (b[0] - a[0]) * p.t - p.x, a[1] + (b[1] - a[1]) * p.t - p.z);
+      return;
+    }
+    c.k = Math.min(1, c.k + (p.speed * 1.4 * dt) / c.w);
+    this.crossers.push({ x: p.x, z: p.z, road, wide: road.w / 2 + 2.6 });
+    this.place(p, t);
+    if (c.k >= 1) {
+      p.side = -c.from; p.cross = null; p.waited = 0; p.swapCd = 25;
+      if (p.mate) { p.mate.side = p.side; p.mate.cross = null; }
+    }
   }
 
   /** coloca al peatón en su punto de la calle y le mueve piernas y brazos */
@@ -381,16 +560,16 @@ export class Peds {
     const ux = (b[0] - a[0]) / len, uz = (b[1] - a[1]) / len;
     // por la acera, algo apartados del bordillo (hay coches medio subidos);
     // en calle peatonal caminan por en medio con algo de dispersión.
-    // El acompañante va un paso más hacia dentro.
-    const off = p.side * ((p.road.ped ? p.road.w * 0.2 : p.road.w / 2 + 1.4) + (p.lane || 0));
+    // El acompañante va un paso más hacia dentro. Cruzando, de una acera a la otra en línea recta.
+    const c = p.cross;
+    const side = c ? c.from * (1 - 2 * c.k) : p.side;
+    const off = side * ((p.road.ped ? p.road.w * 0.2 : p.road.w / 2 + WALK_OFF) + (p.lane || 0));
     p.x = a[0] + (b[0] - a[0]) * p.t - uz * off;
     p.z = a[1] + (b[1] - a[1]) * p.t + ux * off;
-    p.heading = Math.atan2(ux * p.dir, uz * p.dir);
-    const swing = Math.sin(t * p.speed * 5.2 + p.phase) * 0.45;
-    p.legL.rotation.x = swing;
-    p.legR.rotation.x = -swing;
-    p.armL.rotation.x = -swing * 0.75;
-    p.armR.rotation.x = swing * 0.75;
+    if (p.dev && p.devU && Math.abs(p.dev) > 0.01) { p.x += p.devU.ux * p.dev; p.z += p.devU.uz * p.dev; }
+    p.heading = c ? Math.atan2(c.from * uz, -c.from * ux) : Math.atan2(ux * p.dir, uz * p.dir);
+    // paso natural (andares.js): rodillas, cadera, hombros y brazos; los mayores, paso más corto
+    andar(p, t * p.speed * 5.2 + p.phase, { zancada: p.old ? 0.62 : 0.82 });
   }
 
   updateDown(p, dt, px, pz) {

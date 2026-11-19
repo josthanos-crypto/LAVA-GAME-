@@ -15,7 +15,7 @@ export const PLACES = {
   torreSanGines: ll(28.9594764, -13.5473091),
   casaGinory: ll(28.96194, -13.54408),        // Charco Vivo, antigua Casa Ginory (1960)
   chalanaCharco: ll(28.96219, -13.54624),
-  cinesAtlantida: ll(28.96118, -13.5486),      // C/ León y Castillo 42
+  cinesAtlantida: [88.5, 195.5],               // C/ León y Castillo 42 (esquina con Emilio Ley, como dijo José Manuel)
   castilloSanGabriel: ll(28.95637, -13.54766),
   parqueIslasCanarias: ll(28.95752, -13.55307),
   parqueRamirezCerda: ll(28.95812, -13.5489),  // el de la glorieta de la música
@@ -36,6 +36,11 @@ export const OFFICIAL = [
   { n: 'Centro de Salud Titerroy', k: 'salud', at: ll(28.96681, -13.55805) },
   { n: 'Casa de la Cultura Agustín de la Hoz', k: 'cultura', at: ll(28.95819, -13.54929) },
   { n: 'Casa de los Arroyo', k: 'cultura', at: ll(28.95876, -13.54755) },
+  // Instituto Politécnico Marítimo Pesquero de Lanzarote («la Escuela de Pesca»): Avda. de Naos 2,
+  // el edificio junto al mar con su muelle, al empezar la avenida (Gobierno de Canarias, consultado el 18-10-2026)
+  { n: 'Escuela de Pesca', k: 'pesca', at: [752, -50] },
+  // el Hospital Insular de siempre (Juan de Quesada, 1950; hoy de geriatría), junto al Tanatorio Arroyo
+  { n: 'Hospital Insular', k: 'insular', at: [660, -115] },
 ];
 
 /** hoteles y pensiones (el Gran Hotel tiene su propio modelo) */
@@ -51,18 +56,21 @@ export const HOTELS = [
 export const SCHOOLS = [
   { n: 'IES Blas Cabrera Felipe', at: ll(28.96699, -13.55624) },
   { n: 'IES César Manrique', at: ll(28.96601, -13.56017) },
-  { n: 'IES Arrecife', at: ll(28.96659, -13.56377) },
+  // el antiguo IES Arrecife, que se llama IES Las Maretas desde 2017
+  { n: 'IES Las Maretas', at: ll(28.96659, -13.56377) },
   { n: 'IES Las Salinas', at: ll(28.96004, -13.55892) },
-  { n: 'IES Agustín Espinosa', at: ll(28.95802, -13.5522) },
-  { n: 'CEO Argana', at: ll(28.97546, -13.56476) },
+  // Version 132: los puntos de Agustín Espinosa, CEO Argana, Capellanía, Benito Méndez y la EOI, de sus fichas de
+  // Google Maps (antes caían de 23 a 134 m de su sitio); el nombre de la Capellanía es «del Yágabo»
+  { n: 'IES Agustín Espinosa', at: ll(28.958608, -13.5524154) },
+  { n: 'CEO Argana', at: ll(28.9753379, -13.5651715) },
   { n: 'CEIP Adolfo Topham', at: ll(28.96657, -13.54906) },
   { n: 'CEIP Antonio Zerolo', at: ll(28.9601, -13.55817) },
-  { n: 'CEIP Capellanía del Yágamo', at: ll(28.96666, -13.55954) },
+  { n: 'CEIP Capellanía del Yágabo', at: ll(28.9666941, -13.5592652) },
   { n: 'CEIP Los Geranios', at: ll(28.97769, -13.54801) },
   { n: 'CEIP Titerroy', at: ll(28.97065, -13.55676) },
-  { n: 'CEIP Benito Méndez Tarajano', at: ll(28.96823, -13.55766) },
+  { n: 'CEIP Benito Méndez Tarajano', at: ll(28.9681401, -13.557445) },
   { n: 'CEIP Nieves Toledo', at: ll(28.96453, -13.54751) },
-  { n: 'Escuela Oficial de Idiomas', at: ll(28.96856, -13.55302) },
+  { n: 'Escuela Oficial de Idiomas', at: ll(28.9680195, -13.5542462) },
   { n: 'Conservatorio de Música', at: ll(28.96563, -13.55538) },
   { n: 'Escuela de Arte Pancho Lasso', at: ll(28.96642, -13.5556) },
 ];
@@ -79,6 +87,8 @@ export const SCULPTURES = [
   { n: 'Barlovento · César Manrique', k: 'barlovento', at: [-484.0, 499.2] },
   { n: 'Homenaje a la Vela Latina', k: 'vela', at: [-1283.5, 590.1] },
   { n: 'Pescador con marlín', k: 'marlin', at: [736.9, 186.7] },
+  // (Version 154) la jardinera blanca con forma de concha de la rotonda de la Calle Tenderete (rotondaConcha.js)
+  { n: 'Rotonda de la Calle Tenderete', k: 'concha', at: [-1198.1, -1377.4] },
 ];
 
 /**

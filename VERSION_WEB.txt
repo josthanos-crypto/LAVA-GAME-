@@ -167,3 +167,2031 @@ Version 11 (correcciones de José Manuel):
 - El ZIP nuevo para la web se sube igual que el anterior (extraer en public_html,
   sustituyendo la carpeta "juego").
 - Copia de lo anterior en _copia_antes_correcciones.
+
+Version 12 (Lava Game):
+- El juego se llama ahora Lava Game. Pantalla de inicio nueva con el logo LAVA GAME
+  incandescente, fondo negro y naranja de lava, y los colores de lava también en los
+  menús, el marcador y el velocímetro. Título de la pestaña, nombre al guardarlo en el
+  móvil y vista previa al compartir el enlace (imagen nueva brand/portada-lava.png, con
+  el volcán y el logo de Canary Consulting).
+- Volcán al fondo (volcano.js, nuevo): hacia Timanfaya, se ve desde toda la ciudad. De
+  día echa una columna de humo; de noche el cráter y los ríos de lava brillan en rojo.
+- Piedras de lava escondidas (stones.js, nuevo): 20 en total. Una en la puerta de cada
+  negocio cliente (El Nuevo Maccheroni, C.C. Las Buganvillas, Sakura, La Cervecería,
+  Funeraria Arroyo y Tanatorio Arroyo) y el resto repartidas por las aceras de la ciudad.
+  Brillan en naranja; cada una da 100 € y, al reunir las 20, hay un premio de 1.000 €.
+  Contador en el marcador (debajo del dinero) y las ya cogidas se recuerdan.
+- Cambiados: index.html y main.js. Nuevos: volcano.js, stones.js y brand/portada-lava.png.
+- El ZIP para la web se llama ahora lava-game-web.zip; se sube igual que el anterior
+  (extraer en public_html, sustituyendo la carpeta "juego").
+- Copia de lo anterior en _copia_antes_lava.
+
+Version 13 (Castillo de San Gabriel, como en las fotos de José Manuel):
+- El castillo ya no sale casi negro: muros de piedra volcánica parda con su mortero
+  claro, sillares claros en las esquinas y la espadaña con su campana encima del lienzo
+  que mira a la calzada. Alrededor, las rocas de lava negra del islote.
+- De noche, los muros del castillo se ven iluminados.
+- La calzada que va del Puente de las Bolas al castillo tiene ahora su suelo empedrado de
+  piedra oscura (antes se veía el agua entre los muros) y sus muros bajos de mampostería
+  gris con la albardilla clara.
+- A la entrada del Puente de las Bolas, el cartel de acero oxidado «Museo de Historia de
+  Arrecife» con la silueta del castillo.
+- Quitada una sombrilla de playa que salía encima de la calzada y las mesas de terraza
+  que pudieran caer en el mar.
+- Fotos de referencia guardadas en referencias/ (castillo-*.png).
+- Cambiados: fortBridge.js, coast.js, extraData.js, props.js y world.js.
+- El ZIP nuevo (lava-game-web.zip) se sube igual que el anterior (extraer en public_html,
+  sustituyendo la carpeta "juego").
+- Copia de lo anterior en _copia_antes_castillo.
+
+Version 14 (elegir dónde empezar y demo sin policía):
+- Al empezar, el juego pregunta «¿Por dónde quieres empezar?». Hay botones con los sitios
+  (Centro, Castillo de San Gabriel, Calle Real, Charco de San Ginés, Playa del Reducto,
+  Gran Hotel, Parque Islas Canarias y los negocios de los clientes) y un buscador donde
+  se escribe una calle o un sitio con palabras sencillas («castillo», «real», «charco»,
+  «Fenauso»...). El coche aparece allí, en la calzada y mirando a lo largo de la calle.
+  Se recuerda lo último elegido.
+- Castillo de San Gabriel: el coche sale en la misma calzada de piedra, mirando al
+  castillo, y se puede ir con él hasta la puerta.
+- Casilla «Demo sin policía»: con ella marcada no sale la policía ni suben las
+  estrellas, para pasear y ver la ciudad tranquilo.
+- Si te detienen o mueres, vuelves al sitio que elegiste.
+- Nuevo: startPlaces.js. Cambiados: main.js e index.html.
+- El ZIP nuevo (lava-game-web.zip) se sube igual que el anterior (extraer en public_html,
+  sustituyendo la carpeta "juego").
+- Copia de lo anterior en _copia_antes_inicio.
+
+Version 15 (el alcalde en el Ayuntamiento):
+- El alcalde de Arrecife está en la puerta del Ayuntamiento, bajo el rótulo y junto a
+  las banderas: camisa azul clara, pantalón azul marino, zapatos marrones y chaleco
+  reflectante amarillo con ALCALDE a la espalda (como en la foto de José Manuel, guardada
+  en referencias/alcalde.jpg). No lleva nombre propio: es «El alcalde».
+- Se habla con él con T: da la bienvenida (en femenino si juegas con Iria) y recomienda
+  el Charco de San Ginés, el castillo y buscar las piedras de lava.
+- «Ayuntamiento» añadido a los sitios para empezar la partida.
+- Nuevo: mayor.js. Cambiados: main.js y startPlaces.js.
+- El ZIP nuevo (lava-game-web.zip) se sube igual que el anterior.
+- Copia de lo anterior en _copia_antes_alcalde.
+
+Version 16 (regata en el Reducto):
+- Regata de vela latina delante de la Playa del Reducto: 8 barquillos (5 en el móvil)
+  con su vela triangular de colores y su número, el casco de madera y la tripulación
+  con chaleco naranja, dando vueltas a un recorrido de cuatro boyas naranjas. Escoran
+  y cabecean con las olas. Se ven desde la playa y desde la Avenida de Fred Olsen.
+- El sitio de inicio «Playa del Reducto» deja ahora el coche en la Avenida de Fred
+  Olsen, junto a la playa (antes caía en una calle de dentro). También vale escribir
+  «regata».
+- Nuevo: regatta.js. Cambiados: main.js y startPlaces.js.
+- El ZIP nuevo (lava-game-web.zip) se sube igual que el anterior.
+- Copia de lo anterior en _copia_antes_regata.
+
+Version 17 (zona piloto: Charco de San Ginés):
+- Las casas que dan al Charco son ahora blancas, con puertas y ventanas de madera
+  pintada (casi todas azules y alguna verde), contraventanas y zócalo de piedra
+  volcánica oscura. Es una elección del juego, no un color oficial: los colores se
+  pueden cambiar en zones.js.
+- El murete de la orilla del Charco es de piedra volcánica con remate claro.
+- Barquillos de pesca amarrados en cuatro grupos junto a la orilla.
+- Detalle de lo hecho, de dónde sale cada cosa y lo que queda en ZONA_CHARCO.md.
+- Nuevos: zones.js y charco.js. Cambiados: world.js, textures.js, coast.js,
+  fortBridge.js y main.js.
+- El ZIP nuevo (lava-game-web.zip) se sube igual que el anterior.
+- Copia de lo anterior en _copia_antes_charco.
+
+Version 18 (Charco de San Ginés según el vídeo de la Calle Real y San Ginés, 2020):
+- Se ha visto el vídeo entero (84 fotogramas) y se ha apuntado lo que sale en cada minuto:
+  REFERENCIA_VIDEO_CALLE_REAL.md.
+- Paseo del Charco: adoquín ocre con una franja de losas grises junto al pretil, fila de
+  palmeras y farolas altas de fuste azul que se encienden de noche.
+- Pretil de piedra oscura con remate oscuro, como en el vídeo.
+- Puentes y pasarelas del Charco con barandilla metálica azul de cruces.
+- Algunas casas azules llevan balcón de madera azul; el azul es algo más vivo.
+- 76 barcas por todo el Charco (amarradas en la orilla y fondeadas en medio), con cascos
+  blancos, azules y verdes.
+- Capturas del juego para comparar con el vídeo en referencias/comparativa/.
+- Cambiados: coast.js, charco.js, zones.js, world.js y textures.js.
+- El ZIP nuevo (lava-game-web.zip) se sube igual que el anterior.
+- Copia de lo anterior en _copia_antes_video.
+
+Version 19 (demo de partida nueva):
+- Hay una demo aparte que empieza siempre de cero: 0 €, ninguna piedra, ninguna misión,
+  ropa de fábrica y sin policía. No lee ni guarda nada en el navegador: al cerrarla y
+  volverla a abrir, otra vez de cero. En la pantalla de inicio pone «Demo · partida nueva
+  · no se guarda nada». Se sigue pudiendo elegir dónde empezar.
+- Enlace de la demo: https://claude.ai/artifact/D3HVvFiQLNiFQShTpExSpa
+  En la web, cuando se suba el ZIP: canaryislandconsulting.es/juego/demo.html
+- El juego normal (el enlace de siempre y /juego/) sigue guardando la partida como antes.
+- Todo lo que se guarda pasa ahora por un solo sitio (save.js).
+- Nuevo: save.js. Cambiados: main.js, missions.js, stones.js, character.js, sound.js y
+  vite.config.js (al compilar sale también demo.html).
+- El ZIP nuevo (lava-game-web.zip) se sube igual que el anterior.
+- Copia de lo anterior en _copia_antes_demo.
+
+Version 20 (cañones del Castillo de San Gabriel):
+- El castillo tiene ahora 10 cañones de hierro en sus cureñas de madera con ruedas,
+  asomando por los huecos del parapeto de todos los lados, de modo que se ven desde
+  abajo y desde la calzada (antes había dos pequeños, metidos detrás del parapeto y casi
+  invisibles). Número y sitio: aproximación artística.
+- Cambiado: fortBridge.js. El ZIP nuevo se sube igual que el anterior (lleva también demo.html).
+- Copia de lo anterior en _copia_antes_canones.
+
+Version 21 (Calle Real según el vídeo de la Calle Real y San Ginés, 2020):
+- La Calle Real tiene ahora losas grises de fachada a fachada (antes, una franja estrecha
+  en el centro), laureles de Indias en el eje de la calle con el tronco despejado, bancos
+  de madera junto a los árboles y farolas grises con cestas de flores rojas que se
+  encienden de noche.
+- Los edificios con fachada a la Calle Real llevan comercio en la planta baja y sus
+  fachadas van en blancos, cremas, beiges y piedra clara, como en el vídeo.
+- Donde una calle con coches cruza la Calle Real, se deja su asfalto.
+- Detalle en REFERENCIA_VIDEO_CALLE_REAL.md (apartado «Segundo tramo»).
+- Nuevo: calleReal.js. Cambiados: zones.js, world.js, cityDetail.js y main.js.
+- El ZIP nuevo se sube igual que el anterior (lleva también demo.html).
+- Copia de lo anterior en _copia_antes_calle_real.
+
+Version 22 (las calles suben y bajan de verdad):
+- El juego ya no es llano: el terreno sigue las alturas reales del IGN (MDT05, LiDAR, cada
+  10 m y suavizado; licencia CC BY 4.0 © Instituto Geográfico Nacional). El centro queda casi
+  llano, como es, y hacia el interior la ciudad sube: Calle El Salto ~10 %, Titerroy y la
+  zona del hospital a unos 40 m, Avenida de Los Geranios hasta ~50 m.
+- El suelo, las calles, los edificios, los coches, la gente y todo lo demás se dibujan
+  siguiendo el terreno. El agua, las barcas y la regata se quedan al nivel del mar.
+- El paseo del Charco queda ahora más alto que el agua, con el muro bajando hasta ella,
+  como el de verdad. El islote del castillo y la calzada suben un poco hasta él.
+- Los choques, la conducción y los locales funcionan igual que antes.
+- En el móvil cuesta ~0,5 ms por fotograma.
+- Alturas y pendientes de todas las calles: ALTURAS_CALLES.md (se regeneran con
+  python tools/alturas_calles.py, que también crea public/map/terreno.json).
+- Nuevo: terrain.js y public/map/terreno.json. Cambiados: main.js, world.js, coast.js y
+  charco.js.
+- El ZIP nuevo se sube igual que el anterior (lleva también demo.html).
+- Copia de lo anterior en _copia_antes_cuestas.
+
+Version 23 (mapa grande con buscador y marcha atrás sin meterse en los edificios):
+- Mapa grande: se abre tocando el minimapa (o con la tecla G; en el móvil también en ···).
+  Sale Arrecife entero con el norte arriba: se arrastra con el dedo o el ratón y se acerca
+  con dos dedos, la rueda o los botones + y −. «Yo» vuelve a donde estás.
+- Pinchas un punto o escribes una calle o un negocio (con o sin tildes) y el coche aparece
+  allí, en la calzada y mirando a lo largo de la calle. Si la calle es peatonal, sale en la
+  de al lado y te lo dice. Los negocios de los clientes salen con su letra y su nombre.
+- Con la policía detrás, en mitad de una misión o con la tanqueta no se puede ir: el mapa
+  se puede mirar y te dice por qué.
+- Mientras el mapa está abierto el juego se para y el sonido baja.
+- Marcha atrás: el culo del coche ya no se mete dentro de los edificios ni sale por la
+  otra calle. El coche choca con su forma (morro, centro, culo y esquinas) y, yendo
+  deprisa, se comprueba en pasos cortos para que no atraviese paredes.
+- La cámara ya no se queda dentro de los edificios: si hay una pared detrás, se acerca,
+  sube y mira al coche desde arriba.
+- «Calle Real» (al elegir dónde empezar y en el mapa) lleva ahora a la Calle Real del
+  centro y no a un tramo del norte.
+- Escribir en el cuadro de «¿Por dónde quieres empezar?» ya no activa teclas del juego
+  (antes una V quitaba el sonido).
+- Nuevo: bigMap.js. Cambiados: main.js, car.js, collision.js, startPlaces.js, minimap.js,
+  input.js, touch.js, sound.js e index.html.
+- El ZIP nuevo se sube igual que el anterior (lleva también demo.html).
+- Copia de lo anterior en _copia_antes_mapa.
+
+Version 24 (el coche nota las cuestas):
+- Cuesta arriba el coche pierde fuerza y cuesta abajo la gana. A fondo durante 4 segundos
+  desde parado, el deportivo llega a 76 km/h en llano, a 73 subiendo la carretera de
+  circunvalación (~4 %) y a 83 bajándola (~6 %). En las calles más empinadas (El Salto,
+  Doctor Gómez Ulla, Molino, Zonzamas: 8-11 %) se nota más. El efecto está exagerado (x2,5)
+  porque casi todas las calles de Arrecife son suaves.
+- Si sueltas el acelerador bajando una cuesta, el coche sigue rodando solo (bajando la
+  circunvalación, a unos 19 km/h); subiendo se para antes. En llano y en las cuestas suaves
+  acaba parándose.
+- Parado en una cuesta no se va solo, ni hacia delante ni hacia atrás.
+- La cámara se inclina con la calle: subiendo queda más baja y mira hacia arriba; bajando,
+  más alta y mira hacia abajo. También a pie.
+- El motor suena más ronco y más fuerte al subir, y retiene al bajar sin gas.
+- Cambios de rasante: a mucha velocidad el coche se aligera y, si llega a despegar, cae con
+  golpe de suspensión, ruido y temblor de cámara. Las cuestas de Arrecife son suaves: en el
+  cambio de rasante más brusco (calle Badajoz) se despega solo unos centímetros.
+- El tráfico, la policía y la gente siguen como antes.
+- Cambiados: car.js, main.js y audio.js. Pruebas nuevas: pruebas/tcuestas.cjs y
+  pruebas/tfoto_cuestas.cjs.
+- El ZIP nuevo se sube igual que el anterior (lleva también demo.html).
+- Copia de lo anterior en _copia_antes_coche_cuestas.
+
+Version 25 (las cuestas se ven y mapa de relieve):
+- Las cuestas no se veían: Arrecife es casi llano (el centro no llega al 1 %) y la cámara de
+  la versión 24, además, se inclinaba con la calle y la aplanaba. Ahora:
+  · Relieve exagerado x2 tierra adentro (por encima de unos 2,5 m de altura). La costa, el
+    Charco, el paseo, el castillo y el centro quedan casi a su altura real. Las alturas son
+    las del IGN; solo se exagera el dibujo. Con ?relieve=1 en la dirección se ven sin exagerar.
+  · La cámara se inclina solo un tercio con la calle: se ve la calle subir o bajar delante.
+  · Calzadas, aceras, plazas y pintura van ahora en trozos pequeños para seguir las cuestas, y
+    la foto aérea baja un poco en las hondonadas. Ya no asoman manchas de la foto aérea por
+    encima de la calle (pasaba desde la versión 22, por ejemplo en la calle Molino y en las
+    calles que bajan al Charco). El suelo de fuera de la foto aérea ya no queda debajo de la
+    ciudad.
+- Debajo del nombre de la calle sale la cuesta de verdad: «▲ Sube un 6 %» o «▼ Baja un 10 %»
+  (desde el 3 %).
+- Mapa de relieve: en el mapa grande, botón «Relieve» (o tecla R). Colores según la altura
+  sobre el mar (de 0 a 60 m), sombra de colina, curvas de nivel cada 5 m y las calles con
+  cuesta en amarillo (4-8 %) y rojo (más del 8 %). Al pinchar un punto sale su altura.
+- La conducción se nota igual que en la versión 24 (la gravedad de las cuestas baja de x2,5 a
+  x1,25 porque ahora las cuestas se dibujan el doble). En el cambio de rasante de la calle
+  Badajoz, a unos 85 km/h, el coche da un saltito de casi medio metro.
+- Cambiados: terrain.js, world.js, main.js, car.js, bigMap.js e index.html. Pruebas nuevas:
+  pruebas/trelieve.cjs, tmapa_relieve.cjs, tsitios.cjs y ttrozos.mjs.
+- El ZIP nuevo se sube igual que el anterior (lleva también demo.html).
+- Copia de lo anterior en _copia_antes_relieve.
+
+Version 26 (El Nuevo Maccheroni como en las fotos):
+- La fachada del Maccheroni es ahora la de las fotos de José Manuel (guardadas en
+  referencias/maccheroni-frente.jpg, -esquina.jpg y -terraza.jpg):
+  · Edificio de estuco ocre con las franjas blancas de las plantas de arriba.
+  · Delantera (Manolo Millares, desde la esquina hasta el kebab de al lado): madera barnizada,
+    dos escaparates con los vinilos «El Nuevo» y «Maccheroni» con el tenedor, puerta de cristal
+    de dos hojas con el abanico de radios encima, dos faroles, la placa de la R, toldo blanco,
+    cornisa crema y, encima, el rótulo de verdad (recortado de la foto): «El Nuevo Maccheroni ·
+    Restaurante Pizzería especializado en pasta rellena». Delante, dos mesas cuadradas con
+    sillones negros y la maceta de madera con la yuca.
+  · Lateral (calle Valencia): cristaleras con «Comida para llevar · Take away», «Pizzería»,
+    «Restaurante» y el logo, zócalo de piedra clara, la pizarra de pie con la carta y la
+    parrilla, y la terraza en la calle: mesa larga de madera con dos bancos, sombrillas
+    blancas (rojas por dentro), jardineras de troncos con ficus, mesas con sillones negros,
+    farola negra y guirnaldas de bombillas.
+  · La puerta (y el aro de luz para entrar) está ahora en el centro de la delantera, como en
+    la realidad, y no a 2 m de la esquina.
+  · De noche se encienden los faroles, las bombillas, la farola, el interior y el rótulo.
+- Las sillas, mesas y sombrillas de la terraza salen volando si las atropellas, como las demás.
+- Las sombrillas no llevan la marca de refresco de la foto.
+- Nuevo: maccheroni.js y public/brand/maccheroni-rotulo.webp (el rótulo recortado: no se
+  sube al PC de casa por el conector; viene dentro del ZIP, en juego/brand/). Cambiados:
+  localesComida.js, locales.js, props.js, main.js e index.html (letra de mano Yellowtail para
+  los vinilos). Prueba nueva: pruebas/tmaccheroni.cjs.
+- El ZIP nuevo se sube igual que el anterior (lleva también demo.html).
+- Copia de lo anterior en _copia_antes_maccheroni.
+
+Version 27 (sitios de Arrecife como en las fotos de José Manuel):
+- Parque José Ramírez Cerdá (Avenida La Marina): el kiosco de la música de madera
+  barnizada con puerta en arco, ojos de buey, balcón con barandilla, flecos, pináculos
+  blancos y la cúpula blanca con su medallón; el kiosco verde de los cuadros blancos con
+  celosía y cupulín; suelo de ladrillo rojizo en espiga con franjas grises, losas claras,
+  la franja rosada junto al muro del mar y farolas de bola blanca en poste verde.
+- Iglesia de San Ginés como en la postal: la torre lleva el reloj en sus cuatro caras, dos
+  huecos de campana por cara y un ventanuco; la piedra es algo más cálida. Las calles de la
+  iglesia (Plaza de Las Palmas, Academia, Otilia Díaz, San Juan, Manuel Miranda) van
+  empedradas de losas grises de fachada a fachada, con la cruz de piedra en su peana delante
+  de la puerta, dos palmeras y los laureles de Indias de la plaza. Ahí ya no se aparcan coches.
+- Estatua de Heraclio Niz Mesa, «el Pollo de Arrecife», en bronce verdoso, al final de la
+  Calle Real casi en la esquina de la avenida, delante de la Fundación Universitaria
+  (gorra de plato, guerrera con cinturón, riéndose con el brazo tendido, placa en el suelo).
+- Calle Real: ahora de adoquín gris pequeño de varios tonos, como en las fotos.
+- Edificio Atlántida (Multicines, C/ León y Castillo 42, esquina con Emilio Ley): sillería
+  color arena, arcos altos de cristal, la esquina redonda de cristal con la marquesina y las
+  letras azules ATLANTIDA, pancartas de HiperDino y terraza. El letrero viejo del cine (que
+  estaba en la calle de atrás) ya no sale.
+- Entrada del Charco de San Ginés (junto al puente de la Avenida Olof Palme): estanque con
+  muros curvos de piedra volcánica negra y remate claro, agua verdosa, barandillas azules del
+  puente, el esqueleto blanco de ballena, farolas azules altas como mástiles y palmeras.
+- Ayuntamiento de Arrecife (Avenida Vargas, frente al mar): fachada blanca con cornisa gris,
+  portada de cantería gris en arco con la puerta de madera y su abanico, letras de bronce
+  AYUNTAMIENTO DE ARRECIFE y el escudo, dos faroles negros, ventanas altas en arco con
+  carpintería marrón, la torrecilla mirador de la azotea y acera de ladrillo rojizo. Las
+  banderas y el alcalde siguen en su sitio.
+- No se ha borrado nada: todo lo anterior sigue igual, solo se ha mejorado.
+- Nuevos: parqueRamirez.js, suelos.js, plazaPalmas.js, estatuas.js, atlantida.js,
+  charcoEntrada.js, ayuntamiento.js. Cambiados: main.js, sanGines.js, extraData.js,
+  world.js, parked.js, calleReal.js, civic.js, shops.js, places.js. Prueba nueva:
+  pruebas/tparque.cjs.
+- Copia de lo anterior en _copia_antes_sitios_fotos.
+
+Version 28 (publicada en los enlaces):
+- Plaza de San Ginés como en la foto de José Manuel (referencias/san-gines-plaza.webp):
+  parterre con borde de piedra negra y juntas blancas, la cruz sobre su pirámide de piedra
+  volcánica, tres palmeras grandes, bolas de piedra oscura en las esquinas, pilares blancos
+  con bola y suelo de losas grises lisas (también en las calles de la iglesia).
+- El alcalde está ahora en la entrada del Ayuntamiento, junto a la puerta.
+- La estatua del Pollo de Arrecife, unos 12 m más adentro de la Calle Real.
+- Los cines (la nave de detrás del Atlántida) con su fachada al Charco como en la foto: bajo de
+  piedra gris con soportal y ventanas, lienzos blancos, el cuerpo central con el ventanal en
+  arco, el escudo redondo, el frontón y el tejado a dos aguas, y la marquesina con pilares.
+- Entrada del Atlántida como en su foto: pilares de sillería a los lados del cristal curvo,
+  tres escalones curvos bajo la marquesina y el vestíbulo iluminado detrás.
+- Los muros del Charco, de piedra volcánica negra con las juntas claras y remate claro (como en
+  las fotos de la entrada del Charco y de los cines).
+- Cambiados: plazaPalmas.js, suelos.js, extraData.js, main.js, ayuntamiento.js, mayor.js,
+  estatuas.js, atlantida.js, coast.js. La foto referencias/san-gines-plaza.webp no se sube al
+  PC por el conector.
+- Copias de lo anterior en _copia_antes_plaza_alcalde y _copia_antes_cines_muros.
+
+Version 29 (estilo GTA V, primera parte):
+- Nuevo protagonista, Airam, sacado de la imagen de referencia (referencias/estilo-personajes-y-
+  calles.jpg): moreno de sol, pelo castaño oscuro corto, barba de pocos días, gafas de aviador
+  negras, camiseta negra con el logo verde del panel solar, cadena de plata, bermudas cargo caqui
+  con sus bolsillos, zapatillas blancas y el cargador solar en la mano. Se empieza con él; las
+  teclas 1 a 4 (y los botones del móvil) siguen cambiando a Noah, Michael, José e Iria, y el 5
+  vuelve a Airam. El nombre «Airam» es provisional: José Manuel puede cambiarlo.
+- Cambiados: character.js, humanHead.js (gafas de aviador), main.js, touch.js, index.html.
+- Copia de lo anterior en _copia_antes_airam.
+
+Version 30 (el Ayuntamiento, corregido por José Manuel):
+- La acera del Ayuntamiento es de losas gris oscuro (antes de ladrillo rojizo).
+- Dos puntos de recarga para coches eléctricos en el borde de la acera, a la derecha de la puerta.
+- Las banderas van en la fachada principal: tres mástiles sobre la portada (Canarias, España
+  y Europa). Enfrente, en el paseo del mar, una sola bandera de España, más grande y en un mástil alto.
+- Cambiados: ayuntamiento.js y civic.js (las banderas pueden tener otro tamaño).
+- Copia de lo anterior en _copia_antes_ayto_banderas.
+
+Version 31 (la Escuela de Pesca):
+- La Escuela de Pesca (Instituto Politécnico Marítimo Pesquero de Lanzarote), en la Avenida de
+  Naos 2: el edificio junto al mar con su muelle, al empezar la avenida, lleva su rótulo azul
+  «ESCUELA DE PESCA» y las banderas de Europa, Canarias y España. La dirección se sacó de la web
+  del Gobierno de Canarias; el edificio todavía es el genérico: con una foto se hace igual.
+- Cambiados: places.js y civic.js.
+- Copia de lo anterior en _copia_antes_escuela_pesca.
+
+Version 32 (carreteras de verdad, parque del hospital):
+- Aceras: ahora suben 10 cm sobre la calzada, con el bordillo de piedra clara y la cuneta más
+  oscura al pie, para que se note el escalón. La gente y las cosas de la acera van a la nueva altura.
+- Señales de tráfico en los cruces: STOP y CEDA EL PASO donde una calle llega a una avenida, y
+  discos de velocidad (30 en las calles, 50 en las avenidas).
+- Los semáforos ya funcionan: verde, ámbar y rojo por turnos (la avenida y la calle). Están en
+  los cruces grandes con avenida, uno en cada llegada.
+- El tráfico va por la derecha (antes iba por la izquierda), acelera y frena poco a poco, guarda
+  distancia con el de delante, se para si el jugador se le pone delante y respeta las señales:
+  para en rojo y en el STOP, y en el ceda el paso y en los cruces entre calles entra despacio y
+  espera si hay alguien.
+- El parque de piedra entre el Hospital Insular y la Escuela de Pesca: losas, parterres de piedra
+  volcánica con juntas blancas, palmeras y laureles de Indias para la sombra, bancos de piedra y el
+  monumento con el busto en el centro. El Hospital Insular (el antiguo) lleva su rótulo y banderas.
+- La Escuela de Pesca y el hospital siguen con el edificio genérico: desde aquí no se pueden abrir
+  páginas de fotos (la red lo bloquea). Con fotos de José Manuel se hacen iguales.
+- Nuevos: senales.js, parqueHospital.js. Cambiados: traffic.js, world.js, main.js, places.js,
+  civic.js, extraData.js, peds.js, dogs.js, skaters.js, acampada.js, shops.js, character.js,
+  locales.js, terrace.js, plazaPalmas.js, ayuntamiento.js. Prueba nueva: pruebas/ttrafico.cjs.
+- Copia de lo anterior en _copia_antes_carreteras.
+
+Version 33 (coches de verdad: marcas, puertas, intermitentes y primera persona):
+- Cada marca inventada tiene su logotipo propio, en el morro, la zaga, el volante y el cuadro:
+  Guanche (la pintadera canaria), Alisio (soplos de viento), Malpaís (el volcán), Majorero (los
+  cuernos de la cabra), Jameo (la ola de la cueva), Volcanía (escudo con volcán y bandera canaria),
+  Atlántica (tridente) y Papagayo (plumas de colores). Se parecen a coches reales, pero ni los
+  nombres ni los logos son de marcas reales. Modelos nuevos de nombre: Alisio Brisa y Brisa
+  Familiar, Malpaís Famara 4x4.
+- Al subirte sale un cartel con el logotipo, la marca, el modelo y su lema.
+- La puerta del conductor se abre al subir y al bajar (con su ruido) y el personaje entra o sale
+  por ella.
+- Intermitentes que funcionan: Z izquierdo, X derecho, H luces de emergencia (en el móvil, los
+  botones verdes ◀ ▶ y "Emergencias" en ···). Hacen tic-tac, salen flechas junto al velocímetro y
+  se quitan solos al acabar de girar. Los coches del tráfico ponen el intermitente antes de girar.
+- Conducir en primera persona: C hasta "Primera persona". Desde el asiento: salpicadero, relojes
+  de velocidad y revoluciones con la marcha, volante que gira con el logotipo de la marca, pantalla
+  con el modelo, pilares, techo, retrovisores y el capó del color del coche.
+- Arreglo: un píxel con un valor imposible podía dejar media pantalla negra con el resplandor
+  (realism.js lo limpia).
+- Nuevos: marcas.js, carKit.js. Cambiados: carModels.js, car.js, traffic.js, main.js, touch.js,
+  realism.js, index.html. Prueba nueva: pruebas/tcoche.cjs.
+- Copia de lo anterior en _copia_antes_coches_reales.
+
+Version 34 (aceras con bordillo de verdad y suspensión):
+- Cuando el coche pisa la acera, la rueda sube el bordillo y se queda a la altura de la acera
+  (10 cm). Con dos ruedas arriba el coche se inclina; si solo suben las de delante, cabecea.
+- Suspensión con muelle y amortiguador: la carrocería sube, rebota un poco y se asienta. Si pegas
+  el bordillo deprisa da un golpe (suena, la cámara tiembla un poco y pierdes algo de velocidad).
+  Desde el asiento (primera persona) también se nota.
+- Si dejas el coche encima de la acera, se queda a su altura.
+- Nuevo: aceras.js (dónde hay acera). Cambiados: car.js, carModels.js, main.js.
+  Prueba nueva: pruebas/tacera.cjs.
+- Copia de lo anterior en _copia_antes_suspension.
+
+Version 35 (delantera del tanatorio con la foto nueva):
+- Las molduras y el zócalo de la casa terrera de la esquina (Juan de Quesada) pasan de gris lila
+  a gris azulado, el tono de la foto de la delantera, y los dos árboles van donde salen en ella:
+  uno delante de la casa de al lado y otro a la derecha de la puerta.
+- Cambiado: localesArroyo.js. Copia de lo anterior en _copia_antes_tanatorio_gris.
+
+Version 36 (Escuela de Pesca: el lateral de la foto):
+- El extremo de la Escuela que da a la rotonda, como en la foto: bloque blanco de tres plantas con
+  aletas verticales y ventanales oscuros (ancho, estrecho, ancho), el bajo metido bajo una visera
+  con ventanas corridas, la puerta con su placa azul y, delante, una jardinera de piedra volcánica
+  con pitas. A la derecha, la escalera de incendios en su jaula de acero negro y la verja con el
+  portón crema del parking de tierra roja, con palmeras, que sigue calle abajo.
+- El carril bici rojo con sus rayas blancas, macetas redondas y la farola alta delante.
+- Todo el edificio pasa a tres plantas. El rótulo y las banderas van en el lado largo de la Avenida
+  de Naos (en el extremo de la foto no hay).
+- Falta la delantera y la trasera al mar: con sus fotos se terminan.
+- Nuevo: escuelaPesca.js. Cambiados: civic.js (b.face), main.js, extraData.js.
+- Copia de lo anterior en _copia_antes_escuela_pesca.
+
+Version 37 (Escuela de Pesca: la segunda foto, la torre gris y el lado de la avenida):
+- La torre gris de hormigón de enfrente, al otro lado de la Avenida de Naos: unos 20 m, con el
+  letrero azul «Escuela de Pesca», la ventana corrida de arriba, rendijas abajo, antenas en la
+  azotea y la verja verde oscura junto a la acera con su cartel blanco.
+- El lado largo del edificio blanco que da a la avenida: aletas y ventanales como en el extremo,
+  visera con pilares y ventanas corridas en el bajo, y en la acera roja bancos oscuros y macetas
+  con pitas. Entre el extremo y el lado largo, el muro blanco liso de la foto.
+- El letrero de la Escuela lo lleva ahora la torre (en el edificio blanco no se ve ninguno).
+- Se quita un parterre del parque de piedra que caía dentro de la torre.
+- Cambiados: escuelaPesca.js, parqueHospital.js. Copia de lo anterior en _copia_antes_torre_gris.
+
+Version 38 (Escuela de Pesca: la foto de la entrada):
+- El lado de la avenida, como en la foto: tres tramos. A los lados, ventanales anchos con aletas y
+  uno estrecho en medio; en el centro, un poco más metido, siete ventanas estrechas con aletas finas.
+- La entrada: pórtico con columnas blancas redondas, puertas de cristal con tiradores y ventanas a
+  los lados. En el canto de la visera, el letrero «Gobierno de Canarias · Dirección General de Pesca ·
+  Residencia del Instituto Politécnico Marítimo Pesquero de Canarias» (el texto de la foto) y encima
+  las dos anclas negras cruzadas.
+- Delante, la plaza roja de losas (a la altura de la acera, hasta el carril bici) con bancos oscuros,
+  maceteros redondos con arbustos, aparcabicis en U, papeleras, el banderín azul, la farola alta y
+  dos palmeras a la derecha en su parterre de piedra volcánica con pitas.
+- En la avenida, la mediana con arbustos (entre los carriles, sin estorbar a los coches) y el paso
+  de cebra que cruza hasta la entrada.
+- Cambiados: escuelaPesca.js. Copia de lo anterior en _copia_antes_delantera_escuela.
+
+Version 39 (Escuela de Pesca: la foto del bloque de la esquina desde la avenida):
+- El bajo de la derecha es un soportal abierto, como en la foto: se ve de lado a lado entre la pared
+  de las ventanas corridas y el pilar de la esquina, y sigue por debajo de todo el lateral con sus
+  pilares, techo, suelo, una puerta y una ventana. Las ventanas corridas del bajo empiezan ya junto
+  al pilar de la izquierda.
+- A la izquierda del bloque, un poco más metido, el entrante estrecho de la foto con la ventana alta
+  del bajo, la placa azul y el foco (antes la puerta y la placa estaban en el frente), y ventanas
+  estrechas arriba. Su costado es el muro blanco liso que da a la plaza.
+- Las ventanas de arriba del bloque llevan la visera oscura encima.
+- La jardinera de piedra volcánica con pitas sigue por delante del entrante, y delante de las
+  palmeras hay un arriate de piedra con un arbusto grande, palmeritas y pitas.
+- La mediana lleva arbustos pequeños y salteados, como en la foto.
+- world.js: un edificio puede dejar tramos del bajo sin la pared genérica (soportales: b.openGround).
+- Cambiados: escuelaPesca.js, world.js. Copia de lo anterior en _copia_antes_soportal_escuela.
+
+Version 40 (el parque del Hospital Insular, junto a la oficina de Canary Consulting, con su foto):
+- El parque son ahora los dos trozos de la foto aérea: el de delante de la oficina (con el monumento
+  al médico) y el triángulo arbolado junto al muro de la manzana de la torre; entre los dos queda el
+  aparcamiento (antes todo era una plaza de losas que llegaba hasta la manzana de la torre).
+- Suelo de picón negro con piedras grandes redondeadas, como en la foto, y muretes encalados de
+  remate redondo del lado del aparcamiento, con un hueco de entrada en cada trozo.
+- Los parterres son ahora encalados, con picón y un par de piedras; siguen las palmeras, los
+  laureles de Indias y los bancos de piedra, y hay seis laureles más sueltos para la sombra.
+- Las gradas de borde blanco que suben entre los árboles (a la derecha de la parada en la foto).
+- La parada de guaguas de la foto: pérgola de cuatro arcos azules, banco crema de dos asientos, la
+  losa con la franja de botones, «BUS» pintado en el suelo y las plazas del aparcamiento; detrás del
+  banco, un árbol pequeño.
+- suelos.js: textura de picón para jardines de piedra.
+- Cambiados: parqueHospital.js, suelos.js. Copia de lo anterior en _copia_antes_parque_hospital.
+
+Version 41 (parque del Hospital Insular: la segunda foto, la parada mirando al norte):
+- Junto a la pérgola de la parada, la señal azul de parada de guaguas (cuadro con la guagua y panel
+  blanco debajo) y el poste verde «Hospital Insular» con el panel de horarios (franjas, sin inventar
+  horas).
+- Al norte de la parada, la plazoleta de losas de piedra oscura que une los dos trozos de parque,
+  con dos parterres redondos encalados con picón (uno con el cardón y pitas, otro con pitas) y una
+  farola de farol negra.
+- Cambiado: parqueHospital.js. Copia de lo anterior en _copia_antes_plazoleta_hospital.
+
+Version 42 (el parking de los médicos del Hospital Insular, con su foto):
+- La manzana en forma de gota entre Juan de Quesada y la calle de detrás (la foto aérea la enseña con
+  los árboles y los coches): asfalto con las plazas pintadas, coches aparcados a los dos lados,
+  casuarinas altas con el follaje colgante, tres palmeras a la izquierda y una farola alta.
+- La entrada como en la foto: la isleta con el bordillo pintado de rojo y blanco y picón, la barrera
+  levantada en su poste gris con el remate amarillo, el apoyo rojo y blanco del brazo al otro lado,
+  la señal de dirección prohibida, el paso de cebra amarillo y las líneas curvas blanca y amarilla.
+- parked.js: los aparcamientos pueden tener sus plazas (map.lotSpots); se llenan antes que la calle.
+- suelos.js: textura de asfalto de aparcamiento.
+- Nuevos o cambiados: parkingMedicos.js (nuevo), parked.js, extraData.js, main.js, suelos.js. Copia de
+  lo anterior en _copia_antes_parking_medicos.
+
+Version 43 (la trasera de la Escuela de Pesca, con la foto desde la Avenida Olof Palme):
+- La fachada que da al mar: blanca, con aletas, ventanales oscuros en dos plantas, ventanas corridas
+  y el portón del varadero en el bajo, y la barandilla de la azotea.
+- El muelle de hormigón entre el edificio y el agua, con barandilla en el borde.
+- El pantalán de la foto aérea: rellano con escalones, la pasarela con barandillas que baja al
+  tablero flotante (con flotadores, cornamusas y defensas) y, amarrados, dos barcos naranjas (uno con
+  cabina y otro abierto con motor fuera borda, como pidió José Manuel) y una lancha blanca con franja
+  azul. Delante, la fila de boyas blancas.
+- En el paseo de Olof Palme, como en la foto: el carril bici rojo sigue la avenida hacia el sur, el
+  picón rojo con cardones y las piedras grandes de la orilla.
+- Nuevos o cambiados: escuelaMar.js (nuevo), escuelaPesca.js (comparte ventanales y carril bici),
+  suelos.js (picón rojo), main.js. Copia de lo anterior en _copia_antes_trasera_escuela.
+
+Version 44 (la azotea del Tanatorio Arroyo, con la foto desde arriba):
+- La azotea partida en trozos por muretes blancos, como en la foto: unos de tela asfáltica negra y
+  otros de hormigón gris gastado, el patio de baldosa roja, el cuarto blanco del centro con su puerta,
+  la ventanita y la chimenea, aparatos de aire, la placa solar, el lucernario con sus nervios blancos,
+  la claraboya redonda y la chimenea redonda de la esquina.
+- En ese tejado ya no salen los depósitos y casetas al azar del resto de la ciudad (b.ownRoof).
+- Confirmado por José Manuel: la empresa es Funercanarias S.L. y el nombre comercial, Tanatorio
+  Arroyo; el rótulo de la fachada se queda como está.
+- Nuevos o cambiados: tanatorioAzotea.js (nuevo), localesArroyo.js, cityDetail.js, main.js. Copia de
+  lo anterior en _copia_antes_azotea_tanatorio.
+
+Version 45 (alrededor del Tanatorio Arroyo, con la foto de dron):
+- Detrás del tanatorio, el aparcamiento grande hasta el Hospital Insular: asfalto, plazas pintadas en
+  filas y coches aparcados (map.lotSpots, como el parking de los médicos).
+- Por el lateral de la oficina, la calle entre el tanatorio y el muro del parque, con tres coches
+  aparcados en fila junto al muro.
+- Al otro costado, la franja de jardín con picón, arbustos, pitas y cardones detrás de un murete
+  blanco, junto a la calle La Añaza.
+- En la calle de delante: dos farolas de dos bolas en la acera de enfrente, las flechas pintadas en
+  los carriles, las baldosas amarillas de la esquina y el «30» en el suelo de La Añaza.
+- La azotea, retocada con la foto ancha y la aérea: el patio de baldosa roja va atrás, junto a la
+  esquina del lucernario; la chimenea redonda, en el costado.
+- Nuevos o cambiados: tanatorioEntorno.js (nuevo), tanatorioAzotea.js, extraData.js, main.js. Copia de
+  lo anterior en _copia_antes_entorno_tanatorio.
+
+Version 46 (el juego ya no se cae, ubicaciones que se entienden, Maccheroni y el roadster con salto):
+- Se caía a los pocos segundos: en el móvil el juego llegaba a ~1,2 GB entre fotos, rótulos y formas,
+  y el navegador lo cerraba. Ahora, solo en el móvil, los rótulos y suelos dibujados van a la mitad
+  (de ~400 a ~200 MB) y las formas grandes no se guardan dos veces (~170 MB menos). En el PC no cambia.
+- Además, si algo fallaba una sola vez, la imagen se congelaba para siempre: ahora el juego sigue.
+- Y si aun así el aparato se queda sin memoria para los gráficos, sale un aviso con el botón
+  «Seguir jugando», que vuelve a cargar en la misma calle con calidad baja.
+- Ubicaciones: al empezar y en el mapa grande se entienden las faltas («Macarroni», «macheroni»,
+  «tanatoryo»...) y cada local tiene sus palabras (Maccheroni: macarroni, restaurante italiano;
+  tanatorio: tanatorio, Funercanarias, velatorio). Nuevos sitios para empezar: Escuela de Pesca y
+  Parque del Hospital Insular.
+- El Nuevo Maccheroni: dentro se camina, se habla con Andrea y Elvis, te sientas (T junto a una silla),
+  pides unos espaguetis a la boloñesa, te los traen y te los comes. No se cobra: el precio no está
+  confirmado. Sentado, la cámara se pone al otro lado de la mesa y se ve la cara y el plato.
+- Dentro de los locales que están en zona alta, el suelo se pintaba más abajo y la cámara quedaba casi
+  en el techo (en el Maccheroni, 2,7 m de más): ahora la cámara va a la altura de los ojos en todos.
+- Roadster Chispa Órbita (marca, modelo y logo inventados; se parece al descapotable eléctrico de dos
+  plazas, rojo): sale aparcado a tu lado al empezar y con la O (o ··· → Roadster) viene a donde estés.
+  Turbo salto con la J (o el botón Salto del móvil, negro con la luz roja que barre como el coche
+  fantástico): sube unos 20 m y tarda unos 4 s en caer. Pasa por encima de los edificios y, si fuera a
+  caer dentro de uno, salta menos y cae en la calle. Suena el turbo.
+- Nuevos o cambiados: memoria.js (nuevo), main.js, startPlaces.js, bigMap.js, car.js, carModels.js,
+  marcas.js, collision.js, audio.js, touch.js, traffic.js, police.js, peds.js, dogs.js, skaters.js,
+  locales.js, localesComida.js, localesArroyo.js, character.js, index.html. Copia de lo anterior en
+  _copia_antes_caida_roadster.
+
+Version 47 (conducir por los tejados, motos y quads):
+- Tejados: con el roadster, el turbo salto (J o el botón Salto) sube por las fachadas y cae en las
+  azoteas, y por encima se conduce como en la calle. Al llegar al borde, el coche cae a la calle o a un
+  tejado más bajo; los edificios más altos le frenan. En el aire se puede acelerar, frenar y girar un
+  poco para apuntar al tejado. En un tejado no se puede bajar del coche: primero hay que bajar a la calle.
+- Moto Tinajo Rayo 650 (una naked; marca, modelo y logo inventados: el volcán negro con la carretera
+  que sube) y quad Malpaís Jable 450. Salen aparcados al lado al empezar, con el roadster; con la B
+  (moto) y la U (quad), o ··· → Moto / Quad en el móvil, vienen a donde estés. Te montas con F (o
+  Subir) y se ve a tu personaje encima, con casco; la moto se inclina en las curvas.
+- También hay motos y quads en el tráfico, con su piloto con casco, y alguna aparcada en la calle.
+- Nuevos o cambiados: tejados.js y motos.js (nuevos), car.js, carModels.js, marcas.js, collision.js,
+  character.js, touch.js, main.js, index.html. Copia de lo anterior en _copia_antes_tejados_motos.
+
+Version 48 (el camino de tierra hasta la casa del campo):
+- El mapa llega hasta la casa de las fotos desde la azotea, arriba de Arrecife: desde el final de la
+  Calle Campoamor sube un camino de tierra de casi 1 km que pasa junto a la casa y sigue con los postes
+  de la luz hacia el noroeste, con un ramal hasta el muro blanco de la autocaravana.
+- La casa, sin nombre ni rótulo: paredes blancas, azotea con la tela roja y la chimenea blanca, terraza
+  con balaustrada blanca, el patio con los delfines azules pintados, la piscina, el busto, las tumbonas,
+  la pérgola de chapa oxidada y el cuarto con losetas rosas. Alrededor: la casa vecina blanca de dos
+  plantas con su muro de bloques, la autocaravana y el coche amarillo junto al muro blanco, la finca
+  blanca con su muro, casas sueltas a lo lejos y la montaña al norte.
+- El campo: tierra marrón con matojos y piedras, y el malpaís oscuro hacia el este y el sureste, que
+  baja hacia Arrecife. Desde la azotea se ve la ciudad y el mar abajo, como en las fotos.
+- Nuevo sitio para empezar: «Camino de tierra» (también vale «mi casa», «casa» o «campo»).
+- Por los caminos de tierra no hay aceras, semáforos ni pasos de cebra, y no pasan coches ni peatones.
+- Es aproximado: desde aquí no hay conexión con los datos del IGN ni de OpenStreetMap de esa zona. El
+  relieve, más allá de donde acaban los datos, sigue la cuesta del borde (suavizada), y el camino y las
+  casas están hechos a partir de las cuatro fotos.
+- Nuevos o cambiados: casaCampo.js (nuevo), terrain.js, world.js, suelos.js, aceras.js, senales.js,
+  traffic.js, peds.js, startPlaces.js, extraData.js, main.js. Copia de lo anterior en
+  _copia_antes_casa_campo.
+
+Version 49 (la casa y el barrio en su sitio, con las fotos aéreas):
+- Con las cinco fotos aéreas de José Manuel (desde la casa hasta la calle asfaltada), todo va donde está:
+  la casa es la del tejado rojo de la fila del medio de la manzana, con el patio de la piscina al oeste, el
+  cuarto de losetas rosas y la pérgola; las medidas salen de los coches aparcados de la foto cercana.
+- La manzana entera (tres filas de casas con sus muros), el triángulo de muro y la finca grande con
+  piscina al sur, la fila de cuatro casas, la finca alargada, las casas sueltas y las del cruce grande.
+- Los caminos de tierra como en la foto: el de la casa baja por el oeste de la manzana hasta el cruce
+  grande; de ahí sale uno al este, hacia los enarenados, y otro a la ciudad.
+- Los enarenados de picón negro (lo oscuro de la foto hacia el este), con su muro bajo de piedra.
+- La parte de la ciudad de la foto: la Calle Campoamor sigue hacia el norte, más calles nuevas con
+  sus aceras y casas a los lados (las que se ven en la foto, y el resto de las calles completadas).
+- Al empezar en «Camino de tierra» sales en la calle de delante de la casa, junto a la cancela.
+- La autocaravana y el coche amarillo, junto a la pared blanca de la casa de al lado (la del norte).
+- Las casas de alrededor se dibujan como las del resto de Arrecife (fachadas, ventanas, azoteas).
+- Nuevos o cambiados: campoDatos.js (nuevo, los datos de las fotos aéreas), casaCampo.js. Copia de lo
+  anterior en _copia_antes_casa_aerea.
+
+Version 50 (el camino del lado de la casa, con las dos fotos desde la esquina):
+- El camino de tierra del este de la manzana sigue hacia el norte, hacia la montaña.
+- Mirando al sur: el muro blanco largo con las tablas verdes apoyadas y el todoterreno gris aparcado
+  junto al muro; al fondo, la ciudad y el mar.
+- Mirando al norte: la casa blanca de dos plantas con las macetas en el muro, el garaje gris al final,
+  las piedras grandes al borde del camino y el todoterreno negro aparcado en la tierra.
+- La montaña: un cono volcánico marrón oscuro al norte-noreste, más cerca y más grande, como se ve
+  desde el camino.
+- Nuevos o cambiados: casaCampo.js, campoDatos.js. Copia de lo anterior en _copia_antes_camino_este.
+
+Version 51 (el garaje de la casa y lo de alrededor, con cuatro fotos más):
+- El garaje en el muro del oeste del patio, con la puerta seccional color crema y el picón negro
+  delante (también en el ensanche del norte, entre el patio y la casa de al lado).
+- Al lado, el muro alto con las vetas de óxido y la luz de seguridad, la mesa de madera, las macetas
+  blancas, las garrafas, el árbol pegado al muro, el casco de barca con su franja azul, los palés, la
+  hormigonera y los palés azules y amarillos.
+- La ventana redonda de arriba de la casa y la pérgola de madera sobre la terraza.
+- Dos autocaravanas, el coche amarillo y un coche blanco junto a la pared blanca de la casa del norte.
+- La pared de piedra seca y los matojos secos en el campo del suroeste, delante de la casa del muro
+  de bloques.
+- Nuevos o cambiados: casaCampo.js. Copia de lo anterior en _copia_antes_garaje.
+
+Version 52 (la parte de atrás de la casa):
+- Las cuatro fotos del garaje son de la parte de atrás de la casa (el norte): el garaje con la puerta
+  color crema pasa al muro de atrás del patio, dando al picón negro, y a su lado el muro alto con las
+  vetas de óxido y la luz, las macetas, las garrafas, la mesa, el casco de barca, los palés, el árbol, la
+  hormigonera y los palés azules y amarillos. El muro del oeste del patio queda como antes.
+- Las dos autocaravanas, el coche amarillo y el blanco, en el solar de picón junto a la casa blanca del
+  norte, más allá de la parte de atrás.
+- Nuevos o cambiados: casaCampo.js. Copia de lo anterior en _copia_antes_atras.
+
+Version 53 (el cruce de detrás de la casa y la bajada, con dos fotos desde el coche):
+- El cruce del noroeste, detrás de la casa: la valla de malla verde del solar de las autocaravanas con
+  el coche amarillo aparcado contra ella, el pilar blanco, la casa blanca con la puerta corredera
+  verde y la maceta del cactus, y el coche blanco y la furgoneta blanca delante.
+- El poste de la luz con su montón de piedras entre los dos caminos, y los postes del camino de la
+  casa por el lado del muro de bloques, como en la foto bajando hacia la ciudad.
+- Los árboles detrás del muro de bloques de la casa del sur del camino.
+- La sierra marrón del norte y del noroeste, con las antenas en la cumbre del oeste.
+- Nuevos o cambiados: casaCampo.js. Copia de lo anterior en _copia_antes_cruce.
+
+Version 54 (desde el campo se ve Arrecife y el mar, con la foto bajando por el camino):
+- En el campo de arriba se ve más lejos: Arrecife, el Gran Hotel y el mar, a unos 4 km, como en las
+  fotos desde la casa y desde el camino (antes el juego no dibujaba nada a más de 3 km, y la neblina
+  lo tapaba). En la ciudad no cambia nada.
+- Las torres de alta tensión con sus cables, bajando hacia la ciudad por el este del camino.
+- Palmeras junto a las casas blancas del este del camino.
+- Nuevos o cambiados: casaCampo.js, extraData.js, main.js. Copia de lo anterior en _copia_antes_vista.
+
+Version 55 (los postes del camino del este, con otra foto desde el coche):
+- Los postes de la luz de madera con sus cables a lo largo del camino que sale hacia el este, hacia los
+  enarenados, por el lado del norte; a la derecha, a lo lejos, las casas blancas con palmeras y el mar.
+- Nuevos o cambiados: casaCampo.js. Copia de lo anterior en _copia_antes_postes_este.
+
+Version 56 (la bajada hacia el cruce grande, con otra foto desde el coche):
+- Los postes de la luz con sus cables también en la bajada del camino de la casa hacia el cruce
+  grande, por el lado del este.
+- El muro de la fila de casas del este del camino, blanco y bajo, como en la foto.
+- Nuevos o cambiados: casaCampo.js, campoDatos.js. Copia de lo anterior en _copia_antes_bajada.
+
+Version 57 (el pilar de la entrada y las torres, con otra foto desde el coche):
+- En la esquina de la fila de casas del muro blanco: el pilar blanco de la entrada con su bola encima,
+  la piedra grande al pie y el muro bajo de piedra seca del camino que sale hacia el este.
+- Las torres de alta tensión, más cerca del camino y de la ciudad, como se ven en las fotos bajando.
+- Nuevos o cambiados: casaCampo.js. Copia de lo anterior en _copia_antes_pilar.
+
+Version 58 (la avenida y las rotondas arregladas, con señales y cebras):
+- Las rotondas (la de la Escuela de Pesca, el óvalo de la Avenida de Naos con Juan de Quesada y las
+  38 del resto del mapa): la calzada del anillo queda limpia, con sus bordes pintados, sin aceras ni
+  bordillos cruzando por medio y sin coches aparcados dentro. El tráfico da la vuelta en un solo
+  sentido (antihorario, como en España) y el que entra tiene su ceda el paso; el que va dentro,
+  prioridad.
+- En todos los cruces de la ciudad, la acera de una calle ya no cruza por encima del asfalto de otra
+  (se veía mucho en las rotondas y en los cruces grandes: parecían plazas mezcladas con la carretera).
+- La Avenida de Naos y la Avenida Olof Palme son avenidas de verdad: línea discontinua en el medio,
+  bordes pintados, stop o ceda en las calles que desembocan y sin coches aparcados en la calzada.
+- Pasos de cebra en los brazos de las rotondas y hueco para los que faltaban (de 260 a 320).
+- Probado: 4 minutos de tráfico simulado en las rotondas (83 coches muestreados, todos antihorario,
+  ningún atasco), el centro, el campo y el móvil (258 MB, sin errores).
+- Nuevos o cambiados: extraData.js, world.js, senales.js, traffic.js. Copia de lo anterior en
+  _copia_antes_rotondas.
+
+Version 59 (los parques ya no pisan la carretera):
+- El jardín de delante de la Policía Local (Avenida Vargas): los setos, las piedras y los parterres ya
+  no se plantan donde el jardín del mapa pisa la calzada. Vale para todos los jardines de la ciudad.
+- El parque infantil del Parque José Ramírez Cerdá, junto al quiosco: en el mapa venía como una tira
+  torcida metida en la Avenida La Marina; ahora es un cuadrado vallado en el paseo, separado de la
+  calle, y las vallas de los parques infantiles son negras de barrotes (eran rojas).
+- Nuevos o cambiados: parks.js, extraData.js. Copia de lo anterior en _copia_antes_parques.
+
+Version 60 (cinco sitios nuevos, el mar de verdad y el cielo con lluvia y luna):
+- Delegación del Gobierno (Extranjería), en Blas Cabrera Felipe, junto al casino y frente al
+  mollito: el edificio blanco almenado con el balcón canario verde, la portada de cantería con
+  los dos arcos y el escudo, las tres banderas inclinadas y su placa (delegacion.js, con la foto).
+- Comisaría de Policía Nacional, pasado el tanatorio (calle Timón): blanca de dos plantas con las
+  bandas corridas de ventanas grises, la marquesina con el rótulo COMISARIA DE POLICIA, la bandera
+  de España, la rampa de barandilla azul y la valla metálica con la corredera abierta (comisaria.js).
+- El parque infantil del dinosaurio, frente al tanatorio cruzando Juan de Quesada, en el rincón
+  peatonal junto a la avenida: suelo de caucho de colores, el dinosaurio verde con su lengua,
+  trepadores de acero con paneles naranjas, los pajaritos amarillos en sus postes, bancos y
+  palmeras (parqueDino.js, con la foto).
+- El parque del paseo frente a la Calle Real (vistas al Castillo de San Gabriel): por dentro, la
+  vallita de paneles de plástico azul, roja y amarilla y el columpio doble con patas en A (parks.js).
+- El Castillo de San José, en la loma del puerto, con las cinco fotos: el fuerte de piedra volcánica
+  marrón con las juntas claras, la portada recta con su puerta y el rótulo, las garitas con capirote,
+  las chimeneas dobles, el tambor redondo hacia el mar, la bandera canaria, y delante la explanada
+  oscura de callaos con las esculturas de madera, la pirámide de bolas de piedra, las pitas y las
+  rocas de lava (castilloSanJose.js). El castillo genérico de antes se quita.
+- Los desniveles de esa loma, arreglados: el terreno se suaviza y el castillo queda en una meseta
+  llana que baja con suavidad hacia el mar y el puerto (terrain.js).
+- El mar es de verdad (lo pidió José Manuel): el coche que cae al agua frena, se hunde poco a poco
+  y el conductor sale nadando; a pie se nada (más despacio, a brazadas, con el cuerpo tumbado) y
+  se sale andando por la orilla. En el Charco también. Por el Puente de las Bolas, la calzada del
+  castillo y el pantalán de la Escuela se pasa en seco (terrain.js, character.js, main.js).
+- El cielo, más de verdad: el disco del sol se ve de día, de noche sale la luna con todas sus fases
+  (cambia cada día de juego: nueva, creciente, llena, menguante) y de vez en cuando llueve, con sus
+  gotas, menos luz y el cielo gris (cielo.js). Con ?lluvia en la dirección llueve siempre, para
+  probarla. Las estrellas y las nubes siguen como estaban.
+- Nuevos o cambiados: delegacion.js, comisaria.js, parqueDino.js, castilloSanJose.js, cielo.js,
+  parks.js, terrain.js, character.js, extraData.js, main.js. Copia de lo anterior en
+  _copia_antes_v60.
+
+Version 61 (armas, coche a elegir, camara arreglada y media pantalla del movil):
+- Inventario de armas (lo pidió José Manuel): puños, pistola, escopeta, metralleta y rifle, cada una
+  con su cadencia, alcance y perdigones. Se cambia con Z / X (o el botón Arma del móvil) y el arma
+  a la vista sale en un cartelito junto al velocímetro. Los intermitentes ya no gastan esas teclas:
+  se encienden solos al girar y se apagan al acabar (H sigue siendo las luces de emergencia).
+- Botón «🚗 Elige tu coche» en la pantalla de inicio: cada jugador elige modelo (los 14 de las
+  marcas inventadas) y color (10 colores); se guarda la elección y se empieza con ese coche
+  (al cambiar ya no queda el coche anterior de fantasma debajo).
+- La cámara del coche, más alta (3,5 m a 7,8 m, mirando sobre el techo, como los juegos de
+  conducción; antes iba a 2,5 m y se veía muy baja). La lejana también sube un poco.
+- Vista de dentro del coche directa: tecla I o el botón «Interior» del menú del móvil.
+- La media pantalla del móvil: al girar el iPhone o entrar en pantalla completa, Safari avisaba
+  tarde del tamaño nuevo y el juego se quedaba en media pantalla; ahora se reajusta con el giro
+  y un vigilante lo corrige solo si no coincide.
+- Nuevos o cambiados: main.js, combat.js, car.js, touch.js, index.html. Copia de lo anterior en
+  _copia_antes_v61.
+
+Version 62 (mas realismo: trafico, peatones, aparcar bien, naturaleza y salpicadero):
+- Fuera las cafeterías de en medio de la carretera: las mesas, sillas y sombrillas de los bares
+  ya no se plantan donde caiga el cartel si eso es calzada (props.js las descarta con la rejilla
+  de las calles). Los bancos igual.
+- Los peatones ya no se paran en medio de la calle (ni al móvil ni a charlar): si les pilla en
+  calzada siguen andando hasta la acera.
+- Más tráfico: de 26 a 44 coches en el PC (en el móvil se queda en 26), y todos los coches del
+  tráfico llevan su conductor visible dentro (cabeza, torso y brazos al volante); al robar el
+  coche, el conductor ya no está.
+- Aparcar correctamente: los coches aparcados van en línea pegados al bordillo, dentro de la
+  calzada, rectos y en el sentido de la marcha (antes iban medio subidos a la acera e inclinados),
+  solo en calles con anchura de sobra, y cada plaza lleva sus rayas pintadas en el asfalto.
+- Mejores carreteras: línea discontinua central también en las calles normales anchas (antes solo
+  las avenidas).
+- Más naturaleza y más tierra: por los solares y rincones libres salen tuneras, arbustos, rocas
+  de lava, matos secos, algún drago y manchas de picón (naturaleza.js; determinista, sin pisar
+  calles, edificios, parques ni mar).
+- Más cuestas: el relieve pasa de x2 a x2,35 (con ?relieve=N se ajusta a mano).
+- Interior del coche más realista: los dos asientos con reposacabezas, la consola del medio con
+  su palanca y el espejo retrovisor interior (tecla I o botón Interior).
+- Nuevos o cambiados: naturaleza.js, props.js, peds.js, traffic.js, carModels.js, car.js,
+  world.js, parked.js, carKit.js, main.js. Copia de lo anterior en _copia_antes_v62.
+
+Version 63 (el intermitente que se quedaba puesto y la Comisaria en su sitio):
+- El intermitente automático: tras un giro corto (un golpe de volante, un cambio de carril) se
+  quedaba encendido porque el giro no llegaba a completarse; ahora, con un segundo largo
+  conduciendo recto, se apaga solo.
+- La Comisaría de Policía Nacional estaba en un edificio equivocado; ahora está en su sitio de
+  verdad: calle Mastelero esquina con la Vía Medular (la dirección oficial de la sede electrónica
+  de la Policía Nacional). Va sobre el edificio grande de esa esquina, con su fachada, marquesina,
+  rótulo, bandera, escalones, rampa azul y valla hacia Mastelero; el edificio de antes vuelve a
+  ser un edificio normal.
+- Nuevos o cambiados: main.js, comisaria.js. Copia de lo anterior en _copia_antes_v63.
+
+Version 64 (el juego ya no se corta y la Comisaria nueva en su sitio exacto):
+- El corte del juego: dos redes de seguridad para que no se quede congelado. Si al sonido del
+  motor le llega un numero malo (un NaN de una pendiente rara o un golpe), ya no revienta el
+  fotograma: se sanea y sigue sonando (audio.js). Y si la fisica del coche diera un numero malo,
+  el coche vuelve al ultimo sitio bueno en vez de dejar la pantalla helada (main.js). Ademas se
+  probo el juego entero con sesiones largas simuladas (conducir, girar, a pie, armas, noche y
+  lluvia, y la zona de la Comisaria) sin un solo error.
+- La Comisaria nueva, en su edificio de verdad: el que sale en OpenStreetMap (28.96627 N,
+  13.5408 O), el bloque en diagonal entre la calle Mastelero y la Via Medular, con la fachada
+  larga mirando a Mastelero. El edificio de la v63 (70 m mas alla) vuelve a ser normal.
+- La fachada, mejor: las dos bandas corridas de ventanas grises y la cristalera oscura de la
+  entrada ahora se ven (antes quedaban escondidas detras del pano blanco), y la bandera de
+  Espana pasa de la marquesina a su mastil en el patio delantero, que asi no tapa el rotulo.
+- La puerta corredera de la valla se acorta para no pasarse de la esquina del edificio.
+- Nuevos o cambiados: comisaria.js, audio.js, main.js. Copia de lo anterior en _copia_antes_v64.
+
+Version 65 (el corte al llegar a la Comisaria: el juego se cura solo y dice que le paso):
+- Se busco a fondo el corte en la zona de la Comisaria con pruebas simuladas (en modo demo,
+  llegando en coche por etapas desde la Via Medular, parado delante de la valla, en el patio y
+  a pie, con bucle real en cada etapa): ni un error, y los FPS alli son los mismos que en el
+  centro. El corte no sale en nuestras pruebas, asi que se blinda el juego para que, pase lo
+  que pase, no se quede congelado:
+- Si el mismo fallo se repite fotograma tras fotograma (eso es lo que se ve como "corte": la
+  pantalla quieta), el juego ahora se recoloca solo en el ultimo sitio bueno al segundo y
+  medio; y si ni asi se cura, a los cinco segundos sale el cartel con el MOTIVO del fallo y
+  el boton de seguir jugando en la misma calle.
+- Los dos enlaces publicados conservan ahora tambien el bundle de la version anterior: si el
+  navegador tenia la pagina vieja en cache, ya no se queda rota a medias (eso podia ser la
+  "inconsistencia": a veces cargaba y a veces no).
+- Si vuelve a cortarse: fijate si sale un cartel y que motivo pone, y dime si fue en el movil
+  o en el PC. Con eso voy a tiro hecho.
+- Nuevos o cambiados: main.js. Copia de lo anterior en _copia_antes_v65.
+
+Version 66 (el Castillo de San Jose con su entrada de verdad, sin la cuesta y con el anexo en piedra):
+- Fuera la cuesta abajo: la meseta del castillo ahora va desde la entrada de la avenida hasta
+  el castillo a la altura de la avenida (antes caia 7 metros del parking al castillo); el
+  desnivel queda solo hacia el mar, como en la realidad (terrain.js).
+- La casa de al lado ya no es una vivienda blanca: es el anexo del castillo (el restaurante y
+  las salas bajas del MIAC), construido en la misma piedra volcanica moteada, PEGADO al muro
+  del castillo como es de verdad, con su azotea oscura de picon, el pretil y sus puertas
+  oscuras. La casita blanca suelta de la explanada (que no existe) se quita.
+- La entrada desde la avenida, como en las fotos de Street View: paso de cebra en la avenida,
+  acceso asfaltado, STOP pintado en el carril de salida, las dos isletas con murete de piedra
+  volcanica, plantas y rocas, la senal de prohibido, el cartel del museo, el totem negro del
+  MIAC, el monolito de piedra grabado y el disco de 20.
+- El parking de picon con la isleta central de palmeras y su bordillo de piedras, la banda
+  empedrada que cruza hacia la explanada, farolas, y 12 plazas de verdad donde aparcan coches
+  (en corro alrededor de la isleta y una fila en el borde, con sus rayas pintadas).
+- Nuevos o cambiados: castilloSanJose.js, terrain.js, extraData.js. Copia de lo anterior en
+  _copia_antes_v66.
+
+Version 67 (el Maccheroni por dentro como en las fotos, gente mas realista y un 20% menos):
+- El interior del Maccheroni, con las tres fotos de Jose Manuel: suelo de baldosa de barro
+  cocido con su llaga clara, paredes amarillas con zocalo oscuro, la pared de tablones rusticos
+  detras de la barra, el horno de lena con su boca oscura y la gran campana gris, la cafetera
+  de la barra, la nevera roja de bebidas con puerta de cristal, la tele en alto, el portal de
+  canteria gris, y las mesas con mantel blanco, su camino naranja, servilletas naranjas sobre
+  los platos, florero con flores y sillas de madera oscura; las lamparas colgantes ahora son
+  blancas, como las de verdad.
+- La gente, mas realista: en el PC los peatones pasan al detalle del protagonista (dedos en
+  las manos, vaqueros con bolsillos y bragueta, cordones y suela en las zapatillas, reloj,
+  caras mas finas); en el movil tambien van mas redonditos (mas segmentos en brazos, piernas,
+  tronco y cabeza).
+- Un 20% menos de gente por la calle (lo pidio Jose Manuel): de 150 a 120 en el PC y de 64 a
+  51 en el movil.
+- El local por dentro, a su tamano de verdad (6,8 x 9,6 m, lo que miden sus fachadas; antes era
+  el doble de grande), y se entra y se sale por la misma puerta.
+- La puerta de salida, bien a la vista desde dentro, como en la foto nueva: el portal de
+  canteria gris con su dovela, el abanico de luz encima, las dos hojas de cristal abiertas y
+  la franja tricolor.
+- Tambien de las fotos nuevas: el botellero grande lleno de botellas de vino (de pie y
+  tumbadas) y las aceiteras de aceite y vinagre en cada mesa.
+- Nuevos o cambiados: localesComida.js, interiorKit.js, humanModel.js, humanHead.js, peds.js,
+  main.js. Copia de lo anterior en _copia_antes_v67.
+
+Version 68 (Andrea como es):
+- Andrea, el camarero del Maccheroni, es rubio y no lleva barba (lo dijo Jose Manuel).
+- Nuevos o cambiados: localesComida.js. Copia de lo anterior en _copia_antes_v68.
+
+Version 69 (gente de foto por las aceras):
+- Cuatro personas sacadas de fotos realistas (las que sobraban de las fichas de personajes):
+  el chico de camiseta verde, la chica de coleta con top coral y bolso, el chico de camiseta
+  negra con el panel solar y el senor del chaleco reflectante. Estan recortadas, sin fondo,
+  en public/gente/.
+- Salen de pie en las aceras de las calles con mas gente (diez en el PC, cinco en el movil),
+  nunca en la calzada, con su sombra en el suelo, y siempre miran hacia ti. Son fotos planas:
+  de muy cerca y de lado se nota, por eso estan quietas.
+- Si las atropellas caen de espaldas y cuenta como atropellar a un peaton (policia y susto
+  alrededor). A pie te apartan un poco.
+- Nuevos o cambiados: fotoGente.js (nuevo), main.js, public/gente/foto1-4.webp. Copia de lo
+  anterior en _copia_antes_v69.
+
+Version 70 (lo de la copia de Freebuff: Buganvillas entero, farmacia, esquina de Millares y colegio):
+- El C.C. Las Buganvillas entero (buganvillas.js): esquina achaflanada y estuco blanco, el
+  letrero amarillo, persianas y cristales, WOK, Sakura, Kassino, los muelles de Fenauso y,
+  detras, la plaza-jardin de Aniagua: losas grises, parterres de borde blanco con piedra de
+  lava, flamboyanes, bancos, farolas, palmeras canarias y el parque infantil en el rincon de
+  Penas del Chache.
+- La Farmacia Las Salinas (Calle Guenia 2), en la esquina de Guenia con Aniagua.
+- La esquina de Guenia con Manolo Millares: el bloque blanco de los comercios, Calzado El
+  Mas Barato y el arco, con sus palmeras.
+- El colegio CEIP Antonio Zerolo en su sitio, con fachada crema, 9 m, rotulo y banderas.
+  El modelo fino (letras grandes, patio, verja) esta escrito pero todavia sin conectar.
+- Los faros y pilotos de coches y motos, apagados de dia; de noche brillan algo mas.
+- Se mantiene lo de la Version 69 (gente de foto) y se arregla un fallo de la copia de
+  Freebuff: se habia perdido la linea que quita los bloques genericos de la iglesia de San
+  Gines y de los kioscos del parque Ramirez (saldrian repetidos).
+- Nuevos o cambiados: buganvillas.js, farmaciaGuenia.js, esquinaMillares.js, escuelaZerolo.js
+  (nuevos), carModels.js, motos.js, extraData.js, localesBuganvillas.js, parks.js, world.js,
+  main.js. Copia de lo anterior en _copia_antes_v70.
+
+Version 71 (fuera Airam y los intermitentes; farmacia en su esquina y el colegio como en las fotos):
+- Airam ya no esta en el juego: se empieza con Noah y las teclas 1-4 son Noah, Michael, Jose
+  e Iria.
+- Fuera los intermitentes: ni los coches del trafico ni el tuyo los ponen, no suena el tic-tac,
+  no hay luces de emergencia (tecla H) ni flechas en el marcador ni en el salpicadero.
+- La Farmacia Las Salinas, en su sitio: en el bajo del bloque del lado este de la Calle Guenia,
+  en la esquina con Aniagua (antes caia dentro del colegio, al otro lado de la calle).
+- El colegio CEIP Antonio Zerolo, como en las fotos de Street View: por la Calle Guenia, el
+  muro bajo de bloques encalados en blanco con sus pilares y la verja verde de barrotes encima,
+  tres portones verdes, el pabellon blanco de una planta con CEIP ANTONIO ZEROLO en letras
+  azules, el de dos plantas que da a Tagoror con su rotulo y banderas, los demas pabellones del
+  recinto en blanco con teja, y los flamboyanes en flor en la acera. El muro no se atraviesa.
+- Nuevos o cambiados: character.js, main.js, carKit.js, touch.js, index.html,
+  farmaciaGuenia.js, escuelaZerolo.js, extraData.js. Copia de lo anterior en _copia_antes_v71.
+
+Version 72 (el caserio del camino de tierra, de las 24 fotos de octubre):
+- Al final del camino largo del campo (hacia el este) sigue una calle de tierra con un ramal, con las casas
+  blancas de las fotos: la del balcon de barandilla oscura, la de las persianas verdes con el muro bajo y
+  la red negra del trampolin, la casa de la verja negra con el numero 25 y el cartel de alarma, y la nave
+  del porton crema con los palets, las macetas y las garrafas azules.
+- La lancha ANMARA UNO (matricula 8814 LPL) en su remolque, la VW California gris al lado, el Skoda gris
+  (0572 MCX) delante de la verja del 25 y un coche blanco junto a la nave. Chocan todos.
+- Postes de madera con cables, chumberas, cardon, pinos, rocas volcanicas y muros de piedra a medio caer
+  en el solar sin urbanizar.
+- Nuevo: caminoAnmara.js. Cambiados: extraData.js, main.js. Copia de lo anterior en _copia_antes_anmara.
+
+Version 73 (fuera los paneles con fotos que flotaban por la ciudad):
+- Quitados los paneles de fotos de calle (streetPhotos) y las fotos pegadas a las fachadas (facadePhotos):
+  ya no sale ninguna captura suelta en el juego. Cambiado: main.js. Copia en _copia_antes_sin_fotos.
+- Noche mas clara (luna, luz de cielo, niebla y exposicion mas altas) y las farolas, los faros y el brillo
+  de las farolas se encienden desde que empieza a atardecer, con mas alcance. Cambiados: dayNight.js,
+  world.js, main.js (copias en _copia_antes_sin_fotos).
+
+Version 74 (Playa Honda unida a Arrecife y gasolinera de la carretera):
+- Playa Honda entra en el mapa: sus calles, casas, rotulos y la gasolinera, de OpenStreetMap
+  (tools/fetch_playa_honda.py y tools/add_playa_honda.mjs). La carretera de Arrecife ya llega hasta el pueblo.
+- Terreno con las alturas reales de Playa Honda (tools/alturas_calles.py con la zona ampliada) y el mar rehecho
+  con la costa de alli (tools/fetch_coast_ph.py y tools/rebuild_sea.mjs): antes todo lo de al oeste era mar.
+- Suelo de Playa Honda en malla fina (10 m, world.js) para que no asome por encima de las calles ni se trague casas.
+- La gasolinera Disa de la carretera hacia Playa Honda ya lleva su marquesina como la otra: world.js busca un
+  solar libre junto a la calle cuando la tienda de OSM ocupa el sitio. Quitada una gasolinera repetida.
+- Copias de lo anterior en _copia_antes_honda.
+
+Version 75 (el roadster: blanco, puertas hacia arriba y propulsores de aire):
+- El roadster Chispa Orbita sale blanco. Su puerta ya no se abre hacia fuera: se levanta girando sobre el
+  borde de arriba, como un ala (carKit.js, `doorUp` en carModels.js).
+- Propulsores de aire comprimido (thrusters.js): bocanadas blancas por debajo, que salen mas cuanto mas deprisa
+  vas; al girar sale aire por el lado contrario a la curva; al frenar fuerte, por delante; y en el turbo salto,
+  a chorro hacia el suelo.
+- De paso, traffic.js ya no se rompe con una calle de un solo tramo recorrida al reves (Calle Canalejas).
+- Copias de lo anterior en _copia_antes_roadster.
+
+Version 76 (Casa Fajardo, calle Fajardo 5, como en las fotos):
+- Nuevo edificio: la casa de una planta con azulejo blanco-verdoso, franja de damero verde, balaustrada con pinaculos, puerta en arco con escalera, ventanas en arco y verja blanca con pilares, bolas y el numero 5 (src/casaFajardo.js).
+- Se le abre hueco al bloque 104 del mapa para que la casa quede pegada a la calle Fajardo; el resto de la manzana no cambia.
+- Copias de lo anterior en _copia_antes_casa_fajardo.
+
+Version 77 (paseo, puente Cabildo, explanada discoteca y aeropuerto):
+- Paseo de Av. Fred Olsen y orilla: muros de piedra volcánica a ambos lados, como el Charco (src/coast.js, textura masonry de fortBridge.js).
+- Puente del Cabildo hacia San Francisco Javier: paso bajo con muros de piedra volcánica junto al ALDI de C. El Fortito (src/cabildoBridge.js).
+- Explanada de la antigua discoteca, enfrente de la Playa del Reducto: suelo de losas y edificio blanco con cubierta (src/explanadaDisco.js).
+- Aeropuerto de Lanzarote (ACE), borde suroeste: terminal blanca, pistas y torre de control (src/aeropuerto.js).
+- ALDI de C. El Fortito añadido al mapa (edificio, rótulo y aparcamiento, aproximación artística por tus fotos de Street View).
+- Copias de lo anterior en _copia_antes_muros_paseo.
+
+Version 78 (por dentro: el juego partido por barrios, para trabajar mas barato):
+- El codigo de la ciudad se ha separado en barrios: Arrecife Centro, Valterra, San Francisco Javier, Titerroy, Argana Alta, Altavista, Maneje y Compartido (lo de toda la ciudad). Cada uno tiene su carpeta en src/barrios/ con su ficha.
+- main.js ya no construye la ciudad entera: llama a los barrios. Lo que se construye en cada sitio esta en la carpeta de ese barrio.
+- El indice esta en BARRIOS.md, y CLAUDE.md se ha quedado con lo general (asi se lee menos en cada tarea).
+- Arreglado de paso un fallo en beach.js que impedia arrancar el juego (usaba el grupo de la playa antes de crearlo).
+- El juego se ve y funciona igual que la Version 77.
+
+Version 79 (el ALDI de verdad y los negocios reales de San Francisco Javier):
+- El ALDI queda uno solo y en su sitio real: Calle Rambla Medular 58 (calle El Forito s/n), comprobado en OpenStreetMap y en la web de ALDI. Antes habia dos: el del mapa, bueno, y otro que se habia puesto a mano junto al puente, que sobraba. Se ha quitado el inventado del mapa (edificio, rotulo y aparcamiento falsos).
+- El ALDI ya parece un ALDI: la nave pasa de 4 m a 7,6 m, se pinta de blanco, con la franja azul corrida por toda la fachada, el rotulo ALDI en la fachada larga y en el testero, la entrada acristalada con marquesina, el cobertizo de los carros y el aparcamiento de delante con las plazas pintadas (src/aldiSfj.js).
+- El cartel de ALDI que traia el mapa caia dentro de la nave (el nodo de OSM esta en el centro del edificio): se quita y el rotulo va en la fachada, donde se ve.
+- Buscados todos los negocios reales del barrio en OpenStreetMap. OSM solo tiene cuatro con nombre: el ALDI, la gasolinera Repsol Canary Green Corner, el Campo de Futbol San Francisco Javier y el IES Arrecife. Estan anotados en src/negociosSfj.js.
+- A la gasolinera Repsol, que ya estaba dibujada con un cartel sin nombre, se le pone el nombre.
+- El resto de locales del barrio son fachadas de tienda que genera el juego a partir de los edificios del mapa: no se les inventa nombre.
+- Copias de lo anterior en _copia_antes_aldi_real.
+
+Version 80 (los 15 negocios reales de San Francisco Javier, con su cartel en la fachada):
+- Buscados todos los comercios del barrio con datos comprobados. La guia de servicios de Atlantico Hoy publica direccion, telefono y coordenadas de cada ficha, y de ahi salen 11 comercios que OpenStreetMap todavia no tiene mapeados aqui. Con los cuatro que ya habia (ALDI, gasolinera Repsol, campo de futbol e IES Arrecife) son 15 negocios reales, ninguno inventado.
+- Cada uno tiene su cartel colgado en la fachada que da a la calle: Bar La Iguana, Rincon de Manolo, Armas Lira, Montana Vina, Bazar Juana, Rosa Negra, Peluqueria Magec, Canestylo, Supermercado Rodriguez Padron, Aluminios Medina y Carpisur. Los carteles no flotan: se calcula la pared y la calle mas proxima y quedan a 7-17 cm de la fachada, mirando hacia la calle.
+- Cada cartel lleva el color de su gremio (bar, supermercado, tienda, taller), igual que el resto de rotulos de la ciudad. Se colocan antes de levantar la ciudad, asi que se pintan con el mismo sistema que los demas.
+- La lista completa, con nombre, tipo, direccion, telefono y situacion, esta en src/negociosSfj.js y en la ficha del barrio (src/barrios/san-francisco-javier/LEEME.md).
+- Arreglado el resumen del mapa: decia 299 carteles y 3517 edificios cuando en realidad hay 306 y 3725, porque los barrios, los locales y las terrazas añaden y mueven cosas. Ahora se pone al dia al terminar de construir.
+- Copias de lo anterior en _copia_antes_negocios_sfj.
+- Los 11 comercios que no estaban en OpenStreetMap se han subido al mapa publico (changeset 191024927): solo el nombre y el tipo de negocio, sin telefonos, direcciones ni horarios, que esos datos se quedan para la asesoria. El barrio pasa de 4 a 15 negocios mapeados.
+
+Version 81 (las imagenes nuevas del recorrido por Argana Alta):
+- El MediaMarkt del Parque Comercial de Argana, en el testero de la nave del HiperDino (Calle Tenderete 7): un local pequeño de una planta, como es en la realidad, con la banda negra y el rotulo rojo, la marquesina sobre la puerta, la valla blanca de barrotes y el aparcamiento grande de delante con las plazas pintadas, el bordillo, dos farolas y tres palmeras (src/centroComercialArgana.js). Casi todo el complejo es la nave del HiperDino, que sigue como estaba, con su rotulo de la esquina.
+- La ferreteria de la Calle Iguazu: el cartel grande de ROSA en naranja con la estrella verde sobre el tejado, la banda blanca de la fachada con los departamentos en verde (Ceramicas, Ferreteria, Jardineria), el panel azul de T Tools, los escaparates, la verja blanca con el hueco de la entrada, el aparcamiento con las plazas y las palmeras delante de los cristales (src/industriasRosa.js).
+- El McDonald's de la zona del centro comercial, que el mapa no tenia: el cajon claro con la cristalera, el rotulo rojo, el mastil con los arcos dorados en la esquina y el aparcamiento (src/mcdonaldsArgana.js). En los fotogramas no llega a salir el rotulo, asi que la posicion es la del restaurante real (el nodo de OpenStreetMap) y la planta, la del edificio de la foto aerea.
+- La gasolinera Repsol de la glorieta: se le añade lo que faltaba del solar, el arriate de grava con el bordillo bajo, el seto, el arranque de palmeras y dos farolas (src/gasolineraTenderete.js). La marquesina y los surtidores ya estaban.
+- Todo se llama desde el construir() del barrio de Argana Alta, que es donde va lo de esa zona.
+- Copias de lo anterior en _copia_antes_argana_centro.
+
+Version 82 (la rotonda del Cabildo en San Francisco Javier):
+- La glorieta del Cabildo (avanzando hacia San Francisco Javier, por la Avenida Fred Olsen) queda arreglada: calzada circular limpia y circular encima de los arcos viejos del mapa, con su acera alrededor, el bordillo, las líneas pintadas (interior continua, exterior y discontinua en el eje) y los cinco pasos de cebra en las salidas.
+- Las líneas en estrella, el borde polígono y las aceras que se metían dentro de la calzada desaparecen: la pintura y las aceras viejas que quedaban dentro del anillo se descartan con una máscara circular en el sombreado, sin reconstruir mallas del mundo.
+- Las medidas salen de los arcos del mapa, ajustados a un círculo: centro (-1283,54, 590,92), radio del eje 32,19 m y calzada de 9,5 m.
+- Nuevo: src/rotondaCabildo.js, llamado desde src/barrios/san-francisco-javier/index.js (construir()). Cambiado: src/barrios/san-francisco-javier/index.js.
+- Copia de lo anterior en _copia_antes_rotonda_cabildo.
+
+Version 83 (los chorros de aire del roadster ya no salen en cuadros):
+- El efecto de los propulsores del Chispa Orbita (src/thrusters.js) salia como cuadrados con el borde recto y, segun la tarjeta grafica, con el borde en negro: se veian cuadros negros pegados al coche al acelerar, girar, frenar o saltar.
+- Ahora la bocanada se pinta como un redondel blanco que se apaga hacia el borde sobre fondo negro OPACO y se dibuja con mezcla aditiva (el negro no suma nada). Asi no puede aparecer ni el cuadrado del sprite ni un borde negro, haga lo que haga la tarjeta.
+- Tambien baja el brillo y el tamaño: antes, a poca distancia, la nube tapaba media pantalla de blanco puro.
+- Copia de lo anterior en _copia_antes_propulsores.
+
+Version 84 (barrios sin huecos y fotos reales en las fachadas de Argana Alta):
+- Arreglado el reparto del mapa por barrios: los siete archivos de public/map/ tenian 348 edificios repetidos, faltaban 1.194 y muchos no caian en su barrio (argana-alta.json tenia 1.124 edificios y ninguno dentro de su caja). Ahora cada edificio, calle y cartel va entero al barrio donde cae su centro, sin cortar geometria; se añade resto.json para lo que queda fuera de los siete barrios. Comprobado: 3.517 edificios, 2.418 calles y 299 carteles, con 0 repetidos, 0 perdidos y 0 cambiados (node tools/split-barrios.mjs --check).
+- Nuevo indice public/map/barrios.json con los recuentos y las cajas reales de cada archivo.
+- Fotos reales en las fachadas de Argana Alta (src/facadePhotos.js y public/map/argana_assets.json): cuatro fotos recortadas de los fotogramas del recorrido, solo fachada (sin cielo ni calzada) y en JPG de 84 KB en total, antes 16 MB de PNG. Se cargan por cercania (120 m) y se sueltan al alejarse (170 m); como mucho hay 4 texturas cargadas.
+- Cada foto va a un edificio y a una pared concretos: se comprueba que la normal sale hacia la calle (antes el plano podia quedar de espaldas o espejado), se pega a 16 cm del muro para no atravesar la cornisa y lleva un respaldo liso del color del edificio para que no se vean las ventanas genericas por los bordes.
+- El porton blanco se ha rectificado en perspectiva desde las cuatro esquinas del fotograma IMG_5113/f_0008.jpg: antes salia torcido.
+- IMG_5153 no se proyecta: es una calle en movimiento (cielo, calzada, moto) y metería el cielo y el asfalto en la pared.
+- Medido en el navegador de pruebas, en la calle Tenderete: 36,9 FPS con las cuatro fotos y 37,8 FPS sin ellas; la diferencia es ruido de medicion. La carga no da tirones porque las texturas son pequenas y se piden de una en una.
+- Como verlo: abrir el juego con ?start=hiperdino y mirar los edificios de la glorieta y la calle Tenderete. Copia de lo anterior en _copia_antes_barrios_argana.
+
+Version 85 (fotos de Argana Alta: solo lo que se puede pegar de verdad):
+- Revisadas las fotos de las fachadas: de las cuatro que habia, tres no valian y se han quitado del mapa de activos (quedan anotadas en el apartado rejected de public/map/argana_assets.json con el motivo).
+  - La casa blanca (01) no era una fachada: el recorte traia una farola en medio, la señal de prohibido el paso, cielo arriba y el edificio de al lado. Pegada en un muro se veia como un cartel.
+  - La puerta verde (02) salia muy pequeña en su fotograma (375x540 px para 3,4 m): ampliada se veia borrosa.
+  - La tienda Sprint (03) es de la estacion de servicio, que ya tiene modelo propio, y ademas llevaba una farola cruzada.
+- La puerta de garaje blanca (04) se ha vuelto a rectificar desde IMG_5113/f_0008.jpg con las cuatro esquinas del porton, se ha recortado sin el borde negro del marco y se ha realzado el contraste: ahora se ve la puerta seccional de frente y con sus paneles.
+- src/facadePhotos.js: las fotos solo se pegan en paredes que dan a la calle DE VERDAD. Antes se podia elegir una pared metida dentro de la manzana y la foto quedaba escondida tras la fachada de al lado (se veia la pared de otro edificio y ninguna foto). Ahora se mira si a 1,6 / 3 / 6 / 9 m por delante hay otro edificio y, si lo hay, esa pared se descarta.
+- La foto se coloca en la calle Tenderete, en la manzana de viviendas que se ve desde el arranque del recorrido.
+- Comprobado en el navegador: una sola foto cargada en la zona, un plano y una textura de 512x392; se carga al acercarse y se suelta al alejarse, como antes.
+- Como verlo: abrir el juego con ?start=hiperdino y mirar la manzana de la calle Tenderete, a la derecha del aparcamiento del HiperDino.
+- Copia de lo anterior en _copia_antes_fachadas_argana.
+
+Version 86 (HiperDino Argana: la entrada era el muelle de carga):
+- Corregido el frente del HiperDino de la Calle Tenderete (src/hiperdinoArgana.js): Jose Manuel aviso de que, donde estaba puesta la entrada, en la nave de verdad hay un porton grande de carga y descarga, y que el supermercado queda enfrente de la gasolinera.
+- Donde estaba la entrada de cristal ahora va el MUELLE DE CARGA: porton seccional de 10,6 x 4,6 m con sus paneles, juntas y gomas, guias y cabecera metalica, marquesina de chapa con tirantes, dos topes de goma, cuatro bolardos amarillos, puerta del personal al lado y el cartel CARGA Y DESCARGAS sobre la chapa. En el firme se ha dejado libre la zona de maniobra (no se pintan plazas delante) y se marca la boca de la rampa.
+- La entrada de clientes se ha movido a la mitad de la nave, bajo la marquesina: zaguán en sombra, dos puertas correderas de cristal con marcos de aluminio, felpudo y los carros al lado.
+- El frente ya no es una franja de ventanas: es el escaparate corrido de punta a punta, de suelo a marquesina, con montantes cada 2,4 m y travesaño, y una marquesina de verdad (forjado de 3,8 m de vuelo sobre columnas finas) como la de la foto del recorrido.
+- El rotulo pasa de azul a VERDE, como el de la nave real, y va sin placa: las letras van directamente sobre la fachada blanca. El del bloque alto y el del testero de la calle, igual.
+- Comprobado en el navegador con ?start=hiperdino: el muelle se ve desde el aparcamiento y desde la gasolinera, y el frente acristalado y la marquesina se leen como en la foto.
+- Nota: la carpeta nueva de fotogramas (fotogramas_0.15s ARGANA HASTA TANATORIO, 5 videos) se ha revisado entera y NO pasa por delante del HiperDino, asi que no hay fotos nuevas que pegar en su fachada; se ha rehecho en 3D.
+- Copia de lo anterior en _copia_antes_muelle_hiperdino.
+
+Version 87 (Argana: el camino de tierra a Argana ya es tan corto como el de verdad):
+- Faltaba la Calle Tanganillo, el atajo de verdad desde el camino de tierra de la casa del campo hasta la Calle Tenderete, y tambien el primer trozo de la Calle Tenderete (unos 125 m, de la Lujan Perez hasta pasar los dos sentidos de la Tajaraste). Por eso, para ir de la casa al HiperDino de Argana habia que dar la vuelta por la Calle Campoamor y la Calle Tajaraste.
+- Se han puesto con los puntos reales de OpenStreetMap, con su asfalto y sus aceras. No pisan ningun edificio.
+- Distancias de la casa al HiperDino: en la realidad, unos 2,4 km. En el juego, antes, unos 2,85 km. Ahora, unos 2,35 km.
+- El GPS (la flecha y la ruta del minimapa) tambien va ya por el atajo: 2,35 km por Tanganillo y Tenderete, sin pasar por Campoamor.
+- En esa cuesta la arena del suelo tapaba un trozo de la calle (fuera de la foto aerea el suelo va en cuadros de 60 m). Ahi el suelo va ahora en cuadros de 10 m, como en Playa Honda, y el asfalto se ve entero (src/world.js lee los trozos finos de map.groundFine; Argana pone el suyo).
+- El camino de tierra del campo (fuera de Argana) no se ha tocado.
+- Archivo nuevo src/calleTanganillo.js, llamado desde src/barrios/argana-alta/index.js.
+- Como verlo: abrir el juego con ?start=campo, bajar por el camino de tierra hasta las casas y seguir por la Calle Tanganillo (el marcador lo pone) hasta la Calle Tenderete.
+- Copia de lo anterior en _copia_antes_tanganillo.
+
+Version 88 (Playa Honda unida al juego como barrio):
+- Playa Honda ya es un barrio mas (src/barrios/playa-honda/), con su ficha. Lo que estaba hecho para Playa Honda en src/ pero el juego no usaba, ahora sale:
+  - Conforama en la Avenida Mamerto Cabrera, con su aparcamiento y el ramal de entrada (chevrones, isleta, quitamiedos y senal azul), sobre la nave real de OpenStreetMap.
+  - La fachada de B3RICEJ en la esquina de la avenida (cartel negro del toro, ventanales con reja de rombos).
+  - El concesionario de vehiculos de ocasion con su explanada y dos furgonetas. Su sitio es aproximado: hay que confirmar donde va.
+  - La entrada por la LZ-301: quitamiedos en el borde que da al pueblo y la fila de palmeras del arcen.
+- Se han dejado fuera, a proposito, Cash Lee, Cash Diplo y Baratissimos: tenian el sitio inventado; Cash Lee y Baratissimos caian encima de una calle, y Baratissimos esta de verdad 300 m mas al oeste, dentro de la nave grande que dice OpenStreetMap (su rotulo del mapa sigue ahi). Para meterlos hacen falta fotos o la direccion.
+- Nuevo sitio para empezar: «Playa Honda» (?start=honda), en la Avenida Mamerto Cabrera mirando a Conforama.
+- Los datos por barrio (public/map/) tienen ahora tambien playa-honda.json; la suma sigue siendo exactamente arrecife.json (node tools/split-barrios.mjs --check: 0 repetidos, 0 perdidos, 0 cambiados).
+- Comprobado en el navegador: Conforama, B3RICEJ, el concesionario y el quitamiedos salen en su sitio y la partida arranca en Playa Honda sin errores.
+- Copia de lo anterior en _copia_antes_barrio_honda.
+
+Version 89 (vuelo del roadster sin cuadros):
+- En el turbo salto del roadster salian manchas negras a cuadros alrededor del coche. Era el pase de sombreado (oclusion ambiental): veia las bocanadas de los propulsores como cuadrados solidos. Ahora las bocanadas no entran en ese pase (main.js) y tampoco cogen la niebla (thrusters.js).
+- Comprobado en el navegador: en pleno salto solo se ven las bocanadas blancas.
+- Copia de lo anterior en _copia_antes_propulsores_cuadros.
+
+Version 90 (Argana Alta sin el hueco de arena):
+- Entre la Calle Lujan Perez y las calles de arriba (las de las fotos de Jose Manuel) habia unos 300 m de arena que no existen: el mapa se cortaba ahi. Ahora entran las calles y casas reales de OpenStreetMap de esa franja: Escardillo, Trillo, Miguel Delibes, Victor Hugo, Pablo Neruda, Garcia Marquez, Alejo Carpentier, Vargas Llosa, El Cribo, Julio Romero de Torres, las Virgenes, etc. (62 calles y 85 casas).
+- No se repite nada: se saltan las calles que ya estaban (o que las fotos ya traian) y las casas que pisan otra casa o la calzada. Las calles nuevas se enganchan a las de antes: el GPS y el trafico las usan (comprobado: todas llegan al resto de Arrecife).
+- Suelo fino (10 m) en toda la franja, para que la tierra no asome por encima de las calles.
+- Datos: tools/osm/argana-relleno.json (descarga de OSM) -> node tools/argana-relleno.mjs -> src/barrios/argana-alta/rellenoDatos.js. Codigo: src/rellenoArgana.js, llamado desde el barrio de Argana Alta.
+- Copia de lo anterior en _copia_antes_relleno_argana.
+
+Version 91 (HiperDino: fachada en Iguazu y garaje en Tenderete):
+- La fachada del HiperDino (escaparate corrido, marquesina, entrada con puertas correderas, carros y el
+  rotulo grande) pasa al testero que da a la Calle Iguazu, junto al MediaMarkt.
+- El porton del garaje (muelle de carga, con su marquesina y el cartel CARGA Y DESCARGA) queda en la cara
+  larga de la Calle Tenderete, que ahora es pared blanca con pilares y ventanas altas.
+- Cambiado: hiperdinoArgana.js. Copia de lo anterior en _copia_antes_hiperdino_iguazu.
+
+Version 92 (el roadster, mucho mas completo):
+- Las dos puertas del roadster se levantan hacia arriba como alas (antes solo la del conductor).
+- Llamas de cohete azules y naranjas por detras en el turbo salto, mas suaves al arrancar a fondo.
+- Brillo blanco en las boquillas de los bajos cuando disparan, aire hacia atras en las arrancadas y siseo
+  del aire comprimido en las curvas fuertes, al frenar y al despegar (audio.js `hissSound`).
+- Cambiados: carKit.js, thrusters.js, audio.js, main.js. Copia de lo anterior en _copia_antes_roadster2.
+
+Version 93 (fusion con el PC de Arrecife: calles y casas reales del norte y los extras):
+- Lo que se hizo en el PC de Arrecife encima del juego publicado pasa al codigo: public/extras/ (arrecife-norte-datos.js, arrecife-mapa.js, arrecife-extras.js y LEEME.md) y tools/arrecife-norte.py. El plugin extras-arrecife de vite.config.js los mete en index.html y demo.html al compilar, y tambien con npm run dev.
+- Norte de Arrecife: 310 calles reales de OpenStreetMap (40 de tierra, entre ellas Julio Cortazar) y 207 casas entre la Calle Lujan Perez y el camino de tierra de la casa del campo: Tanganillo entera, Mario Benedetti, Escardillo, Trillo, Pablo Neruda, El Invernadero, el arco norte de la circunvalacion y la LZ-1 hacia el norte. Fuera la cuadricula de calles puesta a ojo. El relleno de la Version 90 ya no mete nada: las calles del norte entran antes y las salta.
+- Tambien: Repsol de Tenderete con muelle de carga, McDonald's, Burger King, Decathlon, Titerroy, paso inferior de Tenderete, Cabildo con portada y reloj, naves de Playa Honda, Marina Lanzarote, crucero de Los Marmoles, nombres de barrio, choques con el trafico (el coche golpeado sale despedido) y bocanadas redondas de los propulsores. El HiperDino de los extras esta apagado: ya lo hace el juego (Version 91).
+- Publicado en los dos enlaces (Arrecife y Demo) con el js de la Version 92. dist/index.html, dist/demo.html y dist/extras/ ya llevan los extras.
+- Comprobado en el navegador (Arrecife y Demo): 310 calles y 207 casas del norte, ninguna calle inventada, la Repsol en Tenderete y sin errores.
+- Copia de lo anterior en _copia_antes_extras_arrecife.
+
+Version 94 (todo junto en una sola version, arreglos y mejoras):
+- Fusion: el codigo de casa (Version 92) y los extras del PC de Arrecife (Version 93) en una sola version, publicada igual en los dos enlaces (Arrecife y Demo). Antes de tocar nada se compilo la copia del codigo tal cual y salio exactamente el js publicado (index-ovrneZDg.js), asi que no se ha perdido nada de ninguna version.
+- Arreglado: con la camara desde el asiento (C hasta "Primera persona", o I) el juego fallaba en cada fotograma ("bl is not defined": quedaban los intermitentes quitados en la Version 71) y dejaba de hacer caso a las teclas. main.js.
+- Arreglado: el aviso de three.js cargado dos veces. Los extras de encima (antes public/extras/arrecife-extras.js, con otro three.js de jsdelivr) pasan a src/arrecifeExtras.js y los importa main.js; ya no dependen de jsdelivr. public/extras/arrecife-extras.js queda vacio con una nota.
+- Arreglado: en el campo del norte, con pocas calles, se juntaban todos los peatones en las mismas aceras. Ahora como mucho dos por tramo de calle en cada casilla de 40 m, hasta 10 (18 en las peatonales). peds.js.
+- Quitado de los extras el redondeo de las bocanadas de los propulsores: ya lo arreglo la Version 89 y apagaba el borde azul de las llamas de la Version 92.
+- Nuevo: mando (Xbox, PlayStation...). RT acelera, LT frena, stick izquierdo dirige y anda, Y sube y baja, X turbo salto, B dispara, A freno de mano, Vista mapa, Menu pausa, LB y RB cambian de arma, cruceta: dia/noche, recolocar, hablar y roadster; al pulsar el stick izquierdo vista interior y el derecho cambia la camara. input.js (cada boton pulsa la tecla del juego, PAD_KEYS) y la ayuda de la pantalla de inicio.
+- Nuevo: pausa con Esc (o Menu en el mando), con cartel y boton "Seguir jugando". main.js e index.html.
+- Nuevo: la calidad grafica baja sola un escalon si no llega a 24 fotogramas por segundo durante 8 s (con 10 s de margen al empezar). Si se elige con Q ya no se toca. main.js.
+- Nuevo: los choques de los extras (el coche golpeado sale despedido) suenan con el golpe del juego, mas flojo cuanto mas lejos.
+- Comprobado en Chrome sin pantalla con teclas de verdad: conducir, bajar y subir, roadster y turbo salto (19 m), mapa, noche, moto, pausa, mando de prueba (RT, LT, Y y stick) y en modo movil, sin ningun error. El norte sigue con sus 310 calles y 207 casas.
+- dist/ de casa no esta recompilado con esto: compilar con npx vite build --base ./ antes de publicar desde casa.
+- Copia de lo anterior en _copia_antes_fusion_mejoras.
+
+Version 95 (coche Lava, mando que vibra y pausa en el movil):
+- Nuevo: el coche "Lava", el premio por reunir las 20 piedras de lava (estaba en "Lo que viene"). Es el Volcanía Cráter en negro, con las pinzas de freno naranjas, una franja naranja en los bajos y un brillo de lava por debajo que se ve sobre todo de noche; el mas rapido del juego (MAX_SPEED 62). Al coger la ultima piedra sale "Coche Lava desbloqueado" y desde entonces la L lo trae a tu lado (se recuerda en la partida guardada, lava.coche). Antes de tenerlo, la L dice cuantas piedras llevas. No sale en el trafico. Con ?lava en la direccion esta desbloqueado desde el principio (para probarlo). carModels.js (MODELS.lava), main.js (GARAGE.lava, lavaGlow, tecla L), index.html (ayuda).
+- Nuevo: el mando vibra con los golpes, si el mando lo permite (input.js rumble, main.js props.onHit). Si el navegador no deja leer el mando, se deja de mirar sin dar error.
+- Nuevo: en el menu ··· del movil, botones "Lava" y "Pausa". touch.js.
+- Comprobado en Chrome sin pantalla: L trae el coche Lava, se sube con F, se conduce y de noche brilla; partida completa (conducir, bajar, roadster, salto, mapa, noche, moto, pausa, mando) sin errores.
+- dist/ de casa no esta recompilado con esto: compilar con npx vite build --base ./ antes de publicar desde casa.
+- Copia de lo anterior en _copia_antes_coche_lava.
+
+Version 96 (mision "¡Erupcion!"):
+- Nuevo encargo (estaba en "Lo que viene"): columna naranja "¡ERUPCION!", la de Nayra, la vulcanologa. Al pisarla, la lava sale 70 m por detras de ti y avanza por las calles cada vez mas deprisa (de 3 a 9 m/s): un muro de lava que brilla (lavaWall) y detras el mar de lava que va cubriendo las calles (lavaLake); los dos siguen las cuestas. Hay que llegar a la zona segura (a 450-800 m, con flecha y ruta en el GPS) antes de que te alcance. El marcador dice a cuantos metros esta la lava. Premio: 900 euros. Si te alcanza: "La lava te ha alcanzado". missions.js.
+- Falta la parte de rescatar a la gente (estaba en la idea original).
+- Comprobado en Chrome sin pantalla: empieza al pisar la columna, el frente avanza, al llegar a la zona segura cobra 900 y si te quedas quieto la lava te alcanza; sin errores.
+- dist/ de casa no esta recompilado con esto: compilar con npx vite build --base ./ antes de publicar desde casa.
+- Copia de lo anterior en _copia_antes_erupcion.
+
+Version 97 (calles de Playa Honda que faltaban y publicado en la web):
+- Mapa: añadidas Avenida Playa Honda (7 tramos), Residencial Playa Honda y Paseo de Sotavento, sacadas del mapa v77. 2427 calles en total; el reparto por barrios sigue cuadrando (0 repetidos, 0 perdidos).
+- Airam: no hay nada suyo en el juego.
+- Publicado en el artefacto (versión 88) y en canaryislandconsulting.es/juego/, con la pestaña "Lava Game" al final del menú de la web.
+- Copia de lo anterior en _copia_antes_calles_playa_honda (carpeta gta canarias).
+
+=== Version 98 (arranque rápido y registro de jugadores) ===
+- El juego se quedaba congelado unos 25 segundos al cargar y la pantalla salía en blanco: era la costa (coast.js, comprobar si un punto está en el mar millones de veces). Ahora lo hace por franjas y el arranque baja de 29 s a 7 s (en el ordenador de pruebas). Mismo resultado en la costa (0 diferencias en 36 000 pruebas).
+- Registro de jugadores en la web (solo en canaryislandconsulting.es, o con ?registro para probar): pantalla "Antes de jugar" con correo o teléfono y casilla de publicidad obligatoria (src/registro.js). Se guarda en el servidor (registro.php, base SQLite en juego/datos/, carpeta cerrada). Se guarda la prueba de cada aceptación: texto exacto, fecha, IP y navegador.
+- admin-registros.php (con clave): lista, descarga en Excel, descarga de pruebas de consentimiento, baja y borrado. La clave está en _servidor_privado/config.php (no va en public/).
+- privacidad.html: política de privacidad (falta añadir NIF y dirección del responsable).
+- Subido a Hostinger (public_html/juego/) y probado con registros de prueba, ya borrados. Copia anterior de coast.js en _copia_antes_arranque_lento/.
+
+=== Version 99 (confirmación por correo y códigos de invitación) ===
+- El registro es con correo (obligatorio) y teléfono (opcional). El correo se confirma: al registrarse llega un mensaje con un enlace; hay que abrirlo y pulsar el botón (confirmar.php). Mientras tanto la pantalla espera y entra sola al confirmar; permite reenviar el correo o cambiar de correo. Los correos sin confirmar se borran a los 7 días. Límites: 1 correo por minuto, 5 al día por contacto, 10 por hora por conexión.
+- Quien no acepta la publicidad no juega, salvo con un código de invitación: da 2 horas (o los minutos que se pongan) sin registrarse. Se crean en admin-registros.php (nota, minutos, personas que lo pueden usar, cuántos). El enlace ?codigo=LAVA-XXXX-XXXX rellena el código. El tiempo empieza al canjearlo y lo controla el servidor; sale un contador "Invitado · quedan…" y al acabar vuelve la pantalla de registro.
+- Panel: estados (confirmado / sin confirmar / baja), invitados jugando ahora, descarga con la prueba de la casilla y del enlace del correo.
+- datos/correo.log guarda si el correo salió (sin direcciones, solo una marca).
+- Copia anterior en _copia_antes_confirmacion/.
+
+=== Version 100 (sentidos de las calles, pintura, pasos de peatones y gente fuera de la calzada) ===
+- Sentidos reales: cada calle sabe si es de sentido único o doble, con los datos de OpenStreetMap (public/map/sentidos.json, lo genera tools/sentidos.mjs). 1.817 tramos de sentido único, 538 de doble y 2 sin dato (se quedan en doble sentido provisional: uno sin nombre y Residencial Playa Honda). src/sentidos.js.
+- Tráfico: los coches ya no entran a contramano ni dan la vuelta en una calle de un solo sentido; en las de un carril van por el centro. El GPS y la policía prefieren el camino legal. traffic.js, roadGraph.js.
+- Pintura (src/marcasViales.js): flechas de sentido en las calles de sentido único, línea del medio solo donde separa algo (discontinua, y continua 12 m antes de los cruces en doble sentido), línea de detención en STOP y semáforos, línea de ceda el paso. Todo sigue la cuesta de la calle.
+- Señales: entrada prohibida en la salida de cada calle de sentido único; fuera los STOP y cedas que miraban a un lado por el que no llega nadie. senales.js.
+- Pasos de peatones: 885 reales (marcados en OpenStreetMap, descargados el 14-11-2026) y 649 provisionales en las bocas de los cruces donde no hay dato. Las bandas van ahora a lo largo de la marcha, como en España, y a la altura por la que sigue la acera.
+- Gente: ya no aparece ni pasea por la calzada. Va por aceras, peatonales y paseos; al llegar a una calle solo cruza si hay paso (si no, se da la vuelta), espera en el bordillo si viene un coche y cruza a buen ritmo. A veces cambia de acera por un paso. Nadie por el arcén de las autovías. Los coches del tráfico frenan y paran ante quien cruza o espera. peds.js, main.js (3 líneas para enlazar gente y tráfico).
+- Arreglado de paso: una losa de 400 x 200 m (la cubierta de la terminal del aeropuerto) estaba colocada a 9 m sobre el centro de Arrecife y tapaba el cielo y hacía sombra. Ahora está en el aeropuerto. aeropuerto.js.
+- Desniveles: medidos en las 2.357 calles con coches (66.819 tramos de 4 m): ninguna cuesta pasa del 20 % y quedan 6 quiebros de más del 14 % (lista en PENDIENTES-vial.md). No se ha tocado el terreno.
+- Probado en el navegador: 0 coches a contramano en 24.000 muestras; gente en la calzada lejos de un paso, 0,06 % de las muestras (cruces en diagonal junto a un paso); coches parados cediendo; sin errores; sin cambio medible de rendimiento. Compilado (dist/), sin publicar.
+- Copia de lo anterior en _copia_antes_vial.
+
+=== Version 101 (pendientes de calles y peatones, en bucle hasta el final) ===
+- Gente: al cruzar una calle se va arrimando a las bandas del paso y cruza por encima de ellas, aunque la acera llegue torcida. En la prueba: 1.073 muestras sobre las bandas, 33 a menos de 3 m y 0 en la calzada lejos de un paso (de 66.324). peds.js.
+- Coches del tráfico: trazan la curva al doblar una esquina (antes saltaban de una calle a la siguiente). traffic.js (TURN_LAG).
+- Aviso «Dirección prohibida: vas a contramano» si llevas el coche más de segundo y medio en contra por una calle de sentido único (una vez cada 14 s; marcha atrás no cuenta; sin multa ni policía). src/contramano.js y 3 líneas en main.js.
+- Desniveles: redondeados los picos de Calle Extremadura, Calle Safantia y Calle Borrasca (src/desniveles/quiebros.js, desde el prepararMapa de compartido). Quedan 3 quiebros de más del 14 %: la rampa del enlace de la LZ-20 en la Carretera de San Bartolomé (es así), y (−4017, 258) y Calle Balayo (−2080, −2122), que no salen de la malla del terreno.
+- Probado en el navegador: rotonda (9.050 muestras en el anillo, 0 en contra), noche (sin errores), modo móvil (51 personas, 26 coches, sin errores), 0 coches a contramano, coches parados cediendo en los pasos. Compilado (dist/), sin publicar.
+- Copia de lo anterior en _copia_antes_vial (incluye compartido-index.js).
+
+=== Version 101b (publicado en el enlace del juego) ===
+- Publicado en el artefacto (versión 89): index.html, assets/index-Dgyt4xef.js (se quita index-B0NTQkm4.js) y map/sentidos.json (nuevo; sin él las calles quedan todas en doble sentido).
+- La demo (D3HVvFiQLNiFQShTpExSpa) NO se ha publicado: desde esta cuenta da «no encontrado».
+- ZIP para la web hecho: ../lava-game-web.zip (carpeta juego/, 60 archivos, 42 MB). El anterior queda como lava-game-web.antes-v101.zip. NO está subido a canaryislandconsulting.es. Al subirlo, no borrar juego/datos/ (ahí están config.php y los registros).
+- Los dos quiebros que quedaban, (−4017, 258) y Calle Balayo, eran falsas alarmas de la medida: la calle gira en cuesta y el suelo es liso. Solo queda la rampa del enlace de la LZ-20.
+- Probado conduciendo con la tecla W en el juego: el coche llega a 70 km/h, el aviso de contramano sale a los 1,6 s yendo en contra y no sale yendo a favor; la cresta de Calle Extremadura queda en una cuesta lisa del 2 %.
+
+=== Version 101c (pasos de peatones: rayas y fachadas) ===
+- La línea del medio (discontinua y continua) ya no pasa por encima de las bandas de un paso de peatones: se corta 3,4 m a cada lado de cada paso, y también la de las calles que desembocan, que antes cruzaban las bandas de la calle principal (marcasViales.js `clip`, usado en world.js). Afecta a 760 de las 2.057 calles con coches.
+- Las bandas de un paso que acabarían dentro de una fachada se quitan (67 pasos de 1.338 tenían un extremo sobre un edificio; 35 de los reales). El paso queda más corto por ese lado en vez de meterse en el muro. marcasViales.js, que ahora recibe los edificios.
+- Coste al arrancar: unos 100 ms más. Triángulos de pintura: de 30.700 a 26.600.
+- No arreglado (datos del mapa): en la Calle Fajardo del paso de la foto, la franja de la acera cae dentro de los edificios a ambos lados (unos 18 m): los edificios de OpenStreetMap llegan hasta el borde de la calzada y tapan la acera. Pasa en el 10,3 % de las aceras de todo el mapa (13.344 de 130.042 puntos). Arreglarlo significa mover edificios o estrechar calles: lo decide José Manuel. Además, la gente pasea por esas aceras tapadas (por dentro del edificio): pendiente en PENDIENTES-vial.md.
+- Compilado (dist/), sin publicar: el enlace del juego sigue en la versión 89.
+
+=== Version 101d (el «manto» sobre el centro) ===
+- Arreglado el manto que se veía al volar con el roadster sobre el centro: era la cubierta de la explanada de la antigua discoteca (src/explanadaDisco.js), una losa de 60 x 80 m a 4,6 m de altura que, sin posición, quedaba en el origen del mapa (el Charco y sus calles) en vez de en la discoteca. Ahora está encima del bloque de la discoteca, en (−490, 760). Es el mismo fallo que tenía la cubierta de la terminal del aeropuerto (400 x 200 m, arreglada en la Version 100).
+- Comprobado: sin ninguna losa elevada de más de 250 m² sobre el centro (miradas todas las mallas de la escena; quedan solo tejados de edificios, terminal, volcanes y sierras).
+- Pendiente, datos: el bloque de la discoteca (−520…−460, 720…800) cae EN EL MAR (la explanada de losas, a y 0,13, queda bajo el agua) y el bloque es una losa flotante a 4,5 m sin paredes. Las coordenadas eran «aproximadas». Hace falta la ubicación real (José Manuel) para ponerlo en la Playa del Reducto o quitarlo.
+- Compilado (dist/), sin publicar (el enlace del juego sigue en la versión 89; la web, en la anterior).
+- Copia de lo anterior en _copia_antes_vial/explanadaDisco.js.
+
+=== Version 101e (publicado) ===
+- Publicado en el enlace del juego (artefacto, versión 90): pasos de peatones sin raya encima y sin bandas dentro de fachadas (101c) y sin el manto de la discoteca (101d). Asset nuevo assets/index-B0zd-9j0.js (se quita index-Dgyt4xef.js).
+- ZIP para la web rehecho: ../lava-game-web.zip (60 archivos, 42 MB). Sin subir a canaryislandconsulting.es. No borrar juego/datos/ al subirlo.
+
+=== Version 101f (quitada la explanada de la discoteca) ===
+- Quitada la explanada de la antigua discoteca (losa blanca de 60 x 80 m flotando sobre el mar, junto a la Playa del Reducto): José Manuel dijo que va dentro de la isla y que no se ponga. arrecife-centro/index.js ya no la monta (explanadaDisco = null). El archivo src/explanadaDisco.js se conserva sin usar, por si se vuelve a poner donde toque.
+- Comprobado: sin el grupo en la escena y sin losas grandes elevadas en esa zona; foto del mar limpia.
+- Copia de lo anterior en _copia_antes_vial/arrecife-centro-index.js.
+- Publicado en el enlace del juego (artefacto, versión 91; asset assets/index-DMg7kY8T.js) y ZIP de la web rehecho (../lava-game-web.zip). Sin subir a canaryislandconsulting.es.
+
+=== Version 102 (aceras libres: calles estrechadas y fachadas movidas, barrio a barrio) ===
+- Las aceras ya no quedan debajo de los edificios. Antes, en el 10 % de las aceras del mapa (36 % en el Centro) los edificios de OpenStreetMap llegaban hasta el borde de la calzada o se metían en ella, y la gente paseaba por dentro de las casas. Nuevo src/ajusteCalles.js, que se ejecuta al preparar el mapa (compartido/index.js, al final de todos los barrios):
+  1. Estrecha cada calle a lo que dejan las fachadas (la anchura de OpenStreetMap era una por tipo de calle, no la real), dejando acera a cada lado. Mínimo 3,6 m en sentido único y 5 m en doble sentido. Solo calles de hasta 9,5 m: ni rotondas, ni peatonales, ni caminos, ni las carreteras grandes. El eje no se mueve, así que cruces, tráfico y puentes siguen igual. 833 calles estrechadas, 2,3 m de media.
+  2. Si con la calle en su mínimo el edificio sigue pisando la acera, la cara del edificio que da a la calle se echa atrás (2,5 m como mucho, sin dejar edificios de menos de 3 m de fondo). 1.150 edificios retocados. No se tocan los hechos a mano (skip, ownFront, ownRoof). Los rótulos pegados a esas fachadas se mueven con ellas.
+  3. La acera de cada lado llega hasta la fachada (aceraL / aceraR, de 2,2 a 7 m): ya no queda un hueco de suelo entre acera y edificio. world.js y aceras.js las usan.
+- Resultado, acera bajo un edificio, antes → después: Centro 35,8 % → 1 %; Valterra 16,7 → 0,2; Titerroy 15,7 → 0,4; San Francisco Javier 11,9 → 0; Altavista 17,6 → 0,3; Argana Alta 12,9 → 0,7; Maneje 7,4 → 0,8; Playa Honda 2,5 → 0; el resto 4,4 → 0,1.
+- Gente: si la acera se mete contra una pared, se da la vuelta, y no aparece donde toca una pared (peds.js).
+- Seguridad: collision.js ignora puntos infinitos (antes un punto así colgaría el juego en un bucle sin fin).
+- Probado en el navegador: 0 coches a contramano, 0 coches dentro de edificios, 4 de 66.326 muestras de gente en la calzada lejos de un paso, 1,7 % rozando una pared; coste de gente y tráfico 0,45 ms por fotograma; preparar el mapa, unos 0,2 s más. Fotos por barrio (Centro, Titerroy, Altavista, Argana Alta y Calle Fajardo).
+- Quedan 419 tramos sin arreglo: edificios hechos a mano o que necesitarían moverse más de 2,5 m. Sin tocar a propósito.
+- Copia de lo anterior en _copia_antes_vial/.
+- Publicado en el enlace del juego (artefacto, versión 92; assets/index-CiWhOlqY.js) y ZIP de la web rehecho. Sin subir a canaryislandconsulting.es.
+
+=== Version 103 (calles con datos reales: carriles, velocidades, semáforos, STOP y ceda) ===
+- Nueva descarga de OpenStreetMap (14-11-2026, ../data/senales_raw.json): 959 calles con carriles o velocidad máxima, 4 semáforos, 56 STOP y 102 ceda el paso. tools/sentidos.mjs los mete en public/map/sentidos.json (formato nuevo: [carriles, km/h, puntos...]).
+- Cada calle sabe cuántos carriles tiene (664 calles con dato) y su velocidad máxima: la de OpenStreetMap (346 calles) o, si no la trae, la legal en ciudad desde 2021: 20 km/h en plataforma única, 30 con un carril por sentido y 50 con dos o más (sentidos.js, limiteUrbano).
+- Las calles no se estrechan por debajo de sus carriles reales (3 m por carril, ajusteCalles.js).
+- Los coches del tráfico van a la velocidad de cada calle (algo por debajo): unos 25 km/h de media en el centro (traffic.js).
+- Señales: los STOP y ceda el paso de OpenStreetMap mandan sobre la regla en su cruce (74 colocados donde están de verdad). Los semáforos de OpenStreetMap se ponen siempre (solo hay 3 en cruces del mapa; el resto de semáforos sigue siendo por regla, cruces grandes con avenida). senales.js.
+- Discos de velocidad con la velocidad real de la calle: 20, 30, 40 o 50 (antes solo 30 en calles y 50 en avenidas).
+- Probado en el navegador: sin errores, 0 coches a contramano, 0,87 ms por fotograma de gente y tráfico.
+- Copias originales (antes de la Version 100) de traffic.js y senales.js en _copia_antes_vial/ (reconstruidas: se habían pisado por error al guardar la copia de esta versión).
+- Publicado en el enlace del juego (artefacto, versión 93; assets/index-DAmZMTMB.js y map/sentidos.json nuevo) y ZIP de la web rehecho. Sin subir a canaryislandconsulting.es.
+
+=== Version 104 (paradas de guagua reales) ===
+- Nuevo src/paradasGuagua.js (lo monta compartido/index.js): las paradas de guagua de toda la ciudad en su sitio de OpenStreetMap (highway=bus_stop, descarga del 14-11-2026, ../data/paradas_raw.json → public/map/sentidos.json, campo paradas). 154 en el mapa: 103 puestas, 16 que ya estaban hechas a mano (Rambla, estación, C. C. Arrecife, IES Blas Cabrera) no se repiten, 10 sin calle cerca y 11 sin sitio en la acera.
+- Cada parada va en la acera del lado de la calle donde está de verdad: con marquesina (techo, cristal al fondo, banco) si OpenStreetMap dice que la tiene y la acera es de 3,3 m o más (10 paradas); si no, el poste con la placa (93), y banco si lo tiene y cabe. La placa (azul, «PARADA» y la guagua) lleva el nombre real de la parada, por las dos caras.
+- Las guaguas del tráfico paran 8 s en las paradas de su lado de la calle, y ahora también van por las calles que tienen parada (traffic.js). En la prueba: Parque Viejo (Avenida La Marina), Casino Club Náutico y Archivo Municipal (Avenida de Vargas).
+- Probado en el navegador: sin errores; fotos de placas y del poste.
+- Publicado en el enlace del juego (artefacto, versión 94; assets/index-CUjW0hLI.js y map/sentidos.json) y ZIP de la web rehecho. Sin subir a canaryislandconsulting.es.
+
+=== Version 105 (altura real de los edificios, del Catastro) ===
+- Las alturas de los edificios ya no van a ojo: salen de las plantas sobre rasante de cada parte de edificio del Catastro (Dirección General del Catastro, servicio INSPIRE de edificios, descargado el 14-11-2026). tools/catastro_plantas.py baja los 84 trozos del mapa que tienen edificios (la zona entera: 36.388 partes, ningún trozo fallido; caché de los trozos con edificios en ../data/catastro_cache/) y deja public/map/plantas.json.
+- Nuevo src/plantas.js, que se aplica al cargar el mapa (world.js, loadMap), ANTES de los retoques de cada barrio: las alturas puestas a mano siguen mandando. Cada edificio coge las partes del Catastro que caen dentro y se queda con el cuerpo principal (la planta más alta que ocupe al menos un cuarto de la superficie). Altura = plantas × 3 m + 0,4 m de peto.
+- En el juego: 3.504 de 3.931 edificios con su altura real (3.000 cambian). Arrecife sale como es: muchas casas terreras de 1 planta y de 2, con bloques de 4 a 9 plantas en el centro. Los 427 sin dato (fuera del Catastro o sin plantas sobre rasante) se quedan como estaban.
+- Probado en el navegador: sin errores; fotos del centro, el Charco, Titerroy y a pie de calle.
+- Publicado en el enlace del juego (artefacto, versión 95; assets/index-_Ve14o_n.js y map/plantas.json) y ZIP de la web rehecho. Sin subir a canaryislandconsulting.es.
+
+Version 106 — Aceras libres, segunda pasada
+- Las fachadas pueden echarse atrás hasta 4 m (antes 2,5) para dejar acera: los puntos con la acera tapada o muy estrecha bajan de 421 a 142.
+- Quedan: 105 junto a edificios hechos a mano (no se tocan), 25 edificios demasiado finos para moverlos y 12 casos raros.
+- Archivo: src/ajusteCalles.js (copia anterior en _copia_antes_aceras/). Ahora guarda la lista en map.ajusteCalles.pendientes.
+
+Version 107 — Aceras libres, tercera pasada
+- Las fachadas pueden echarse atrás hasta 5,5 m y los edificios finos hasta quedarse con 2 m de fondo.
+- Las callejuelas de un carril con fachadas hechas a mano pegadas bajan a 3 m de calzada (un coche mide 1,9 m).
+- Puntos con la acera justa: de 421 a 104 (todos junto a edificios hechos a mano, que no se mueven) y 20 edificios finos.
+- Aceras debajo de un edificio: menos del 1 % en todos los barrios.
+
+Version 108 — El bar de la gasolinera de Maneje
+- La gasolinera Moeve de la Carretera San Bartolomé (Maneje) tiene bar: se entra con F por la puerta de cristal.
+- Fuera: toldo verde y crema, rótulo «Bar Restaurante · Bola canaria», y delante la terraza con vallita de metal, mesas y sombrillas.
+- Dentro: el bar con la barra a la izquierda, una puerta al fondo al comedor y, detrás, la cancha de bola canaria (arena, tablas, bancos, bolas y bolín).
+- Tres personas en una mesa del bar (señora mayor, chica rubia, chico rubio de pelo largo): al acercarte se oye su conversación y la señora se queda asombrada.
+- Nuevo suelo «arena» en interiorKit.js; conversaciones que se oyen (`plan.overhear`) en locales.js. Archivo nuevo: src/gasolineraManeje.js.
+
+Version 109 — Erupción: rescatar a la gente
+- En la misión «¡Erupción!» hay tres personas por la ruta hasta la zona segura, con chaleco naranja y un brazo en alto, cada una dentro de una columna de luz.
+- Se rescatan acercándote a menos de 4 m (a pie o en coche): +150 € al momento y +8 s de tiempo cada una. Con las tres y la zona segura se cobran 900 + 450 = 1.350 €.
+- La flecha del marcador va primero a la siguiente persona y luego a la zona segura; el texto dice «Rescata a la gente · la lava, a N m · rescatados 1/3».
+- Archivo: src/missions.js (copia anterior en _copia_antes_rescate/). Si no hay ruta por la calle hasta la zona segura, la misión sale como antes, sin personas.
+- Aceras: los 104 puntos que quedaban son callejuelas de 3 m con casas hechas a mano a los dos lados; se dejan como están (calles estrechas del casco, como son de verdad). Quedan 20 edificios finos sueltos por el mapa, sin tocar.
+- Publicado en el enlace del juego (artefacto, versión 100; assets/index--8LPdz44.js). Sin subir a canaryislandconsulting.es.
+
+Version 110 — Edificios finos y texto del rescate en el móvil
+- Aceras: un edificio fino ya no se queda sin tocar; cada fachada se echa atrás lo que se pueda dejando 2 m de fondo (MIN_FONDO), de una en una para que un edificio entre dos calles no se dé la vuelta. Si aún falta acera, la calle cede: hasta 3 m en sentido único y 4 m en doble sentido (MIN_FINO).
+- Edificios con la acera justa: de 20 a 14 (y a los 14 les falta menos que antes). Total de puntos pendientes: de 104 a 98. Los 84 «a mano» son callejuelas del casco y se dejan. Los 14 son casos raros: entradas de coches sin salida dentro de una manzana y esquinas entre dos calles.
+- Erupción: el texto del marcador es más corto («Rescata 1/3 · lava a 66 m») y cabe en una línea en el móvil en horizontal. Probado con un móvil simulado (740×360): rescate de los tres y cobro de 1.350 €.
+- Archivos: src/ajusteCalles.js (copia en _copia_antes_edificios_finos/), src/missions.js.
+- Publicado en el enlace del juego (artefacto, versión 101; assets/index-0e2xe_2I.js) y ZIP ligero rehecho (lava-game-web-ligero.zip, 22,4 MB). Sin subir a canaryislandconsulting.es.
+
+Version 111 — Altavista calle a calle (Chafarís, Sevilla, Córdoba, Jaén y Huelva)
+- Nuevo src/barrios/altavista/kitCalles.js: cada acera es una lista corta de casas (ancho, alto, color, tienda y
+  rótulo) sacada de las vistas de la calle; recorta el bloque genérico del mapa y pone las casas en su sitio.
+- Chafarís de punta a punta, Sevilla, Córdoba (Alternativa Dental, 4Light), Jaén y Huelva: 120 casas con sus plantas
+  y colores, los solares de tierra donde los hay y los rótulos que se leen en las fotos (Cansegur, Ria, The Men Salon,
+  Salón de Juego Versus, Bar Dinamar).
+
+Version 112 — Altavista calle a calle (Andalucía, Calderón, El Salvador, Menéndez y Pelayo, Ramón y Cajal, Elcano)
+- Seis calles más con las vistas de la calle: 268 casas en total de Chafarís hacia el oeste y el norte, con el
+  aparcamiento grande de tierra de Menéndez y Pelayo, la obra con andamios de Calderón, la Ferretería y el Taller
+  Eléctrico de Elcano.
+- kitCalles.js: los solares pueden entrar más que las casas (extra.fondo) y se quitan las tiras finas de bloque que
+  dejaba el recorte. Las manzanas estrechas (Calderón / El Salvador) entran menos para no comerse la otra acera.
+- Publicado en el enlace del juego (artefacto, versión 103; assets/index-C3X8yu6I.js).
+
+Version 113 — Altavista calle a calle (Coronel Capaz, Honduras, Almería, Málaga, Guasia, Arcipreste de Hita)
+- 369 casas en total con las vistas de la calle. Coronel Capaz con la farmacia, Honduras con las adosadas de las
+  puertas rojas, el tramo del medio de Almería, la acera sur de Málaga (taller y la casa de piedra gris), el taller de
+  Guasia y Arcipreste de Hita de punta a punta del tramo con vistas.
+- Sin vistas de Google (se quedan como estaban): Arniches y las puntas de Almería y Guasia.
+- Publicado en el enlace del juego (artefacto, versión 104; assets/index-C-HB7c9T.js).
+
+Version 114 — El Open Mall por dentro
+- Se entra por la torre de la Rambla (aro de luz en lo alto de los escalones; también sale en «¿Por dónde quieres
+  empezar?»). Dentro: el vestíbulo con Información y el directorio, el paseo de la moda (31 tiendas y las loterías),
+  la plaza al aire libre con el parque infantil, Sould Park, la juguetería Nikki y los 15 restaurantes con su mesa
+  cada uno, y el segundo paseo (zapatos, deporte, móviles, ópticas, Primark, Kiabi, Worten, JYSK...) que acaba en el
+  HiperDino. Son los locales del directorio de su web (noviembre de 2026), con el nombre en letra normal (sin
+  logotipos), y se puede entrar en todos.
+- Se compra en: Zara, Primark, Kiabi y Pull & Bear (ropa), Deichmann y Skechers (zapatos), Sprinter (gorra), Max Óptica
+  (gafas de sol), Elite Peluquería (corte), Loterías (décimo, a veces toca), Sould Park (una hora de saltos) e
+  HiperDino (bocadillo). En la plaza, cada mesa pide a su restaurante (pizza, tacos, arepa, sushi, helado...).
+- locales.js: cada silla puede llevar su propio pedido (orderFor), para el patio de comidas.
+- Archivos nuevos: src/localesOpenMall.js, src/openMallDatos.js, src/openMallMuebles.js (copia de lo tocado en
+  _copia_antes_openmall/).
+- Publicado en el enlace del juego (artefacto, versión 105; assets/index-Dc0jOO-G.js).
+
+Version 115 — El polideportivo de enfrente del Open Mall y el norte y el oeste de Altavista
+- El gimnasio de enfrente del Open Mall es el Parque Deportivo Municipal Puerto del Arrecife (Google Maps lo da como
+  gimnasio, en la Rambla Medular). Se entra por la escalinata de la rotonda de la Rambla con León y Castillo: recepción
+  con torniquetes, sala de musculación (cintas, bicis, bancos y mancuernas, con ventanal a la piscina), vestuarios,
+  la piscina cubierta de 25 m con seis calles, gradas y socorrista, el jacuzzi y la sauna. La entrada (piscina o sala)
+  cuesta 6 € (la tarifa publicada de 2018 es 5,87 €) y deja la salud al 100 %. El edificio, en beis.
+- Altavista calle a calle con las vistas de Google: Marqués de Santillana, San Juan de la Cruz, Leopoldo von Buch,
+  Cervantes, Fasnia, Mina, Mosta, Tornajo, Régulo, Las Quemadas, Peña del Espino, La Majada, Tinguatón, Temisa,
+  Muyay, Chimia, Guigua, Guatisea y Virgilio Cabrera. 783 casas en total en el barrio. Rótulos que se leen en las
+  fotos: Escuela Infantil Lapiceros, Estimular-T, Supermercado La Plaza, Bar Cafetería Mina, Exposición Maquinaria
+  Hostelería, Bar Cafetería El Puente, Ivasa y una frutería.
+- Archivos nuevos: src/localesPolideportivo.js y, en src/barrios/altavista/, polideportivo.js, santillana.js,
+  sanjuan.js, norte.js y oeste.js. Ayuda: tools/vistas/aceras.js.
+- Publicado en el enlace del juego (artefacto, versión 106; assets/index-9XTtiopu.js).
+
+Version 116 — Titerroy calle a calle (centro y borde este)
+- Con las vistas de Google: José Pereyra Galviaty, La Férmina, Tinamala, Tilama, Carlos III, El Faustino, La Cristina,
+  Ángel Ganivet, El Antonio, La Joaquina, Burgos, Logroño, Ávila y Tinguafaya, y el borde con Altavista (Almería,
+  Temisa, Honduras, Málaga). 972 casas en total entre Altavista y Titerroy. Rótulos que se leen en las fotos:
+  Mecánica Rápida, Cruz Díaz S.L., una pescadería y Ria.
+- No se pisan las fachadas hechas a mano: se quitan de las listas los tramos del Bar Carlos III, el Supermercado
+  Granill, la Farmacia Perdomo, el IES Altavista, Fran (Peña del Espino), el solar de Lubary y el Bar Pasa Pa Dentro
+  (este último estaba repetido en chafaris.js desde la Version 111). tools/vistas/aceras.js ya los descarta solo
+  (lee tools/vistas/hechos.json, sacado de los marco() de src/).
+- Archivos nuevos: src/barrios/titerroy/este.js y centro.js.
+- Publicado en el enlace del juego (artefacto, versión 107; assets/index-Bgom51YF.js).
+
+Version 117 — Titerroy oeste calle a calle
+- Con las vistas de Google: Hermanos Álvarez Quintero, La Niña, Gusa, Gaire, Barcelona, Tilama, Tinamala, El Rafael,
+  El Tres de Mayo, Juan Ramón Jiménez, Lope de Vega, Juan XXIII, El Antonio, Francisco Acosta, Pino, Naranjo, Luis
+  Braille, Gregorio Marañón, Tisalaya, Perú, Valbanera y Ana Suárez. 1.215 casas en total entre Altavista y Titerroy.
+  Rótulos que se leen en las fotos: SuperDino, Mosi, Fitness Mania, CaixaBank, RM Instalaciones, J&C Era Digital,
+  La Loma y un taller.
+- Archivo nuevo: src/barrios/titerroy/oeste.js. Comprobado que no pisa ninguna fachada hecha a mano (marco()).
+- Publicado en el enlace del juego (artefacto, versión 108; assets/index-C8XivQLv.js).
+
+Version 118 — Titerroy, el extremo oeste
+- Con las vistas de Google: Valbanera, El Tres de Mayo, Félix Pérez Camacho (las naves y la fila de casas de
+  enfrente), El Antonio y Carlos III (el edificio de cristal de la esquina), Gaire, Juan Negrín y Hermanos Álvarez
+  Quintero hacia Argana. 1.271 casas en total entre Altavista y Titerroy. Rótulos: La Gruta del Goblin, Dallas Motor
+  Canarias, Siguiendo El Camino y un taller mecánico.
+- Archivo nuevo: src/barrios/titerroy/lejano.js.
+- Publicado en el enlace del juego (artefacto, versión 109; assets/index-CQMLxeeL.js).
+
+Version 119 — Titerroy, el norte
+- Con las vistas de Google: Paraguay, Tegala (la fila larga de casas blancas, de granito, beis y de ladrillo), Tebete,
+  El Rafael, Luis Braille (los bloques blancos de tres plantas con jardín), Ciudad Real, Madrid y la punta norte de
+  José Pereyra Galviaty. 1.339 casas en total entre Altavista y Titerroy. Sin rótulos nuevos (no se leía ninguno).
+- Archivo nuevo: src/barrios/titerroy/norte.js. Comprobado que no pisa ninguna fachada hecha a mano (marco()).
+- Publicado en el enlace del juego (artefacto, versión 110; assets/index-Bv9yrY5d.js).
+
+Version 120 — Titerroy, la franja sur
+- Con las vistas de Google: Doctor Severo Ochoa, Senador Rafael Stinga, El Isleño, El Bartolo y La Carmen (casas
+  terreras blancas con garaje, solares tapiados y bloques beis). 1.370 casas en total entre Altavista y Titerroy.
+  Rótulos: Arjovi, Mutua Balear y una cafetería. El estadio, la Ciudad Deportiva y los edificios grandes de Alcalde
+  Ginés de la Hoz y Salvador Allende se dejan como estaban.
+- Archivo nuevo: src/barrios/titerroy/sur.js. Comprobado que no pisa ninguna fachada hecha a mano (marco()).
+- Publicado en el enlace del juego (artefacto, versión 111; assets/index-CwsWgFVV.js).
+
+Version 121 — San Francisco Javier calle a calle
+- Con las vistas de Google: Agustín Espinosa, Enrique IV, Isabel la Católica, Juan II, Felipe II, Cardenal Cisneros,
+  Antonio Bermúdez, Alfonso XIII, Carlos V y Viriato (casas terreras blancas con garaje verde o de madera, bloques
+  beis y melocotón, alguna nave y solares). 1.570 casas en total entre Altavista, Titerroy y San Francisco Javier.
+  Rótulos nuevos que se leen en las fotos: Farmacia San Francisco Javier, Suministros Textiles y Bar-Cafetería San
+  Francisco Javier. Los tramos que pasan por delante de los carteles de los negocios del barrio se cortan para no
+  taparlos.
+- Archivo nuevo: src/barrios/san-francisco-javier/calles.js. Comprobado que no pisa ninguna fachada hecha a mano.
+- Falta: las calles del barrio de las que todavía no se han sacado vistas (Sorondongo, Timple, El Forito, Garajonay,
+  Los Campesinos, Gregorio Medina, Islote del Quemado, Jaime I, Don Rodrigo, Juana de Arco, El Cid, Hernán Cortés,
+  Pizarro, Magallanes…).
+- Publicado en el enlace del juego (artefacto, versión 112; assets/index-C2UMuWM9.js).
+
+Version 122 — Argana Alta, la parte de abajo (junto a Titerroy)
+- Con las vistas de Google: Luisa Linares, Martínez Montañés, Safantía y las calles de alrededor (casas terreras
+  blancas de zócalo gris, azul o de granito con garaje verde, de madera o azul, alguna casa beis o amarilla, marcos de
+  cantería, naves de taller, solares tapiados y el muro negro pintado). 1.696 casas en total con el kit de calles.
+  Rótulo nuevo que se lee en las fotos: KM Motos.
+- Archivo nuevo: src/barrios/argana-alta/calles.js. Comprobado que no pisa ninguna fachada hecha a mano.
+- Falta: el resto de Argana Alta (la parte de arriba, z −1100 a −2400: unos 210 tramos más), Maneje y Playa Honda.
+- Publicado en el enlace del juego (artefacto, versión 113; assets/index-DxR6uZkf.js).
+
+Version 123 — San Francisco Javier, el resto de las calles
+- Con las vistas de Google: El Forito, Timple, Fernando el Católico, Antonio Bermúdez, Alfonso XIII, Cardenal Cisneros,
+  Jaime I, Don Rodrigo, Gregorio Medina, el Cid, Isabel la Católica, Felipe II, Juan II, Islote del Quebrado, Hernán Cortés,
+  Pizarro y alrededores (casas terreras blancas de zócalo gris o de azulejo con garaje verde o de madera, hileras de
+  adosados color melocotón, bloques beis y solares tapiados). 2.056 casas en total con el kit de calles. Rótulo nuevo que se
+  lee en las fotos: Frutería Supermercado (Isabel la Católica). Los muros del instituto de Doctor Barraquer y las naves
+  grandes se dejan como estaban; un tramo de Enrique IV que pasa por delante de un cartel de negociosSfj.js se omite.
+- Archivo nuevo: src/barrios/san-francisco-javier/calles2.js (`tuneCalles2`). Comprobado que no pisa ninguna fachada hecha
+  a mano (marco()).
+- Falta: unos 27 tramos del barrio sin vistas de Google cerca (trozos de El Forito, Timple, Sorondongo, Viriato, Juana de
+  Arco, Islote del Quemado, Don Rodrigo y alguno más): se quedan como estaban.
+
+Version 124 — Argana Alta, la parte de arriba
+- Con las vistas de Google: Seguidilla, Mazurca, Polca, Saltona, Malagueña, Isa, Folias, Zaranda, Miguel Hernández, Camilo
+  José Cela, Tenderete, Felo Monzón, Santiago Amón, Agustina Ayala, Valle Inclán, Gloria Fuertes, León Felipe y alrededores
+  (casas terreras blancas con garaje verde, filas de adosados ocre y crema de dos plantas, bloques melocotón, naves blancas
+  y solares tapiados). 2.519 casas en total con el kit de calles. Rótulos que se leen en las fotos: Multicentimo, Bar
+  Pizzería, Aluminios, Bar Cafetería El Barrio y Autoescuela Marco. Los colegios y las canchas se dejan como estaban.
+- Archivo nuevo: src/barrios/argana-alta/arriba.js (`tuneArriba`). Comprobado que no pisa ninguna fachada hecha a mano.
+- Falta: unos 93 tramos de Argana Alta arriba sin vistas de Google cerca (se quedan como estaban), Maneje y Playa Honda.
+- Publicado en el enlace del juego (artefacto, versión 114; assets/index-BY-9r-Us.js).
+
+Version 125 — Maneje, calle a calle
+- Con las vistas de Google: Guadalajara, Guanareme, Caracas, Veracruz, Moterrey, Maracaibo, Tindaya, Tegaso, Telésforo
+  Bravo, Granada, Arcipreste de Hita, Coronel Capaz, Princesa Teguise, Tinguafaya y alrededores (casas terreras blancas de
+  zócalo gris o de azulejo con garaje verde o de madera, filas de adosados crema de dos plantas, algún bloque de pisos
+  blanco y solares sin edificar). 2.808 casas en total con el kit de calles. Rótulo nuevo que se lee en la foto: Bar Pablo.
+  Un letrero de ganadería de la calle Iguazú y una peluquería de Granada no se leían bien: sin rótulo.
+- Archivo nuevo: src/barrios/maneje/calles.js (`tuneCalles`, bandera `map.manejeCalles`). Comprobado que no pisa ninguna
+  fachada hecha a mano (marco()).
+- Falta: unos 150 tramos de Maneje sin vistas de Google cerca (se quedan como estaban) y Playa Honda entero.
+- Publicado en el enlace del juego (artefacto, versión 115; assets/index-MQDJLzJc.js (sustituido en la 126)).
+
+Version 126 — Playa Honda, calle a calle
+- Con las vistas de Google: Foque, Botavara, Mesana, Lancha, Fragata, Siroco, Bajamar, Barlovento, Pleamar, Sotavento,
+  Guardilama, Tinecheide, Alisios, Estay, Trinquete, Los Roques y alrededores (casas encaladas de una y dos plantas con muro
+  blanco de balaustres, carpintería verde, marrón o azul, filas de adosados y algún solar). 3.017 casas en total con el kit de
+  calles. Sin rótulos nuevos: en las fotos no se lee ningún nombre de negocio.
+- Archivo nuevo: src/barrios/playa-honda/calles.js (`tuneCalles`, bandera `map.hondaCalles`). Comprobado que no pisa ninguna
+  fachada hecha a mano (marco()). Conforama, B3RICEJ y el concesionario no se tocan.
+- Falta: unos 380 tramos de Playa Honda y unos 145 de Maneje sin vistas de Google cerca (se quedan como estaban).
+- Publicado en el enlace del juego (artefacto, versión 116; assets/index-dQQxdMyn.js).
+
+Version 127 — segunda tanda de calles (Playa Honda, Maneje, Argana Alta, San Francisco Javier)
+- Con las vistas de Google, 55 tramos más: Playa Honda (Chimidas, Cruceta, Mesana, San Borondón, Cordel, Testeina, Diama, Las
+  Majadas, Alisios), Maneje (Blasco Ibáñez, Arniches, Paraná, Acapulco, Toledo, García Lorca, Pablo Picasso), Argana Alta
+  (Tomás Morales, Jesús Soto Morales, Tenderete, Malagueña, Francisca Cabrera Sastre) y San Francisco Javier (Carlos V).
+  3.243 casas en total con el kit de calles. Rótulo nuevo que se lee en la foto: Brooklyn Studio (Alisios, Playa Honda).
+  Se dejaron como estaban los tramos de los colegios (Alonso Quesada, Luján Pérez), el instituto de Doctor Barraquer, Enrique IV
+  (cerca de un cartel de negociosSfj.js) y las terrazas de restaurante de San Borondón y Testeina. La oficina de Nueva Canarias
+  de Blasco Ibáñez y una verdulería de Tenderete no se rotulan.
+- Archivos nuevos: playa-honda/calles2.js, maneje/calles2.js, argana-alta/abajo2.js, san-francisco-javier/calles3.js.
+  Comprobado que no pisan ninguna fachada hecha a mano (marco()).
+- Falta: unos 260 tramos de Maneje, Argana Alta y San Francisco Javier y unos 330 de Playa Honda sin vistas de Google cerca.
+- Publicado en el enlace del juego (artefacto, versión 117; assets/index-VtToY3Mn.js).
+
+Version 128 — el resto de las calles de casas (Playa Honda, Maneje, Argana Alta, San Francisco Javier)
+- Los tramos que quedaban sin vistas de Google cerca se rellenan con el patrón que se ve en cada barrio (Playa Honda: casas
+  encaladas de dos plantas y alguna de una, con muro blanco; Maneje: casas terreras blancas y alguna de dos plantas; Argana Alta:
+  blancas, ocre y crema; San Francisco Javier: blancas y crema). 3.946 casas en total con el kit de calles.
+- Quedan fuera, como estaban: la Avenida Playa Honda, la Carretera de las Playas, la carretera de San Bartolomé, las avenidas, los
+  colegios y el instituto, los edificios grandes (más de 450 m2 o de tres plantas), los que llevan modelo propio y los tramos
+  pegados a un rótulo de negocio.
+- Archivos nuevos: resto.js en playa-honda, maneje, argana-alta y san-francisco-javier. Herramienta de trabajo nueva:
+  tools/vistas/export_edges.js (lista de tramos pendientes, semillas para las vistas de la calle y exportación a .shots/edges_all.json).
+- Publicado en el enlace del juego (artefacto, versión 118; assets/index-CmaChcJF.js).
+
+Version 129 — segunda fila de Playa Honda y últimos tramos con fotos
+- Playa Honda: los edificios genéricos que quedaban detrás de las casas de la calle (unos 1.400) se pintan de blanco como el resto
+  del pueblo (src/barrios/compartido/blanquear.js, `blanquear`: solo toca genéricos sin color, sin modelo propio y sin rótulo).
+- Tramos nuevos con vistas de Google: Maneje (Pamplona, El Rafael, La Joaquina), Argana Alta (Salazones, Don Manuel Cáceres) y
+  Altavista (Elcano, Huelva, Ronda). 3.990 casas en total con el kit de calles. Archivos nuevos: maneje/calles3.js,
+  argana-alta/abajo3.js, altavista/ultimos.js.
+- Lo que quedaba en Titerroy y Maneje (Gines de la Hoz, Salvador Allende, Pamplona norte...) son naves, muros y edificios públicos
+  (hospital, colegios): se dejan como estaban a propósito.
+- Publicado en el enlace del juego (artefacto, versión 119; assets/index-VdWLIaXt.js).
+- ZIP para la web hecho con esta versión (lava-game-web.zip, 26 MB, carpeta juego/). Se deja fuera textures/argana-alta/ (cinco fotos
+  de octubre, 17 MB, que el juego no usa); el ZIP anterior queda como lava-game-web.antes-v119.zip.
+- La Demo (artefacto D3HVv...) ya no existe o no se puede editar: no se ha vuelto a publicar.
+
+Version 130
+- Hospital Molina Orosa (Argana Alta): la fachada principal como en la vista de la calle de julio de 2025:
+  logias con barandilla de cristal verde, dos arcos, ventanas verdes abajo, la carpa de la entrada, parterres de
+  picon con cactus, palmeras y las banderas de Espana y Canarias. Fuera el rotulo viejo "Hospital General de Lanzarote".
+- Palacio de Deportes de Arrecife (calle Seguidilla): caja de 16 m con zocalo arena, chapa gris, ventanales, letras
+  azules "PALACIO DE DEPORTES ARRECIFE", rampa con barandilla y la torre de cristal de la esquina.
+- Centro de Salud de Titerroy (calle Doctor Juan Negrin): zocalo de bloque gris, paneles crema y contraventanas verdes.
+- Comprobado el Charco: la gente solo puede quedar algo hundida en la franja del borde del agua (hasta 0,64 m).
+- Archivos nuevos: hospitalMolinaOrosa.js, palacioDeportes.js, centroSaludTiterroy.js, kitFachada.js.
+
+Version 131
+- Escuela de Arte Pancho Lasso (esquina de la Rambla Medular con Salvador Allende): el cuerpo rojo sobre el zocalo de
+  piedra con las letras blancas "ESCUELA DE ARTE" y "Pancho Lasso", el edificio blanco de tres plantas con las filas de
+  ventanas, el jardin con la verja gris y cuatro palmeras, en Salvador Allende el muro de piedra con la verja blanca y la
+  torre roja de la escalera; en Alfredo Kraus, bajo rojo y arriba beis (foto de 2018). La cara de Gines de la Hoz, sin foto.
+- Pabellon Municipal de Titerroy (calle Burgos): caja blanca de 10,5 m con la chapa beis arriba, las ventanitas con
+  rejas, el mural del balonmano simplificado ("Esfuerzo", "Pasion") y, en Monsenor Oscar Romero, ventanas y rejillas.
+- IES Cesar Manrique: el muro blanco con la valla verde de malla en la calle Timanfaya, arboles del jardin y el
+  edificio crema subido a 12,5 m.
+- IES Arrecife: es el IES Las Maretas (cambio de nombre en 2017); corregido el nombre del cartel y del mapa.
+- Archivos nuevos: escuelaArte.js, pabellonTiterroy.js, iesCesarManrique.js.
+
+Version 132
+- Negocios de Google Maps: unos 110 rotulos nuevos de bares, restaurantes, cafeterias, supermercados, tiendas,
+  peluquerias y talleres de todos los barrios que el juego no tenia (nombre y sitio de su ficha de Google Maps; el
+  cartel va en la pared que da a la calle). Archivo: negociosGoogle.js.
+- Playa Honda: Cash Lee, Baratissimos y Cash Diplo en la nave grande al oeste de Conforama, con sus rotulos de la vista
+  de la calle de octubre de 2016 (la mas nueva). LG Automocion pasa a su sitio de verdad.
+- Altavista: la parroquia de San Antonio Maria Claret (fachada encalada con el pretil, la puerta marron y la torre con
+  la cruz). La residencia Cruz Blanca (obra parada) y la Plaza de los Luchadores, junto a la iglesia, ya salen en el suelo.
+- Colegios: corregidos con sus fichas de Google Maps los sitios del IES Agustin Espinosa (estaba 69 m mal), CEO Argana
+  (42 m), CEIP Capellania (27 m; su nombre es "del Yagabo", no "del Yagamo"), CEIP Benito Mendez (23 m) y la Escuela
+  Oficial de Idiomas (134 m). Topham, Nieves Toledo y Las Salinas estaban bien.
+- Archivos nuevos: negociosGoogle.js, marcosHechos.json, naveCash.js, iglesiaAltavista.js.
+
+Version 133
+- Coches mas realistas de cerca: ruedas nuevas (neumatico con flanco y dibujo, llantas con radios en relieve, tuercas,
+  tapacubos, disco y pinza de freno; cinco disenos inventados), lunas tintadas que reflejan el cielo, juntas de capo,
+  maletero y paragolpes, gomas de ventanilla, estribo, limpiaparabrisas, retrovisores con forma, tercera luz de freno,
+  antena, faldon, cristal abombado en faros y pilotos, resplandor de faros y pilotos de noche, suciedad ligera en los
+  bajos y matriculas inventadas con portamatriculas (las de ahora y las antiguas GC/TF en los clasicos).
+- Coches de lejos: a mas de 32 m (20 m en el movil) cada coche del trafico y aparcado pasa a una carroceria ligera con
+  las ruedas fundidas: de 9.000-12.000 triangulos y 16-20 llamadas de dibujo a unos 1.600 triangulos y 4 llamadas. El de
+  cerca queda en 13.500-14.800 (tope pedido: 15.000). Los coches patrulla, las motos, los quads y las guaguas no cambian.
+- Gente: andan y corren con naturalidad (rodillas, cadera, hombros, brazos y cabeza; al huir corren echados hacia
+  delante), cada persona tiene un tipo de cara (8 de calle) con nariz y labios mas finos, y de lejos (24 m; 15 m en el
+  movil) se ve un cuerpo ligero de unos 2.300 triangulos movido por el mismo esqueleto (antes 7.000-15.000).
+- Protagonistas: cada uno con su cara (Noah, Michael, Jose e Iria) y detalles propios de ropa (cinturon, franja de las
+  zapatillas, complexion). A pie anda despacio y corre a partir de unos 2,5 m/s.
+- Medido en calidad baja al arrancar (PC, sin tarjeta grafica): trafico visible de 205.000 a 58.000 triangulos y de 404
+  a 203 llamadas de dibujo; peatones de 1,69 a 0,49 millones de triangulos. La escena entera baja poco (de 5,9 a 5,5
+  millones) porque casi todo es ciudad. Falta medir los fotogramas por segundo en un movil de verdad.
+- Sin modelos ni texturas de fuera: todo esta hecho por codigo (no hay licencias que apuntar). No se ha tocado main.js
+  ni index.html. Copia de lo anterior en _copia_antes_realismo_v133.
+- No es instancing de verdad: el trafico y la gente siguen siendo objetos sueltos, pero mucho mas ligeros de lejos. La
+  gente con esqueleto no se puede instanciar en three.js sin rehacerla; queda pendiente si hiciera falta.
+- Banco de pruebas de modelos: pruebas/banco.html (con el servidor de desarrollo), misma luz y cielo que el juego.
+- Archivos nuevos: ruedas.js, cocheDetalle.js, cocheAdornos.js, cocheLejos.js, matriculas.js, andares.js, rasgos.js.
+  Cambiados: carModels.js, traffic.js, parked.js, peds.js, character.js, humanModel.js, humanHead.js.
+
+
+Version 134 - Carreteras y zonas que se veian mal: Cabildo, ALDI y Tenderete (16/11/2026)
+- Puente del Cabildo: el tablero era una losa gris lisa sin carriles. Ahora lleva el asfalto de las calles y las rayas
+  de sus dos calzadas, y la calle que pasa por debajo (las dos rampas y el paso) tambien tiene sus rayas. El asfalto
+  de la bajada tiene el mismo tono que la carretera (antes era un rectangulo mas claro). Archivo nuevo: puenteRayas.js.
+- Manchas grises borrosas sobre el asfalto (entrada y salida del Cabildo, subida a San Francisco Javier): eran
+  agujeros en la calzada. En las curvas cerradas y en las bocas de las rotondas algun triangulo de calzada quedaba del
+  reves y no se pintaba; ahora se les da la vuelta (caraArriba.js). Vale para toda la ciudad.
+- Farolas en mitad de la carretera: en las carreteras de dos calzadas pegadas (la del Cabildo) salian farolas sobre la
+  raya doble. Ya no se pone una farola si cae en la calzada de otra calle (world.js). Vale para toda la ciudad.
+- En las cuestas fuertes el suelo de la foto aerea baja un poco mas donde el terreno se dobla o se alabea (terrain.js),
+  para que no asome sobre las calles.
+- ALDI de la Rambla Medular: la franja de asfalto con plazas en bateria no cabia entre la nave y la calle (quedaba
+  pintada encima de la acera y de la calzada). Ahora hay plazas en linea junto al bordillo, como en la foto aerea
+  (aldiAparcamiento.js). Las 71 plazas de verdad del supermercado no estan en la calle: falta saber por donde se entra.
+- Paso de Tenderete (la circunvalacion sobre la calle de Titerroy): la carretera de arriba salia sin carriles, a
+  manchas y con un rectangulo gris sobre el tunel. Ahora tiene asfalto limpio y las rayas de sus calzadas.
+- McDonald's de Argana: la losa del aparcamiento quedaba levantada y torcida, tapando la acera y el paso de cebra de la
+  rotonda. Ahora es un suelo plano que sigue el terreno, con sus plazas, y no pisa la calle (mcdonaldsAparcamiento.js).
+- Burger King y Decathlon: la trasera y los costados eran cajones lisos de un color. Ahora llevan el despiece de la
+  chapa o los listones de madera, zocalo, remate y puertas de servicio (navesLados.js).
+- Lidl y gasolinera Repsol de la carretera de San Bartolome (lidlRepsol.js): el cuadrado blanco de la foto aerea es la
+  marquesina de la gasolinera, pero el juego levantaba ahi un bloque de tiendas. Ahora esta la marquesina grande en
+  su sitio, con seis isletas de surtidores y el poste, y el LAVADERO DE COCHES (tres boxes techados y aspiradores)
+  entre la marquesina y el Lidl. El Lidl es una nave blanca lisa de 7,5 m con entrada acristalada, marquesina y rotulo.
+  El sitio exacto y la forma del lavadero los tiene que confirmar Jose Manuel.
+- Sin tocar main.js ni index.html. Archivos nuevos: puenteRayas.js, caraArriba.js, aldiAparcamiento.js,
+  mcdonaldsAparcamiento.js, navesLados.js, lidlRepsol.js. Cambiados (solo el enganche o un ajuste pequeno): world.js,
+  terrain.js, trinchera.js, aldiSfj.js, mcdonaldsArgana.js, arrecifeExtras.js y los index.js de los barrios San
+  Francisco Javier, Titerroy y Argana Alta.
+- Pendiente: las tiendas de chinos (falta saber cuales son y que se ve mal) y el resto de naves de la zona industrial.
+
+
+Version 135 - Aparcamientos y autoservicio de la zona comercial de Tenderete (16/11/2026)
+- Aparcamientos con el firme de asfalto y las plazas pintadas (en bateria, con su calle de paso) donde la foto aerea
+  ensena cada uno: el de entre el McDonald's y el Mercadona, el del Mercadona de abajo, el del Burger King y el del
+  Decathlon. Unas 260 plazas en total. Siguen el terreno y no se pintan sobre calle, acera ni edificio.
+- Carril del autoservicio del McDonald's y del Burger King: una vuelta al local con bordes amarillos y flechas,
+  cortada donde cruza una calle. Las plazas de delante del McDonald's se separan para dejarle sitio.
+- El numero de plazas es el que cabe, no el real. El recorrido exacto del autoservicio (por donde entra y sale, donde
+  esta la ventanilla) falta confirmarlo.
+- Archivo nuevo: aparcamientosTenderete.js. Cambiados: mcdonaldsAparcamiento.js, mcdonaldsArgana.js y el index.js
+  del barrio Argana Alta. Sin tocar main.js ni index.html.
+
+
+Version 136 - El bazar de la esquina frente al Centro Comercial de Argana (16/11/2026)
+- En la esquina de la carretera de San Bartolome con la calle Tomas Morales, al lado de la fabrica Dos Cabras y
+  frente al Centro Comercial de Argana, la foto aerea ensena una nave de cubierta oscura que no venia en el mapa: en
+  el juego la esquina estaba vacia. Ahora esta la nave (unos 21 x 18 m): paredes claras, cubierta oscura, la banda roja
+  del rotulo y el escaparate en las dos caras que dan a la calle, la puerta con su marquesina y las plazas de delante.
+- EL NOMBRE NO ESTA CONFIRMADO. Jose Manuel cree que se llama "Seco Hogar" pero no esta seguro y no se ha podido
+  comprobar: el rotulo dice solo "BAZAR" y lo que vende. Cuando lo confirme se cambia en bazarArgana.js (NOMBRE).
+- Archivo nuevo: bazarArgana.js. Cambiado: el index.js del barrio Argana Alta. Sin tocar main.js ni index.html.
+
+
+Version 137 - La ITV de la subida a San Bartolome (16/11/2026)
+- La estacion de ITV, entre la carretera de San Bartolome y el Hospital Doctor Jose Molina Orosa. Su nave venia en el
+  mapa pero el juego la levantaba como un bloque generico de tiendas. Ahora es la estacion: nave abierta por las dos
+  puntas con TRES LINEAS de inspeccion que se cruzan con el coche, fosos, rodillos del frenometro, numeros de linea
+  con su semaforo, rotulos "ITV", la caseta de recepcion con marquesina verde azulada, el poste hacia la carretera y
+  las filas de espera pintadas con sus flechas, como en la foto aerea.
+- Solo pone "ITV / Inspeccion Tecnica de Vehiculos": sin el nombre de la empresa, horarios ni precios (no se inventan).
+  El sentido de paso (se entra por la punta de las filas pintadas) sale de la foto aerea: falta que lo confirme Jose
+  Manuel. Unos 2.800 triangulos y 9 llamadas de dibujo.
+- Archivo nuevo: itvArgana.js. Cambiado: el index.js del barrio Argana Alta. Sin tocar main.js ni index.html.
+
+
+Version 138 - El recinto de la ITV: aparcamiento, valla de rejilla y la puerta junto a Remar (16/11/2026)
+- La ITV de la subida a San Bartolome tiene ya su recinto completo: el firme de asfalto, el APARCAMIENTO entre la nave
+  y la carretera (una fila contra la valla y otra contra la nave, 37 plazas), la VALLA DE REJILLA que lo rodea y la
+  PUERTA, abierta, al lado de la nave del local de Remar, como dijo Jose Manuel. Por ese paso se entra desde la
+  carretera; las filas de espera estan mas arriba, pegadas al lado del hospital, y llevan a las tres lineas.
+- La nave de al lado lleva el rotulo "REMAR" en la fachada de la carretera y en el costado que da al paso de entrada.
+  Solo el nombre que dio Jose Manuel: sin logotipo ni mas datos. Falta que confirme que es esa nave.
+- Las plazas son las que caben, no el numero real. La valla choca (no se cruza con el coche); la puerta esta abierta.
+- Cambiado: itvArgana.js. Sin tocar main.js ni index.html.
+
+
+Version 139 - ITV: Remar y la puerta, en el lado de abajo (16/11/2026)
+- Correccion de Jose Manuel: el local de Remar esta por DEBAJO de la ITV (bajando hacia Arrecife), no por encima. El
+  rotulo "REMAR" pasa a la nave de abajo y la puerta del recinto de la ITV a esa punta, pegada a ella. Por arriba el
+  recinto queda cerrado con la valla. Se entra por abajo, se sube por el aparcamiento hasta las filas de espera y se
+  cruza la nave de arriba abajo (flechas pintadas). El aparcamiento sigue con 37 plazas.
+- Cambiado: itvArgana.js. Sin tocar main.js ni index.html.
+
+
+Version 140 - Los aparcamientos del Hospital Molina Orosa (16/11/2026)
+- El hospital tenia hecha la fachada, la entrada, las palmeras y las banderas, pero su aparcamiento era solo la foto
+  aerea del suelo. Ahora tiene los dos que ensena la foto aerea: la franja de delante de la fachada larga, a lo largo
+  del vial de la entrada, con las marquesinas de sombra sobre la fila de fuera, y la explanada de abajo, entre la
+  punta sur del hospital, la nave de Remar y la carretera. Firme de asfalto y plazas en bateria: 166 en total.
+- La franja de delante se queda corta por el lado de la ITV, que tiene su valla ahi. Las plazas son las que caben,
+  no el numero real.
+- El constructor de aparcamientos de la Version 135 sirve ya para cualquier sitio (buildAparcamientos).
+- Archivo nuevo: hospitalAparcamiento.js. Cambiados: aparcamientosTenderete.js y el index.js del barrio Argana Alta.
+  Sin tocar main.js ni index.html.
+
+
+Version 141 - El parque comercial de la salida a Costa Teguise: IKEA, Electron y las canchas de padel (16/11/2026)
+- IKEA: la nave de la esquina de la calle Oceano Indico con la Carretera de los Marmoles (su direccion oficial es
+  "Parque Industrial Arrecife Puerto, Carretera de los Marmoles s/n"). Era un bloque generico: ahora es la caja azul
+  con las letras amarillas en tres caras, la entrada acristalada con su marquesina amarilla y sus aparcamientos.
+- Electron: el nombre en grande en las dos caras de su nave que dan a la calle.
+- Las canchas de padel que ensena la foto aerea detras de Electron: seis pistas (tres verdes, dos de color teja y
+  una azul) con sus fondos de cristal, la malla, la red y las rayas. Chocan: no se cruzan con el coche.
+- Aparcamientos con sus plazas delante de Electron y las naves de al lado (calle Oceano Atlantico), los de IKEA y el
+  del Lidl de al lado: 132 plazas (las que caben, no el numero real).
+- Las demas naves del parque se quedan como estaban: falta saber que empresa es cada una (no se inventan nombres).
+- Archivo nuevo: parqueComercialPuerto.js. Cambiado: el index.js de "compartido" (esa zona no es de ningun barrio).
+  Sin tocar main.js ni index.html.
+
+Version 142 - Los rotulos de las empresas del parque comercial de IKEA, la farmacia de Tenderete y el cafe de la Repsol (16/11/2026)
+- Parque comercial de la salida a Costa Teguise: 32 naves llevan ya el cartel con el nombre de su empresa (cartel
+  sencillo, blanco con letras azules: sin logotipos, telefonos ni nada mas). Los nombres y el sitio de cada una salen
+  del mapa de Google Maps mirado el 16/11/2026. SON DATOS DE INTERNET: Jose Manuel tiene que repasar la lista.
+  Supermercados Marcial, Keidea Muebles, Cash Unide, Nortysur Hogar, Maresa Logistica, Centro Logistico Spar, Carnes y
+  Embutidos Chacon, Distribuciones Viera, Tecfrinox, Taller Llave 12, Aluminios Carpaty, Remacan, Foncal, Distribuidora
+  Electrica Canaria, Fanfi Surf Outlet, Hosteleria Brito, Quimiventura, Ensuenos FLEX, Colchones en Canarias, CCC
+  Lanzarote, Marmoles Brito, Persianas Lanzarote, Edoglass, Hidramelca, Desatascos Timanfaya, Taller Tinajuma, Sothyr,
+  Transportes Vega Navarro, Quimicas Morales, Distribuciones Tierney, Hang On Lanzarote Climbing Centre y DHL Lanzarote.
+- Calle Tenderete (de la lista de Jose Manuel): el cartel verde con la cruz de la farmacia en la esquina con la calle
+  Saltona, y el de "Tenderete Cafe" en la tienda de la Repsol.
+- Sin poner: Multicentro (Tenderete 14) y Comercial Zonzamas (Tenderete 20). No salen en el mapa de Google y no se
+  sabe que nave es cada una.
+- Dudas que ha sacado el mapa de Google y que tiene que aclarar Jose Manuel (NO se ha cambiado nada):
+  * Remar: Google pone "Rastro Remar" en la Carretera de San Bartolome 29, unos 200 m mas abajo de la ITV. La nave
+    pegada a la ITV, donde esta ahora el rotulo REMAR, sale en Google como un concesionario (SZWAGEN).
+  * El bazar de la esquina frente al C.C. Argana: esa nave sale en Google como "MultiMotor". Por el lado del centro
+    comercial hay una tienda de hogar que se llama "Home Markt".
+- Archivos nuevos: parqueComercialEmpresas.js y rotulosTenderete.js. Cambiados: parqueComercialPuerto.js y el
+  index.js de "argana-alta". Sin tocar main.js ni index.html.
+
+Version 143 - Argana: el Centro Comercial Argana, Deko Hogar, Kiwoko y mas rotulos (17/11/2026)
+- El Centro Comercial Argana (el de Worten, entre la calle Iguazu y la calle Jose Lopez Betancort) NO estaba en el
+  juego: solo se veia la foto del suelo. Ahora esta la nave (116 x 52 m) con las placas solares en la cubierta, la
+  entrada acristalada con su marquesina, el nombre en tres caras y su aparcamiento con plazas hacia la rotonda (123).
+- Tiendas del centro comercial con su cartel sencillo (nombres del mapa de Google Maps): Worten, Toy Planet, Statum
+  Cafe, Optimus Arrecife, Musical Panchito, Books & Papers y OLA Zapateria.
+- Deko Hogar: la nave larga del otro lado de la calle Iguazu (121 x 26 m), con su entrada y el nombre. Es, casi
+  seguro, la tienda de hogar que Jose Manuel recordaba como "seco hogar" (cruzando la calle desde el centro comercial,
+  haciendo esquina con la carretera). El nombre sale de Google Maps: que lo confirme.
+- Kiwoko (tienda de animales): la nave pegada por detras a la de Deko Hogar.
+- La nave grande de cubierta clara que sigue a la de Deko Hogar, calle Iguazu arriba (47 x 53 m): tampoco estaba.
+  Va lisa, con dos portones y sin nombre (Google no dice que empresa es).
+- Mas rotulos en la zona (Google Maps, mirado el 17/11/2026; que Jose Manuel repase la lista): Home Markt (junto al
+  Lidl), SZWAGEN Centro Multimarca, Centro Asistencial Lanzarote, Viguetas Lanzarote, Rastro Remar, Hortofruticola
+  Altavista, Auto Laca Canarias, Norai Autoservicio y Maycan Arrecife.
+- Sin cartel, a proposito, porque caen sobre naves ya hechas con los videos de Jose Manuel: Comercial Zonzamas
+  (Tenderete 20: cae en la nave negra de Mitsubishi), Multicentro (Tenderete 12: cae donde el juego tiene el 928
+  Hybrid Club), Cocodelanz (nave de Fuji y Kiwa) y MultiMotor (junto a Dos Cabras).
+- Remar: el rotulo REMAR junto a la ITV se queda como dijo Jose Manuel. Google pone ahi la "Iglesia Cuerpo de Cristo"
+  y el "Rastro Remar" unos 200 m mas abajo (ahora tambien con su cartel).
+- La nave del rotulo "BAZAR" (Version 136, esquina con Tomas Morales) NO se ha tocado: si la tienda de chinos era
+  Deko Hogar, hay que decidir que cartel lleva esa nave (Google pone al lado "MultiMotor").
+- Archivos nuevos: ccArgana.js y rotulosArgana.js. Cambiado: el index.js de "argana-alta". Sin tocar main.js ni
+  index.html.
+
+Version 144 - Argana: Multicentro y Comercial Zonzamas y prueba en tamano movil (17/11/2026)
+- Calle Tenderete: los carteles de Multicentro y Comercial Zonzamas, los dos que faltaban de la lista de Jose Manuel.
+  Google Maps los pone en Tenderete 12 ("Multi Centro") y Tenderete 20, sobre la fila de naves que ya estaba hecha con
+  sus videos: el de Multicentro va en la fachada del 928 Hybrid Club y el de Zonzamas en la nave negra de Mitsubishi,
+  por delante y sin quitarles nada. Que Jose Manuel diga si estan en su sitio.
+- Quitado el cartel de Hortofruticola Altavista (Version 143): su pared da a un callejon y no se veia.
+- Los carteles pueden salir de la pared lo que haga falta (quinto dato de cada linea de la lista).
+- Probado en tamano movil (844 x 390) en el Centro Comercial Argana: carga sin errores; todo lo nuevo de Argana son
+  unos 8.600 triangulos y 37 llamadas de dibujo. Falta probarlo en un movil de verdad.
+- La demo NO se ha puesto al dia: su enlace (D3HVvFiQLNiFQShTpExSpa) ya no existe. Si Jose Manuel quiere demo, se
+  publica una nueva y se apunta aqui su enlace.
+- ALDI: no se ha cambiado. La foto aerea y el mapa ensenan que su aparcamiento no esta en la calle (parece estar en
+  la cubierta o debajo, con una rampa por la punta sur): falta que Jose Manuel diga como es.
+- Archivos cambiados: parqueComercialEmpresas.js y rotulosArgana.js. Sin tocar main.js ni index.html.
+
+Version 145 - El campo de arriba (la casa del camino de tierra) en su sitio de verdad y con la foto aerea oficial (17/11/2026)
+- Lo que pasaba: la casa, los vecinos, los muros, los caminos y las fincas se calcaron en su dia de fotos sin escala
+  ni coordenadas y se colgaron del punto que da Apple Maps para la direccion, que cae unos 62 m al sureste de la casa
+  de verdad. Todo el campo estaba corrido entre 30 y 60 m, y el suelo era un llano rojo pintado (de esa zona el juego
+  no tenia foto aerea).
+- El suelo del campo es ahora la ortofoto oficial (PNOA, (c) Instituto Geografico Nacional de Espana, CC BY 4.0),
+  bajada del servicio del IGN: public/campo/campo.jpg (todo el campo) y public/campo/casa.jpg (500 x 400 m alrededor
+  de la casa, con mas detalle; en el movil no se carga). Se ven los barrancos, las pistas y las fincas de picon.
+- Todo lo que habia hecho se ha RECOLOCADO sobre esa foto, sin rehacerlo ni borrarlo (campoReal.js): en el caserio de
+  la casa es un traslado limpio (53,5 m al oeste y 33,5 m al norte) y encaja al metro con la foto: la casa del tejado
+  rojo con la piscina al oeste y el cuarto de tejas, los vecinos, los muros y las calles. Las casas del camino, el
+  cruce grande, las fincas de picon y el caserio de la lancha se han movido cada uno lo que le tocaba.
+- La casa es la del tejado rojo, unos 62 m al noroeste de la casa blanca donde cae el enlace de Apple Maps. Si Jose
+  Manuel dice que no es esa, se cambia en campoReal.js.
+- Fuera las casas "detectadas" a ojo de la parte de abajo (z > -2740): ahi el juego ya tenia las calles y casas reales
+  del norte de Arrecife, y sobre la foto de verdad se veian fuera de sitio. Los enarenados pintados tampoco se ponen:
+  ya salen en la foto, con su forma de verdad.
+- El sitio "Camino de tierra" de la pantalla de inicio va a la calle de delante de la casa, en su sitio nuevo.
+- NO hecho: el caserio de la lancha ANMARA UNO no se sabe donde esta de verdad (en su sitio del juego la foto oficial
+  no ensena casas); las alturas del terreno de esa zona siguen siendo aproximadas; no se han podido usar los videos e
+  imagenes de la carpeta "recursos" (en el PC de casa solo aparece ahi una foto aerea de Argana) ni el Catastro (no
+  deja entrar desde la nube).
+- Archivo nuevo: campoReal.js. Cambiados: casaCampo.js y caminoAnmara.js (solo el enganche). Fotos nuevas en
+  public/campo/. Sin tocar main.js ni index.html.
+
+Version 146 - El relieve de verdad en el campo de arriba (17/11/2026)
+- Las cuestas de la zona de la casa del camino de tierra eran inventadas (una rampa suave puesta a ojo, porque los
+  datos del terreno se acababan antes). Ahora son las de verdad: el MDT05 del IGN (el mismo LiDAR del resto del juego,
+  CC BY 4.0), bajado de su servicio para la franja del norte que faltaba: public/map/terreno-norte.json.
+- La casa queda en su ladera, con las lomas detras y la bajada hacia Arrecife y el mar delante, como en las fotos.
+- El suelo de alrededor de la casa es mas fino (malla de 5 m) para que las calles del caserio no queden tapadas a
+  trozos con las cuestas nuevas; tambien en el movil (alli con la foto general, sin la de detalle).
+- pruebas/terreno_norte.py genera ese archivo en cualquier ordenador (solo necesita Python): lo llama HACER_V146.bat.
+  Si no se puede bajar, el juego sigue con el relieve de antes, sin fallar.
+- Sin probar en un movil de verdad. El caserio de la lancha ANMARA UNO sigue sin sitio real conocido.
+- Archivos cambiados: terrain.js y campoReal.js. Nuevos: pruebas/terreno_norte.py y public/map/terreno-norte.json.
+  Sin tocar main.js ni index.html.
+
+Version 147 - Argana calle a calle contra la foto oficial: HiperDino y MediaMarkt en su sitio, marquesinas y lo que faltaba (17/11/2026)
+- Se ha comparado el mapa del juego con la ortofoto oficial del IGN (PNOA) en la zona comercial de Argana, de la
+  circunvalacion a la calle Tenderete y del hospital al Centro Comercial Argana. Lo que no cuadraba:
+- HiperDino y MediaMarkt (calle Tenderete 7): OpenStreetMap trae ahi la planta de la nave VIEJA, que ya no existe
+  (hoy es un solar de materiales). La de ahora esta unos 57 m mas cerca de la calle Tenderete, justo donde el juego
+  ponia el aparcamiento. La nave se ha movido entera a su sitio y con sus medidas de verdad (79 x 67 m; antes 103 x
+  46): la cara larga, con el porton, a la calle Tenderete; la tienda y el MediaMarkt, al aparcamiento que da a la
+  calle Iguazu, como dijo Jose Manuel. Fuera el aparcamiento de tres filas y el muro de lamas de delante de la cara
+  larga: ahi esta la acera.
+- Aparcamiento del Mercadona de abajo: las tres cubiertas largas son marquesinas de sombra para los coches, pero el
+  mapa las traia como edificios y el juego levantaba tres bloques de pisos. Ahora son marquesinas sobre pilares, con
+  126 plazas pintadas debajo; se pasa con el coche por debajo.
+- Faltaban y se han puesto: las cuatro naves largas del desguace de neumaticos de detras del hospital (sin nombre) y
+  la depuradora de detras del Decathlon (siete depositos redondos y la balsa).
+- El sitio "HiperDino Argana" de la pantalla de inicio mira ya a la tienda de verdad.
+- Lo demas de esa zona (Decathlon, Burger King, McDonald's, Mercadona, Lidl, las naves de la calle Tenderete, el
+  hospital, la ITV y las casas de alrededor) coincide con la foto. Falta repasar igual el resto de Argana.
+- Archivos nuevos: mercadonaMarquesinas.js y arganaFaltaba.js. Cambiados: hiperdinoArgana.js, centroComercialArgana.js,
+  startPlaces.js y el index.js de "argana-alta". Sin tocar main.js ni index.html.
+
+Version 148 - La Rambla Medular con sus arboles, la zona de la Policia Nacional, el cuartel y el aparcamiento del ALDI (17/11/2026)
+- Repaso contra la ortofoto oficial del IGN de toda la Rambla Medular, Altavista, la zona de la Comisaria de la Policia
+  Nacional y el Castillo de San Gabriel.
+- Rambla Medular: en la realidad lleva, de punta a punta, un paseo central con dos filas de arboles de copa redonda.
+  En el juego ese centro estaba vacio. Ahora se planta solo siguiendo el mapa: 445 arboles y el paseo de solado rojizo
+  entre las dos calzadas (un arbol cada 8,5 m; en el movil, la mitad). Los troncos chocan.
+- Junto a la Comisaria de la Policia Nacional faltaban y se han puesto: la nave gris de la esquina de la Rambla con la
+  calle Velacho, las 21 casetas del solar de detras, el edificio oscuro de la rotonda de la avenida de Naos y el local
+  blanco del muelle. La comisaria ya estaba y esta en su sitio.
+- Rotulos de esa zona, sacados del mapa de Google Maps (que Jose Manuel los repase): Electrofube, Cuatro Hojas, Cofarca
+  Lanzarote, Efectos Navales San Gines, Pinturas & Decoraciones de Leon, Inoxnaval Lanzarote y Bodegas Torres.
+- El cuartel del principio de la Rambla (Acuartelamiento Marques de Herrera): los diez edificios del lado de la
+  circunvalacion, que no venian en el mapa. Lisos y sin rotulo.
+- ALDI: resuelto lo que quedaba pendiente. Su aparcamiento de verdad esta al SUR de la tienda, entre la calle El Forito
+  y la Rambla, con una marquesina larga de sombra: firme, 66 plazas y la marquesina.
+- Altavista (de la Rambla a la circunvalacion) y el Castillo de San Gabriel con sus dos puentes coinciden con la foto:
+  no se ha tocado nada. Las fachadas no se han podido repasar (no hay fotos a pie de calle desde la nube).
+- Archivos nuevos: ramblaArboles.js y ramblaFaltaba.js. Cambiado: el index.js de "compartido". Sin tocar main.js ni
+  index.html.
+
+Version 149 - Repaso de todo el juego contra la foto oficial: Playa Honda con su foto aerea, el volcan en su sitio, maquinas de deporte en la Rambla, el jardin del Castillo de San Jose y las naves que faltaban (17/11/2026)
+- Se ha comparado el mapa entero del juego con la ortofoto oficial del IGN: el centro (Charco, Calle Real, Reducto),
+  la marina, el puerto de Los Marmoles, el Castillo de San Jose, Titerroy, Maneje, San Francisco Javier, la zona
+  industrial del nordeste y Playa Honda. La planta (donde esta cada edificio y cada calle) coincide casi en todo.
+- Playa Honda: la foto aerea del juego no llegaba hasta alli y el suelo era arena pintada. Ahora lleva la ortofoto
+  oficial (PNOA, (c) Instituto Geografico Nacional de Espana, CC BY 4.0): public/honda/honda.jpg y honda-m.jpg (movil).
+  Se ven los solares, los aparcamientos y los campos de alrededor.
+- El volcan del fondo estaba colocado pegado a Playa Honda: dentro del pueblo, el y sus conos de al lado caian encima
+  de la zona industrial y del aeropuerto y tapaban las naves. Ahora esta tres veces mas lejos en la misma direccion y
+  tres veces mas grande: desde Arrecife se ve igual que antes y en Playa Honda queda al fondo.
+- Rambla Medular: seis grupos de maquinas de hacer deporte en el paseo, entre los arboles (el volante, el de andar, el
+  banco de abdominales y las barras, con su suelo de caucho). EL SITIO DE CADA GRUPO NO ES EL REAL: se reparten solos a
+  lo largo de la Rambla; cuando Jose Manuel diga donde estan, se ponen ahi (lista SITIOS de ramblaGimnasio.js).
+- Castillo de San Jose: ya estaba hecho a mano (castillo, explanada, aparcamiento, palmeras). Faltaba el jardin de
+  picon con matas redondas de toda la loma, que se ve en la foto: 204 matas (verdes y pajizas), sin pisar la carretera
+  ni el aparcamiento.
+- Naves que faltaban en el mapa (sin nombre): dos en la zona industrial del nordeste de Arrecife y nueve en las zonas
+  industriales de Playa Honda (faltabaCiudad.js).
+- Sin repasar todavia: El Cable y la costa entre Arrecife y Playa Honda, y el extremo sur de Playa Honda. Las fachadas
+  no se pueden repasar desde la nube (no hay fotos a pie de calle); la franja del norte de Arrecife y el extremo este
+  siguen con suelo de arena pintada (la foto aerea del juego tampoco llega).
+- Archivos nuevos: ramblaGimnasio.js, sanJoseJardin.js, faltabaCiudad.js y playaHondaFoto.js. Cambiados:
+  ramblaArboles.js, volcano.js y los index.js de "compartido" y "playa-honda". Sin tocar main.js ni index.html.
+
+Version 150 - La franja del norte de Arrecife con su foto aerea; repaso completo del mapa (17/11/2026)
+- La foto aerea del juego se acababa al norte de la zona industrial: de ahi hacia arriba (lo de encima de Argana y de
+  Maneje, la zona industrial del nordeste y el arranque de la carretera de Tahiche) el suelo era arena pintada. Ahora
+  lleva la ortofoto oficial (PNOA, (c) Instituto Geografico Nacional de Espana, CC BY 4.0): public/norte/oeste.jpg y
+  este.jpg (y sus versiones "-m" para el movil).
+- Repasados tambien contra la foto y sin cambios (coinciden): El Cable y la costa entre Arrecife y Playa Honda, y el
+  sur de Playa Honda. Con esto queda repasada la planta de todo el mapa del juego.
+- Probado en tamano movil (Rambla, Playa Honda y el norte): carga sin errores y lo nuevo se ve.
+- Sigue sin poder repasarse desde la nube: las fachadas, calle a calle (no llegan fotos a pie de calle). Y el extremo
+  este del mapa (pasado el puerto) sigue con suelo de arena pintada.
+- Archivo nuevo: norteFoto.js. Cambiado: el index.js de "compartido". Fotos nuevas en public/norte/. Sin tocar
+  main.js ni index.html.
+
+Version 151 - El roadster: puertas de tijera y asientos de verdad (17/11/2026)
+- Las puertas del roadster (Chispa Orbita) se abrian como alas, girando sobre el borde de arriba y estirandose. Ahora
+  son puertas de tijera, como las de los deportivos de verdad: la bisagra va delante, junto al pilar; la puerta sale
+  un palmo hacia fuera y sube girando hacia arriba y hacia delante, sin salirse de su plano, hasta unos 70 grados.
+  Las dos puertas a la vez, como antes, y cada una con su amortiguador de gas a la vista.
+- Asientos de cubo redondeados (banqueta, respaldo con orejas y reposacabezas) en vez de tres cajas, arcos antivuelco
+  de tubo detras de cada asiento y la consola del centro con la palanca. (Tambien en el otro descapotable.)
+- Archivos cambiados: carKit.js y carModels.js. Sin tocar main.js ni index.html.
+
+Version 152 - La casa del camino de tierra, en su parcela de verdad (17/11/2026)
+- Jose Manuel confirmo sobre la foto oficial numerada que su casa es la de la esquina sureste del caserio (la "2"):
+  justo donde caia su enlace de Apple Maps y donde el juego la tenia desde el principio. En la Version 145 se movio
+  por error, con todo el caserio, a la casa del tejado rojo. Corregido: la casa vuelve a su sitio. El resto del
+  caserio (vecinos, muros, calles) no se toca: ese si estaba bien recolocado.
+- La parcela es larga de norte a sur: la casa arriba, dando a la calle; en medio, el patio con la piscina; al fondo, el
+  garaje y la explanada. En el juego el patio y el garaje estaban al OESTE de la casa: se han girado un cuarto de
+  vuelta, enteros (sin rehacerlos), y ahora quedan al SUR, con la puerta del garaje mirando al oeste, como en los
+  fotogramas de la llegada (carpeta "recursos", que Jose Manuel copio de OneDrive a Descargas).
+- La casa del tejado rojo con piscina queda como una casa mas del caserio. El sitio "Camino de tierra" de la pantalla
+  de inicio va a la calle de delante de la casa (la que pasa por el norte).
+- Sin afinar todavia (hace falta mirar mas fotogramas): el garaje queda unos 8 m al noroeste de donde esta de verdad
+  (al fondo del todo de la parcela); la terraza con la pergola sigue en la cara oeste de la casa y en las fotos parece
+  dar al sur, sobre la piscina; la casa vecina del oeste sale mas alta de lo que es.
+- Archivos cambiados: campoReal.js y casaCampo.js. Sin tocar main.js ni index.html.
+
+Version 153 - La parcela de la casa del campo, como en los fotogramas de la llegada (17/11/2026)
+- Con los fotogramas de la llegada (recursos, IMG_5113) y la foto oficial del IGN se ha rehecho, en su sitio, la parte
+  de la parcela que va de la casa hacia el sur. Antes era el patio antiguo girado y la puerta del garaje y el arbol
+  caian al reves.
+- El bloque blanco del fondo: el garaje al oeste, con la puerta seccional mirando al OESTE, su rampa de hormigon y la
+  explanada de grava gris delante (ya no es negra); el cuarto del tejado de losetas rosas al este.
+- EL ARBOL queda en la esquina de abajo a la derecha del bloque (sureste), junto al muro que da a la pista, como dijo
+  Jose Manuel. En ese muro van las vetas de oxido, la luz, las macetas, las garrafas, la mesa, el casco de barca, los
+  pales y la hormigonera.
+- El patio: baldosa, la piscina con su entrada de escalones al norte, el jardin de cesped al este con la pergola de
+  chapa, la jardinera redonda, el busto, las tumbonas y los delfines en los muros. La cancela queda entre el muro del
+  oeste y el garaje.
+- La terraza con la pergola y la ventana redonda pasa a la cara SUR de la casa, sobre el patio.
+- La casa vecina del oeste salia de tres plantas (dato del Catastro): en los fotogramas se ve mas baja que la terraza
+  y se queda en una planta. El muro blanco alto que cerraba la explanada era un error: queda un murete bajo.
+- Sin comprobar: el redondel gris del jardin (en la foto aerea no se distingue que es) y la cancela (en los fotogramas
+  solo se ve un hueco oscuro con un marco de hierro). La terraza sale 2,6 m de la fachada; en la foto aerea parece
+  estar metida dentro de la planta de la casa.
+- Archivos: casaParcela.js (nuevo), casaCampo.js, campoReal.js, campoDatos.js y barrios/maneje/index.js (una linea).
+  Sin tocar main.js ni index.html.
+
+Version 154 - El recorrido Repsol - casa con los fotogramas de Jose Manuel (17/11/2026)
+- Repasado el recorrido con los fotogramas de "recursos" (IMG_5153, uno de cada tramo, y la llegada).
+- Calle Tenderete, de la circunvalacion a la rotonda de la Repsol: en el juego era una calle de 8 m. Ahora es la
+  avenida de verdad: 18 m, dos carriles por sentido, mediana con bordillo, tierra roja, matas y farolas altas de
+  tubo, y coches aparcados en linea a los dos lados. La mediana se abre en los cruces y en los pasos de peatones.
+- La rotonda de la Repsol y el HiperDino: llevaba una escultura inventada. Ahora es la de verdad: isleta de adoquin
+  rojo con la jardinera blanca en forma de concha.
+- La pista de tierra por la que se llega a casa (de la bifurcacion al garaje y a la pista del este) no estaba: ya
+  esta, con sus rodadas. El sitio "Camino de tierra" de la pantalla de inicio deja el coche en esa pista, delante
+  del garaje, que es adonde se llega de verdad.
+- Sin hacer: la calle estrecha de Argana Alta con coches aparcados a los dos lados (no se ha podido saber con
+  seguridad que calle del mapa es), y las fachadas una a una (naves blancas con canteria gris de Tenderete, casas
+  de Argana): se han mirado 20 fotogramas de los 513, no todos.
+- Archivos: tendereteAvenida.js y rotondaConcha.js (nuevos), casaParcela.js, casaCampo.js, places.js y roundabouts.js
+  (una linea cada uno) y barrios/argana-alta/index.js. Sin tocar main.js ni index.html.
+
+Version 155 - Todas las imagenes de "recursos" que se pueden abrir (17/11/2026)
+- Repasados los 513 fotogramas del recorrido (uno de cada cinco), los cinco trozos de "Argana hasta Tanatorio" y las
+  capturas del Reducto. No se han podido abrir: IMG_0397, IMG_0398 e IMG_0399 (900 imagenes de 4 a 8 MB, el conector
+  se corta), tres capturas grandes (el Cabildo y "playa del reducto hacer la playa") y los videos .MOV. En
+  Downloads\gta canarias queda "CONVERTIR FOTOGRAMAS.bat", que hace copias pequenas en JPG para poder verlas.
+- Argana Alta: en los videos las calles del barrio son de un solo carril con coches aparcados en linea, a los dos
+  lados o a uno. En el juego no habia ni un coche. Ahora 134 calles llevan sus coches aparcados (64 a los dos lados,
+  70 a un lado), con la acera estrecha de verdad. El carril que queda es justo, como en la calle real.
+- La nave de al lado de Dos Cabras, que llevaba el rotulo "BAZAR": en el video es MultiMotor (fachada gris con
+  cristalera, nombre en rojo y la banda naranja "COMPRAMOS TU COCHE PAGO INMEDIATO"). Cambiado. El video confirma
+  tambien que la tienda de hogar es Deko Hogar (se lee "DEKO" en la nave).
+- La explanada de aparcar de junto al Cabildo, al oeste del Reducto (las capturas de Street View): firme y plazas
+  pintadas donde solo estaba la foto aerea. El edificio de la cupula no se ha tocado.
+- Comprobado sin cambios: el asfalto de la calle Campoamor acaba donde en la foto oficial (hacia z = -2600).
+- Pendiente de que lo diga Jose Manuel: al oeste del Cabildo el mapa trae un bloque de 9,5 m donde la foto ensena un
+  aparcamiento al aire libre (no se ha quitado). Vistos en los videos y sin poner: Lanzarote Express, el rotulo de
+  Optimus en su fachada, el salon recreativo de la rotonda de la concha y la plazuela de las palmeras del final de
+  la calle Tenderete.
+- Archivos: aparcadosArgana.js y explanadaReducto.js (nuevos), bazarArgana.js, rotulosArgana.js y
+  barrios/compartido/index.js (dos lineas). Sin tocar main.js ni index.html.
+
+Version 156 - El recorrido Deiland Plaza (Playa Honda) - autovia - Arrecife - tanatorio (17/11/2026)
+- Vistos los 262 fotogramas del video (PC de Arrecife, Desktop\lavagame recursos\fotogramas_recorrido_8min), en 22
+  hojas de 12. El recorrido: aparcamiento de fuera del Deiland Plaza, autovia LZ-2, rotonda de entrada a Arrecife,
+  Fred Olsen, el centro, Lancelot Playa, Gran Hotel, la avenida, el parque y el Puente de las Bolas, el paseo de
+  Naos, la rotonda del marlin y el tanatorio.
+- Nuevo, porque sale en el video y no estaba:
+  * El aparcamiento de fuera del Deiland Plaza: firme, dos filas en bateria y sus coches.
+  * El cartel de piedra "MUNICIPIO DE ARRECIFE" al incorporarse a la autovia.
+  * Las letras blancas "ARRECIFE" sobre su muro de piedra en la rotonda de entrada, con la bandera de Espana.
+  * Las jardineras blancas en forma de bola de la avenida, pasado el Gran Hotel (15, en la acera del parque).
+- Visto en el video y sin hacer todavia: la gasolinera DISA y el portico de carteles de la autovia, las filas de
+  palmeras del arcen de la autovia (hay que comprobar cuantas tiene ya el juego), el edificio beis de la entrada,
+  los bancos blancos y las esculturas oxidadas del paseo, y las fachadas del centro una a una.
+- Archivos: recorridoHonda.js (nuevo) y barrios/compartido/index.js (tres lineas). Sin tocar main.js ni index.html.
+
+Version 157 - El Recinto Ferial, el Parque Tematico y su fuente (17/11/2026)
+- Jose Manuel aclaro que el "edificio" de al oeste del Cabildo no es un edificio: es el Recinto Ferial (Avenida Fred
+  Olsen, donde se monta el escenario del Carnaval; confirmado tambien buscandolo). El juego tenia ahi un bloque de
+  pisos de 9,5 m que tapaba el aparcamiento. Ahora es la cubierta gris sobre pilares, con el fondo cerrado y la
+  tarima del escenario, y debajo el aparcamiento al aire libre con sus filas y sus coches. Sin rotulos.
+- Toda esa zona (Recinto Ferial, plaza del Cabildo, rotonda de la Vela Latina y Parque Tematico) lleva de suelo la
+  foto aerea oficial del IGN a 20 cm por punto (antes, la foto general, borrosa).
+- El Parque Tematico salia como un cesped verde con arboles redondos. Ahora se ve como es: picon negro y rojo,
+  los paseos y las plazas de losa con su dibujo, el parque infantil y la zona de juegos.
+- La fuente del parque: el estanque en forma de pajarita con su borde blanco y sus chorros (antes, un surtidor
+  generico).
+- Corregido de la Version 155: el firme pintado de la explanada grande se salia sobre el mar; quitado.
+- Sin hacer: las fuentes nuevas que dice Jose Manuel (no salen en la foto aerea ni he encontrado donde estan), los
+  juegos del parque infantil uno a uno, y los edificios del parque (salen como bloques genericos).
+- Archivos: recintoFerial.js y reductoFoto.js (nuevos), explanadaReducto.js, barrios/compartido/index.js y las fotos
+  public/reducto/zona.jpg y zona-m.jpg (PNOA, IGN, CC BY 4.0). Sin tocar main.js ni index.html.
+
+Version 158 - La Avenida Fred Olsen, a lo largo de la Playa del Reducto (17/11/2026)
+- Comparada la avenida con la foto aerea oficial del IGN. Nuevo:
+  * El carril bici rojo del lado del mar, entre la calzada y el paseo, desde la rotonda del Barlovento hacia el este
+    (unos 320 m, hasta donde se acaba el rojo en la foto), con su raya del medio.
+  * Bancos blancos junto al carril, uno cada 16 m. En la foto son rectangulos blancos junto a cada palmera: no se ha
+    visto a pie de calle como son; aqui son un banco blanco sencillo.
+  * En la arena: la torre blanca del socorrista con su rampa, las dos pasarelas de madera que bajan del paseo (la
+    primera con su tarima) y las palmeras sueltas de la playa que faltaban.
+  * El suelo de toda esa franja, con la foto aerea oficial a 20 cm por punto.
+- Sin hacer: las fachadas de los edificios de la avenida (hacen falta fotos a pie de calle), el chiringuito de techo
+  oscuro de junto al quiosco octogonal (no se sabe que es) y las fuentes nuevas (no se sabe donde estan).
+- Archivos: avenidaFredOlsen.js (nuevo), reductoFoto.js (una funcion compartida), barrios/compartido/index.js y las
+  fotos public/reducto/avenida.jpg y avenida-m.jpg (PNOA, IGN, CC BY 4.0). Sin tocar main.js ni index.html.
+
+Version 159 - La parte de atras del Hospital Molina Orosa (calle Santiago Aleman) (17/11/2026)
+- Leidas las tres transcripciones de recursos\nuevas\clips_0-20s (las hizo otra herramienta, OpenCode) y vistas sus
+  hojas de fotogramas. Solo cubren los 20 primeros segundos de cada video:
+  * "hospital hiperdino": "Estamos dentro del hospital... y por la parte de detras... la calle Santiago Aleman".
+  * IMG_0423: sin voz en esos 20 s; una rotonda junto al puerto, una guagua y la Escuela de Arte.
+  * IMG_0424: "Salimos del parking del LIDL y voy a ir por la subida de San Bartolome, que es la que no tienes tu
+    muy clara". La subida empieza despues del segundo 20: ese trozo no esta todavia.
+- Nuevo en el juego: la parte de atras del hospital, que no tenia nada. El aparcamiento largo de entre el hospital y
+  la calle Santiago Aleman, con sus filas y sus coches; los dos aparcamientos del noroeste; y el suelo de toda esa
+  parte con la foto aerea oficial del IGN a 20 cm por punto.
+- Sin hacer: la valla verde y la marquesina de la entrada de atras (se ven en el video, no en la foto aerea) y la
+  subida de San Bartolome (falta el resto del video). En recursos\nuevas queda PARA_OPENCODE.md con el encargo para
+  sacar los tres videos enteros (un fotograma por segundo y la transcripcion completa) en Descargas.
+- Archivos: hospitalTrasera.js (nuevo), reductoFoto.js (una linea), barrios/argana-alta/index.js y las fotos
+  public/hospital/trasera.jpg y trasera-m.jpg (PNOA, IGN, CC BY 4.0). Sin tocar main.js ni index.html.
+
+
+Version 160 - La Casa Amarilla y la rotonda grande de entrada, junto al Cabildo (18/11/2026)
+- La Casa Amarilla (antigua sede del Cabildo, Calle Leon y Castillo 6), como en la foto de la fachada de
+  recursos\CASAAMARILLA: zocalo de piedra salmon, paredes de azulejo amarillo mostaza puesto como ladrillo, esquinas
+  y cornisas blancas, puerta central abierta con montante de forja, dos ventanas altas con contraventanas de madera
+  oscura, tres ventanas de arco arriba (la del centro con balcon de balaustres), tres mastiles con bandera (dos
+  amarillas y una blanca, lisas) y el fronton con la torrecilla del reloj. Antes era un bloque gris de una planta.
+  Los costados y la trasera no salen en la foto: van en blanco liso con ventanas sencillas (sin comprobar).
+  El rotulo generico de banco que el juego le colgaba encima pasa al edificio siguiente de la Calle Real.
+- La rotonda grande de entrada a Arrecife (Rambla Medular / Manolo Millares / LZ-2, junto al Cabildo), como en la
+  captura de recursos\SUBIDA EL CAVILDO y la foto aerea del IGN: isleta de picon negro de 75 m con bordillo, sus tres
+  palmeras al norte y tres corros de matas bajas, sin escultura. Antes el centro era solo la foto del suelo.
+  Sin hacer de esa captura: el quitamiedos con la cuneta de hormigon (no se sabe de donde a donde va).
+- "Argana hasta Tanatorio": no son 1.495 fotogramas sino 14.843 (cinco videos, uno cada 0,15 s). Repasados 57
+  repartidos por todo el recorrido. Lo que se ve y ya esta en el juego: la rotonda de la concha, McDonald's, Multi
+  Centro, ALDI, las calles estrechas con coches aparcados a los dos lados y el Castillo de San Jose. Rotulos que se
+  leen y NO estan puestos porque falta saber el sitio exacto (que lo diga Jose Manuel): Fruteria y Supermercado
+  Madina, gasolinera DISA, Petroprix, The Functional Club, Maycan Neumaticos, Flora Floristeria, Bar-Cafeteria El
+  Puente, Costa Azul Sushi, Duque Hermanos, Marisqueria Los Troncos, Suministros San Gines y la esquina de
+  "Video Juegos / Gamer Store". La cubierta de chapa con muro blanco, verja negra y palmeras del fotograma
+  03_IMG_0403/1500 NO es el Recinto Ferial (esta al otro lado de la calle): sin situar.
+- Sigue pendiente: la subida de San Bartolome (falta el video entero: recursos\nuevas\completo aun no existe) y las
+  fotos grandes de IMG_0397/0398/0399 (falta pasar CONVERTIR FOTOGRAMAS.bat).
+- Archivos: casaAmarilla.js y rotondaEntrada.js (nuevos), shops.js (una linea), barrios/arrecife-centro/index.js y
+  barrios/compartido/index.js (los enganches). Sin tocar main.js ni index.html.
+
+
+Version 161 - Los coches, de una pieza en los puentes (se acabo el coche "acordeon") (18/11/2026)
+- Lo vio Jose Manuel junto al puente del Cabildo: el coche parado tenia la chapa, los cristales y hasta las letras
+  del rotulo en zigzag, "como un acordeon". Pasaba en los puentes y pasos a distinto nivel: ahi la carretera se hunde
+  (o se sube) en el dibujo punto a punto, y en el talud de los lados, que es una cuesta muy fuerte, a cada trozo de
+  chapa le tocaba bajar una cosa distinta.
+- Ahora los coches, las motos y los quads (el tuyo, los del trafico, los aparcados y la policia) bajan y suben en esos
+  cruces de una pieza: el coche entero baja lo que le toca, se inclina con la rampa y se ladea con el talud, sin
+  deformarse. En el resto de la ciudad no cambia nada.
+- Sin arreglar: la gente que anda por esos taludes sigue deformandose un poco (se nota mucho menos que en un coche).
+- Los .bat: Jose Manuel no quiere .bat ya usados por ahi. Desde esta version cada .bat nuevo se borra solo al terminar
+  bien, y solo queda un "HACER" (el de la ultima version, que hace lo de todas las anteriores). Para los viejos esta
+  "BORRAR BAT USADOS.bat" (en Descargas\gta canarias): un doble clic, los borra y se borra el tambien. No se tocan
+  JUGAR.bat ni game\ABRIR-JUEGO.bat.
+- Archivos: cocheTrinchera.js (nuevo), carModels.js y motos.js (el enganche, dos lineas cada uno).
+  Sin tocar main.js ni index.html.
+
+
+Version 162 - La bajada de tu camino de tierra al barrio (calle Julio Cortazar) (18/11/2026)
+- Repasado entero lo convertido del video IMG_0397 (fotogramas 1 a 232; el conversor se paro ahi): es la salida en
+  coche del camino de tierra hacia el sur. Situado sobre la foto aerea del IGN: baja por la calle Julio Cortazar, la
+  del borde este del barrio (casas solo a la derecha, solar de lava a la izquierda), hasta el cruce en T del STOP.
+- En el juego esa calle venia entera como camino de tierra. Ahora, desde el edificio de la esquina para abajo, es
+  calle asfaltada con aceras y coches aparcados en linea a la derecha, como en el video.
+- En el cruce del final, lo que se ve en los fotogramas 204 a 216: el poste con el STOP y el prohibido girar a la
+  izquierda, los cuatro contenedores de la izquierda (verde, dos negros y amarillo), el solar vallado de la derecha
+  con la grua torre amarilla desmontada, y el coche plateado abandonado con su pegatina rosa.
+- Comprobado tambien el arreglo de la Version 161 en otro puente (Pereyra Galviaty): el coche baja entero.
+- Sin hacer: el color crema del edificio de la esquina, la valla de chapa ondulada y la casa del portal 65 (no se
+  sabe el sitio exacto), y las fachadas una a una. En el video no se lee ninguna placa de calle ni rotulo de negocio.
+- OJO, para que lo diga Jose Manuel: el mapa trae una carretera asfaltada que cruza el solar de lava de al lado (de
+  la esquina del camino hacia el sureste) y otra por en medio de la manzana; en el video ahi no hay carretera. No se
+  han quitado.
+- Falta por ver: el resto de IMG_0397 (233 a 300), IMG_0398, IMG_0399 y las capturas grandes: hay que pasar
+  CONVERTIR FOTOGRAMAS.bat y dejar la ventana abierta hasta que ponga "Terminado".
+- Archivos: bajadaCortazar.js (nuevo) y barrios/maneje/index.js (el enganche). Sin tocar main.js ni index.html.
+
+
+Version 163 - La entrada de atras del Hospital Molina Orosa (19/11/2026)
+- Del video "hospital hiperdino" (recursos\nuevas\clips_0-20s, segundo 4): lo que se ve desde el aparcamiento largo de
+  la calle Santiago Aleman y que faltaba desde la Version 159.
+- El pabellon de la entrada venia en el mapa 6,4 m mas ancho de la cuenta y llegaba hasta los coches aparcados. Se ha
+  echado atras esa cara (medido sobre la foto aerea del IGN) y ahora cabe el vial de la puerta.
+- Nuevo: el murete blanco con la barandilla verde de malla al borde del aparcamiento, el vial con las dos plazas
+  azules y el rayado amarillo, la marquesina gris sobre columnas redondas, la cristalera del vestibulo y los tres
+  lucernarios en piramide con su linterna de cristal.
+- Sin hacer: en la realidad el vial queda mas bajo que el aparcamiento; en el juego va a la misma altura. La senal de
+  prohibido aparcar y las palmeras de esa esquina no se han puesto.
+- Mirado tambien: el conector nuevo de Microsoft 365 (OneDrive) esta vacio; no hay recursos ahi. En los dos PC no hay
+  recursos nuevos desde el 18/11. El conversor de fotos sigue sin pasar de la foto 260 de 900.
+- Archivos: hospitalEntradaTrasera.js (nuevo) y barrios/argana-alta/index.js (el enganche). Sin tocar main.js ni
+  index.html.
+- SUBIDO A LA WEB (19/11/2026): la Version 163 esta en canaryislandconsulting.es/juego/. Se subio desde la sesion con
+  el conector de Hostinger: el juego nuevo (assets/index-DGNIdJJ4.js), las fotos aereas nuevas (campo, honda, norte,
+  reducto, hospital), map/terreno-norte.json y, al final, demo.html e index.html. No se toco el registro de usuarios
+  (los .php, .htaccess, privacidad.html y la carpeta datos). La pagina anterior (Version 133) queda guardada en
+  juego/index-anterior-v133.html y su js no se ha borrado. Comprobado: los 29 archivos que pide el juego dan 200 y el
+  js y los json salen identicos a los subidos. No se pudo abrir la web real en el navegador de pruebas.

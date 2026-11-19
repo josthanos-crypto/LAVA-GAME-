@@ -5,3 +5,4 @@ juego/
 *.zip
 *.log
 /*.png
+.shots/

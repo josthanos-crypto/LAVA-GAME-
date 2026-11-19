@@ -276,8 +276,8 @@ export class Police {
       c.flash.color.setHex(ph ? 0xff2020 : 0x2040ff);
       c.flash.intensity = on ? 25 : 0;
 
-      // choque con el jugador
-      if (d < 2.8) {
+      // choque con el jugador (si no va por el aire en un turbo salto)
+      if (d < 2.8 && !(player.air > 1.5)) {
         const nx = (px - c.pos.x) / (d || 1), nz = (pz - c.pos.y) / (d || 1);
         const push = 2.8 - d;
         player.pos.x += nx * push * 0.6;
