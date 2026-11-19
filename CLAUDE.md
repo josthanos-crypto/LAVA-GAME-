@@ -37,6 +37,11 @@ cada vez**. El índice es **`BARRIOS.md`** (en esta misma carpeta).
   tokens que quedan). Pasos caros: copiar al PC de casa, repasar vídeos o fotogramas con ayudantes, pruebas largas o
   de varias fotos, investigar un fallo a fondo y subir a la web. **Al PC de casa no se copia en cada versión**: solo
   cuando lo pida. Una foto de prueba por cambio. No repasar vídeos enteros: solo el fotograma del sitio que diga.
+- **Cómo gastar menos (elegido el 19/11/2026)**: (1) encargos pequeños y cerrados: un sitio, un archivo nuevo, una
+  carga del juego de prueba con todas sus fotos; (2) **una sola entrega al final** (publicar el enlace y subir a la
+  web una vez, con todo lo del rato), no una por cambio, y sin ZIP salvo que lo pida; (3) nada de ayudantes para mirar
+  vídeos: que él diga el sitio o mande una foto; (4) ante un fallo raro, preguntarle primero dónde estaba y qué hacía;
+  (5) recomendarle sesión nueva para cada bloque de trabajo (una conversación larga se relee entera y es lo más caro).
 - **Los `.bat`** (lo pidió el 18/11/2026): no quiere `.bat` ya usados por ahí. Cada `.bat` nuevo se borra solo al
   terminar bien (última línea: `(goto) 2>nul & del "%~f0"`) y solo se deja uno «HACER» (el de la última versión,
   que hace todo lo de las anteriores). El conector no puede borrar archivos: los que queden viejos se borran con un
