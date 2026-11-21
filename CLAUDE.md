@@ -65,6 +65,30 @@ El nombre elegido por José Manuel es **Lava Game**. En el juego todavía pone
 `window.__game` (en main.js) da acceso a todo desde las pruebas: `onFoot.placeAt(x, z, rumbo)`,
 `toggleFoot()`, `setTime(h)`, `camOverride = { pos, look, fov }` para fotos, `locales`, `dogs`...
 
+## Buenas prácticas web (skill `modern-web-guidance`, de Google Chrome)
+
+Lava Game es un juego de navegador, así que la skill `modern-web-guidance` se usa
+aquí (si no está cargada, funciona igual con `npx`; hace falta internet):
+
+- **Cuándo sí**: todo lo de `index.html` (pantalla de inicio, HUD, menús, mapa grande
+  con buscador, estilos), los controles del móvil (`touch.js`, `input.js`), la carga y
+  el rendimiento en el móvil (que arranque rápido, que no dé tirones), instalarlo como
+  app en el móvil (PWA), el sonido que arranca al tocar y la accesibilidad de los menús.
+- **Cuándo no**: lo 3D de three.js (gráficos, coches, personas, ciudad, física,
+  misiones). Las guías no cubren motores 3D: ahí no se busca nada.
+- **Cómo**: antes de escribir código de interfaz, buscar en inglés con 2–5 palabras
+  (`npx -y modern-web-guidance@latest search "searchable map dialog"`) y luego
+  `retrieve "<id>"` de lo que encaje. Aplicar lo que diga la guía sin rehacer lo que
+  ya funciona.
+- **Revisión general** (solo si José Manuel la pide): `npx -y
+  modern-web-guidance@latest legacy-scan src index.html --json`, descartar los falsos
+  positivos y darle un resumen corto en español sencillo (qué mejora en el juego, no
+  cómo está hecho). No cambiar nada hasta que diga que sí, y avisar antes de tocar
+  `main.js` o `index.html`.
+- Todo lo que salga de la guía tiene que seguir yendo fluido en un móvil normal: si
+  algo nuevo pesa, se queda fuera o solo en calidad alta.
+- Al terminar, una línea en español sencillo diciendo qué se mejoró gracias a la guía.
+
 ## Probar
 
 - `sh pruebas/servir.sh` compila y sirve el juego en `http://localhost:8765/sub/index.html`
