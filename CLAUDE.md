@@ -65,6 +65,62 @@ El nombre elegido por José Manuel es **Lava Game**. En el juego todavía pone
 `window.__game` (en main.js) da acceso a todo desde las pruebas: `onFoot.placeAt(x, z, rumbo)`,
 `toggleFoot()`, `setTime(h)`, `camOverride = { pos, look, fov }` para fotos, `locales`, `dogs`...
 
+## Skills para hacer juegos (`.claude/skills/threejs-*`)
+
+Instaladas en el proyecto las 9 skills de threejs-game-skills (majidmanzarpour,
+licencia MIT, copia del 27/09/2026). Claude Code las encuentra solo. Cuál usar:
+
+| Para qué | Skill |
+|---|---|
+| Trabajo grande o «que se vea estilo GTA V» (coordina a las demás) | `threejs-game-director` |
+| Conducción, a pie, cámara, misiones, policía, físicas | `threejs-gameplay-systems` |
+| Gráficos: materiales, luces, fachadas, volcán, efectos | `threejs-aaa-graphics-builder` |
+| Pantalla de inicio, marcador, menús, mapa grande, móvil | `threejs-game-ui-designer` |
+| Pantalla negra, tirones, fallos en el móvil | `threejs-debug-profiler` |
+| Probar en el navegador, fotos, compilación final | `threejs-qa-release` |
+| Personajes, coches, edificios en 3D con IA (Tripo) | `threejs-3d-generator` |
+| Texturas, logos, cielos con IA (Gemini) | `threejs-image-generator` |
+| Sonidos y música con IA (ElevenLabs) | `threejs-audio-generator` |
+
+Normas para usarlas en Lava Game (mandan sobre lo que digan las skills):
+- **No rehacer el juego.** Son para mejorar lo que hay: Lava Game ya es JavaScript +
+  three.js + Vite. No crear un proyecto nuevo con `create_threejs_game.py` ni pasar
+  el código a TypeScript.
+- Un arreglo pequeño sigue siendo pequeño: cargar solo la skill que toque.
+- Siempre fluido en un móvil normal; si algo pesa, solo en calidad alta.
+- Las 3 skills de IA (3D, imágenes, sonido) necesitan claves de API de pago. Las
+  claves las pone José Manuel: nunca crearlas, pedírselas ni tocarlas. Si no están,
+  usar lo procedural y decírselo. Antes de gastar en generar, decirle qué se va a
+  generar.
+- Las reglas de este archivo (español sencillo, no inventar datos de negocios,
+  avisar antes de tocar `main.js` o `index.html`, no borrar sin preguntar) siguen
+  mandando.
+- La puntuación «premium» de las skills solo si José Manuel pide calidad tipo GTA V.
+
+## Buenas prácticas web (skill `modern-web-guidance`, de Google Chrome)
+
+Lava Game es un juego de navegador, así que la skill `modern-web-guidance` se usa
+aquí (si no está cargada, funciona igual con `npx`; hace falta internet):
+
+- **Cuándo sí**: todo lo de `index.html` (pantalla de inicio, HUD, menús, mapa grande
+  con buscador, estilos), los controles del móvil (`touch.js`, `input.js`), la carga y
+  el rendimiento en el móvil (que arranque rápido, que no dé tirones), instalarlo como
+  app en el móvil (PWA), el sonido que arranca al tocar y la accesibilidad de los menús.
+- **Cuándo no**: lo 3D de three.js (gráficos, coches, personas, ciudad, física,
+  misiones). Las guías no cubren motores 3D: ahí no se busca nada.
+- **Cómo**: antes de escribir código de interfaz, buscar en inglés con 2–5 palabras
+  (`npx -y modern-web-guidance@latest search "searchable map dialog"`) y luego
+  `retrieve "<id>"` de lo que encaje. Aplicar lo que diga la guía sin rehacer lo que
+  ya funciona.
+- **Revisión general** (solo si José Manuel la pide): `npx -y
+  modern-web-guidance@latest legacy-scan src index.html --json`, descartar los falsos
+  positivos y darle un resumen corto en español sencillo (qué mejora en el juego, no
+  cómo está hecho). No cambiar nada hasta que diga que sí, y avisar antes de tocar
+  `main.js` o `index.html`.
+- Todo lo que salga de la guía tiene que seguir yendo fluido en un móvil normal: si
+  algo nuevo pesa, se queda fuera o solo en calidad alta.
+- Al terminar, una línea en español sencillo diciendo qué se mejoró gracias a la guía.
+
 ## Probar
 
 - `sh pruebas/servir.sh` compila y sirve el juego en `http://localhost:8765/sub/index.html`
