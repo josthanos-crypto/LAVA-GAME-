@@ -22,6 +22,8 @@ atar a un barrio, mejor va a la carpeta de ese barrio.
   que el mapa no traía. Solo nombre y punto de la ficha; el cartel se pone solo en la pared que da a la calle. No se pone
   si ya hay uno con ese nombre, si la pared es una fachada hecha a mano (`../../marcosHechos.json`) o si el negocio tiene
   modelo propio o está dentro de un centro comercial. Se colocan unos 110.
+- **La autovía LZ-2 hasta Playa Honda** (Version 164, `../../autoviaLZ2.js`): palmeras a los dos lados, los dos pórticos
+  de destinos, los carteles de salida (300/200/100 m y `PLAYA HONDA`), la señal del avión y la pantalla acústica.
 - **Detalles de los edificios** (`cityDetail.js`): azoteas, depósitos, balcones,
   contraventanas y árboles del mapa.
 

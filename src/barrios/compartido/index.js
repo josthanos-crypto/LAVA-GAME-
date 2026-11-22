@@ -37,6 +37,7 @@ import { buildSanJoseJardin } from '../../sanJoseJardin.js';
 import { tuneFaltabaCiudad } from '../../faltabaCiudad.js';
 import { tuneNorteFoto, buildNorteFoto } from '../../norteFoto.js';
 import { tuneRamblaFaltaba, buildRamblaFaltaba } from '../../ramblaFaltaba.js';
+import { tuneAutoviaLZ2, buildAutoviaLZ2 } from '../../autoviaLZ2.js';
 
 export const BARRIO = {
   id: 'compartido',
@@ -75,6 +76,8 @@ export function prepararMapa(map) {
   tuneAparcadosArgana(map);
   // el aparcamiento de fuera del Deiland Plaza, con sus coches (vídeo del recorrido Playa Honda → tanatorio)
   tuneRecorridoHonda(map);
+  // la autovía LZ-2 hasta Playa Honda: sus palmeras (kit de vídeos del 20-11-2026)
+  tuneAutoviaLZ2(map);
   buildWalkIndex(map.roads);
 }
 
@@ -96,6 +99,8 @@ export function construir({ scene, map, colliders, touch, story }) {
   buildExplanadaReducto(scene, map);
   // del vídeo Deiland Plaza → tanatorio: aparcamiento del Deiland, cartel del municipio, letras ARRECIFE y jardineras
   buildRecorridoHonda(scene, colliders, map);
+  // la autovía LZ-2: pórticos de destinos, carteles de salida, señal del aeropuerto y pantalla acústica
+  buildAutoviaLZ2(scene, colliders, map);
   // el Recinto Ferial: la cubierta con el escenario y el aparcamiento
   buildRecintoFerial(scene, colliders, map);
   // la isleta de picón de la rotonda grande de entrada (no venía en la lista de rotondas)

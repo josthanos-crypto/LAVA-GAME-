@@ -2195,3 +2195,28 @@ Version 163 - La entrada de atras del Hospital Molina Orosa (19/11/2026)
   (los .php, .htaccess, privacidad.html y la carpeta datos). La pagina anterior (Version 133) queda guardada en
   juego/index-anterior-v133.html y su js no se ha borrado. Comprobado: los 29 archivos que pide el juego dan 200 y el
   js y los json salen identicos a los subidos. No se pudo abrir la web real en el navegador de pruebas.
+
+Version 164 - La autovia LZ-2 hasta Playa Honda, del kit de videos del 20/11/2026 (22/11/2026)
+- Material: carpeta `gta recursos\20..11..2026` del PC de casa (OneDrive): 6 videos, 610 fotogramas y los textos
+  00_INDICE, DISENO-MUNDO, PLANOS-ZONAS y FICHAS-ASSETS. Solo se han leido los textos (indice, diseno y planos); no se
+  han abierto videos ni fotogramas.
+- Comparado con el juego y descartado por estar ya hecho: Conforama, Cash Diplo, Mercadona, Lidl, McDonald's, Repsol,
+  HiperDino, Arrecife Gran Hotel, la gasolinera de la LZ-2 (en el mapa sale como Moeve, el nombre nuevo de Cepsa), BP,
+  el aeropuerto, el tunel de la LZ-2 a Playa Honda, las paradas de guagua, las jardineras blancas de la avenida, el
+  parque infantil y las senales de STOP, ceda y limites.
+- Nuevo (autoviaLZ2.js): una fila de palmeras a cada lado de la autovia (135); el portico azul ARRECIFE / COSTA TEGUISE
+  / PLAYA BLANCA a la salida de Arrecife y el verde ARRECIFE / PLAYA BLANCA / AEROPUERTO en la circunvalacion; los
+  carteles de 300, 200 y 100 m antes de las cuatro salidas; el cartel azul PLAYA HONDA en sus dos salidas; la senal
+  azul del avion camino del aeropuerto; y la pantalla acustica de lamas (280 m, 4,6 m de alto) entre la autovia y la
+  calle Mastil de Playa Honda. La pantalla y los pilares de los porticos chocan; lo demas es adorno.
+- A ojo (el kit no trae medidas): el sitio exacto de los dos porticos, de la senal del avion y de la pantalla. Las
+  salidas si son las del mapa. Si Jose Manuel dice otro sitio, se cambia en PORTICOS, AVION y PANTALLA.
+- Comprobado: el juego carga sin errores y se han mirado las fotos de los dos porticos, la salida de Playa Honda, la
+  senal del avion y la pantalla, de dia y en PC. Sin comprobar: de noche, en movil y el rendimiento.
+- Pendiente del kit (no esta en el juego): los concesionarios y tiendas Nissan, Opel, Plus Car, Cicar, Diban, Cocinas
+  Santos, Cuko, Car Diplo, Optima, ROSA y Tools (falta su sitio exacto); la iglesia, la cafeteria de carretera y el
+  paseo de la playa de Playa Honda; los contenedores apilados del poligono; el cartel del estadio municipal; ambulancia,
+  autocaravana, moto de reparto y camion con contenedor en el trafico; la emisora de radio; El Campesino y la tienda de
+  la calle Tanganillo (nombres sin confirmar).
+- Archivos: autoviaLZ2.js (nuevo) y barrios/compartido/index.js (el enganche). Sin tocar main.js ni index.html.
+- Sin publicar todavia: ni el enlace ni la web.
