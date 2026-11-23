@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { mergeVertices } from 'three/addons/utils/BufferGeometryUtils.js';
 import { B, col, mix, shade, fin, smooth01, welded, skinPart, ell, box, tube, prober } from './humanParts.js';
+import { rasgosDe } from './rasgos.js';
 
 /**
  * La cabeza, en coordenadas propias (centro en el origen, la cara mira a +z):
@@ -15,15 +16,20 @@ const HS = 1.08;
 const HX = 0.079, HY = 0.118, HZ = 0.103;   // semiejes del cráneo
 
 /** punto de la esfera unidad → forma del cráneo (aún en unidades) */
-function skull(x, y, z, female) {
+function skull(x, y, z, female, R) {
   if (y < 0) {
     const t = -y;
     x *= female ? 1 - 0.4 * t * t : 1 - 0.2 * t * t - 0.16 * t ** 4; // la cara se estrecha hacia la barbilla (mandíbula más cuadrada en ellos)
     z *= z < 0 ? 1 - 0.45 * t : 1 - 0.08 * t;
+    // rasgos de cada cara (rasgos.js): mandíbula más ancha o más fina y barbilla más larga o más corta
+    x *= 1 + (R.mand - 1) * smooth01(t / 0.55);
+    y *= 1 + (R.barb - 1) * 0.9 * smooth01((t - 0.4) / 0.5);
+  } else {
+    y *= 1 + (R.frente - 1) * smooth01(y / 0.6);
   }
   if (z < 0) z *= 1.08;                         // cráneo más largo por detrás
   if (z > 0.6) z = 0.6 + (z - 0.6) * 0.55;      // cara plana
-  if (z > 0.3 && y > -0.35 && y < 0.05) x *= 1 + 0.04 * Math.cos((y + 0.15) * 8); // pómulos
+  if (z > 0.3 && y > -0.35 && y < 0.05) x *= 1 + 0.04 * R.pom * Math.cos((y + 0.15) * 8); // pómulos
   return [x, y, z];
 }
 
@@ -48,17 +54,18 @@ function beardMask(x, y, z) {
 // cabezas y peinados ya hechos, por tipo (cada persona copia el suyo y lo pinta)
 const HEADS = new Map(), HAIRS = new Map();
 
-function headGeo(female, beard, detail) {
-  const key = `${female}|${beard}|${detail}`;
-  if (!HEADS.has(key)) HEADS.set(key, makeHead(female, beard, detail));
+function headGeo(female, beard, detail, R) {
+  const key = `${female}|${beard}|${detail}|${R.id}`;
+  if (!HEADS.has(key)) HEADS.set(key, makeHead(female, beard, detail, R));
   return HEADS.get(key).clone();
 }
 
-function makeHead(female, beard, detail) {
-  const g = new THREE.SphereGeometry(1, detail > 1 ? 34 : 22, detail > 1 ? 26 : 16);
+function makeHead(female, beard, detail, R) {
+  // detail 0: la cabeza de lejos, con pocos triángulos
+  const g = new THREE.SphereGeometry(1, detail > 1 ? 34 : detail < 1 ? 14 : 26, detail > 1 ? 26 : detail < 1 ? 10 : 20);
   const p = g.getAttribute('position');
   for (let i = 0; i < p.count; i++) {
-    const [x, y, z0] = skull(p.getX(i), p.getY(i), p.getZ(i), female);
+    const [x, y, z0] = skull(p.getX(i), p.getY(i), p.getZ(i), female, R);
     const z = relief(x, y, z0, female);
     const s = beard ? 1 + 0.055 * beardMask(x, y, z0) : 1;   // la barba abulta
     p.setXYZ(i, x * HX * s, y * HY * s, z * HZ * s);
@@ -114,9 +121,9 @@ const lerpTab = (tab, a) => {
  * peinado, con surcos entre mechones (más oscuros) y algo de desorden.
  * Devuelve la malla y el color de cada vértice.
  */
-function hairGeo(style, { female, detail, hair, skin, under }) {
-  const key = `${style}|${female}|${detail}|${under}`;
-  if (!HAIRS.has(key)) HAIRS.set(key, makeHair(style, female, detail, under));
+function hairGeo(style, { female, detail, hair, skin, under, R }) {
+  const key = `${style}|${female}|${detail}|${under}|${R.id}`;
+  if (!HAIRS.has(key)) HAIRS.set(key, makeHair(style, female, detail, under, R));
   const g = HAIRS.get(key).clone();
   // color: surcos oscuros, puntas aclaradas por el sol (surf) y nacimiento suave
   const a = g.getAttribute('aux');
@@ -133,10 +140,10 @@ function hairGeo(style, { female, detail, hair, skin, under }) {
   return { g, cols };
 }
 
-function makeHair(style, female, detail, under) {
+function makeHair(style, female, detail, under, R) {
   const P = HAIR[style] || HAIR.short;
   const line = HAIRLINE[P.line];
-  const J = detail > 1 ? 56 : 32, I = detail > 1 ? 16 : 9;
+  const J = detail > 1 ? 56 : detail < 1 ? 16 : 32, I = detail > 1 ? 16 : detail < 1 ? 5 : 9;
   const th = P.th * under, groove = P.groove * under, messy = P.messy * under;
   const pos = [], aux = [], idx = [];
   for (let i = 0; i <= I; i++) {
@@ -148,7 +155,7 @@ function makeHair(style, female, detail, under) {
       if (P.fringe) thL += P.fringe * Math.max(0, Math.sin(phi * 9 + 0.6)) ** 2 * smooth01((1 - a) / 0.4);
       const t = thL * s;
       const ux = Math.sin(t) * Math.sin(phi), uy = Math.cos(t), uz = Math.sin(t) * Math.cos(phi);
-      const [kx, ky, kz] = skull(ux, uy, uz, female);
+      const [kx, ky, kz] = skull(ux, uy, uz, female, R);
       const noise = Math.sin(ux * 23 + uz * 17) * Math.cos(uy * 19 - ux * 7);
       const str = Math.sin(phi * P.n + s * 3 + Math.sin(phi * 3) * 1.4 + noise * 1.6) * smooth01(s / 0.15);
       const top = smooth01((1 - s) / 0.3);   // 0 en el nacimiento, 1 arriba
@@ -195,8 +202,10 @@ export function buildHead(o, parts, { female, detail }) {
   const stubble = female || beard || o.stubble === false ? 0 : 0.17;
 
   // ── cráneo y cara ──
-  const head = headGeo(female, beard, detail);
-  const { at, side } = faceProbe(`${female}|${beard}|${detail}`, head);
+  const R = rasgosDe(o);       // los rasgos de esta cara (rasgos.js)
+  const lo = detail < 1;       // de lejos: lo justo para que se lea una cara
+  const head = headGeo(female, beard, detail, R);
+  const { at, side } = faceProbe(`${female}|${beard}|${detail}|${R.id}`, head);
   // colorete: la propia piel algo más roja (en pieles oscuras no sale un sarpullido)
   const blush = [skin[0] * 1.14, skin[1] * 0.8, skin[2] * 0.78], beardC = fin(shade(hair, 0.82), 0.85);
   put(head, (x, y, z) => {
@@ -214,46 +223,53 @@ export function buildHead(o, parts, { female, detail }) {
   });
 
   // ojos: blanco, iris, pupila, párpado de arriba y línea de pestañas
-  const EX = 0.032, EY = 0.012;
+  const EX = 0.032 * R.sep, EY = 0.012, eo = R.ojo * 0.95;
   const zE = at(EX, EY);
   const white = fin(col(0xf1eee8), 0.16), iris = fin(col(o.eyes), 0.14), pupil = fin(col(0x070708), 0.1);
   const lid = fin(shade(skin, 0.93), 0.55), lash = fin(shade(col(o.hair), 0.25), 0.7);
   const hiE = detail > 1;
   for (const sx of [-1, 1]) {
     const ex = sx * EX;
-    put(ell(0.0118, 1.22, 0.86, 0.6, ex, EY, zE + 0.0012, hiE ? 14 : 10, hiE ? 10 : 6), white);
-    put(ell(0.0072, 1, 1, 0.4, ex, EY - 0.0005, zE + 0.0062, hiE ? 14 : 8, 6), (x, y) => (y > EY + 0.0035 ? shade(iris, 0.7) : iris));
-    put(ell(0.003, 1, 1, 0.35, ex, EY - 0.0005, zE + 0.009, 8, 4), pupil);
-    put(ell(0.0128, 1.3, 0.52, 0.66, ex, EY + 0.0079, zE + 0.0016, hiE ? 14 : 10, 6), lid);
-    put(tube([[ex - sx * 0.0145, EY + 0.0012, zE + 0.0046], [ex - sx * 0.006, EY + 0.0045, zE + 0.0077], [ex + sx * 0.003, EY + 0.0049, zE + 0.0081], [ex + sx * 0.0135, EY + 0.0022, zE + 0.0052]], female ? 0.0017 : 0.0011, hiE ? 12 : 6, 4), lash);
+    put(ell(0.0118 * eo, 1.22, 0.86, 0.6, ex, EY, zE + 0.0012, hiE ? 14 : lo ? 6 : 10, hiE ? 10 : lo ? 4 : 6), white);
+    put(ell(0.0072 * eo, 1, 1, 0.4, ex, EY - 0.0005, zE + 0.0062, hiE ? 14 : lo ? 6 : 8, lo ? 4 : 6), (x, y) => (y > EY + 0.0035 ? shade(iris, 0.7) : iris));
+    if (lo) continue;
+    put(ell(0.003 * eo, 1, 1, 0.35, ex, EY - 0.0005, zE + 0.009, 8, 4), pupil);
+    put(ell(0.0128 * eo, 1.3, 0.52, 0.66, ex, EY + 0.0079 * eo, zE + 0.0016, hiE ? 14 : 10, 6), lid);
+    put(tube([[ex - sx * 0.0145 * eo, EY + 0.0012, zE + 0.0046], [ex - sx * 0.006, EY + 0.0045 * eo, zE + 0.0077], [ex + sx * 0.003, EY + 0.0049 * eo, zE + 0.0081], [ex + sx * 0.0135 * eo, EY + 0.0022, zE + 0.0052]], female ? 0.0017 : 0.0011, hiE ? 12 : 6, 4), lash);
   }
   // cejas en arco
   const brow = fin(shade(col(o.hair), female ? 0.55 : 0.5), 0.75);
-  const BY = 0.034;
-  for (const sx of [-1, 1]) {
-    const pts = [[0.013, BY - 0.003], [0.024, BY + 0.0015], [0.036, BY + 0.0028], [0.049, BY - 0.0015]]
-      .map(([x, y]) => [sx * x, y, at(x, y) + 0.0016]);
-    put(tube(pts, female ? 0.0019 : 0.0031, hiE ? 12 : 6, 5), brow);
+  const BY = 0.034 + R.cejaY, arc = R.cejaArco;
+  for (const sx of lo ? [] : [-1, 1]) {
+    const pts = [[0.013, BY - 0.003 * arc], [0.024, BY + 0.0015 * arc], [0.036, BY + 0.0028 * arc], [0.049, BY - 0.0015 * arc]]
+      .map(([x, y]) => [sx * x, y, at(x, y) + 0.0012]);
+    put(tube(pts, (female ? 0.0018 : 0.0026) * R.ceja, hiE ? 12 : 6, 5), brow);
   }
   // nariz: caballete, punta, aletas y agujeros
   const nose = mix(skin, blush, 0.06);
-  put(ell(0.0075, 0.95, 2.9, 1, 0, -0.004, at(0, -0.002) + 0.0035, 10, 8, -0.3), nose);
+  // (Version 133) más fina y recogida que antes, y con el tamaño y el ancho de cada cara
+  const nz = R.nariz, na = R.naz;
+  put(ell(0.0066 * nz, 0.92 * na, 3.1, 1, 0, -0.004, at(0, -0.002) + 0.003, lo ? 6 : 10, lo ? 4 : 8, -0.3), nose);
   const zT = at(0, -0.021);
-  put(ell(0.0088, 1, 0.88, 0.95, 0, -0.0208, zT + 0.0098, hiE ? 14 : 10, 8), mix(skin, blush, 0.08));
-  for (const sx of [-1, 1]) {
-    put(ell(0.0058, 1, 0.8, 0.9, sx * 0.0098, -0.0238, at(0.0098, -0.0238) + 0.003, 10, 6), nose);
-    if (hiE) put(ell(0.0022, 1.5, 0.7, 1.1, sx * 0.0048, -0.0282, zT + 0.0078, 8, 4), fin(shade(skin, 0.35), 0.8));
+  put(ell(0.0079 * nz, 0.98 * na, 0.84, 0.95, 0, -0.0208, zT + 0.0086 * nz, hiE ? 14 : lo ? 6 : 10, lo ? 4 : 8), mix(skin, blush, 0.07));
+  for (const sx of lo ? [] : [-1, 1]) {
+    put(ell(0.005 * nz, 1, 0.78, 0.9, sx * 0.0088 * na, -0.0236, at(0.0088, -0.0236) + 0.0026, 10, 6), nose);
+    if (hiE) put(ell(0.0019, 1.5, 0.7, 1.1, sx * 0.0044 * na, -0.0276, zT + 0.007 * nz, 8, 4), fin(shade(skin, 0.42), 0.8));
   }
   // labios: el de arriba se oscurece hacia la comisura, el de abajo brilla algo
-  const lips = fin(mix(skin, col(female ? 0xb8404a : 0xa4574e), female ? 0.62 : 0.5), 0.36);
-  const dark = shade(lips, 0.55);
-  const lw = female ? 1 : 0.94, lt = female ? 1 : 0.8;
-  put(ell(0.0178 * lw, 1, 0.25 * lt, 0.3 * lt, 0, -0.0428, at(0, -0.0428) + 0.0016, hiE ? 16 : 10, 6), (x, y) => mix(lips, dark, smooth01((-0.0428 - y) / 0.0045)));
-  put(ell(0.0162 * lw, 1, 0.33 * lt, 0.38 * lt, 0, -0.0502, at(0, -0.0502) + 0.0022, hiE ? 16 : 10, 6), (x, y) => mix(lips, dark, 0.5 * smooth01((y + 0.0502) / 0.0053)));
+  // (Version 133) menos abultados y menos pintados: en ellos casi del color de la piel
+  const lips = fin(mix(skin, col(female ? 0xb8404a : 0xa4574e), female ? 0.52 : 0.34), female ? 0.36 : 0.5);
+  const dark = shade(lips, 0.62);
+  const lw = (female ? 1 : 0.94) * R.boca, lt = (female ? 1 : 0.8) * R.labio;
+  if (lo) put(ell(0.017 * lw, 1, 0.5 * lt, 0.22, 0, -0.0465, at(0, -0.0465) + 0.001, 6, 4), dark);
+  else {
+    put(ell(0.0178 * lw, 1, 0.25 * lt, 0.2, 0, -0.0428, at(0, -0.0428) + 0.0012, hiE ? 16 : 10, 6), (x, y) => mix(lips, dark, smooth01((-0.0428 - y) / 0.0045)));
+    put(ell(0.0162 * lw, 1, 0.33 * lt, 0.27, 0, -0.0502, at(0, -0.0502) + 0.0016, hiE ? 16 : 10, 6), (x, y) => mix(lips, dark, 0.5 * smooth01((y + 0.0502) / 0.0053)));
+  }
   // orejas, con la concha más oscura
   for (const sx of [-1, 1]) {
     const cx = sx * 0.0805;
-    put(ell(0.025, 0.34, 1, 0.68, cx, -0.004, -0.006, hiE ? 14 : 8, hiE ? 10 : 6), (x, y, z) => {
+    put(ell(0.025, 0.34, 1, 0.68, cx, -0.004, -0.006, hiE ? 14 : lo ? 6 : 8, hiE ? 10 : lo ? 4 : 6), (x, y, z) => {
       const out = (x - cx) * sx > 0.002;
       const r = Math.hypot((y + 0.006) / 0.018, (z + 0.005) / 0.012);
       return out && r < 1 ? mix(shade(skin, 0.72), blush, 0.12) : skin;
@@ -263,7 +279,7 @@ export function buildHead(o, parts, { female, detail }) {
   // ── pelo, gorra y gafas ──
   const under = o.cap ? 0.35 : 1;   // con gorra el pelo queda aplastado
   if (o.hairStyle !== 'calvo') {
-    const { g: hg, cols } = hairGeo(o.hairStyle, { female, detail, hair, skin, under });
+    const { g: hg, cols } = hairGeo(o.hairStyle, { female, detail, hair, skin, under, R });
     put(hg, (x, y, z, i) => cols[i]);
     if (o.hairStyle === 'ponytail') {
       const t = new THREE.CapsuleGeometry(0.026, 0.15, 3, 8);
@@ -284,7 +300,7 @@ export function buildHead(o, parts, { female, detail }) {
   }
   if (o.cap) {
     const cc = fin(col(o.capColor ?? 0x1c2a44), 0.85, true);
-    const crown = new THREE.SphereGeometry(0.114, 18, 10, 0, Math.PI * 2, 0, Math.PI * 0.45);
+    const crown = new THREE.SphereGeometry(0.114, lo ? 10 : 18, lo ? 5 : 10, 0, Math.PI * 2, 0, Math.PI * 0.45);
     crown.scale(0.86, 0.95, 1.06);
     crown.translate(0, 0.032, -0.008);
     put(welded(crown), (x, y) => (y > 0.138 ? shade(cc, 0.8) : cc));
@@ -296,14 +312,17 @@ export function buildHead(o, parts, { female, detail }) {
   }
   if (o.shades) {
     const lens = fin(col(0x0b0e12), 0.06), frame = fin(col(0x17181b), 0.3);
+    // las de aviador: cristal más grande y en gota
+    const big = o.aviator ? 1.22 : 1, drop = o.aviator ? 0.004 : 0;
     for (const sx of [-1, 1]) {
-      put(ell(0.0215, 1.12, 0.8, 0.3, sx * 0.034, 0.012, zE + 0.0125, 14, 8), lens);
+      put(ell(0.0215 * big, 1.12, o.aviator ? 0.92 : 0.8, 0.3, sx * 0.034 * (o.aviator ? 1.04 : 1), 0.012 - drop, zE + 0.0125, lo ? 8 : 14, lo ? 4 : 8), lens);
+      if (lo) continue;
       // patillas pegadas a la sien, hasta la oreja (con melena o pelo largo por los lados, solo asoma el principio)
       const covered = ['surf', 'long', 'curly'].includes(o.hairStyle);
       const pts = (covered ? [0.07, 0.05] : [0.07, 0.045, 0.02, -0.005]).map((z) => [sx * (side(0.019, z) + 0.0022), 0.019, z]);
       pts.unshift([sx * 0.059, 0.02, zE + 0.006]);
       put(tube(pts, 0.0019, 12, 4), frame);
     }
-    put(tube([[-0.059, 0.02, zE + 0.006], [-0.034, 0.0262, zE + 0.0135], [0, 0.0215, at(0, 0.021) + 0.003], [0.034, 0.0262, zE + 0.0135], [0.059, 0.02, zE + 0.006]], 0.0019, 16, 4), frame);
+    if (!lo) put(tube([[-0.059, 0.02, zE + 0.006], [-0.034, 0.0262, zE + 0.0135], [0, 0.0215, at(0, 0.021) + 0.003], [0.034, 0.0262, zE + 0.0135], [0.059, 0.02, zE + 0.006]], 0.0019, 16, 4), frame);
   }
 }

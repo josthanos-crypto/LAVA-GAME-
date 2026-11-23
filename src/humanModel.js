@@ -146,6 +146,9 @@ export function buildHuman(opts = {}) {
   const o = { ...DEFAULTS, ...opts };
   const female = o.sex === 'f';
   const hi = o.detail > 1;
+  // detail 0 (Version 133): la persona vista de lejos, con unos 2.000 triángulos (peds.js la enseña a partir de cierta distancia)
+  const lo = o.detail < 1;
+  const fino = (perfil) => (lo ? perfil.filter((_, i) => i % 2 === 0 || i === perfil.length - 1) : perfil);
   const bs = o.bottomStyle || (o.shorts ? 'shorts' : 'pants');
   const ts = bs === 'dress' ? (o.topStyle === 'long' ? 'long' : 'tank') : o.topStyle;
   const k = o.build * (female ? 0.9 : 1); // grosor de brazos y piernas
@@ -163,7 +166,7 @@ export function buildHuman(opts = {}) {
     const cs = g.userData.colors;
     parts.push(skinPart(g, (x, y, z, i) => cs[i], bone));
   };
-  const SEG = hi ? 14 : 10;
+  const SEG = hi ? 14 : lo ? 7 : 12;   // la gente de la calle también va más redondita
 
   // ── tronco ──
   const rings = (female ? RINGS_F : RINGS_M).map(([y, rx, rz, dz]) => [y, rx * o.build, rz * (0.6 + 0.4 * o.build) * (o.build > 1.1 ? 1.08 : 1), dz || 0]);
@@ -177,7 +180,7 @@ export function buildHuman(opts = {}) {
   if (beltOn) cuts.push(hem - 0.022);
   if (swimTop) cuts.push(SWIM_HEM, ...(ts === 'bikini' ? [BIK0, BIK1] : ts === 'swimsuit' ? [SUIT] : []));
   const cutRings = withCuts(rings, cuts);
-  const torso = torsoGeo(cutRings, { bust: female ? 0.034 : 0, belly: o.build > 1.12 ? (o.build - 1.05) * 0.25 : 0 }, hi ? 28 : 18);
+  const torso = torsoGeo(cutRings, { bust: female ? 0.034 : 0, belly: o.build > 1.12 ? (o.build - 1.05) * 0.25 : 0 }, hi ? 28 : lo ? 12 : 22);
   const beltC = beltOn ? cloth(o.belt, 0.5) : null;
   const topHem = shade(top, 0.84);
   add(torso, (x, y, z) => {
@@ -197,7 +200,7 @@ export function buildHuman(opts = {}) {
     return bottom;
   }, (x, y) => [B.hips, B.spine, smooth01((y - 1.0) / 0.12)]);
   // cuello de la camiseta (canalé)
-  if (crew) {
+  if (crew && !lo) {
     const [, rx, rz] = ringAt(cutRings, neckY);
     const g = new THREE.TorusGeometry(1, 0.07, 6, hi ? 32 : 20);
     g.rotateX(Math.PI / 2);
@@ -230,7 +233,7 @@ export function buildHuman(opts = {}) {
     // el bajo se cierra hacia dentro: no se ve el hueco desde ningún ángulo
     const kb = o.build;
     const prof = [[0.152 * kb, 1.0], [0.172 * kb, 0.93], [0.2 * kb, 0.8], [0.232 * kb, 0.64], [0.246 * kb, 0.56], [0.24 * kb, 0.547], [0.07, 0.552]];
-    const g = new THREE.LatheGeometry(prof.map(([r, y]) => new THREE.Vector2(r, y)).reverse(), 18);
+    const g = new THREE.LatheGeometry(prof.map(([r, y]) => new THREE.Vector2(r, y)).reverse(), lo ? 10 : 18);
     g.scale(1, 1, 0.86);
     const lx0 = 0.095 * 1.03 * Math.min(1.1, kb);
     add(g, (x, y) => (y < 0.549 ? shade(bottom, 0.5) : bottom), (x, y) => {
@@ -254,15 +257,15 @@ export function buildHuman(opts = {}) {
     const thighP = [[0, 0.09], [0.055, 0.075], [0.086, 0.03], [0.09, -0.02], [0.084, -0.12], [0.073, -0.25], [0.062, -0.36], [0.055, -0.42], [0.052, -0.43], [0.038, -0.465], [0, -0.478]]
       .map(([r, y]) => [(pants && y < -0.3 && y > -0.44 ? Math.max(r, 0.057) : r) * k * (female ? 1.05 : 1), y]);
     const tb = legBands('thigh');
-    const thigh = lathe(thighP, tb, tb.length && tb[tb.length - 1][0] < -1 ? bottom : skin, { segs: SEG, sz: 0.95 });
+    const thigh = lathe(fino(thighP), tb, tb.length && tb[tb.length - 1][0] < -1 ? bottom : skin, { segs: SEG, sz: 0.95 });
     thigh.translate(x0, HIP, 0);
     addLathe(thigh, legB);
     const shinP = [[0, 0.05], [0.04, 0.038], [0.052, 0.005], [0.056, -0.06], [0.06, -0.13], [0.052, -0.22], [0.04, -0.32], [0.033, -0.38], [0.032, -0.41], [0.02, -0.43], [0, -0.435]]
       .map(([r, y]) => [(pants && y < 0.02 && y > -0.42 ? Math.max(r, 0.056) : r) * k, y]);
-    const shin = lathe(shinP, legBands('shin'), pants ? shade(bottom, 0.8) : skin, { segs: SEG, sz: 0.95 });
+    const shin = lathe(fino(shinP), legBands('shin'), pants ? shade(bottom, 0.8) : skin, { segs: SEG, sz: 0.95 });
     shin.translate(x0, KNEE, 0);
     addLathe(shin, kneeB);
-    addShoe(o, add, { x0, kneeB, hi, skin, shoe, top });
+    addShoe(o, add, { x0, kneeB, hi, lo, skin, shoe, top });
   }
 
   // ── brazos: hombro (con manga) + antebrazo + mano ──
@@ -276,12 +279,12 @@ export function buildHuman(opts = {}) {
       .map(([r, y]) => [r * ka, y]);
     const cutS = female ? -0.09 : -0.13;
     const upBands = ts === 'tank' || swimTop ? [] : longSleeve ? [[-10, sleeve]] : [[cutS + 0.015, sleeve], [cutS, shade(sleeve, 0.86)]];
-    const up = lathe(upP, upBands, longSleeve ? sleeve : skin, { segs: SEG, cloth: 1.025 });
+    const up = lathe(fino(upP), upBands, longSleeve ? sleeve : skin, { segs: SEG, cloth: 1.025 });
     up.translate(x0, SH, 0);
     addLathe(up, armB);
     const foreP = [[0, 0.042], [0.03, 0.034], [0.043, 0.01], [0.045, -0.04], [0.04, -0.12], [0.033, -0.2], [0.029, -0.24], [0.02, -0.255], [0, -0.26]]
       .map(([r, y]) => [r * ka, y]);
-    const fore = lathe(foreP, longSleeve ? [[-0.205, sleeve], [-0.225, shade(sleeve, 0.84)]] : [], skin, { segs: SEG });
+    const fore = lathe(fino(foreP), longSleeve ? [[-0.205, sleeve], [-0.225, shade(sleeve, 0.84)]] : [], skin, { segs: SEG });
     if (!longSleeve) {
       // la muñeca se aplana hacia la mano (más ancha que gruesa)
       const q = fore.getAttribute('position');
@@ -293,7 +296,7 @@ export function buildHuman(opts = {}) {
     }
     fore.translate(x0, ELBOW, 0);
     addLathe(fore, elbB);
-    addHand(add, { x0, side, elbB, hi, skin, k });
+    addHand(add, { x0, side, elbB, hi, lo, skin, k });
     // reloj en la muñeca izquierda
     if (watch && side < 0) {
       const wy = ELBOW - 0.226, rw = 0.0305 * ka + 0.0025;
@@ -309,7 +312,7 @@ export function buildHuman(opts = {}) {
 
   // ── cuello y cabeza ──
   const kn = female ? 0.95 : 1.17;
-  const neckG = lathe([[0, 0.17], [0.046 * kn, 0.16], [0.05 * kn, 0.08], [0.054 * kn, 0.0], [0.06 * kn, -0.04], [0, -0.05]], [], skin, { segs: hi ? 16 : 10, sz: 0.95 });
+  const neckG = lathe([[0, 0.17], [0.046 * kn, 0.16], [0.05 * kn, 0.08], [0.054 * kn, 0.0], [0.06 * kn, -0.04], [0, -0.05]], [], skin, { segs: hi ? 16 : lo ? 6 : 10, sz: 0.95 });
   neckG.translate(0, NECK - 0.07, 0.0);
   const neckW = (x, y) => [B.spine, B.head, smooth01((y - (NECK - 0.03)) / 0.08)];
   addLathe(neckG, neckW);
@@ -386,10 +389,11 @@ export function buildHuman(opts = {}) {
 }
 
 /** mano: con detalle, palma y cinco dedos algo curvados; si no, manopla con pulgar */
-function addHand(add, { x0, side, elbB, hi, skin, k }) {
+function addHand(add, { x0, side, elbB, hi, lo, skin, k }) {
   const hy = ELBOW - 0.25;
   if (!hi) {
-    add(ell(1, 0.021 * k, 0.074, 0.043, x0, hy - 0.06, 0.006, 8, 6), skin, elbB);
+    add(ell(1, 0.021 * k, 0.074, 0.043, x0, hy - 0.06, 0.006, lo ? 6 : 8, lo ? 4 : 6), skin, elbB);
+    if (lo) return;
     const thumb = new THREE.CapsuleGeometry(0.0115, 0.035, 2, 5);
     thumb.rotateX(0.55);
     thumb.translate(x0 - side * 0.006, hy - 0.035, 0.04);
@@ -407,12 +411,12 @@ function addHand(add, { x0, side, elbB, hi, skin, k }) {
 }
 
 /** calzado; con detalle, suela con entresuela, cordones, franja lateral y talón */
-function addShoe(o, add, { x0, kneeB, hi, skin, shoe, top }) {
+function addShoe(o, add, { x0, kneeB, hi, lo, skin, shoe, top }) {
   const ankle = KNEE - 0.42;
   const style = o.shoeStyle;
   const barefoot = style === 'barefoot', sandal = style === 'sandal', sneaker = style === 'sneaker';
   const sole = barefoot ? shade(skin, 0.9) : sneaker ? fin(col(0xf4f4f0), 0.7) : sandal ? col(0x3a2a1c) : fin(shade(col(o.shoes), 0.55), 0.6);
-  const upper = new THREE.CapsuleGeometry(0.047, 0.15, hi ? 5 : 3, hi ? 14 : 8);
+  const upper = new THREE.CapsuleGeometry(0.047, 0.15, hi ? 5 : lo ? 2 : 3, hi ? 14 : lo ? 6 : 8);
   upper.rotateX(Math.PI / 2);
   {
     const q = upper.getAttribute('position');

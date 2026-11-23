@@ -3,6 +3,14 @@ import { mergeGeometries, toCreasedNormals } from 'three/addons/utils/BufferGeom
 import { DecalGeometry } from 'three/addons/geometries/DecalGeometry.js';
 import { contactShadowTexture, plateTexture } from './textures.js';
 import { brandMaterial, brandReady, drawRearBanner } from './brand.js';
+import { drawLogo } from './marcas.js';
+import { makeBike } from './motos.js';
+import { ruedaFina } from './ruedas.js';
+import { LUNA, ensuciar, tulipas, halos, pinza } from './cocheDetalle.js';
+import { cocheLejos, RESTO_LEJOS, LUCES_LEJOS, setLucesLejos, distanciaLejos } from './cocheLejos.js';
+import { matriculaAzar, matriculaTex, MATRICULA_ALTO } from './matriculas.js';
+import { adornos, retrovisor } from './cocheAdornos.js';
+import { rigidoEnTrinchera } from './cocheTrinchera.js';
 
 /**
  * Coches por secciones: a lo largo del coche se colocan secciones
@@ -31,8 +39,9 @@ const K = {
   seat: [0.11, 0.07, 0.05],
   bed: [0.04, 0.04, 0.045],
   grey: [0.3, 0.31, 0.33],
+  stop: [0.5, 0.03, 0.02],   // tercera luz de freno (cocheAdornos.js)
 };
-const TRIM = new Set([K.black, K.under, K.gap, K.interior, K.seat, K.bed, K.grey]);
+const TRIM = new Set([K.black, K.under, K.gap, K.interior, K.seat, K.bed, K.grey, K.stop]);
 /** 0 pintura · 1 plástico/goma/interior · 2 cristal */
 const classOf = (col) => (col === K.glass ? 2 : TRIM.has(col) ? 1 : 0);
 
@@ -54,7 +63,7 @@ const MODELS = {
     drive: { MAX_SPEED: 40, ENGINE: 13, RADIUS: 1.15, WHEELBASE: 2.5 },
   },
   sedan: {
-    brand: 'Alisio', name: 'Berlina', len: [-2.32, 2.32], width: 1.8, clear: 0.17,
+    brand: 'Alisio', name: 'Brisa', len: [-2.32, 2.32], width: 1.8, clear: 0.17,
     wheelR: 0.32, wheels: [1.42, -1.27], rim: 'alloy5',
     deck: [[-2.32, 0.93], [-2.24, 1.0], [-1.7, 1.04], [-1.2, 1.03], [1.0, 0.98], [1.6, 0.92], [2.1, 0.83], [2.32, 0.73]],
     roof: [[-1.68, 1.04], [-1.05, 1.41], [-0.7, 1.45], [0.25, 1.46], [1.02, 0.98]],
@@ -64,7 +73,7 @@ const MODELS = {
     drive: { MAX_SPEED: 44, ENGINE: 13 },
   },
   estate: {
-    brand: 'Alisio', name: 'Familiar', len: [-2.32, 2.32], width: 1.8, clear: 0.17,
+    brand: 'Alisio', name: 'Brisa Familiar', len: [-2.32, 2.32], width: 1.8, clear: 0.17,
     wheelR: 0.32, wheels: [1.42, -1.27], rim: 'alloy5',
     deck: [[-2.32, 0.98], [-2.25, 1.02], [-1.6, 1.04], [1.0, 0.98], [1.6, 0.92], [2.1, 0.83], [2.32, 0.73]],
     roof: [[-2.32, 1.34], [-2.12, 1.42], [-0.5, 1.45], [0.25, 1.44], [1.02, 0.98]],
@@ -74,7 +83,7 @@ const MODELS = {
     drive: { MAX_SPEED: 43, ENGINE: 12.5 },
   },
   suv: {
-    brand: 'Malpaís', name: '4x4', len: [-2.38, 2.38], width: 1.92, clear: 0.3,
+    brand: 'Malpaís', name: 'Famara 4x4', len: [-2.38, 2.38], width: 1.92, clear: 0.3,
     wheelR: 0.39, tireW: 0.28, wheels: [1.48, -1.42], rim: 'alloy6', archGap: 0.08,
     deck: [[-2.38, 1.12], [-2.32, 1.18], [1.35, 1.18], [1.95, 1.13], [2.3, 1.04], [2.38, 0.96]],
     roof: [[-2.38, 1.84], [-2.05, 1.9], [0.75, 1.9], [1.42, 1.18]],
@@ -188,12 +197,32 @@ const MODELS = {
     colors: [0x7fb2d6, 0xeadfb8, 0xb83228, 0xe7c43a, 0x6e9b52, 0xf2f2f2],
     drive: { MAX_SPEED: 34, ENGINE: 10, RADIUS: 1.1, WHEELBASE: 2.4 },
   },
+  // el descapotable eléctrico de dos plazas, bajito y corto, con las tomas de aire detrás de las puertas
+  // y la zaga alta con su pequeño alerón. Lleva el turbo salto (JUMP, car.js)
+  roadster: {
+    brand: 'Chispa', name: 'Órbita', len: [-1.98, 1.98], width: 1.85, clear: 0.12,
+    wheelR: 0.31, tireW: 0.25, wheels: [1.22, -1.13], rim: 'sport', caliper: 0xc0c4c8, archGap: 0.05,
+    deck: [[-1.98, 0.78], [-1.9, 0.94], [-1.5, 1.0], [-0.8, 0.98], [-0.2, 0.9], [0.6, 0.83], [1.3, 0.74], [1.8, 0.6], [1.98, 0.48]],
+    // solo el parabrisas, muy tumbado
+    roof: [[0.14, 0.86], [0.17, 1.12], [0.24, 1.13], [0.66, 0.82]],
+    topGlass: [[0.24, 0.66]], open: true, cockpit: [-0.78, 0.14], doors: [0.62, -0.58], intake: [-1.0, -0.62],
+    tumble: 0.22, nose: [0.55, 0.24], tail: [0.3, 0.12], bulge: 0.03, fender: 0.07, seats: true, spoiler: 'duck', doorUp: true,
+    front: { lights: 'swept', grille: 'mesh' }, rear: { lights: 'round4' },
+    colors: [0xf2f2f2, 0xb3121d, 0x101418, 0x2c5cc5, 0xf2c500, 0xc0c4c8],
+    drive: { MAX_SPEED: 56, ENGINE: 20, BRAKE: 26, RADIUS: 1.15, WHEELBASE: 2.35, JUMP: 1 },
+  },
 };
 // variantes con rotulación: taxi y Policía Local (sobre la berlina blanca)
 MODELS.taxi = { ...MODELS.sedan, name: 'Taxi', taxi: true, colors: [0xf2f2f2] };
 MODELS.police = {
   ...MODELS.sedan, name: 'Policía Local', livery: 'police', checker: 0.24, lightBar: true, colors: [0xf4f5f7],
   rear: { ...MODELS.sedan.rear, text: 'POLICÍA LOCAL' },
+};
+// el coche «Lava»: el premio por reunir todas las piedras de lava (tecla L). El Cráter en negro, con las pinzas
+// naranjas y el brillo de lava por debajo (main.js lavaGlow); el más rápido del juego. No sale en el tráfico (FLEET)
+MODELS.lava = {
+  ...MODELS.super, name: 'Lava', caliper: 0xff5a14, colors: [0x0b0b0d],
+  drive: { MAX_SPEED: 62, ENGINE: 21, BRAKE: 28, RADIUS: 1.3 },
 };
 
 const DEFAULTS = {
@@ -203,14 +232,30 @@ const DEFAULTS = {
   pillarCol: 'paint', roofCol: 'paint', doors: [], pillars: [], topGlass: [],
 };
 
+// motos y quads (las piezas, en motos.js): marca, modelo, colores y cómo van. LEAN: se inclina en las curvas
+export const BIKES = {
+  moto: {
+    brand: 'Tinajo', name: 'Rayo 650', colors: [0xd8271c, 0x101418, 0x2c5cc5, 0xf2c500, 0xf2f2f2, 0x2f7a3a],
+    drive: { MAX_SPEED: 50, ENGINE: 18, BRAKE: 24, RADIUS: 0.55, WHEELBASE: 1.42, MAX_STEER: 0.6, LEAN: 1 },
+  },
+  quad: {
+    brand: 'Malpaís', name: 'Jable 450', colors: [0xe2661b, 0x2f4a3a, 0xd8271c, 0x1b1e22, 0xf2c500],
+    drive: { MAX_SPEED: 30, ENGINE: 12, BRAKE: 18, RADIUS: 0.7, WHEELBASE: 1.18, MAX_STEER: 0.62 },
+  },
+};
+
 export const TYPE_NAMES = Object.keys(MODELS);
 /** marca y modelo, para el cartel al subirte ("Volcanía Timanfaya GT") */
 export function modelName(type) {
-  const m = MODELS[type];
+  const m = MODELS[type] || BIKES[type];
   return m ? `${m.brand} ${m.name}` : '';
 }
+/** marca de cada modelo (para el logotipo del volante y el cartel al subirte) */
+export function brandOf(type) { return (MODELS[type] || BIKES[type])?.brand || ''; }
+/** la forma del coche (secciones, puertas, cristales): la usan las puertas, intermitentes y salpicadero (carKit.js) */
+export function carShape(type) { return buildModel(MODELS[type] ? type : 'sedan'); }
 /** cómo va cada coche (velocidad, aceleración, tamaño): lo usa car.js */
-export const DRIVE = Object.fromEntries(Object.entries(MODELS).map(([k, m]) => [k, m.drive || {}]));
+export const DRIVE = Object.fromEntries(Object.entries({ ...MODELS, ...BIKES }).map(([k, m]) => [k, m.drive || {}]));
 
 // ── utilidades ──
 const lerp = (a, b, t) => a + (b - a) * t;
@@ -405,11 +450,8 @@ function extras(s, at) {
   // retrovisores: brazo negro, carcasa del color del coche y espejo hacia atrás
   {
     const z = frontWin - 0.1, c = at(z), x0 = c.hw - s.inset;
-    for (const sx of [-1, 1]) {
-      add(box(0.09, 0.045, 0.07, sx * (x0 + 0.03), c.yo + 0.07, z, K.black));
-      add(box(0.15, 0.1, 0.11, sx * (x0 + 0.13), c.yo + 0.1, z - 0.01, K.paint));
-      add(box(0.12, 0.075, 0.015, sx * (x0 + 0.135), c.yo + 0.1, z - 0.07, K.black));
-    }
+    // con forma de retrovisor (cocheAdornos.js): antes eran tres cajas
+    for (const sx of [-1, 1]) for (const g of retrovisor({ colored, K }, x0, c.yo + 0.09, z, sx)) add(g);
   }
   // tiradores de las puertas
   for (let i = 0; i < s.doors.length - 1; i++) {
@@ -458,14 +500,34 @@ function extras(s, at) {
     add(box(0.5, 0.08, 0.6, 0, c.yt + 0.05, 1.1, K.black, 0.06));
   }
   if (s.seats) {
+    // (Version 151) asientos de cubo de verdad, en vez de tres cajas: banqueta y respaldo redondeados con sus
+    // orejas a los lados, reposacabezas, y detrás de cada uno el arco antivuelco de tubo
+    const redondo = (w, h, d, x, y, z, col, rx = 0) => {
+      const g = new THREE.SphereGeometry(0.5, 9, 6);
+      g.scale(w, h, d);
+      if (rx) g.rotateX(rx);
+      g.translate(x, y, z);
+      return colored(g, col);
+    };
+    const TUBO = [0.48, 0.5, 0.54];      // el acero de los arcos
     for (const sx of [-1, 1]) {
-      const z = -0.62;
-      add(box(0.46, 0.16, 0.45, sx * 0.36, 0.68, z + 0.15, K.seat));
-      add(box(0.46, 0.55, 0.12, sx * 0.36, 0.95, z - 0.12, K.seat, -0.22));
-      add(box(0.26, 0.16, 0.1, sx * 0.36, 1.28, z - 0.2, K.seat, -0.22));
-      // arco antivuelco
-      add(box(0.06, 0.34, 0.06, sx * 0.36, 1.08, z - 0.38, K.black));
+      const z = -0.62, x = sx * 0.36;
+      add(redondo(0.48, 0.2, 0.52, x, 0.68, z + 0.15, K.seat));                 // la banqueta
+      add(redondo(0.44, 0.66, 0.16, x, 0.97, z - 0.13, K.seat, -0.22));          // el respaldo
+      for (const o of [-0.21, 0.21]) {
+        add(redondo(0.1, 0.5, 0.2, x + o, 0.95, z - 0.08, K.seat, -0.22));       // las orejas del respaldo
+        add(redondo(0.1, 0.16, 0.44, x + o, 0.72, z + 0.15, K.seat));            // y las de la banqueta
+      }
+      add(redondo(0.24, 0.17, 0.11, x, 1.3, z - 0.22, K.seat, -0.22));           // el reposacabezas
+      // arco antivuelco: medio aro de tubo, detrás del asiento
+      const aro = new THREE.TorusGeometry(0.17, 0.025, 5, 9, Math.PI);
+      aro.translate(x, 1.12, z - 0.4);
+      add(colored(aro, TUBO));
+      for (const o of [-0.17, 0.17]) add(box(0.05, 0.2, 0.05, x + o, 1.02, z - 0.4, TUBO));
     }
+    // la consola del centro, entre los dos asientos, con la palanca
+    add(box(0.16, 0.14, 0.7, 0, 0.72, -0.4, K.interior));
+    add(box(0.035, 0.12, 0.035, 0, 0.84, -0.2, TUBO));
     // salpicadero y volante (conductor a la izquierda: +x)
     add(box(1.3, 0.12, 0.3, 0, 0.86, 0.1, K.interior));
     const w = new THREE.TorusGeometry(0.17, 0.025, 6, 18);
@@ -497,6 +559,8 @@ function extras(s, at) {
     add(box(w + 0.02, 0.08, z1 - z0 + 0.02, 0, y0 + 0.04, (z0 + z1) / 2, K.black));
     add(box(w + 0.02, 0.05, z1 - z0 + 0.02, 0, y1 - 0.025, (z0 + z1) / 2, K.grey));
   }
+  // juntas, gomas, limpias, tercera luz de freno, antena y faldón (cocheAdornos.js)
+  for (const g of adornos(s, { at, halfRing, colored, K })) add(g);
   return parts;
 }
 
@@ -510,7 +574,9 @@ function rr(ctx, x, y, w, h, r) {
   ctx.beginPath();
   ctx.roundRect ? ctx.roundRect(x, y, w, h, r) : ctx.rect(x, y, w, h);
 }
-function emblem(ctx, X, Y, PX, x, y, r, letter) {
+/** el emblema de la marca (marcas.js); si la marca no tiene, un botón cromado con la inicial */
+function emblem(ctx, X, Y, PX, x, y, r, letter, marca) {
+  if (drawLogo(ctx, X(x), Y(y), r * PX, marca)) return;
   const g = ctx.createRadialGradient(X(x) - r * PX * 0.3, Y(y) - r * PX * 0.3, 1, X(x), Y(y), r * PX);
   g.addColorStop(0, '#ffffff');
   g.addColorStop(1, '#8d939a');
@@ -668,7 +734,9 @@ function drawDecal(s, ring, front, belt, branded = false) {
       };
       both(L);
       if (st.fog) both(sx => headRound(sx * (hw - 0.2), yb + 0.11, 0.042));
-      if (st.grille !== 'muscle' && st.grille !== 'intake') emblem(ctx, X, Y, PX, 0, Math.min(top - 0.06, gy1 + 0.0), 0.045, letter);
+      if (st.grille !== 'muscle' && st.grille !== 'intake') emblem(ctx, X, Y, PX, 0, Math.min(top - 0.06, gy1 + 0.0), 0.055, letter, s.brand);
+      // el muscle lleva el emblema en medio de la parrilla y el superdeportivo, en la punta del morro
+      else emblem(ctx, X, Y, PX, 0, st.grille === 'muscle' ? (gy0 + gy1) / 2 - 0.01 : top - 0.06, st.grille === 'muscle' ? 0.05 : 0.045, letter, s.brand);
       if (st.text) {
         ctx.fillStyle = '#1f4fa8';
         ctx.font = `800 ${Math.round(0.07 * PX)}px "Barlow Condensed", "Arial Narrow", Arial, sans-serif`;
@@ -748,7 +816,7 @@ function drawDecal(s, ring, front, belt, branded = false) {
         ctx.fillText(s.brand.toUpperCase(), X(-hw + 0.16), Y(ry));
         ctx.textAlign = 'right';
         ctx.fillText(s.name.toUpperCase(), X(hw - 0.16), Y(ry));
-        emblem(ctx, X, Y, PX, 0, ry + 0.06, 0.04, letter);
+        emblem(ctx, X, Y, PX, 0, ry + 0.07, 0.05, letter, s.brand);
       }
       if (branded && st.window) {
         // la web en la luneta, como en los coches de empresa
@@ -938,6 +1006,8 @@ function buildModel(type) {
     start += n;
   });
   body.computeBoundingSphere();
+  // suciedad ligera en bajos y estela de las ruedas (cocheDetalle.js); el cristal no se toca
+  ensuciar(body, s, [0, 1].reduce((n, k) => n + (merged[k] ? merged[k].getAttribute('position').count : 0), 0));
 
   const secF = secs[secs.length - 1], secR = secs[0];
   const df = drawDecal(s, ringF, true, secF.yt);
@@ -956,7 +1026,7 @@ function buildModel(type) {
   const adGeo = s.ad ? new THREE.PlaneGeometry(adZ[1] - adZ[0], (adZ[1] - adZ[0]) / 4) : null;
   const out = {
     s, body, decalF, decalR, matF: df.mat, matR: dr.mat, secF, secR, ringF, ringR, shadowGeo, adGeo, adZ,
-    dims: { width: Math.max(s.width, s.box ? s.box.w : 0), length: s.zf - s.zr, roofY, belt: s.deckF(0), wheelR: s.wheelR, wheelBase: s.wheels[0] - s.wheels[1], zf: s.zf, zr: s.zr },
+    dims: { width: Math.max(s.width, s.box ? s.box.w : 0), length: s.zf - s.zr, roofY, belt: s.deckF(0), wheelR: s.wheelR, wheelBase: s.wheels[0] - s.wheels[1], wheelZ: [s.wheels[0], s.wheels[1]], zf: s.zf, zr: s.zr },
     at, roofZ, livery: null,
   };
   bodyCache.set(type, out);
@@ -983,18 +1053,17 @@ function paintMat(color) {
   return m;
 }
 
-const PLATES = [];
-function plateMat() {
-  if (PLATES.length < 12) {
-    const L = 'BCDFGHJKLMNPRSTVWXYZ';
-    let t = String(Math.floor(Math.random() * 10000)).padStart(4, '0') + ' ';
-    for (let i = 0; i < 3; i++) t += L[Math.floor(Math.random() * L.length)];
-    PLATES.push(new THREE.MeshStandardMaterial({ map: plateTexture(t), roughness: 0.35 }));
-    return PLATES[PLATES.length - 1];
+// matrículas inventadas con su portamatrículas (matriculas.js); vieja: las de provincia de los coches clásicos
+const PLATES = [], PLATES_OLD = [];
+function plateMat(vieja = false) {
+  const pool = vieja ? PLATES_OLD : PLATES;
+  if (pool.length < (vieja ? 4 : 12)) {
+    pool.push(new THREE.MeshStandardMaterial({ map: matriculaTex(matriculaAzar(vieja)), roughness: 0.4, metalness: 0.1 }));
+    return pool[pool.length - 1];
   }
-  return PLATES[Math.floor(Math.random() * PLATES.length)];
+  return pool[Math.floor(Math.random() * pool.length)];
 }
-const PLATE_GEO = new THREE.PlaneGeometry(0.52, 0.11);
+const PLATE_GEO = new THREE.PlaneGeometry(0.52, MATRICULA_ALTO);
 
 // rótulos: letrero de taxi y anuncios de las furgonetas
 let taxiMat = null;
@@ -1092,6 +1161,9 @@ function liveryGeo(M) {
 }
 
 const SHADOW_MAT = new THREE.MeshBasicMaterial({ map: contactShadowTexture(), transparent: true, depthWrite: false, opacity: 0.85 });
+const PINZA_GRIS = new THREE.MeshStandardMaterial({ color: 0x4a4d52, roughness: 0.5, metalness: 0.6 });
+// lo que cocheLejos.js necesita de aquí para sacar la carrocería ligera de las mismas secciones
+const TALLER = { section, halfRing, faceColor, classOf };
 const HEAD_ROUND = new THREE.MeshStandardMaterial({ color: 0xf4f6ff, emissive: 0xfff3d6, emissiveIntensity: 0.5, roughness: 0.1, metalness: 0.5 });
 const CALIPERS = new Map();
 
@@ -1099,7 +1171,8 @@ const CALIPERS = new Map();
  * Crea un coche listo para la escena. Devuelve { group, body, wheels, headlights,
  * taillights, dims, model }: car.js gira body (balanceo) y wheels (rodadura/dirección).
  */
-export function makeCar(type = 'sedan', bodyColor, { brand = false } = {}) {
+export function makeCar(type = 'sedan', bodyColor, { brand = false, rider = false } = {}) {
+  if (BIKES[type]) return makeBike(type, bodyColor ?? BIKES[type].colors[0], { rider });
   const M = buildModel(MODELS[type] ? type : 'sedan');
   const s = M.s;
   const color = bodyColor ?? s.colors[0];
@@ -1108,15 +1181,16 @@ export function makeCar(type = 'sedan', bodyColor, { brand = false } = {}) {
   const body = new THREE.Group();
   group.add(body);
 
-  body.add(new THREE.Mesh(M.body, [paintMat(color), TRIM_MAT, GLASS_MAT]));
+  const paint = paintMat(color);
+  body.add(new THREE.Mesh(M.body, [paint, TRIM_MAT, LUNA]));
   body.add(new THREE.Mesh(M.decalF, M.matF));
   const matR = branded ? drawDecal(s, M.ringR, false, M.secR.yt, true).mat : M.matR;
   body.add(new THREE.Mesh(M.decalR, matR));
 
   // matrículas
-  const pm = plateMat();
+  const pm = plateMat(s.rim === 'classic');
   const pf = new THREE.Mesh(PLATE_GEO, pm);
-  pf.position.set(0, M.secF.yb + 0.14, s.zf + 0.012);
+  pf.position.set(0, M.secF.yb + 0.15, s.zf + 0.012);
   body.add(pf);
   const pr = new THREE.Mesh(PLATE_GEO, pm);
   const rearPlateY = s.rear.window || s.rear.cargo ? M.secR.yb + 0.2 : M.secR.yb + 0.17;
@@ -1127,6 +1201,14 @@ export function makeCar(type = 'sedan', bodyColor, { brand = false } = {}) {
   const detail = [pf, pr];
   const headlights = [M.matF];
   const taillights = [matR];
+  // cristal abombado de faros y pilotos, y su resplandor de noche (cocheDetalle.js)
+  const tul = tulipas(M);
+  const tulMesh = tul ? new THREE.Mesh(tul.geo, tul.mat) : null;
+  if (tulMesh) { body.add(tulMesh); detail.push(tulMesh); }
+  const halo = halos(M);
+  body.add(halo.grupo);
+  // lo que también se ve de lejos (rótulos y letrero de taxi): se repite sobre la carrocería ligera
+  const deLejos = [];
 
   if (branded) {
     // Canary Consulting en las puertas y en el techo
@@ -1143,6 +1225,34 @@ export function makeCar(type = 'sedan', bodyColor, { brand = false } = {}) {
     }
   }
 
+  if (rider) {
+    // el conductor, visible dentro: cabeza, torso y brazos hacia el volante (lado izquierdo)
+    const SKIN = [0xf1d3b8, 0xe8c4a2, 0xd9a882, 0xc28a62, 0x9a6844];
+    const ROPA = [0xe8e4da, 0x3a5f8a, 0xb84a36, 0x557a4a, 0x2c3e50, 0xd8b030, 0x7a6a9a];
+    const skin = SKIN[Math.floor(Math.random() * SKIN.length)];
+    const ropa = ROPA[Math.floor(Math.random() * ROPA.length)];
+    const cab = M.at(-0.35);
+    const dxp = -Math.min(0.37 * s.width / 1.8, cab.hw - 0.42);
+    const headY = cab.yr - 0.17;
+    const drv = new THREE.Group();
+    drv.name = 'conductorNPC';
+    const tor = new THREE.Mesh(new THREE.BoxGeometry(0.42, 0.52, 0.26), new THREE.MeshStandardMaterial({ color: ropa, roughness: 0.9 }));
+    tor.position.set(dxp, headY - 0.42, -0.42);
+    drv.add(tor);
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.13, 10, 8), new THREE.MeshStandardMaterial({ color: skin, roughness: 0.75 }));
+    head.position.set(dxp, headY, -0.4);
+    drv.add(head);
+    const pelo = new THREE.Mesh(new THREE.SphereGeometry(0.135, 10, 6, 0, Math.PI * 2, 0, Math.PI * 0.45), new THREE.MeshStandardMaterial({ color: 0x2a2018, roughness: 0.9 }));
+    pelo.position.copy(head.position);
+    drv.add(pelo);
+    for (const sx of [-0.17, 0.17]) {
+      const arm = new THREE.Mesh(new THREE.BoxGeometry(0.09, 0.09, 0.4), new THREE.MeshStandardMaterial({ color: ropa, roughness: 0.9 }));
+      arm.position.set(dxp + sx, headY - 0.32, -0.16);
+      arm.rotation.x = -0.25;
+      drv.add(arm);
+    }
+    body.add(drv);
+  }
   if (s.taxi) {
     const c = M.at(-0.25);
     const sign = new THREE.Mesh(TAXI_BOX, taxiSignMat());
@@ -1151,6 +1261,7 @@ export function makeCar(type = 'sedan', bodyColor, { brand = false } = {}) {
     const green = new THREE.Mesh(TAXI_DOT, TAXI_GREEN);
     green.position.set(0.22, c.yr + 0.2, -0.25);
     body.add(green);
+    deLejos.push(sign, green);
   }
   if (s.ad) {
     // costado de carga: la lona de Canary Consulting o el anuncio de otro negocio de aquí
@@ -1166,6 +1277,7 @@ export function makeCar(type = 'sedan', bodyColor, { brand = false } = {}) {
       ad.position.set(sx * (c.hw + s.bulge * s.width * 0.9 + 0.012), y, (z0 + z1) / 2);
       ad.rotation.y = sx * Math.PI / 2;
       body.add(ad);
+      deLejos.push(ad);
     }
   }
   if (s.box) {
@@ -1179,12 +1291,14 @@ export function makeCar(type = 'sedan', bodyColor, { brand = false } = {}) {
       ad.position.set(sx * (w / 2 + 0.006), (y0 + y1) / 2, (z0 + z1) / 2);
       ad.rotation.y = sx * Math.PI / 2;
       body.add(ad);
+      deLejos.push(ad);
     }
     if (branded) {
       const back = new THREE.Mesh(new THREE.PlaneGeometry(w - 0.08, y1 - y0 - 0.1), brandMaterial('truckRear'));
       back.position.set(0, (y0 + y1) / 2, z0 - 0.006);
       back.rotation.y = Math.PI;
       body.add(back);
+      deLejos.push(back);
     }
   }
   if (s.fenders) {
@@ -1201,7 +1315,9 @@ export function makeCar(type = 'sedan', bodyColor, { brand = false } = {}) {
 
   // ruedas
   const wheels = [];
-  const { tire, rim, rimMat } = wheelGeos(s.wheelR, s.tireW, s.rim);
+  // ruedas con detalle (ruedas.js): neumático con dibujo y llanta con radios, tuercas y disco de freno
+  const { tire, rim, rimMat, tireMat, rLlanta } = ruedaFina(s.wheelR, s.tireW, s.rim);
+  const pinzaGeo = pinza(rLlanta, s.tireW);
   let calMat = null;
   if (s.caliper) {
     if (!CALIPERS.has(s.caliper)) CALIPERS.set(s.caliper, new THREE.MeshStandardMaterial({ color: s.caliper, roughness: 0.4, metalness: 0.3 }));
@@ -1213,19 +1329,22 @@ export function makeCar(type = 'sedan', bodyColor, { brand = false } = {}) {
       const pivot = new THREE.Group();
       const w = new THREE.Group();
       const rimMesh = new THREE.Mesh(rim, rimMat);
-      w.add(new THREE.Mesh(tire, TIRE), rimMesh);
+      w.add(new THREE.Mesh(tire, tireMat), rimMesh);
       detail.push(rimMesh);
       w.scale.x = sx;
       pivot.position.set(sx * (c.hw - s.tireW / 2 + 0.005), s.wheelR, z);
       pivot.add(w);
-      if (calMat) {
-        const cal = new THREE.Mesh(CAL_GEO, calMat);
-        cal.position.set(sx * (s.tireW / 2 - 0.08), s.wheelR * 0.3, -s.wheelR * 0.28);
+      {
+        // pinza de freno sobre el disco: de color en los deportivos, gris en los demás
+        const cal = new THREE.Mesh(pinzaGeo, calMat || PINZA_GRIS);
+        cal.scale.x = sx;
         pivot.add(cal);
         detail.push(cal);
       }
       group.add(pivot);
+      // pivot, base, x, z: para la suspensión (car.js sube cada rueda con el bordillo)
       const proxy = {
+        pivot, base: s.wheelR, x: pivot.position.x, z,
         rotation: {
           set x(v) { w.rotation.x = v; },
           get x() { return w.rotation.x; },
@@ -1244,8 +1363,24 @@ export function makeCar(type = 'sedan', bodyColor, { brand = false } = {}) {
   shadow.renderOrder = 1;
   group.add(shadow);
 
+  // de lejos: carrocería ligera con las ruedas fundidas (cocheLejos.js). Los coches patrulla no la usan
+  let lejos = null;
+  if (!s.lightBar) {
+    lejos = new THREE.Group();
+    lejos.name = 'cocheLejos';
+    lejos.visible = false;
+    lejos.add(new THREE.Mesh(cocheLejos(M, TALLER), [paint, RESTO_LEJOS, LUCES_LEJOS]));
+    for (const o of deLejos) lejos.add(o.clone());
+    group.add(lejos);
+  }
+
   group.traverse(o => { if (o.isMesh && o !== shadow) { o.castShadow = true; o.receiveShadow = true; } });
+  if (tulMesh) { tulMesh.castShadow = false; tulMesh.receiveShadow = false; }
   group.userData.headlights = headlights;
+  // para la puerta que se abre, los intermitentes y el salpicadero (carKit.js)
+  group.userData.carType = MODELS[type] ? type : 'sedan';
+  group.userData.body = body;
+  group.userData.paint = paint;
   group.userData.taillights = taillights;
   // de lejos no se ven llantas ni matrículas: menos trabajo para el móvil
   let near = true;
@@ -1254,10 +1389,28 @@ export function makeCar(type = 'sedan', bodyColor, { brand = false } = {}) {
     near = v;
     for (const o of detail) o.visible = v;
   };
+  // de día, apagadas: el cristal del faro se ve claro igual, pero no brilla
   group.userData.setLights = (night) => {
-    for (const m of headlights) m.emissiveIntensity = 0.45 + night * 2.6;
-    for (const m of taillights) m.emissiveIntensity = 0.45 + night * 1.6;
+    for (const m of headlights) m.emissiveIntensity = night * 3.05;
+    for (const m of taillights) m.emissiveIntensity = night * 2.05;
+    halo.set(night);
+    setLucesLejos(night);
   };
+  // según la distancia a la cámara: de cerca el coche con todo su detalle; de lejos, la carrocería ligera
+  let cerca = true;
+  const pivotes = wheels.map(w => w.pivot);
+  group.userData.setDist = (d) => {
+    if (!lejos) return;
+    const lim = distanciaLejos();
+    const c = cerca ? d < lim + 4 : d < lim;
+    if (c === cerca) return;
+    cerca = c;
+    body.visible = c;
+    for (const p of pivotes) p.visible = c;
+    lejos.visible = !c;
+  };
+  // en los puentes (trinchera.js) el coche baja y se inclina de una pieza, sin arrugarse (cocheTrinchera.js)
+  rigidoEnTrinchera(group);
   return { group, body, wheels, headlights, taillights, dims: M.dims, model: type, brand: branded };
 }
 
@@ -1265,6 +1418,7 @@ export function makeCar(type = 'sedan', bodyColor, { brand = false } = {}) {
 export const FLEET = [
   ['hatch', 16], ['sedan', 12], ['estate', 6], ['suv', 10], ['pickup', 10], ['van', 6], ['kangoo', 8],
   ['truck', 5], ['taxi', 7], ['beetle', 4], ['cabrio', 4], ['muscle', 4], ['sport', 4], ['super', 2],
+  ['moto', 9], ['quad', 3],
 ];
 /** parte de los vehículos que llevan la rotulación de Canary Consulting */
 export const BRAND_SHARE = 0.8;
@@ -1275,7 +1429,7 @@ export function pickModel(r1 = Math.random(), r2 = Math.random()) {
   let t = r1 * FLEET_TOTAL;
   let type = FLEET[0][0];
   for (const [k, w] of FLEET) { if (t < w) { type = k; break; } t -= w; }
-  const colors = MODELS[type].colors;
+  const colors = (MODELS[type] || BIKES[type]).colors;
   return { type, color: colors[Math.floor(r2 * colors.length) % colors.length] };
 }
 
@@ -1283,14 +1437,21 @@ export function pickModel(r1 = Math.random(), r2 = Math.random()) {
 export function prewarmCars() {
   for (const t of TYPE_NAMES) {
     const M = buildModel(t);
+    tulipas(M);
     if (M.s.lightBar) continue;
+    cocheLejos(M, TALLER);
     liveryGeo(M);
     drawDecal(M.s, M.ringR, false, M.secR.yt, true);
   }
 }
 
-export function randomTrafficCar() {
-  const { type, color } = pickModel();
+/** un coche del tráfico al azar; force: un modelo concreto (siempre hay alguna moto y algún quad) */
+export function randomTrafficCar(force = null) {
+  const pick = pickModel();
+  const type = force || pick.type;
+  const colors = (MODELS[type] || BIKES[type]).colors;
+  const color = force ? colors[Math.floor(Math.random() * colors.length)] : pick.color;
   const brand = Math.random() < BRAND_SHARE;
-  return { ...makeCar(type, color, { brand }), type, color, brand };
+  // las motos y los quads del tráfico llevan su piloto con casco
+  return { ...makeCar(type, color, { brand, rider: true }), type, color, brand };
 }

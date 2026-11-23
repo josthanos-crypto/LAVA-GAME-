@@ -1,7 +1,9 @@
 import * as THREE from 'three';
 import { buildHuman } from './humanModel.js';
+import { store } from './save.js';
+import { andar, reposo } from './andares.js';
 
-// Los cuatro protagonistas — todos rubios, cada uno con su rollo
+// Los protagonistas: los cuatro rubios de siempre, cada uno con su rollo
 export const CHARACTERS = {
   noah: {
     name: 'Noah',
@@ -15,6 +17,8 @@ export const CHARACTERS = {
     shorts: true,
     shades: true,          // gafas de sol siempre
     hairStyle: 'surf',
+    build: 0.96,           // delgado, de surfero (Version 133)
+    shoeAccent: 0xff7a45,  // franja coral en las zapatillas, a juego con las mangas
   },
   michael: {
     name: 'Michael',
@@ -28,6 +32,8 @@ export const CHARACTERS = {
     shorts: false,
     shades: false,
     hairStyle: 'short',
+    build: 1.08,           // ancho de hombros (Version 133)
+    belt: 0x2a1f16,        // cinturón de cuero oscuro
   },
   jose: {
     name: 'José',
@@ -41,6 +47,9 @@ export const CHARACTERS = {
     shorts: false,
     shades: false,
     hairStyle: 'short',
+    build: 1.04,
+    belt: 0x6a4a30,        // cinturón marrón, a juego con los zapatos (Version 133)
+    stubble: false,        // bien afeitado
   },
   iria: {
     name: 'Iria',
@@ -57,6 +66,7 @@ export const CHARACTERS = {
     shades: false,
     hairStyle: 'ponytail',
     height: 1.66,
+    shoeAccent: 0xff7a8a,  // franja coral en las zapatillas, a juego con el top (Version 133)
   },
 };
 
@@ -66,39 +76,44 @@ export function defaultLook(key) {
   return {
     skin: c.skin, hair: c.hair, top: c.torso, sleeves: c.torso2, bottom: c.legsCol,
     shoes: c.shoes, shoeStyle: c.shoeStyle, shorts: c.shorts, shades: c.shades, hairStyle: c.hairStyle, height: c.height || 1.8,
-    beard: false, cap: false, capColor: 0x1c2a44, topStyle: c.topStyle || 'tshirt', build: 1, sex: c.sex || 'm',
+    beard: false, cap: false, capColor: 0x1c2a44, topStyle: c.topStyle || 'tshirt', build: c.build || 1, sex: c.sex || 'm',
+    aviator: !!c.aviator,
+    cara: CHARACTERS[key] ? key : 'noah',   // cada protagonista, su cara (rasgos.js)
+    belt: c.belt ?? null, shoeAccent: c.shoeAccent ?? null, stubble: c.stubble,
   };
 }
 
 /** aspecto actual: el de fábrica más lo que hayas personalizado (guardado en el navegador) */
 export function getLook(key) {
   let saved = {};
-  try { saved = JSON.parse(localStorage.getItem('gtac.look.' + key) || '{}'); } catch { /* sin almacenamiento */ }
+  try { saved = JSON.parse(store.get('gtac.look.' + key) || '{}'); } catch { /* guardado roto: el de fábrica */ }
   return { ...defaultLook(key), ...saved };
 }
 
 export function setLook(key, look) {
-  try { localStorage.setItem('gtac.look.' + key, JSON.stringify(look)); } catch { /* sin almacenamiento */ }
+  store.set('gtac.look.' + key, JSON.stringify(look));
 }
 
 export function resetLook(key) {
-  try { localStorage.removeItem('gtac.look.' + key); } catch { /* sin almacenamiento */ }
+  store.remove('gtac.look.' + key);
 }
 
 export function buildCharacter(key, look = getLook(key)) {
   // el protagonista lleva todo el detalle: dedos, cordones, bolsillos, reloj...
-  return buildHuman({ ...look, detail: 2 });
+  const parts = buildHuman({ ...look, detail: 2 });
+  CHARACTERS[key]?.dress?.(parts);
+  return parts;
 }
 
 const WALK_SPEED = 4.4;
 const TURN_SPEED = 3.2;
 const RADIUS = 0.42;
-const FOOT_Y = 0.17; // entre la calzada y la acera
+const FOOT_Y = 0.2;  // entre la calzada (0,14) y la acera (0,24)
 
 export class OnFoot {
   constructor(scene) {
     this.scene = scene;
-    this.charKey = 'noah';
+    this.charKey = 'noah';   // con 1–4 se cambia a los otros
     this.parts = buildCharacter(this.charKey);
     this.mesh = this.parts.group;
     this.mesh.visible = false;
@@ -110,6 +125,11 @@ export class OnFoot {
     // compatibilidad con tráfico/peatones (los coches lo apartan, sin daño)
     this.vel = new THREE.Vector2(0, 0);
     this.crashPulse = 0;
+    // sentado en una silla de un local (locales.js): { x, z, heading, y, eat }
+    this.sitting = null;
+    // nadar: waterAt lo engancha main.js (terrain.js); swim pasa de 0 (a pie) a 1 (nadando)
+    this.waterAt = null;
+    this.swim = 0;
   }
 
   /** vuelve a montar el personaje (tras cambiarle el aspecto) */
@@ -148,8 +168,14 @@ export class OnFoot {
   forward() { return new THREE.Vector2(Math.sin(this.heading), Math.cos(this.heading)); }
 
   update(dt, input, colliders) {
+    if (this.sitting) { reposo(this.parts); this.sitPose(dt); return; }
+    // en el agua se nada: más despacio, tumbado y a brazadas; al pisar la orilla se sale andando
+    const inWater = this.waterAt ? (this.waterAt(this.pos.x, this.pos.y) ? 1 : 0) : 0;
+    this.swim += (inWater - this.swim) * Math.min(1, dt * 4);
+    const sw = this.swim;
     this.heading -= input.steer * -TURN_SPEED * dt;
-    const target = Math.max(0, input.throttle) * WALK_SPEED - Math.max(0, -input.throttle) * 2;
+    let target = Math.max(0, input.throttle) * WALK_SPEED - Math.max(0, -input.throttle) * 2;
+    target *= 1 - 0.6 * sw;
     this.speed += (target - this.speed) * Math.min(1, dt * 8);
 
     const f = this.forward();
@@ -161,15 +187,64 @@ export class OnFoot {
       this.pos.y += c.nz * c.depth;
     }
 
-    this.phase += Math.abs(this.speed) * dt * 3.4;
+    this.phase += (Math.abs(this.speed) + sw * 1.4) * dt * 3.4;
     const amt = Math.min(1, Math.abs(this.speed) / 3);
-    const swing = Math.sin(this.phase) * amt * 0.5;
-    this.parts.legL.rotation.x = swing;
-    this.parts.legR.rotation.x = -swing;
-    this.parts.armL.rotation.x = -swing * 0.8;
-    this.parts.armR.rotation.x = swing * 0.8;
+    const mix = (a, b) => a + (b - a) * sw;
+    const crawl = Math.sin(this.phase * 0.9);
+    // en tierra, paso natural (andares.js): anda despacio y corre a partir de unos 2,5 m/s
+    const v = Math.abs(this.speed);
+    if (sw < 0.98) {
+      andar(this.parts, this.phase, { zancada: amt * (this.speed < 0 ? 0.6 : 1), correr: Math.max(0, Math.min(1, (v - 2.2) / 1.6)), peso: 1 - sw });
+    } else reposo(this.parts);
+    if (sw > 0.01) {
+      const P = this.parts;
+      P.legL.rotation.x = mix(P.legL.rotation.x, 0.3 * Math.sin(this.phase * 2.2));
+      P.legR.rotation.x = mix(P.legR.rotation.x, -0.3 * Math.sin(this.phase * 2.2));
+      P.armL.rotation.x = mix(P.armL.rotation.x, -1.6 + crawl * 1.5);
+      P.armR.rotation.x = mix(P.armR.rotation.x, -1.6 - crawl * 1.5);
+    }
 
-    this.mesh.position.set(this.pos.x, FOOT_Y + Math.abs(Math.sin(this.phase)) * 0.03 * amt, this.pos.y);
+    const bob = Math.sin(this.phase * 0.7) * 0.05 * sw;
+    this.mesh.position.set(this.pos.x, mix(FOOT_Y + Math.abs(Math.sin(this.phase)) * 0.03 * amt, -0.3 + bob), this.pos.y);
+    this.mesh.rotation.x = sw * 1.25;
     this.mesh.rotation.y = this.heading;
+  }
+
+  /** sentado: la cadera en el asiento, las piernas dobladas y, si come, el tenedor del plato a la boca */
+  sitPose(dt) {
+    const s = this.sitting, p = this.parts;
+    this.speed = 0;
+    this.pos.set(s.x, s.z);
+    this.heading = s.heading;
+    p.legL.rotation.x = -1.5; p.legR.rotation.x = -1.45;
+    p.kneeL.rotation.x = 1.5; p.kneeR.rotation.x = 1.45;
+    p.spine.rotation.x = 0.1;
+    if (s.eat) {
+      s.t = (s.t || 0) + dt;
+      const k = Math.max(0, Math.sin(s.t * 2.4));          // sube el tenedor, se lo come y baja
+      p.armR.rotation.x = -0.95 - k * 1.05; p.armR.rotation.z = 0.22 + k * 0.2;
+      p.armL.rotation.x = -0.8; p.armL.rotation.z = -0.12;
+      p.spine.rotation.x = 0.18 - k * 0.08;
+    } else {
+      p.armL.rotation.x = -0.75; p.armR.rotation.x = -0.8;
+      p.armL.rotation.z = -0.06; p.armR.rotation.z = 0.06;
+    }
+    this.mesh.position.set(s.x, FOOT_Y + s.y, s.z);
+    this.mesh.rotation.y = s.heading;
+  }
+
+  /** se baja de la moto o del quad: vuelve a la postura de andar */
+  unride() {
+    const p = this.parts;
+    for (const k of ['legL', 'legR', 'kneeL', 'kneeR', 'armL', 'armR', 'elbowL', 'elbowR', 'spine']) p[k]?.rotation.set(0, 0, 0);
+  }
+
+  /** se levanta de la silla y se queda de pie en (x, z) */
+  standUp(x, z) {
+    const p = this.parts;
+    this.sitting = null;
+    p.kneeL.rotation.x = 0; p.kneeR.rotation.x = 0; p.spine.rotation.x = 0;
+    p.armL.rotation.z = 0; p.armR.rotation.z = 0;
+    this.placeAt(x, z, this.heading);
   }
 }

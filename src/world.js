@@ -1,9 +1,12 @@
 import * as THREE from 'three';
+import { applyOneWay, crossings, Calzada } from './sentidos.js';
+import { aplicarPlantas } from './plantas.js';
+import { roadMarks, cutLine } from './marcasViales.js';
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { SegmentGrid } from './collision.js';
 import {
   groundTexture, asphaltTexture, sidewalkTexture, pedestrianTexture,
-  sandTexture, facadeTexture, groundStrips, barkTexture,
+  sandTexture, facadeVariants, groundStrips, barkTexture, charcoGroundStrip, charcoFacadeTexture, charcoBalconyTexture,
   waterNormalTexture, frondTexture,
 } from './textures.js';
 import { buildParksAndPlazas } from './parks.js';
@@ -11,13 +14,25 @@ import { buildSports } from './sports.js';
 import { createSky, createStars, createClouds, oceanMaterial, windowGlow } from './realism.js';
 import { isTouchDevice } from './touch.js';
 import { applyExtras } from './extraData.js';
+import { zone, markZones, charcoPromenade } from './zones.js';
+import { makeRoadIndex } from './roadIndex.js';
+import { caraArriba } from './caraArriba.js';
 
 export async function loadMap(onProgress) {
   onProgress?.('Descargando mapa de Arrecife…', 10);
-  const res = await fetch('map/arrecife.json');
-  return applyExtras(await res.json());
+  const [res, sen, pla] = await Promise.all([fetch('map/arrecife.json'), fetch('map/sentidos.json').catch(() => null),
+    fetch('map/plantas.json').catch(() => null)]);
+  const map = applyExtras(await res.json());
+  // sentidos de las calles y pasos de peatones de OpenStreetMap (sentidos.js); sin ellos, todo doble sentido
+  try { map.sentidos = sen && sen.ok ? await sen.json() : null; } catch { map.sentidos = null; }
+  // plantas reales de los edificios (Catastro, plantas.js): antes de los retoques a mano de los barrios
+  try { map.plantas = aplicarPlantas(map, pla && pla.ok ? await pla.json() : null); } catch { map.plantas = null; }
+  return map;
 }
 
+
+/** cuánto sube la acera sobre la calzada (m); peds.js, character.js, etc. ponen a la gente encima */
+export const WALK_RISE = 0.10;
 function matStd(opts) {
   return new THREE.MeshStandardMaterial({ roughness: 0.88, metalness: 0.02, ...opts });
 }
@@ -170,14 +185,14 @@ function lineGeometry(points, y, HW = 0.12) {
   return g;
 }
 
-function polyShape(pts) {
+export function polyShape(pts) {
   const shape = new THREE.Shape();
   shape.moveTo(pts[0][0], -pts[0][1]);
   for (let i = 1; i < pts.length; i++) shape.lineTo(pts[i][0], -pts[i][1]);
   return shape;
 }
 
-function flatPoly(pts, y, color) {
+export function flatPoly(pts, y, color) {
   let g;
   try { g = new THREE.ShapeGeometry(polyShape(pts)); } catch { return null; }
   g.rotateX(-Math.PI / 2);
@@ -212,6 +227,8 @@ function buildSea(scene, map) {
   g.rotateX(-Math.PI / 2);
   g.translate(0, 0.15, 0);
   const mat = oceanMaterial(waterNormalTexture());
+  // el agua se queda al nivel del mar aunque el terreno suba (terrain.js)
+  mat.userData.terrain = 'level';
   const mesh = new THREE.Mesh(g, mat);
   mesh.receiveShadow = true;
   scene.add(mesh);
@@ -233,13 +250,13 @@ function buildSea(scene, map) {
   for (const poly of inland) shallow.push(lineGeometry(poly, 0.155, 4));
   scene.add(new THREE.Mesh(
     mergeGeometries(shallow.map(x => x.toNonIndexed()), false),
-    new THREE.MeshBasicMaterial({ color: 0x3fb2b0, transparent: true, opacity: 0.32, depthWrite: false })
+    new THREE.MeshBasicMaterial({ color: 0x3fb2b0, transparent: true, opacity: 0.32, depthWrite: false, userData: { terrain: 'level' } })
   ));
   // espuma en la orilla
   const foam = [lineGeometry(map.sea.outer, 0.17, 0.6)];
   for (const h of map.sea.holes) foam.push(lineGeometry(h, 0.17, 0.6));
   for (const poly of inland) foam.push(lineGeometry(poly, 0.17, 0.35));
-  const foamMat = new THREE.MeshBasicMaterial({ color: 0xf2fbff, transparent: true, opacity: 0.55, depthWrite: false });
+  const foamMat = new THREE.MeshBasicMaterial({ color: 0xf2fbff, transparent: true, opacity: 0.55, depthWrite: false, userData: { terrain: 'level' } });
   scene.add(new THREE.Mesh(mergeGeometries(foam.map(x => x.toNonIndexed()), false), foamMat));
   mat.userData.foamMat = foamMat;
   return mat;
@@ -252,6 +269,20 @@ function pointInPoly(poly, x, z) {
     if ((zi > z) !== (zj > z) && x < ((xj - xi) * (z - zi)) / (zj - zi) + xi) inn = !inn;
   }
   return inn;
+}
+
+/** ¿cae a menos de d metros del eje de alguna calle o pasarela? */
+function nearRoad(roads, x, z, d) {
+  for (const r of roads) {
+    for (let i = 0; i < r.p.length - 1; i++) {
+      const [ax, az] = r.p[i], [bx, bz] = r.p[i + 1];
+      if (Math.min(ax, bx) - d > x || Math.max(ax, bx) + d < x || Math.min(az, bz) - d > z || Math.max(az, bz) + d < z) continue;
+      const dx = bx - ax, dz = bz - az, L2 = dx * dx + dz * dz || 1;
+      const t = Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / L2));
+      if (Math.hypot(ax + dx * t - x, az + dz * t - z) < d + r.w / 2) return true;
+    }
+  }
+  return false;
 }
 
 function buildBeaches(scene, map) {
@@ -273,7 +304,7 @@ function buildBeaches(scene, map) {
     let placed = 0;
     for (let tries = 0; tries < 200 && placed < 9; tries++) {
       const x = x0 + rng() * (x1 - x0), z = z0 + rng() * (z1 - z0);
-      if (!pointInPoly(b, x, z)) continue;
+      if (!pointInPoly(b, x, z) || nearRoad(map.roads, x, z, 3.5)) continue;
       const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 2.1, 6), POLE);
       pole.position.set(x, 1.15, z);
       pole.castShadow = true;
@@ -397,6 +428,22 @@ const FUEL_BRANDS = {
   moeve: ['#00857d', '#e8f5f3'],
 };
 
+/** el punto más cercano de una calle con coches (no sendas ni peatonales) y su ancho */
+function nearestRoadPoint(map, x, z) {
+  let best = null;
+  for (const r of map.roads) {
+    if (r.path || r.ped || r.dirt || r.w < 6) continue;
+    for (let i = 0; i < r.p.length - 1; i++) {
+      const [ax, az] = r.p[i], [bx, bz] = r.p[i + 1], dx = bx - ax, dz = bz - az, l2 = dx * dx + dz * dz;
+      if (l2 < 1) continue;
+      const t = Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / l2));
+      const px = ax + dx * t, pz = az + dz * t, d = Math.hypot(x - px, z - pz);
+      if (!best || d < best.d) best = { px, pz, d, w: r.w };
+    }
+  }
+  return best;
+}
+
 function buildFuelStations(scene, map, colliders) {
   if (!map.fuel?.length) return;
   const group = new THREE.Group();
@@ -410,10 +457,32 @@ function buildFuelStations(scene, map, colliders) {
   const insideBuilding = (x, z) => bboxes.some(([x0, x1, z0, z1, poly]) =>
     x > x0 && x < x1 && z > z0 && z < z1 && pointInPoly(poly, x, z));
 
+  const placed = [];
   for (const f of map.fuel) {
     const dx = Math.sin(f.a), dz = Math.cos(f.a);
     let steps = 0;
     while (insideBuilding(f.x, f.z) && steps++ < 8) { f.x += dx * 2; f.z += dz * 2; }
+    const fitsAt = (x, z, a) => {
+      const c = Math.cos(a), s = Math.sin(a);
+      return [[-6.6, -4.4], [6.6, -4.4], [-6.6, 4.4], [6.6, 4.4], [0, 0], [0, -4.4], [0, 4.4]]
+        .every(([lx, lz]) => !insideBuilding(x + lx * c + lz * s, z - lx * s + lz * c));
+    };
+    // el nodo de OSM suele estar dentro de la tienda: se busca el solar libre más cercano junto a la calle,
+    // con la marquesina paralela a la calzada y mirando a ella, para que no quede la versión de acera
+    if (!fitsAt(f.x, f.z, f.a)) {
+      let best = null;
+      for (let r = 6; r <= 48 && !best; r += 3) {
+        for (let k = 0; k < 24 && !best; k++) {
+          const t = k / 24 * Math.PI * 2, x = f.x + Math.cos(t) * r, z = f.z + Math.sin(t) * r;
+          const n = nearestRoadPoint(map, x, z);
+          if (!n || n.d < n.w / 2 + 8.5 || n.d > n.w / 2 + 16) continue;
+          const a = Math.atan2(n.px - x, n.pz - z);
+          if (fitsAt(x, z, a) && !placed.some(([ox, oz]) => Math.hypot(ox - x, oz - z) < 16)) best = [x, z, a];
+        }
+      }
+      if (best) [f.x, f.z, f.a] = best;
+    }
+    placed.push([f.x, f.z]);
     const cos = Math.cos(f.a), sin = Math.sin(f.a);
     const corner = (lx, lz) => [f.x + lx * cos + lz * sin, f.z - lx * sin + lz * cos];
     const canopyFits = [[-5.2, -3], [5.2, -3], [-5.2, 3], [5.2, 3], [0, 0]]
@@ -530,6 +599,8 @@ function buildShrubs(scene, map) {
   const rng = (() => { let s = 31337; return () => (s = (s * 16807) % 2147483647) / 2147483647; })();
   for (const a of map.areas || []) {
     if (a.k !== 'park') continue;
+    // el parque de Aniagua lleva sus propios matorrales, en sus parterres (buganvillas.js)
+    if (a.p.length === 5 && Math.abs(a.p[0][0] + 749.01) < 0.6 && Math.abs(a.p[0][1] - 252.81) < 0.6) continue;
     const xs = a.p.map(q => q[0]), zs = a.p.map(q => q[1]);
     const x0 = Math.min(...xs), x1 = Math.max(...xs);
     const z0 = Math.min(...zs), z1 = Math.max(...zs);
@@ -569,7 +640,7 @@ function buildTrafficLights(scene, map) {
   const key = p => Math.round(p[0]) + ',' + Math.round(p[1]);
   const degree = new Map();
   for (const r of map.roads) {
-    if (r.ped || r.p.length < 2) continue;
+    if (r.ped || r.dirt || r.p.length < 2) continue;
     for (const e of [r.p[0], r.p[r.p.length - 1]]) {
       degree.set(key(e), (degree.get(key(e)) || 0) + 1);
     }
@@ -745,6 +816,9 @@ function shade(hex, k) {
 
 function buildStreetlights(map) {
   const spots = [];
+  // (Version 134) una farola no se pone si cae en la calzada de otra calle: en las carreteras de dos calzadas
+  // pegadas (la del Cabildo) salían farolas plantadas en mitad del asfalto, sobre la raya doble
+  const calz = new Calzada(map.roads);
   for (const r of map.roads) {
     if (!r.major) continue;
     let acc = 0, side = 1;
@@ -757,7 +831,8 @@ function buildStreetlights(map) {
         const t = d / len;
         const off = (r.w / 2 + 1.1) * side;
         // ángulo hacia la calzada para el brazo de la farola
-        spots.push([ax + dx * t + (-dz / len) * off, az + dz * t + (dx / len) * off, Math.atan2(dx / len * side, dz / len * side)]);
+        const lx = ax + dx * t + (-dz / len) * off, lz = az + dz * t + (dx / len) * off;
+        if (!calz.roadAt(lx, lz, 0.3, r)) spots.push([lx, lz, Math.atan2(dx / len * side, dz / len * side)]);
         side = -side;
         d += 28;
       }
@@ -822,16 +897,19 @@ function buildStreetlights(map) {
   // que se recolocan (el número de luces no cambia, así no se recompila nada)
   const lampPos = spots.map(([x, z, a]) => [x + Math.cos(a) * 1.45, z - Math.sin(a) * 1.45]);
   const pool = [];
-  for (let i = 0; i < 6; i++) {
-    const s = new THREE.SpotLight(0xffc98a, 0, 26, 1.05, 0.75, 1.5);
+  // cada foco lo paga todo píxel iluminado (también de día, con intensidad 0): en el móvil, solo dos
+  for (let i = 0; i < (isTouchDevice() ? 2 : 6); i++) {
+    const s = new THREE.SpotLight(0xffc98a, 0, 34, 1.15, 0.75, 1.5);
     s.position.set(0, -50, 0);
     s.target.position.set(0, -60, 0);
     group.add(s, s.target);
     pool.push(s);
   }
   let tick = 0;
-  group.userData.updateLamps = (px, pz, night, dt) => {
-    const on = THREE.MathUtils.smoothstep(night, 0.3, 0.7);
+  // groundY(x, z): cuánto sube el suelo ahí respecto al jugador (las cuestas de Argana y Honda); si
+  // no se pasa, el foco se queda a la altura de una farola en llano
+  group.userData.updateLamps = (px, pz, night, dt, groundY = null) => {
+    const on = THREE.MathUtils.smoothstep(night, 0.04, 0.3);
     tick -= dt;
     if (tick <= 0 && on > 0) {
       tick = 0.4;
@@ -841,12 +919,15 @@ function buildStreetlights(map) {
         .slice(0, pool.length);
       near.forEach(([, i], k) => {
         const [lx, lz] = lampPos[i];
-        pool[k].position.set(lx, H - 0.05, lz);
-        pool[k].target.position.set(lx, 0, lz);
+        const dy = groundY ? groundY(lx, lz) : 0;
+        pool[k].position.set(lx, H - 0.05 + dy, lz);
+        pool[k].target.position.set(lx, dy, lz);
         pool[k].target.updateMatrixWorld();
       });
     }
-    for (const s of pool) s.intensity = on * 90;
+    for (const s of pool) s.intensity = on * 140;
+    // los 900 discos de luz del suelo no se dibujan de día (con opacidad 0 seguían costando)
+    glows.visible = on > 0.01;
   };
   group.userData.headMat = headMat;
   group.userData.glowMat = glowMat;
@@ -933,10 +1014,17 @@ class WallBatch {
 
 function buildBuildings(map, colliders, scene) {
   const roofGeoms = [];
-  const upper = new WallBatch();   // window floors
+  // plantas de ventanas: tres fachadas distintas (verde con balcón, azul con reja, madera) repartidas
+  // por manzana, para que la ciudad no salga con la misma ventana en todas partes
+  const uppers = [new WallBatch(), new WallBatch(), new WallBatch()];
   const parapet = new WallBatch(); // remate de azotea
   const cornice = new WallBatch(); // cornisa saliente sobre la planta baja
-  const bands = { shop: new WallBatch(), res: new WallBatch(), ind: new WallBatch() };
+  const bands = { shop: new WallBatch(), shop2: new WallBatch(), res: new WallBatch(), ind: new WallBatch() };
+  // zona piloto del Charco de San Ginés: casas blancas con carpintería azul (o verde) y zócalo de piedra
+  markZones(map);
+  const charco = zone('charco');
+  const zoneBands = { b: new WallBatch(), g: new WallBatch() };
+  const zoneUpper = { b: new WallBatch(), g: new WallBatch(), k: new WallBatch() };
   const color = new THREE.Color();
   const pcolor = new THREE.Color();
   const roof = new THREE.Color();
@@ -973,13 +1061,33 @@ function buildBuildings(map, colliders, scene) {
     if (b.f) {
       color.setRGB(b.f[0] / 255, b.f[1] / 255, b.f[2] / 255).convertSRGBToLinear().lerp(white, 0.25);
     }
+    const hash = Math.abs(Math.sin(pts[0][0] * 12.9898 + pts[0][1] * 78.233) * 43758.5453) % 1;
+    const inCharco = b.zone === 'charco';
+    const tone = inCharco ? (hash < charco.carpentry.blueShare ? 'b' : 'g') : null;
+    if (inCharco) {
+      const wc = charco.walls.colors[Math.floor(hash * 97) % charco.walls.colors.length];
+      color.setRGB(wc[0] / 255, wc[1] / 255, wc[2] / 255).convertSRGBToLinear();
+    }
+    // Calle Real: blancos, cremas, beiges y piedra clara (vídeo de referencia 2020)
+    if (b.zone === 'real') {
+      const rc = zone('real').walls.colors;
+      const wc = rc[Math.floor(hash * 89) % rc.length];
+      color.setRGB(wc[0] / 255, wc[1] / 255, wc[2] / 255).convertSRGBToLinear();
+    }
 
     const hasUpper = b.h > 4.5;
     const hb = hasUpper ? FLOOR_H : b.h;
-    const ground = b.s ? bands.shop : (b.k === 'industrial' ? bands.ind : bands.res);
+    const shopBand = (hash * 13) % 1 < 0.55 ? bands.shop : bands.shop2;
+    const ground = inCharco ? zoneBands[tone] : b.s ? shopBand : (b.k === 'industrial' ? bands.ind : bands.res);
+    // un tercio de las casas azules lleva balcón de madera pintado (vídeo de referencia 2020)
+    const balcony = inCharco && tone === 'b' && (hash * 7.3) % 1 < 0.38;
+    const upperB = inCharco ? zoneUpper[balcony ? 'k' : tone] : uppers[Math.floor(hash * 31) % 3];
     const atlasShift = (Math.abs(Math.floor(pts[0][0] * 3 + pts[0][1] * 5)) % 4) * 4;
     // OSM mezcla polígonos horarios y antihorarios: la normal siempre hacia fuera
     const out = signedArea(pts) >= 0 ? 1 : -1;
+    // soportales: tramos sin la pared del bajo (el modelo propio pone lo que va debajo), [[ax, az, bx, bz]]
+    const same = (o, ax, az, bx, bz) => (Math.hypot(o[0] - ax, o[1] - az) < 0.05 && Math.hypot(o[2] - bx, o[3] - bz) < 0.05)
+      || (Math.hypot(o[0] - bx, o[1] - bz) < 0.05 && Math.hypot(o[2] - ax, o[3] - az) < 0.05);
     let run = 0;
     for (let i = 0; i < pts.length - 1; i++) {
       const [ax, az] = pts[i], [bx, bz] = pts[i + 1];
@@ -987,12 +1095,14 @@ function buildBuildings(map, colliders, scene) {
       if (len < 0.05) continue;
       const nx = out * (bz - az) / len, nz = -out * (bx - ax) / len;
 
-      ground.quad(ax, az, bx, bz, 0, hb, nx, nz,
-        (run + atlasShift) / ATLAS_W, (run + atlasShift + len) / ATLAS_W, 0, 1, color);
+      if (!b.openGround?.some(o => same(o, ax, az, bx, bz))) {
+        ground.quad(ax, az, bx, bz, 0, hb, nx, nz,
+          (run + atlasShift) / ATLAS_W, (run + atlasShift + len) / ATLAS_W, 0, 1, color);
+      }
 
       if (hasUpper) {
         const rows = Math.max(1, Math.round((b.h - hb) / FLOOR_H));
-        upper.quad(ax, az, bx, bz, hb, b.h, nx, nz,
+        upperB.quad(ax, az, bx, bz, hb, b.h, nx, nz,
           run / WINDOW_W, (run + len) / WINDOW_W, 0, rows, color);
         // cornisa: banda que sobresale 12 cm entre planta baja y primera
         const o = 0.12;
@@ -1028,13 +1138,16 @@ function buildBuildings(map, colliders, scene) {
     roofGeoms.push(rg.toNonIndexed());
   }
 
-  const facade = facadeTexture();
-  const upperMat = matPBR(facade, { vertexColors: true, side: THREE.DoubleSide, emissive: 0x000000 }, 2.2);
-  addWindowLights(upperMat, 0.45, 1.8);
-  const upperMesh = new THREE.Mesh(upper.geometry(), upperMat);
-  upperMesh.castShadow = true;
-  upperMesh.receiveShadow = true;
-  scene.add(upperMesh);
+  const facades = facadeVariants();
+  uppers.forEach((batch, i) => {
+    if (!batch.vi) return;
+    const upperMat = matPBR(facades[i], { vertexColors: true, side: THREE.DoubleSide, emissive: 0x000000 }, 2.2);
+    addWindowLights(upperMat, 0.45, 1.8);
+    const upperMesh = new THREE.Mesh(batch.geometry(), upperMat);
+    upperMesh.castShadow = true;
+    upperMesh.receiveShadow = true;
+    scene.add(upperMesh);
+  });
 
   const parapetMesh = new THREE.Mesh(
     parapet.geometry(),
@@ -1052,11 +1165,35 @@ function buildBuildings(map, colliders, scene) {
     scene.add(corniceMesh);
   }
 
+  if (zoneUpper.k.vi) {
+    const m = new THREE.Mesh(zoneUpper.k.geometry(), matPBR(charcoBalconyTexture(charco.carpentry), { vertexColors: true, side: THREE.DoubleSide, emissive: 0x000000 }, 2.2));
+    addWindowLights(m.material, 0.45, 1.8);
+    m.castShadow = m.receiveShadow = true;
+    scene.add(m);
+  }
+  for (const t of ['b', 'g']) {
+    const green = t === 'g';
+    if (zoneBands[t].vi) {
+      const m = new THREE.Mesh(zoneBands[t].geometry(), matPBR(charcoGroundStrip(charco.carpentry, green), { vertexColors: true, side: THREE.DoubleSide, emissive: 0x000000 }, 1.6));
+      addWindowLights(m.material, 0.3, 0.9);
+      m.castShadow = m.receiveShadow = true;
+      scene.add(m);
+    }
+    if (zoneUpper[t].vi) {
+      const m = new THREE.Mesh(zoneUpper[t].geometry(), matPBR(charcoFacadeTexture(charco.carpentry, green), { vertexColors: true, side: THREE.DoubleSide, emissive: 0x000000 }, 2.2));
+      addWindowLights(m.material, 0.45, 1.8);
+      m.castShadow = m.receiveShadow = true;
+      scene.add(m);
+    }
+  }
+
   const strips = groundStrips();
-  for (const key of ['shop', 'res', 'ind']) {
+  for (const key of ['shop', 'shop2', 'res', 'ind']) {
+    if (!bands[key].vi) continue;
+    const shop = key.startsWith('shop');
     const mat = matPBR(strips[key], { vertexColors: true, side: THREE.DoubleSide, emissive: 0x000000 }, 1.6);
     // escaparates encendidos al anochecer (casi todos los comercios)
-    addWindowLights(mat, key === 'shop' ? 0.85 : 0.35, key === 'shop' ? 0.45 : 0.9);
+    addWindowLights(mat, shop ? 0.85 : 0.35, shop ? 0.45 : 0.9);
     const mesh = new THREE.Mesh(bands[key].geometry(), mat);
     mesh.castShadow = true;
     mesh.receiveShadow = true;
@@ -1094,6 +1231,11 @@ function buildPalms(map) {
     }
   }
 
+  // fila de palmeras del paseo del Charco (vídeo de referencia 2020, min. 11:00–13:15 y 18:15)
+  for (const [x, z] of charcoPromenade(map).palms) spots.push([x, z, 6 + rng() * 2.5, rng() * Math.PI * 2]);
+  // palmeras puestas a mano (la Plaza de Las Palmas); sin gastar azar, para no mover las demás
+  for (const [x, z, h = 7, a = 0] of map.extraPalms || []) spots.push([x, z, h, a]);
+
   for (const r of map.roads) {
     if (!r.major) continue;
     for (let i = 1; i < r.p.length - 1; i += 2) {
@@ -1108,6 +1250,12 @@ function buildPalms(map) {
     }
     if (spots.length >= 700) break;
   }
+  // ninguna palmera en la calzada: ni las del mapa (OpenStreetMap las pone a veces encima de la
+  // calle), ni las de los parques echadas a suerte, ni las de las avenidas al caer en una bocacalle
+  const roadIdx = makeRoadIndex(map.roads, { margin: 0.9 });
+  const planted = spots.filter(([x, z]) => !roadIdx.onRoad(x, z));
+  spots.length = 0;
+  spots.push(...planted);
 
   const group = new THREE.Group();
   // tronco de palmera canaria: engrosado en la base, ligeramente curvo
@@ -1178,6 +1326,17 @@ function buildPalms(map) {
   return group;
 }
 
+/** la misma polilínea con puntos intermedios cada `step` metros como mucho */
+function densify(pts, step) {
+  const out = [pts[0]];
+  for (let i = 0; i < pts.length - 1; i++) {
+    const [ax, az] = pts[i], [bx, bz] = pts[i + 1];
+    const n = Math.max(1, Math.ceil(Math.hypot(bx - ax, bz - az) / step));
+    for (let k = 1; k <= n; k++) out.push([ax + (bx - ax) * k / n, az + (bz - az) * k / n]);
+  }
+  return out;
+}
+
 export function buildWorld(scene, map, onProgress, renderer) {
   const colliders = new SegmentGrid();
   const roadNames = new SegmentGrid();
@@ -1188,24 +1347,99 @@ export function buildWorld(scene, map, onProgress, renderer) {
     if (r.name) roadNames.addPolygon(r.p, r.name);
   }
 
-  const roadGeoms = [], dashGeoms = [], edgeGeoms = [], walkGeoms = [], pedGeoms = [], curbGeoms = [];
+  applyOneWay(map);
+  const pasos = crossings(map);
+  const marks = roadMarks(map.roads, pasos, map.buildings);
+  const roadGeoms = [], dashGeoms = [], edgeGeoms = [], walkGeoms = [], pedGeoms = [], curbGeoms = [], kerbTops = [], gutters = [];
+  // índice de calzadas para recortar aceras, bordillos y cunetas en los cruces: la acera de una calle
+  // ya no cruza por encima del asfalto de otra (se veía en las rotondas y en los cruces grandes)
+  const CCELL = 24;
+  const carriage = new Map();
   for (const r of map.roads) {
+    if (r.ped || r.dirt) continue;
+    const half = r.w / 2 - 0.3;
+    for (let i = 0; i < r.p.length - 1; i++) {
+      const [ax, az] = r.p[i], [bx, bz] = r.p[i + 1];
+      const x0 = Math.floor((Math.min(ax, bx) - half - 1) / CCELL), x1 = Math.floor((Math.max(ax, bx) + half + 1) / CCELL);
+      const z0 = Math.floor((Math.min(az, bz) - half - 1) / CCELL), z1 = Math.floor((Math.max(az, bz) + half + 1) / CCELL);
+      for (let cx = x0; cx <= x1; cx++) {
+        for (let cz = z0; cz <= z1; cz++) {
+          const k = cx * 100003 + cz;
+          if (!carriage.has(k)) carriage.set(k, []);
+          carriage.get(k).push([ax, az, bx, bz, half, r]);
+        }
+      }
+    }
+  }
+  const onOtherRoad = (x, z, self) => {
+    const list = carriage.get(Math.floor(x / CCELL) * 100003 + Math.floor(z / CCELL));
+    if (!list) return false;
+    for (const [ax, az, bx, bz, half, r] of list) {
+      if (r === self) continue;
+      const dx = bx - ax, dz = bz - az, L2 = dx * dx + dz * dz || 1;
+      const t = Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / L2));
+      if (Math.hypot(ax + dx * t - x, az + dz * t - z) < half) return true;
+    }
+    return false;
+  };
+  // una línea (acera, bordillo, cuneta) partida en tramos limpios, fuera de la calzada de las demás calles
+  const runs = (pts, self) => {
+    const out = [];
+    let cur = [];
+    for (const q of pts) {
+      const qBad = onOtherRoad(q[0], q[1], self);
+      const midBad = !qBad && cur.length > 0 && onOtherRoad((q[0] + cur[cur.length - 1][0]) / 2, (q[1] + cur[cur.length - 1][1]) / 2, self);
+      if (qBad || midBad) {
+        if (cur.length > 1) out.push(cur);
+        cur = qBad ? [] : [q];
+      } else cur.push(q);
+    }
+    if (cur.length > 1) out.push(cur);
+    return out;
+  };
+  for (const r0 of map.roads) {
+    // para dibujar, un punto cada 6 m: así la calzada se dobla con las cuestas (terrain.js)
+    const r = { ...r0, p: densify(r0.p, 6) };
+    if (r0.dirt) continue;   // los caminos de tierra del campo los pinta casaCampo.js, sin acera ni bordillo
     if (r.ped) {
       pedGeoms.push(roadGeometry(r.p, r.w, 0.13));
       continue;
     }
     const y = 0.14 + (r.major ? 0.02 : 0);
     roadGeoms.push(roadGeometry(r.p, r.w, y));
-    // acera elevada sobre la calzada, con bordillo de piedra
-    const walkY = y + 0.05;
-    walkGeoms.push(roadGeometry(offsetPolyline(r.p, r.w / 2 + 1.1), 2.2, walkY));
-    walkGeoms.push(roadGeometry(offsetPolyline(r.p, -r.w / 2 - 1.1), 2.2, walkY));
-    curbGeoms.push(curbGeometry(offsetPolyline(r.p, r.w / 2), y - 0.02, walkY));
-    curbGeoms.push(curbGeometry(offsetPolyline(r.p, -r.w / 2).reverse(), y - 0.02, walkY));
-    if (r.major) {
-      dashGeoms.push(dashGeometry(r.p, y + 0.012));
+    // acera elevada 10 cm sobre la calzada (que se note el escalón), con bordillo de piedra clara
+    // por encima y la cuneta más oscura al pie (José Manuel: «que se diferencie la acera con relieve»)
+    const walkY = y + WALK_RISE;
+    if (r0.glorieta) {
+      // los arcos de rotonda no llevan acera (la isleta pone su bordillo: roundabouts.js); solo el
+      // borde pintado, para que el anillo se lea como calzada
       edgeGeoms.push(lineGeometry(offsetPolyline(r.p, r.w / 2 - 0.35), y + 0.01, 0.08));
       edgeGeoms.push(lineGeometry(offsetPolyline(r.p, -r.w / 2 + 0.35), y + 0.01, 0.08));
+      continue;
+    }
+    for (const side of [1, -1]) {
+      // (hasta la fachada si ajusteCalles.js la ha medido: aceraL / aceraR; si no, 2,2 m)
+      const aw = (side > 0 ? r0.aceraL : r0.aceraR) || 2.2;
+      for (const run of runs(offsetPolyline(r.p, side * (r.w / 2 + aw / 2)), r0)) walkGeoms.push(roadGeometry(run, aw, walkY));
+      for (const run of runs(offsetPolyline(r.p, side * r.w / 2), r0)) curbGeoms.push(curbGeometry(side > 0 ? run : [...run].reverse(), y - 0.02, walkY));
+      for (const run of runs(offsetPolyline(r.p, side * (r.w / 2 + 0.1)), r0)) kerbTops.push(lineGeometry(run, walkY + 0.004, 0.1));
+      for (const run of runs(offsetPolyline(r.p, side * (r.w / 2 - 0.18)), r0)) gutters.push(lineGeometry(run, y + 0.004, 0.18));
+    }
+    if (r.major) {
+      edgeGeoms.push(lineGeometry(offsetPolyline(r.p, r.w / 2 - 0.35), y + 0.01, 0.08));
+      edgeGeoms.push(lineGeometry(offsetPolyline(r.p, -r.w / 2 + 0.35), y + 0.01, 0.08));
+    }
+    // línea del medio: solo donde separa algo. En doble sentido, discontinua y continua al llegar a un
+    // cruce; en sentido único solo si la calle es ancha (dos carriles), como separación de carriles
+    const twoLanes = r0.ow ? r.w >= 9 : (r.major || r.w >= 6.5);
+    if (twoLanes) {
+      // (sin pintar encima de las bandas de los pasos de peatones: marks.clip)
+      const { a0, a1, b0, b1 } = marks.centre(r0);
+      if (b0 - a1 > 6) for (const [s0, e0] of marks.clip(r0, a1, b0)) if (e0 - s0 > 4) dashGeoms.push(dashGeometry(cutLine(r.p, s0, e0), y + 0.012));
+      if (!r0.ow) {
+        if (a1 - a0 > 2) for (const [s0, e0] of marks.clip(r0, a0, a1)) edgeGeoms.push(lineGeometry(cutLine(r.p, s0, e0), y + 0.012, 0.07));
+        if (b1 - b0 > 2) for (const [s0, e0] of marks.clip(r0, b0, b1)) edgeGeoms.push(lineGeometry(cutLine(r.p, s0, e0), y + 0.012, 0.07));
+      }
     }
   }
   const maxAniso = renderer ? renderer.capabilities.getMaxAnisotropy() : 8;
@@ -1225,6 +1459,9 @@ export function buildWorld(scene, map, onProgress, renderer) {
     mergeGeometries(roadGeoms.map(g => g.toNonIndexed()), false),
     matPBR(asphalt, {}, 1.0)
   );
+  // (Version 134) en las curvas cerradas y en las bocas de las rotondas algún triángulo de la calzada quedaba del
+  // revés y no se pintaba; por el agujero asomaba la foto aérea como una mancha gris borrosa (caraArriba.js)
+  caraArriba(roadMesh.geometry);
   roadMesh.receiveShadow = true;
   scene.add(roadMesh);
 
@@ -1239,47 +1476,22 @@ export function buildWorld(scene, map, onProgress, renderer) {
   if (curbGeoms.length) {
     const curbMesh = new THREE.Mesh(
       mergeGeometries(curbGeoms.map(g => g.toNonIndexed()), false),
-      matStd({ color: 0xa9a49a, roughness: 0.8, side: THREE.DoubleSide })
+      matStd({ color: 0xbcb8b0, roughness: 0.8, side: THREE.DoubleSide })
     );
     curbMesh.receiveShadow = true;
     scene.add(curbMesh);
+    const kerb = new THREE.Mesh(mergeGeometries(kerbTops.map(g => g.toNonIndexed()), false),
+      matStd({ color: 0xd8d4cc, roughness: 0.75, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }));
+    kerb.receiveShadow = true;
+    const gutter = new THREE.Mesh(mergeGeometries(gutters.map(g => g.toNonIndexed()), false),
+      matStd({ color: 0x55534f, roughness: 0.9, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 }));
+    gutter.receiveShadow = true;
+    scene.add(kerb, gutter);
   }
 
-  // pasos de cebra donde una calle desemboca en un cruce
-  const degree = new Map();
-  const key = p => Math.round(p[0]) + ',' + Math.round(p[1]);
-  for (const r of map.roads) {
-    if (r.ped || r.p.length < 2) continue;
-    for (const e of [r.p[0], r.p[r.p.length - 1]]) {
-      degree.set(key(e), (degree.get(key(e)) || 0) + 1);
-    }
-  }
-  const zebra = [];
-  let zebraCount = 0;
-  for (const r of map.roads) {
-    if (r.ped || r.p.length < 2 || zebraCount > 260) continue;
-    for (const end of [0, 1]) {
-      const e = end === 0 ? r.p[0] : r.p[r.p.length - 1];
-      if ((degree.get(key(e)) || 0) < 3) continue;
-      const n = end === 0 ? r.p[1] : r.p[r.p.length - 2];
-      const dx = n[0] - e[0], dz = n[1] - e[1];
-      const len = Math.hypot(dx, dz);
-      if (len < 9) continue;
-      const ux = dx / len, uz = dz / len;
-      const px = -uz, pz = ux;
-      const half = (r.w - 1.4) / 2;
-      for (let s = 0; s < 6; s++) {
-        const d = 5 + s * 0.9;
-        const cx = e[0] + ux * d, cz = e[1] + uz * d;
-        const g = new THREE.PlaneGeometry(half * 2, 0.45);
-        g.rotateX(-Math.PI / 2);
-        g.rotateY(Math.atan2(-pz, px));
-        g.translate(cx, 0.185, cz);
-        zebra.push(g);
-      }
-      zebraCount++;
-    }
-  }
+  // pasos de peatones (sentidos.js: los de OpenStreetMap y los de las bocas de los cruces), líneas de
+  // detención, cedas y flechas de sentido: todo a ras de la calzada y siguiendo su pendiente
+  const zebra = marks.geometries();
   // pintura vial: reflectante, algo gastada
   const paintMat = new THREE.MeshStandardMaterial({
     color: 0xe6e6dc, roughness: 0.55, metalness: 0,
@@ -1294,8 +1506,12 @@ export function buildWorld(scene, map, onProgress, renderer) {
     `);
   };
   if (zebra.length) {
-    const zg = mergeGeometries(zebra, false);
-    scene.add(new THREE.Mesh(zg, paintMat));
+    // una sola malla (30.000 triángulos): partirla por cuadros no compensa, porque el relieve se pone en
+    // la tarjeta gráfica y el recorte por vista fallaría en las cuestas
+    const zm = new THREE.Mesh(mergeGeometries(zebra, false), paintMat);
+    zm.receiveShadow = true;
+    zm.name = 'marcas-viales';
+    scene.add(zm);
   }
   for (const arr of [dashGeoms, edgeGeoms]) {
     if (!arr.length) continue;
@@ -1329,9 +1545,12 @@ export function buildWorld(scene, map, onProgress, renderer) {
         });
         tex.colorSpace = THREE.SRGBColorSpace;
         tex.anisotropy = maxAniso;
+        // con una malla de ~15 m (20 m en el móvil) para que la foto aérea siga el terreno
+        const seg = isTouchDevice() ? 20 : 15;
         const plane = new THREE.Mesh(
-          new THREE.PlaneGeometry(w, h),
-          matStd({ map: tex, roughness: 1, metalness: 0 })
+          new THREE.PlaneGeometry(w, h, Math.ceil(w / seg), Math.ceil(h / seg)),
+          // modo 'ground': sigue el terreno y no se dibuja sobre el agua (terrain.js)
+          matStd({ map: tex, roughness: 1, metalness: 0, userData: { terrain: 'ground', terrainSeg: seg } })
         );
         plane.rotation.x = -Math.PI / 2;
         plane.position.set(ortho.x0 + w * (qx + 0.5), 0.1, ortho.z0 + h * (qy + 0.5));
@@ -1352,7 +1571,8 @@ export function buildWorld(scene, map, onProgress, renderer) {
   const seaMat = buildSea(scene, map);
   buildBeaches(scene, map);
   buildCastles(scene, map, colliders, isletCastles);
-  buildTrafficLights(scene, map);
+  // los semáforos (que ahora funcionan y el tráfico respeta) los pone senales.js
+  // buildTrafficLights(scene, map);
   onProgress?.('Gasolineras, bancos y jardines…', 78);
   buildFuelStations(scene, map, colliders);
   buildFountains(scene, map);
@@ -1362,22 +1582,81 @@ export function buildWorld(scene, map, onProgress, renderer) {
   const palms = buildPalms(map);
   scene.add(palms);
 
+  // suelo de alrededor de la foto aérea: debajo de ella no hace falta y, como su malla es de 60 m, con las
+  // cuestas asomaba por encima de las calles. Entra 30 m bajo el borde de la foto para que no quede raja
   const b = map.meta.bounds;
-  const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry((b.maxX - b.minX) + 3000, (b.maxZ - b.minZ) + 3000),
-    matStd({
-      map: groundTexture(maxAniso),
-      roughness: 0.98,
-      metalness: 0,
-      polygonOffset: true,
-      polygonOffsetFactor: 2,
-      polygonOffsetUnits: 2,
-    })
-  );
-  ground.rotation.x = -Math.PI / 2;
-  ground.position.set((b.minX + b.maxX) / 2, 0, (b.minZ + b.maxZ) / 2);
+  const gw = (b.maxX - b.minX) + 3000, gh = (b.maxZ - b.minZ) + 3000;
+  const gx0 = (b.minX + b.maxX) / 2 - gw / 2, gz0 = (b.minZ + b.maxZ) / 2 - gh / 2;
+  // huecos: la foto aérea y los suelos que se pintan aparte (map.groundHoles: el campo de casaCampo.js)
+  const holes = [
+    ...(ortho ? [{ x0: ortho.x0 + 30, x1: ortho.x1 - 30, z0: ortho.z0 + 30, z1: ortho.z1 - 30 }] : []),
+    ...(map.groundHoles || []),
+  ];
+  // cada rectángulo que pisa un hueco se parte en los trozos de alrededor
+  const cut = ([x0, x1, z0, z1], h) => (h.x1 <= x0 || h.x0 >= x1 || h.z1 <= z0 || h.z0 >= z1) ? [[x0, x1, z0, z1]] : [
+    [x0, x1, z0, Math.max(z0, h.z0)], [x0, x1, Math.min(z1, h.z1), z1],
+    [x0, Math.max(x0, h.x0), Math.max(z0, h.z0), Math.min(z1, h.z1)], [Math.min(x1, h.x1), x1, Math.max(z0, h.z0), Math.min(z1, h.z1)],
+  ];
+  const rects = holes.reduce((rs, h) => rs.flatMap(r => cut(r, h)), [[gx0, gx0 + gw, gz0, gz0 + gh]]);
+  // Playa Honda y su alrededor: el terreno cambia mucho, así que el suelo va en cuadrícula fina (10 m, como la
+  // malla del terreno) y no en trozos de 60 m, que asomaban por encima de las calles y se tragaban las casas
+  // (los barrios pueden pedir más trozos finos con map.groundFine: p. ej. la Calle Tanganillo de Argana Alta)
+  const FINOS = [{ x0: -5400, x1: -2880, z0: -200, z1: 1600 }, ...(map.groundFine || [])];
+  const finoParts = [];
+  let gruesoRects = rects;
+  for (const FINO of FINOS) {
+    const resto = [];
+    for (const r of gruesoRects) {
+      const [x0, x1, z0, z1] = r;
+      const ix0 = Math.max(x0, FINO.x0), ix1 = Math.min(x1, FINO.x1), iz0 = Math.max(z0, FINO.z0), iz1 = Math.min(z1, FINO.z1);
+      if (ix1 - ix0 > 1 && iz1 - iz0 > 1) { finoParts.push([ix0, ix1, iz0, iz1]); resto.push(...cut(r, FINO)); }
+      else resto.push(r);
+    }
+    gruesoRects = resto;
+  }
+  const groundPart = (cell) => ([x0, x1, z0, z1]) => {
+    const g = new THREE.PlaneGeometry(x1 - x0, z1 - z0, Math.ceil((x1 - x0) / cell), Math.ceil((z1 - z0) / cell));
+    g.rotateX(-Math.PI / 2);
+    g.translate((x0 + x1) / 2, -0.35, (z0 + z1) / 2);
+    // la textura, como si fuera una sola pieza
+    const p = g.getAttribute('position'), uv = g.getAttribute('uv');
+    for (let i = 0; i < p.count; i++) uv.setXY(i, (p.getX(i) - gx0) / gw, (gz0 + gh - p.getZ(i)) / gh);
+    return g;
+  };
+  const big = ([x0, x1, z0, z1]) => x1 - x0 > 1 && z1 - z0 > 1;
+  const groundTex = groundTexture(maxAniso);
+  const groundMat = (seg) => matStd({
+    map: groundTex,
+    roughness: 0.98,
+    metalness: 0,
+    polygonOffset: true,
+    polygonOffsetFactor: 2,
+    polygonOffsetUnits: 2,
+    userData: { terrain: 'ground', terrainSeg: seg },
+  });
+  const ground = new THREE.Mesh(mergeGeometries(gruesoRects.filter(big).map(groundPart(60)), false), groundMat(60));
   ground.receiveShadow = true;
   scene.add(ground);
+  if (finoParts.length) {
+    // en teselas de 400 m, cada una con su esfera: lo que queda fuera de la vista no se dibuja (en una
+    // sola malla eran ~137.000 triángulos que se pintaban siempre, hasta desde el centro de Arrecife);
+    // en el móvil, celdas de 20 m (la cuarta parte de triángulos)
+    const TILE = 400, CELL = isTouchDevice() ? 20 : 10, finoMat = groundMat(CELL);
+    const fino = new THREE.Group();
+    fino.name = 'sueloFinoHonda';
+    for (const [x0, x1, z0, z1] of finoParts.filter(big)) {
+      for (let x = x0; x < x1; x += TILE) {
+        for (let z = z0; z < z1; z += TILE) {
+          const t = [x, Math.min(x + TILE, x1), z, Math.min(z + TILE, z1)];
+          if (!big(t)) continue;
+          const m = new THREE.Mesh(groundPart(CELL)(t), finoMat);
+          m.receiveShadow = true;
+          fino.add(m);
+        }
+      }
+    }
+    scene.add(fino);
+  }
 
   const animate = (time) => {
     if (seaMat) {

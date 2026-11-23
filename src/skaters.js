@@ -12,7 +12,7 @@ import { paint } from './interiorKit.js';
  * otro, pero se levantan. En la plaza del Reducto hay dos dando vueltas.
  */
 
-const Y0 = 0.19;
+const Y0 = 0.24;
 const R0 = 22, R1 = 95, FAR = 125, CELL = 40;
 const cellKey = (x, z) => Math.floor(x / CELL) * 100003 + Math.floor(z / CELL);
 const NAMES = ['Aday', 'Yeray', 'Ancor', 'Iballa', 'Tanausú', 'Nauzet', 'Chaxiraxi', 'Acoidán', 'Dácil', 'Jonay'];
@@ -295,7 +295,7 @@ export class Skaters {
   }
 
   hitByCar(s, px, pz, ctx) {
-    if (!ctx.driving || (s.state !== 'ride' && s.state !== 'push' && s.state !== 'ollie' && s.state !== 'fetch')) return;
+    if (!ctx.driving || ctx.flying || (s.state !== 'ride' && s.state !== 'push' && s.state !== 'ollie' && s.state !== 'fetch')) return;
     const dx = s.x - px, dz = s.z - pz, d = Math.hypot(dx, dz);
     if (d > 1.9) return;
     if ((ctx.carSpeed || 0) > 3) {
