@@ -2267,3 +2267,29 @@ Version 166 - El paseo de la Rambla Medular, la rotonda del Teatro y Crossfit La
 - Archivos: ramblaPaseoExtras.js y crossfitLanzarote.js (nuevos), barrios/compartido/index.js (el enganche),
   roundabouts.js, places.js, locales.js, localesData.js y missions.js. Sin tocar main.js ni index.html.
 - Sin publicar todavia: ni el enlace ni la web (tampoco la 164 ni la 165).
+
+Version 167 - La mediana y el palmeral de Gobernador Jose Garcia Hernandez y el PARKING de Juan Negrin (23/11/2026)
+- Material: PC de Arrecife, `Downloadsecursos lava game 2026-11-23\centro` (capturas de Look Around). Miradas dos
+  fotos de cada calle que faltaba, en dos hojas de recortes: Doctor Juan Negrin (0668, 0684), Fajardo (0693, 0695),
+  Luis Fajardo Ferrer (0737, 0741), La Ines (0749, 0755), Cabo Juby (0746, 0748), Juan de Quesada (0763, 0765),
+  Gobernador Civil Jose Garcia Hernandez (0768, 0772) y El Salvador (0778, 0784). Tambien la foto aerea del juego.
+- Gobernador Jose Garcia Hernandez, junto a la Escuela de Pesca (medianaGobernador.js, nuevo): la mediana entre las
+  dos calzadas, con bordillo claro y 35 arbustos verdes en fila, de la rotonda de El Claudiano hasta antes de la calle
+  Extremadura; y en la isleta ovalada del final, un palmeral de 12 palmeras y una araucaria. Adorno: la mediana no
+  choca. A ojo: el sitio de cada palmera y de la araucaria.
+- Doctor Juan Negrin con Triana (parkingFajardo.js, nuevo): el aparcamiento de siete plantas lleva la franja gris de
+  la esquina con los agujeros redondos y la palabra PARKING en vertical. La altura ya la traia bien el mapa. Se le
+  pidio color arena, pero en la foto de prueba se sigue viendo casi gris. No se puede entrar.
+- Ya estaba en el juego y no se toca: Que Perro, Vegas Laundry y Bar Guanapay (Juan Negrin y Fajardo), el
+  aparcamiento del Hospital Insular (Juan de Quesada) y la Escuela de Pesca.
+- Sin nada que anadir: Luis Fajardo Ferrer, La Ines, Cabo Juby y El Salvador (calles de casas y coches aparcados).
+- Sin hacer: el rotulo de Casa Decor de la calle Fajardo y los de Ocaso Seguros y Clinica San Vicente de Alcalde
+  Gines de la Hoz (nombres vistos en las fotos, sin confirmar por Jose Manuel); las isletas rojas y blancas, el buzon
+  amarillo y los contenedores del aparcamiento del Hospital Insular; unas 300 fotos sin abrir (solo se han mirado dos
+  o tres por calle).
+- Comprobado (PC de Arrecife, de dia y en PC): el juego carga sin errores; miradas en foto la mediana, la isleta con
+  el palmeral y la araucaria (de lejos) y la franja del PARKING. Sin comprobar: de noche, en movil, el rendimiento y
+  pasar con el coche junto a la mediana.
+- Archivos: medianaGobernador.js y parkingFajardo.js (nuevos) y barrios/compartido/index.js (el enganche). Sin tocar
+  main.js ni index.html.
+- Sin publicar todavia: ni el enlace ni la web (tampoco la 164, la 165 ni la 166).

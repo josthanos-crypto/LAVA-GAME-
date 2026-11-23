@@ -39,6 +39,8 @@ import { tuneFaltabaCiudad } from '../../faltabaCiudad.js';
 import { tuneNorteFoto, buildNorteFoto } from '../../norteFoto.js';
 import { tuneRamblaFaltaba, buildRamblaFaltaba } from '../../ramblaFaltaba.js';
 import { tuneAutoviaLZ2, buildAutoviaLZ2 } from '../../autoviaLZ2.js';
+import { tuneParkingFajardo, buildParkingFajardo } from '../../parkingFajardo.js';
+import { tuneMedianaGobernador, buildMedianaGobernador } from '../../medianaGobernador.js';
 
 export const BARRIO = {
   id: 'compartido',
@@ -79,6 +81,10 @@ export function prepararMapa(map) {
   tuneRecorridoHonda(map);
   // la autovía LZ-2 hasta Playa Honda: sus palmeras (kit de vídeos del 20-11-2026)
   tuneAutoviaLZ2(map);
+  // (Version 167) el palmeral de la isleta de la calle Gobernador José García Hernández
+  tuneMedianaGobernador(map);
+  // (Version 167) el aparcamiento de varias plantas de Doctor Juan Negrín con Triana
+  tuneParkingFajardo(map);
   buildWalkIndex(map.roads);
 }
 
@@ -102,6 +108,9 @@ export function construir({ scene, map, colliders, touch, story }) {
   buildRecorridoHonda(scene, colliders, map);
   // la autovía LZ-2: pórticos de destinos, carteles de salida, señal del aeropuerto y pantalla acústica
   buildAutoviaLZ2(scene, colliders, map);
+  // (Version 167) la mediana con arbustos y la araucaria de la calle Gobernador José García Hernández
+  buildMedianaGobernador(scene, map);
+  buildParkingFajardo(scene, map);
   // el Recinto Ferial: la cubierta con el escenario y el aparcamiento
   buildRecintoFerial(scene, colliders, map);
   // la isleta de picón de la rotonda grande de entrada (no venía en la lista de rotondas)
