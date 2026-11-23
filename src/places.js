@@ -87,6 +87,8 @@ export const SCULPTURES = [
   { n: 'Barlovento · César Manrique', k: 'barlovento', at: [-484.0, 499.2] },
   { n: 'Homenaje a la Vela Latina', k: 'vela', at: [-1283.5, 590.1] },
   { n: 'Pescador con marlín', k: 'marlin', at: [736.9, 186.7] },
+  // (Version 166) la figura de bronce de la rotonda del Teatro El Salinero (capturas de calle del 23/11/2026)
+  { n: 'Rotonda del Teatro El Salinero', k: 'figura', at: [-404.2, -351.2] },
   // (Version 154) la jardinera blanca con forma de concha de la rotonda de la Calle Tenderete (rotondaConcha.js)
   { n: 'Rotonda de la Calle Tenderete', k: 'concha', at: [-1198.1, -1377.4] },
 ];

@@ -107,6 +107,20 @@ function pedestal(S, cx, cz, pr, ph, r) {
   return TOP + ph;
 }
 
+/** (Version 166) la figura de bronce de la rotonda del Teatro (captura 0624): un hombre alto y delgado sobre un pedestal, con matas moradas alrededor */
+function figuraBronce(S, cx, cz, ri, r) {
+  const b = pedestal(S, cx, cz, 1.6, 0.6, r);
+  const h = buildHuman({ sex: 'm', height: 5.4, build: 0.8, hairStyle: 'short', topStyle: 'long', bottomStyle: 'pants', shoeStyle: 'shoe' });
+  h.mesh.material = new THREE.MeshStandardMaterial({ color: 0x2a2724, roughness: 0.45, metalness: 0.6 });
+  h.spine.rotation.x = 0.12; h.head.rotation.x = 0.3; h.armL.rotation.x = -0.6; h.armR.rotation.x = -0.2;
+  h.group.position.set(cx, b, cz);
+  S.group.add(h.group);
+  for (let k = 0; k < 26; k++) {
+    const a = r() * Math.PI * 2, d = 2.6 + r() * Math.max(0.5, ri - 4.2);
+    S.nature.push(tinted(place(new THREE.IcosahedronGeometry(0.35 + r() * 0.25, 0), cx + Math.cos(a) * d, TOP + 0.25, cz + Math.sin(a) * d), 0x6f3f7a, 0.1, r));
+  }
+}
+
 /** rotor: piezas pintadas que giran en (x, y, z) alrededor de su eje */
 function rotor(S, parts, x, y, z, speed, axis = 'y', parent = null) {
   const g = new THREE.Group();
@@ -397,6 +411,7 @@ export function buildRoundabouts(scene, colliders) {
     if (kind === 'barlovento') { barlovento(S, cx, cz, r); core = 1.6; }
     else if (kind === 'vela') { velaLatina(S, cx, cz, r); core = 6.5; }
     else if (kind === 'marlin') { marlin(S, cx, cz, r); core = 4.2; }
+    else if (kind === 'figura') { figuraBronce(S, cx, cz, ri, r); core = 2.2; }
     else if (kind === 'concha') core = concha(S, cx, cz, ri, TOP, { tinted, place });
     else {
       const H = Math.min(6.5, 2.6 + ri * 0.32);

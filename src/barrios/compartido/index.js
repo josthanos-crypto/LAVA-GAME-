@@ -33,6 +33,7 @@ import { buildParadasGuagua } from '../../paradasGuagua.js';
 import { tuneParqueComercialPuerto, buildParqueComercialPuerto } from '../../parqueComercialPuerto.js';
 import { buildRamblaArboles } from '../../ramblaArboles.js';
 import { buildRamblaGimnasio } from '../../ramblaGimnasio.js';
+import { buildRamblaPaseoExtras } from '../../ramblaPaseoExtras.js';
 import { buildSanJoseJardin } from '../../sanJoseJardin.js';
 import { tuneFaltabaCiudad } from '../../faltabaCiudad.js';
 import { tuneNorteFoto, buildNorteFoto } from '../../norteFoto.js';
@@ -116,6 +117,7 @@ export function construir({ scene, map, colliders, touch, story }) {
   const rambla = buildRamblaArboles(scene, colliders, map);
   // las máquinas de hacer deporte del paseo de la Rambla
   buildRamblaGimnasio(scene, colliders, rambla.userData.centros);
+  buildRamblaPaseoExtras(scene, rambla.userData.centros);
   // el jardín de picón con matas de la loma del Castillo de San José
   buildSanJoseJardin(scene, map);
   // el suelo de la franja del norte de Arrecife, con su foto aérea

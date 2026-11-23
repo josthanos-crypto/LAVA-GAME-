@@ -2239,3 +2239,31 @@ Version 165 - La mediana de pitas de Leon y Castillo, de las capturas de calle d
   de noche, en movil y con trafico pasando al lado.
 - Archivos: medianaLyC.js (nuevo) y barrios/valterra/ramblaMedular.js (el enganche). Sin tocar main.js ni index.html.
 - Sin publicar todavia: ni el enlace ni la web (tampoco la Version 164).
+
+Version 166 - El paseo de la Rambla Medular, la rotonda del Teatro y Crossfit Lanzarote; fusion de casa y oficina (23/11/2026)
+- Material: PC de Arrecife, `Downloads\recursos lava game 2026-11-23\centro` (capturas de Look Around). Miradas las
+  fotos 0558, 0568 y 0578 (Rambla Medular 30), 0606 (34-36), 0624 (36-40, la rotonda del Teatro) y 0634 (65, el Teatro),
+  y la 0639 y la 0652 de Alcalde Gines de la Hoz (25 y 5).
+- Rambla Medular (ramblaPaseoExtras.js, nuevo): el paseo del centro lleva ahora bordillo blanco a los dos lados, bancos
+  de madera y farolas de brazo. A ojo: la separacion de bancos y farolas. Es adorno: no choca.
+- Rotonda del Teatro El Salinero (roundabouts.js y places.js): una figura de bronce sobre pedestal, con matas moradas
+  alrededor, como en la foto 0624. Es una figura generica, alta y delgada: no copia la escultura de verdad.
+- Ya estaba hecho y no se toca: el paseo y los arboles de la Rambla, el Teatro y el Conservatorio, la manzana del 40.
+- Crossfit Lanzarote, Calle Polca (crossfitLanzarote.js, locales.js, localesData.js y missions.js): hecho en el PC de
+  casa el 22/11/2026 (`Downloads\gta canarias\game`), no estaba en GitHub y se ha traido tal cual. El local por dentro,
+  la entrada abierta, cuatro posturas de entrenamiento y la mision WOD. Notas en NOTAS_CROSSFIT_LANZAROTE.md. El
+  comentario del archivo dice «el box de Oliver»: nombre sin confirmar por Jose Manuel.
+- Fusion: el codigo del PC de casa era la Version 163 mas el Crossfit (le faltaban la 164 y la 165). La carpeta
+  `lava-trabajo` del PC de Arrecife es del 14/11/2026 (Version 95b) y no tiene nada posterior a GitHub.
+- Sin hacer de estas capturas: las palmeras y el muro blanco de la acera norte de la Rambla a la altura del 34-36, el
+  40 pintado en los carriles, y las calles Alcalde Gines de la Hoz (rotulos de Ocaso Seguros y Clinica San Vicente, sin
+  confirmar), Doctor Juan Negrin, Fajardo, Luis Fajardo Ferrer, La Ines, Cabo Juby, Juan de Quesada, Gobernador Civil
+  Jose Garcia Hernandez y El Salvador. La captura con el iPhone se quedo en la 0786 (El Salvador); sigue en casa.
+- Comprobado (PC de Arrecife, de dia y en PC): el juego carga sin errores; mirado en foto el paseo de la Rambla con
+  su bordillo, bancos y farolas, y la rotonda con la figura. Del Crossfit solo se ha visto que el marco de la entrada
+  y la columna roja de la mision WOD salen en la Calle Polca; el marco queda pegado a una casa baja con su propia
+  puerta: hay que mirarlo jugando. Sin comprobar: el Crossfit por dentro, la mision WOD, de noche, en movil y el
+  rendimiento.
+- Archivos: ramblaPaseoExtras.js y crossfitLanzarote.js (nuevos), barrios/compartido/index.js (el enganche),
+  roundabouts.js, places.js, locales.js, localesData.js y missions.js. Sin tocar main.js ni index.html.
+- Sin publicar todavia: ni el enlace ni la web (tampoco la 164 ni la 165).
