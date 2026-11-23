@@ -21,6 +21,9 @@ const GIVERS = [
     intro: 'Necesito que distraigas a la Local un rato. Que te persigan... y piérdelos.' },
   { kind: 'erupcion', label: '¡ERUPCIÓN!', color: 0xff5a14, who: 'Nayra, la vulcanóloga',
     intro: '¡El volcán ha despertado y la lava baja por las calles! Corre a la zona segura antes de que te alcance.' },
+  // el WOD de Crossfit Lanzarote: el encargo está fijo en la acera, delante de la puerta del gimnasio (Calle Polca)
+  { kind: 'wod', label: 'WOD', color: 0xe8392b, who: 'Entrenador de Crossfit Lanzarote', fixed: [-1837.6, -1552.1],
+    intro: 'Hoy toca WOD de calle: tres puntos por el barrio a todo gas y vuelta aquí, a la puerta. ¡Sin parar, que el reloj corre!' },
 ];
 
 /** el frente de lava de «¡Erupción!»: un muro que brilla, más fuerte abajo; el relieve lo dobla con las cuestas */
@@ -190,6 +193,15 @@ export class Missions {
     // puntos de encargo repartidos alrededor del punto de salida
     const used = [];
     this.givers = GIVERS.map((def, i) => {
+      if (def.fixed) {
+        const fb = beacon(def.color, 2.6);
+        fb.position.set(def.fixed[0], 0, def.fixed[1]);
+        const fl = labelSprite(def.label, def.color);
+        fl.position.y = 5;
+        fb.add(fl);
+        scene.add(fb);
+        return { ...def, x: def.fixed[0], z: def.fixed[1], mesh: fb };
+      }
       // la principal, a dos pasos de donde empiezas
       let n = def.kind === 'acampada'
         ? graph.randomNodeAround(spawn.x, spawn.z, 25, 70, true)
@@ -267,6 +279,17 @@ export class Missions {
       m.limit = Math.round(total / 11 + 15);
       m.reward = Math.round(250 + total * 0.3);
       m.title = 'Carrera: ' + m.points.length + ' puntos de control';
+    } else if (giver.kind === 'wod') {
+      // tres puntos por las calles de alrededor y vuelta a la puerta del gimnasio
+      m.points = [];
+      for (let i = 0; i < 3; i++) {
+        const n = g.randomNodeAround(giver.x, giver.z, 50 + i * 25, 120 + i * 30, true);
+        m.points.push([g.x[n], g.z[n]]);
+      }
+      m.points.push([giver.x, giver.z]);
+      m.limit = 120;
+      m.reward = 400;
+      m.title = 'WOD de calle: 3 puntos y vuelta al gimnasio';
     } else if (giver.kind === 'erupcion') {
       // la zona segura, lejos; la lava sale 70 m por detrás (al otro lado) y cada vez va más deprisa
       const n = g.randomNodeAround(act.pos.x, act.pos.y, 450, 800, true);
@@ -424,10 +447,10 @@ export class Missions {
     this.nav = { x: px, z: pz, color: m.giver.color };
     const d = Math.hypot(px - act.pos.x, pz - act.pos.y);
     const ang = Math.atan2(px - act.pos.x, pz - act.pos.y) - act.heading;
-    const sub = m.kind === 'carrera' ? `Punto ${m.idx + 1}/${m.points.length}`
+    const sub = (m.kind === 'carrera' || m.kind === 'wod') ? `Punto ${m.idx + 1}/${m.points.length}`
       : m.lava ? `${next ? `Rescata ${m.rescued + 1}/${m.rescue.length}` : 'Zona segura'} · lava a ${Math.round(lavaGap)} m` : m.title;
     this.hud.objective({ text: sub, dist: d, angle: ang, timer: left });
-    if (!next && d < (m.kind === 'carrera' ? 7 : 4.5)) {
+    if (!next && d < ((m.kind === 'carrera' || m.kind === 'wod') ? 7 : 4.5)) {
       m.idx += 1;
       if (m.idx >= m.points.length) this.finish(true);
       else m.limit += 4; // bonus de tiempo por punto

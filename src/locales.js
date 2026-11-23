@@ -110,6 +110,7 @@ export class Locales {
       // puerta de cristal con su marco y tirador, pegada a la fachada (salvo si el local trae su
       // fachada entera, como el Maccheroni: maccheroni.js)
       if (!d.ownFront) this.addDoor(d, solid, darkGlass);
+      else if (d.openDoor) this.addOpenDoor(d, solid);
       // rótulo
       if (d.sign) this.addSign(group, d);
       // aro de luz en la acera y flecha que flota encima
@@ -163,6 +164,25 @@ export class Locales {
     const mat = new THREE.BoxGeometry(dw * 0.9, 0.02, 0.7);
     mat.rotateY(ry); mat.translate(x + nx * 0.45, FLOOR_Y + 0.01, z + nz * 0.45);
     solid.push(paint(mat, 0x2a2420));
+  }
+
+  /** entrada abierta de par en par (persiana subida): jambas, el cajón de la persiana arriba y el suelo de goma */
+  addOpenDoor(d, solid) {
+    const { x, z, nx, nz, ry } = d.door;
+    const tx = -nz, tz = nx;
+    const dw = d.doorWidth || 3.2, dh = 2.6;
+    const dx = x + nx * 0.06, dz = z + nz * 0.06;
+    const frame = d.frameColor ?? 0x1a1a1c;
+    const part = (w, h, dep, px, py) => {
+      const b = new THREE.BoxGeometry(w, h, dep);
+      b.translate(0, h / 2, 0); b.rotateY(ry); b.translate(dx + tx * px, FLOOR_Y - 0.02 + py, dz + tz * px);
+      solid.push(paint(b, frame));
+    };
+    part(0.14, dh, 0.16, -dw / 2, 0); part(0.14, dh, 0.16, dw / 2, 0);
+    part(dw + 0.3, 0.38, 0.3, 0, dh);
+    const mat = new THREE.BoxGeometry(dw * 0.95, 0.02, 0.9);
+    mat.rotateY(ry); mat.translate(x + nx * 0.55, FLOOR_Y + 0.01, z + nz * 0.55);
+    solid.push(paint(mat, 0x2a2c30));
   }
 
   /** rótulo en caja: la cara de delante con su dibujo, los cantos del color del fondo */
@@ -616,6 +636,54 @@ function setPose(n, t, talking) {
       p.armL.rotation.x = -0.75 + s * 0.04; p.armR.rotation.x = -0.85 + Math.sin(t * 2.1 + n.phase) * 0.1;
       p.spine.rotation.x = 0.08;
       break;
+    case 'squat': {
+      // sentadilla: baja y sube con los brazos al frente
+      const u = 0.5 + 0.5 * Math.sin(t * 2.2 + n.phase);
+      if (n.baseY === undefined) n.baseY = p.group.position.y;
+      if (!talking) {
+        p.group.position.y = n.baseY - 0.42 * u;
+        p.legL.rotation.x = -1.0 * u; p.legR.rotation.x = -1.0 * u;
+        p.kneeL.rotation.x = 1.2 * u; p.kneeR.rotation.x = 1.2 * u;
+        p.armL.rotation.x = -1.4; p.armR.rotation.x = -1.4;
+        p.spine.rotation.x = 0.25 * u;
+      }
+      break;
+    }
+    case 'press': {
+      // press por encima de la cabeza
+      const u = 0.5 + 0.5 * Math.sin(t * 2.0 + n.phase);
+      if (!talking) {
+        p.legL.rotation.x = 0; p.legR.rotation.x = 0;
+        p.armL.rotation.x = -1.6 - 1.2 * u; p.armR.rotation.x = -1.6 - 1.2 * u;
+        p.armL.rotation.z = -0.12; p.armR.rotation.z = 0.12;
+        p.spine.rotation.x = -0.06 * u;
+      }
+      break;
+    }
+    case 'pullup': {
+      // colgado de la barra, subiendo y bajando
+      const u = 0.5 + 0.5 * Math.sin(t * 1.6 + n.phase);
+      if (n.baseY === undefined) n.baseY = p.group.position.y;
+      if (!talking) {
+        p.group.position.y = n.baseY + 0.45 + 0.3 * u;
+        p.armL.rotation.x = -3.0; p.armR.rotation.x = -3.0;
+        p.armL.rotation.z = -0.15; p.armR.rotation.z = 0.15;
+        p.legL.rotation.x = 0.1; p.legR.rotation.x = 0.1;
+        p.kneeL.rotation.x = 0.5; p.kneeR.rotation.x = 0.5;
+      }
+      break;
+    }
+    case 'kettle': {
+      // kettlebell: balanceo de cadera con los brazos de la rodilla a la altura del pecho
+      const u = 0.5 + 0.5 * Math.sin(t * 2.4 + n.phase);
+      if (!talking) {
+        p.legL.rotation.x = -0.35; p.legR.rotation.x = -0.35;
+        p.kneeL.rotation.x = 0.5; p.kneeR.rotation.x = 0.5;
+        p.armL.rotation.x = -0.3 - 1.2 * u; p.armR.rotation.x = -0.3 - 1.2 * u;
+        p.spine.rotation.x = 0.4 - 0.35 * u;
+      }
+      break;
+    }
     case 'chef':
       p.legL.rotation.x = 0; p.legR.rotation.x = 0;
       if (!talking) {
