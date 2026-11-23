@@ -2269,7 +2269,8 @@ Version 166 - El paseo de la Rambla Medular, la rotonda del Teatro y Crossfit La
 - Sin publicar todavia: ni el enlace ni la web (tampoco la 164 ni la 165).
 
 Version 167 - La mediana y el palmeral de Gobernador Jose Garcia Hernandez y el PARKING de Juan Negrin (23/11/2026)
-- Material: PC de Arrecife, `Downloadsecursos lava game 2026-11-23\centro` (capturas de Look Around). Miradas dos
+- Material: PC de Arrecife, `Downloads
+ecursos lava game 2026-11-23\centro` (capturas de Look Around). Miradas dos
   fotos de cada calle que faltaba, en dos hojas de recortes: Doctor Juan Negrin (0668, 0684), Fajardo (0693, 0695),
   Luis Fajardo Ferrer (0737, 0741), La Ines (0749, 0755), Cabo Juby (0746, 0748), Juan de Quesada (0763, 0765),
   Gobernador Civil Jose Garcia Hernandez (0768, 0772) y El Salvador (0778, 0784). Tambien la foto aerea del juego.
@@ -2292,4 +2293,6 @@ Version 167 - La mediana y el palmeral de Gobernador Jose Garcia Hernandez y el 
   pasar con el coche junto a la mediana.
 - Archivos: medianaGobernador.js y parkingFajardo.js (nuevos) y barrios/compartido/index.js (el enganche). Sin tocar
   main.js ni index.html.
-- Sin publicar todavia: ni el enlace ni la web (tampoco la 164, la 165 ni la 166).
+- Publicado el 23/11/2026: el enlace (el artefacto), con las Versiones 164 a 167 juntas; solo cambiaban index.html y
+  el js. La peticion de cambios n.2 esta fusionada en main. Falta la web (Hostinger): en esa sesion no estaba el
+  conector de archivos de Hostinger, solo el de correo.
