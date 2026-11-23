@@ -41,6 +41,11 @@ El barrio del norte, entre Titerroy y Maneje.
   esquina a. Las fotos solo se miran: no se copian al juego.
 - Sin vistas de Google: Arniches y las puntas de Almería y Guasia (se quedan genéricas).
 
+## La mediana de León y Castillo (Version 165)
+
+`../../medianaLyC.js` (se monta desde `../valterra/ramblaMedular.js`): el bordillo con pitas y matas granate entre las dos
+calzadas, de El Salvador a la Rambla, de las capturas de Look Around del 23-11-2026 (PC de Arrecife).
+
 ## Archivos suyos
 
 Los de la lista de arriba (en esta carpeta). Lo de la mitad sur hecho antes está en `src/` y se engancha desde

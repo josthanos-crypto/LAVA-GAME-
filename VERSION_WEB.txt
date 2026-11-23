@@ -2220,3 +2220,22 @@ Version 164 - La autovia LZ-2 hasta Playa Honda, del kit de videos del 20/11/202
   la calle Tanganillo (nombres sin confirmar).
 - Archivos: autoviaLZ2.js (nuevo) y barrios/compartido/index.js (el enganche). Sin tocar main.js ni index.html.
 - Sin publicar todavia: ni el enlace ni la web.
+
+Version 165 - La mediana de pitas de Leon y Castillo, de las capturas de calle del 23/11/2026 (23/11/2026)
+- Material: PC de Arrecife, `Downloads\recursos lava game 2026-11-23`: unas 330 capturas de Look Around (Apple Maps)
+  numeradas 0455 a 0786. Argana Alta (33: Seguidilla, Mazurca, Tajaraste) y centro (unas 290: Leon y Castillo 135 a
+  151, Rambla Medular, Alcalde Gines de la Hoz, Doctor Juan Negrin, Fajardo, Luis Fajardo Ferrer, La Ines, Cabo Juby,
+  Juan de Quesada, Gobernador Civil Jose Garcia Hernandez y El Salvador). La captura sigue a medias (va por El
+  Salvador). Son capturas de movil en vertical: mucho cielo y asfalto, poca fachada.
+- Mirado: solo dos fotos, la 0503 (Leon y Castillo 147) y la 0512 (135), las dos mirando al sur. Ese tramo es el de
+  Altavista entre la calle El Salvador y la Rambla Medular; del 151 hacia arriba ya estaba hecho (coloraoLyC.js).
+- Nuevo (medianaLyC.js): la mediana entre las dos calzadas, del cruce de El Salvador hasta antes de la rotonda de la
+  Rambla: bordillo oscuro con 22 pitas y 42 matas granate en fila. Se abre en el paso de peatones del resalto y en el
+  cruce de la calle Palencia. Es adorno: no choca.
+- Sin hacer de esas dos fotos: la isleta de tierra y el carril bici del lado de la Plenergy, el totem de precios de la
+  gasolinera, el solar con muro blanco y el bloque amarillo y gris del lado este, y el 40 pintado en el suelo (se
+  probo y quedaba medio tapado por la cuesta: se quito).
+- Comprobado: el juego carga sin errores y se ha mirado la mediana de lejos y de cerca, de dia y en PC. Sin comprobar:
+  de noche, en movil y con trafico pasando al lado.
+- Archivos: medianaLyC.js (nuevo) y barrios/valterra/ramblaMedular.js (el enganche). Sin tocar main.js ni index.html.
+- Sin publicar todavia: ni el enlace ni la web (tampoco la Version 164).

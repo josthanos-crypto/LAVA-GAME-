@@ -161,7 +161,7 @@ hacer algo que ya hacen los extras, se apaga allí la parte repetida (como se hi
    archivo con `guardar_archivo` (texto, sobrescribir) y comprueba que los bytes que
    devuelve coinciden con `wc -c`. No pases imágenes en base64.
 4. **Notas**: añade una sección «Version N» al final de `VERSION_WEB.txt` (aquí y en
-   casa). La última es la Version 164.
+   casa). La última es la Version 165.
 5. **GitHub**: trabaja en una rama y abre un PR para que quede el historial (la copia del
    PC de casa no es un repositorio git: ahí no hay rama ni PR).
 

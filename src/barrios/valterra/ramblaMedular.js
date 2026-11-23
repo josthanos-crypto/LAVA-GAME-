@@ -49,6 +49,7 @@ import { tuneAdosadasLyC, buildAdosadasLyC } from '../../adosadasLyC.js';
 import { tuneSnackLosPicachos, buildSnackLosPicachos } from '../../snackLosPicachos.js';
 import { tuneCompafricLyC, buildCompafricLyC } from '../../compafricLyC.js';
 import { tuneColoraoLyC, buildColoraoLyC } from '../../coloraoLyC.js';
+import { buildMedianaLyC } from '../../medianaLyC.js';
 import { tuneFrayLuisNorte, buildFrayLuisNorte } from '../../frayLuisNorte.js';
 import { tuneFrayLuisSur, buildFrayLuisSur } from '../../frayLuisSur.js';
 import { tuneFasniaCrema, buildFasniaCrema } from '../../fasniaCrema.js';
@@ -259,6 +260,8 @@ export function buildRamblaMedular(scene, colliders, map) {
     compafricLyC: buildCompafricLyC(scene, colliders, map),
     // el 159 de la terraza, el 157 de la espadaña, OTIS, el callejón, la Cafetería Churrería El Colorao y el solar
     coloraoLyC: buildColoraoLyC(scene, colliders, map),
+    // la mediana de pitas y matas granate de León y Castillo, de El Salvador a la Rambla
+    medianaLyC: buildMedianaLyC(scene),
     // el 46 y el 44 de Fray Luis de León
     frayLuisNorte: buildFrayLuisNorte(scene, colliders, map),
     // el 42, las traseras de Compafric, del 157, de OTIS y de El Colorao por Fray Luis de León
