@@ -109,6 +109,10 @@ const WALK_SPEED = 4.4;
 const TURN_SPEED = 3.2;
 const RADIUS = 0.42;
 const FOOT_Y = 0.2;  // entre la calzada (0,14) y la acera (0,24)
+// (Version 170) saltar (Espacio) y agacharse (Mayúsculas, mientras se mantiene)
+const SALTO_V = 5.3, SALTO_G = 15;   // sube unos 0,95 m y está en el aire 0,7 s
+const MUSLO = 0.43, ESPINILLA = 0.5; // humanModel.js: HIP − KNEE y KNEE
+const AGACHADO = 0.45;               // agachado se anda a menos de la mitad
 
 export class OnFoot {
   constructor(scene) {
@@ -130,7 +134,16 @@ export class OnFoot {
     // nadar: waterAt lo engancha main.js (terrain.js); swim pasa de 0 (a pie) a 1 (nadando)
     this.waterAt = null;
     this.swim = 0;
+    // salto y agachado: jumpY = altura sobre el suelo (m), crouch y vuelo de 0 a 1, golpe = flexión al caer
+    this.jumpY = 0;
+    this.jumpV = 0;
+    this.jumpHeld = false;
+    this.crouch = 0;
+    this.vuelo = 0;
+    this.golpe = 0;
   }
+
+  get enElAire() { return this.jumpY > 0 || this.jumpV > 0; }
 
   /** vuelve a montar el personaje (tras cambiarle el aspecto) */
   rebuild(look) {
@@ -168,7 +181,7 @@ export class OnFoot {
   forward() { return new THREE.Vector2(Math.sin(this.heading), Math.cos(this.heading)); }
 
   update(dt, input, colliders) {
-    if (this.sitting) { reposo(this.parts); this.sitPose(dt); return; }
+    if (this.sitting) { this.jumpY = this.jumpV = this.crouch = this.vuelo = this.golpe = 0; reposo(this.parts); this.sitPose(dt); return; }
     // en el agua se nada: más despacio, tumbado y a brazadas; al pisar la orilla se sale andando
     const inWater = this.waterAt ? (this.waterAt(this.pos.x, this.pos.y) ? 1 : 0) : 0;
     this.swim += (inWater - this.swim) * Math.min(1, dt * 4);
@@ -176,7 +189,26 @@ export class OnFoot {
     this.heading -= input.steer * -TURN_SPEED * dt;
     let target = Math.max(0, input.throttle) * WALK_SPEED - Math.max(0, -input.throttle) * 2;
     target *= 1 - 0.6 * sw;
-    this.speed += (target - this.speed) * Math.min(1, dt * 8);
+    // saltar: una vez por pulsación, solo con los pies en el suelo y fuera del agua
+    const pideSalto = !!input.jump, enTierra = sw < 0.3;
+    if (pideSalto && !this.jumpHeld && !this.enElAire && enTierra) { this.jumpV = SALTO_V; this.crouch *= 0.3; }
+    this.jumpHeld = pideSalto;
+    if (this.enElAire) {
+      this.jumpY += this.jumpV * dt;
+      this.jumpV -= SALTO_G * dt;
+      if (this.jumpY <= 0) {
+        this.golpe = Math.min(1, -this.jumpV / SALTO_V);   // al caer se flexionan las rodillas
+        this.jumpY = 0; this.jumpV = 0;
+      }
+    }
+    // agacharse: mientras se mantiene la tecla, con los pies en el suelo
+    const quiere = input.crouch && !this.enElAire && enTierra ? 1 : 0;
+    this.crouch += (quiere - this.crouch) * Math.min(1, dt * 9);
+    this.vuelo += ((this.enElAire ? 1 : 0) - this.vuelo) * Math.min(1, dt * 14);
+    this.golpe = Math.max(0, this.golpe - dt * 3.2);
+    target *= 1 - (1 - AGACHADO) * this.crouch;
+    // en el aire no se frena ni se acelera de golpe: se lleva el impulso
+    this.speed += (target - this.speed) * Math.min(1, dt * (this.enElAire ? 1.5 : 8));
 
     const f = this.forward();
     this.pos.addScaledVector(f, this.speed * dt);
@@ -204,10 +236,54 @@ export class OnFoot {
       P.armR.rotation.x = mix(P.armR.rotation.x, -1.6 - crawl * 1.5);
     }
 
+    this.posturaExtra();
+
     const bob = Math.sin(this.phase * 0.7) * 0.05 * sw;
-    this.mesh.position.set(this.pos.x, mix(FOOT_Y + Math.abs(Math.sin(this.phase)) * 0.03 * amt, -0.3 + bob), this.pos.y);
+    this.mesh.position.set(this.pos.x, mix(FOOT_Y + Math.abs(Math.sin(this.phase)) * 0.03 * amt, -0.3 + bob) + this.jumpY, this.pos.y);
     this.mesh.rotation.x = sw * 1.25;
     this.mesh.rotation.y = this.heading;
+  }
+
+  /**
+   * (Version 170) encima del paso de andares.js: agachado (en cuclillas, el tronco echado adelante), en el aire
+   * (una pierna delante y otra atrás, los brazos arriba) y la flexión al caer. Se llama cada fotograma después de
+   * `andar`, que deja cada hueso en su sitio: aquí no se acumula nada.
+   */
+  posturaExtra() {
+    const P = this.parts;
+    const c = Math.min(1, Math.max(this.crouch, this.golpe * 0.55)) * (1 - this.swim), j = this.vuelo;
+    if (c < 0.004 && j < 0.004) return;
+    const lerp = (a, b, t) => a + (b - a) * t;
+    if (c >= 0.004) {
+      // el muslo va hacia delante y la rodilla se dobla lo justo para que el pie quede debajo de la cadera
+      const a = 0.95 * c, d = Math.asin(Math.min(1, MUSLO / ESPINILLA * Math.sin(a)));
+      const baja = MUSLO + ESPINILLA - (MUSLO * Math.cos(a) + ESPINILLA * Math.cos(d));
+      const paso = 1 - 0.55 * c;   // agachado, la zancada es más corta
+      for (const [leg, knee] of [[P.legL, P.kneeL], [P.legR, P.kneeR]]) {
+        leg.rotation.x = leg.rotation.x * paso - a;
+        knee.rotation.x = knee.rotation.x * paso + a + d;
+      }
+      P.hips.position.y -= baja;
+      P.spine.rotation.x += 0.42 * c;
+      P.head.rotation.x -= 0.3 * c;
+      P.armL.rotation.x = lerp(P.armL.rotation.x, -0.35, 0.6 * c);
+      P.armR.rotation.x = lerp(P.armR.rotation.x, -0.35, 0.6 * c);
+      P.elbowL.rotation.x = lerp(P.elbowL.rotation.x, -0.9, 0.6 * c);
+      P.elbowR.rotation.x = lerp(P.elbowR.rotation.x, -0.9, 0.6 * c);
+    }
+    if (j >= 0.004) {
+      // subiendo, las rodillas arriba; bajando, las piernas se estiran para caer
+      const sube = Math.max(0, Math.min(1, 0.5 + this.jumpV / (2 * SALTO_V)));
+      P.legL.rotation.x = lerp(P.legL.rotation.x, -0.85 * sube - 0.15, j);
+      P.legR.rotation.x = lerp(P.legR.rotation.x, 0.3 * sube - 0.1, j);
+      P.kneeL.rotation.x = lerp(P.kneeL.rotation.x, 1.25 * sube + 0.15, j);
+      P.kneeR.rotation.x = lerp(P.kneeR.rotation.x, 0.9 * sube + 0.2, j);
+      P.armL.rotation.x = lerp(P.armL.rotation.x, -1.5 * sube + 0.35, j);
+      P.armR.rotation.x = lerp(P.armR.rotation.x, -1.9 * sube + 0.35, j);
+      P.elbowL.rotation.x = lerp(P.elbowL.rotation.x, -0.7, j);
+      P.elbowR.rotation.x = lerp(P.elbowR.rotation.x, -0.5, j);
+      P.spine.rotation.x += 0.1 * j;
+    }
   }
 
   /** sentado: la cadera en el asiento, las piernas dobladas y, si come, el tenedor del plato a la boca */

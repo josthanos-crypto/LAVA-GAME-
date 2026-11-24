@@ -2337,3 +2337,35 @@ Version 169 - La mision WOD de Crossfit Lanzarote ya no arranca sola al entrar a
   mision no arranca; al ir al punto nuevo, si. Sin errores. No hay otra puerta de local a menos de 8 m del punto.
 - Sin comprobar: de noche, en movil y hacer la mision entera hasta cobrar.
 - Sin hacer: la web (Hostinger) sigue pendiente; no esta su conector de archivos.
+
+Version 170 - El protagonista salta y se agacha, y Crossfit Lanzarote rehecho por dentro con su puerta de salida (24/11/2026)
+- Lo pidio Jose Manuel el 24/11/2026: que el protagonista salte con el espacio y se agache, que dentro del gimnasio
+  se vea la puerta de salida y que se mejoren los detalles mirando fotos de internet.
+- Material: dos fotos del interior real publicadas por La Voz de Lanzarote (26/04/2022, articulo sobre emprender en
+  el CrossFit en Lanzarote), vistas en el navegador desde el PC de Arrecife. Solo como referencia: no se han
+  guardado ni se usan como textura. Instagram no se ha mirado (pide iniciar sesion).
+- El protagonista (character.js, input.js): con ESPACIO salta (sube 1 m, 0,7 s en el aire, lleva el impulso si iba
+  corriendo, flexiona las rodillas al caer) y con MAYUSCULAS, mientras se mantiene, se agacha en cuclillas y anda a
+  menos de la mitad. En el coche el espacio sigue siendo el freno de mano. En el movil, a pie, el boton del freno
+  pasa a decir Saltar y sale uno nuevo de Agachar (touch.js, index.html). Con mando, el boton A salta.
+- Crossfit Lanzarote por dentro (crossfitLanzarote.js, rehecho): nave de 20 x 32 m con techo a dos aguas de vigas
+  blancas y lucernarios, paredes blancas con la franja roja y ventanas altas, suelo de goma negra (suelo nuevo
+  «goma» en interiorKit.js) con cuadros de cinta, 20 banderas colgadas, la jaula de dominadas negra en medio, seis
+  remos, seis bicis de aire, cajones de madera, discos, kettlebells, balones, el cuerpo azul de la oficina, el pano
+  verde del fondo con un levantador pintado, la pizarra del WOD y el rotulo. Diez personas: el entrenador, dos en
+  la jaula, la clase con la barra por encima de la cabeza y tres mas por la nave.
+- La puerta de salida: antes la pared de la entrada era un hueco de 8 m sin nada. Ahora es el hueco de la persiana
+  (3,2 m) con la calle pintada detras, el marco negro, el cajon de la persiana, el cartel verde de SALIDA, la franja
+  amarilla y negra y el felpudo. Se sale igual que antes, con la F delante de la puerta.
+- A ojo: las medidas de la nave (la real es mayor), cuantas maquinas hay y donde va cada una, las banderas (dibujos
+  sencillos) y el levantador del pano verde. No se ha puesto ningun nombre ni dato del negocio nuevo.
+- Comprobado (PC de Arrecife, de dia y en PC, dos cargas): sin errores; se entra, se ve la puerta y se sale; el
+  salto sube 1,02 m y vuelve al suelo; agachado la cadera baja de 0,93 a 0,61 m y se anda a 2,0 m/s (de pie, 4,4);
+  al salir no arranca ninguna mision. Visto en foto: la nave, la clase, la salida, las maquinas, el salto y el
+  agachado.
+- Sin comprobar: en movil (los dos botones tactiles), con mando, de noche, el rendimiento con la nave grande, saltar
+  dentro del agua o sentado, y si al saltar se cuela algo raro en los demas locales.
+- Sin hacer: no se salta por encima de muros ni de coches (el salto no cambia los choques); la fachada del gimnasio
+  por fuera no se ha tocado; la web (Hostinger) sigue pendiente, falta su conector de archivos.
+- Archivos: character.js, input.js, touch.js, index.html (dos reglas de estilo y el texto de ayuda),
+  crossfitLanzarote.js e interiorKit.js. Sin tocar main.js.

@@ -72,4 +72,7 @@ export class Input {
       - (this.keys.has('d') || this.keys.has('arrowright') ? 1 : 0) + this.axis.x + this.pad.x);
   }
   get handbrake() { return this.keys.has(' '); }
+  // a pie (Version 170): Espacio salta y Mayúsculas agacha mientras se mantiene
+  get jump() { return this.keys.has(' '); }
+  get crouch() { return this.keys.has('shift'); }
 }

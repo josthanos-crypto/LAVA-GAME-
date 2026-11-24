@@ -24,6 +24,8 @@ const BUTTONS = [
   ['talk', 't', 'Hablar', false],
   ['weapon', 'x', 'Arma', false],
   ['jump', 'j', 'Salto', false],
+  // (Version 170) a pie: el botón del freno pasa a ser Saltar y sale este para agacharse
+  ['crouch', 'Shift', 'Agachar', true],
 ];
 const MENU = [
   ['g', 'Mapa'], ['c', 'Cámara'], ['i', 'Interior'], ['m', 'Ropa'], ['n', 'Hora'], ['q', 'Calidad'],
@@ -145,6 +147,9 @@ export class TouchControls {
     if (this.mode === mode) return;
     this.mode = mode;
     this.talkBtn.style.display = mode === 'car' ? 'none' : '';
+    // el mismo botón (Espacio): freno de mano en coche, saltar a pie
+    const brake = this.root.querySelector('.tc-brake');
+    if (brake) brake.textContent = mode === 'car' ? 'Freno' : 'Saltar';
     this.root.classList.toggle('foot', mode !== 'car');
   }
 }

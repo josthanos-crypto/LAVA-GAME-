@@ -40,7 +40,7 @@ export function canvasTex(w, h, draw) {
 }
 
 // ── suelos de lienzo que se repiten (uno por tipo, compartidos) ──
-const FLOOR_SIZE = { wood: 2.4, dark: 2.4, tile: 1.2, terrazo: 2, checker: 1, stone: 2.4, cement: 3, barro: 1.32, arena: 3 };
+const FLOOR_SIZE = { wood: 2.4, dark: 2.4, tile: 1.2, terrazo: 2, checker: 1, stone: 2.4, cement: 3, barro: 1.32, arena: 3, goma: 2 };
 const floorCache = new Map();
 function floorMaterial(kind) {
   if (floorCache.has(kind)) return floorCache.get(kind);
@@ -67,6 +67,19 @@ function floorMaterial(kind) {
         }
         g.fillStyle = 'rgba(20,12,6,.6)';
         g.fillRect(0, r * (W / rows), W, 2);
+      }
+    } else if (kind === 'goma') {
+      // (Version 170) losetas de goma negra de gimnasio, de 1 m: motas grises y la junta apenas marcada
+      g.fillStyle = '#25272a'; g.fillRect(0, 0, W, W);
+      for (let k = 0; k < 5000; k++) {
+        g.fillStyle = `rgba(${rnd() < 0.6 ? '150,154,160' : '0,0,0'},${0.05 + rnd() * 0.12})`;
+        g.fillRect(rnd() * W, rnd() * W, 1 + rnd() * 2, 1 + rnd() * 2);
+      }
+      g.strokeStyle = 'rgba(8,8,10,.8)'; g.lineWidth = 3;
+      for (let i = 0; i <= 2; i++) {
+        const s = i * W / 2;
+        g.beginPath(); g.moveTo(s, 0); g.lineTo(s, W); g.stroke();
+        g.beginPath(); g.moveTo(0, s); g.lineTo(W, s); g.stroke();
       }
     } else if (kind === 'tile' || kind === 'stone') {
       const n = kind === 'tile' ? 2 : 2, s = W / n;
