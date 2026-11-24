@@ -41,6 +41,9 @@ import { tuneRamblaFaltaba, buildRamblaFaltaba } from '../../ramblaFaltaba.js';
 import { tuneAutoviaLZ2, buildAutoviaLZ2 } from '../../autoviaLZ2.js';
 import { tuneParkingFajardo, buildParkingFajardo } from '../../parkingFajardo.js';
 import { tuneMedianaGobernador, buildMedianaGobernador } from '../../medianaGobernador.js';
+import { buildRotulosCapturas } from '../../rotulosCapturas.js';
+import { buildContenedoresHospital } from '../../contenedoresHospital.js';
+import { tuneRamblaMuroNorte, buildRamblaMuroNorte } from '../../ramblaMuroNorte.js';
 
 export const BARRIO = {
   id: 'compartido',
@@ -85,6 +88,8 @@ export function prepararMapa(map) {
   tuneMedianaGobernador(map);
   // (Version 167) el aparcamiento de varias plantas de Doctor Juan Negrín con Triana
   tuneParkingFajardo(map);
+  // (Version 168) las palmeras de la acera norte de la Rambla Medular, a la altura del 34-36
+  tuneRamblaMuroNorte(map);
   buildWalkIndex(map.roads);
 }
 
@@ -111,6 +116,11 @@ export function construir({ scene, map, colliders, touch, story }) {
   // (Version 167) la mediana con arbustos y la araucaria de la calle Gobernador José García Hernández
   buildMedianaGobernador(scene, map);
   buildParkingFajardo(scene, map);
+  // (Version 168) los rotulos de Ocaso Seguros, Clinica San Vicente y Casa Decor; los contenedores del parking
+  // de los medicos; y el muro blanco de la acera norte de la Rambla Medular
+  buildRotulosCapturas(scene, map);
+  buildContenedoresHospital(scene, colliders);
+  buildRamblaMuroNorte(scene, colliders, map);
   // el Recinto Ferial: la cubierta con el escenario y el aparcamiento
   buildRecintoFerial(scene, colliders, map);
   // la isleta de picón de la rotonda grande de entrada (no venía en la lista de rotondas)

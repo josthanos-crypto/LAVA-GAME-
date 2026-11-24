@@ -5,16 +5,19 @@ import * as THREE from 'three';
  * Extremadura (Valterra, junto a la Escuela de Pesca), como en las capturas de Look Around del 23-11-2026 (PC de
  * Arrecife, `Downloads\recursos lava game 2026-11-23\centro`, fotos 0768 y 0772) y en la foto aérea del juego:
  *  - la mediana entre las dos calzadas: bordillo claro, tierra y una fila de arbustos verdes;
- *  - la isleta ovalada del final (donde se juntan con la calle Extremadura): un palmeral y una araucaria.
+ *  - la manzana en forma de gota del final (donde se juntan con la calle Extremadura; es el parking de los
+ *    médicos): palmeras y una araucaria en su acera de alrededor.
  * Es adorno: la mediana no choca. Las palmeras van por `map.extraPalms`, como las demás.
  * A ojo: el número y el sitio exacto de cada palmera y de la araucaria; la mediana y la isleta sí están donde en la foto aérea.
  */
 
 // la línea del medio de las dos calzadas (x, z), medida en el mapa
 const EJE = [[654, -295], [677.4, -268.5], [748, -193.5]];
-// la isleta ovalada del final: centro y radios
-const ISLETA = { x: 776, z: -133, rx: 7, rz: 17 };
-const ARAUCARIA = [776, -147];
+// (Version 168) la «isleta ovalada» del final es el parking de los médicos (parkingMedicos.js). En la Version 167
+// las palmeras y la araucaria caían dentro, entre los coches: ahora van en la acera de alrededor, entre las
+// casuarinas que ya había (a 1,4 m por fuera del borde del asfalto).
+const PALMERAS = [[783.4, -125.8], [782.4, -132.8], [780.6, -139.8], [779.3, -146.8], [767.3, -122], [765.8, -129.1], [765.1, -136.1]];
+const ARAUCARIA = [775.6, -155];
 
 function lejosDeCalles(roads, x, z, margen) {
   for (const r of roads || []) {
@@ -33,14 +36,10 @@ function lejosDeCalles(roads, x, z, margen) {
 /** las palmeras del palmeral de la isleta (antes de montar el mapa) */
 export function tuneMedianaGobernador(map) {
   const puestas = [];
-  for (let k = 0; k < 40 && puestas.length < 12; k++) {
-    const a = k * 2.399, d = Math.sqrt((k + 0.5) / 40);
-    const x = ISLETA.x + Math.cos(a) * d * ISLETA.rx, z = ISLETA.z + Math.sin(a) * d * ISLETA.rz;
-    if (Math.hypot(x - ARAUCARIA[0], z - ARAUCARIA[1]) < 4) continue;
-    if (puestas.some(q => Math.hypot(q[0] - x, q[1] - z) < 4.2)) continue;
-    if (!lejosDeCalles(map.roads, x, z, 1.8)) continue;
-    puestas.push([+x.toFixed(1), +z.toFixed(1), 6.2 + (k * 7 % 5) * 0.5, (k * 1.9) % (Math.PI * 2)]);
-  }
+  PALMERAS.forEach(([x, z], k) => {
+    if (!lejosDeCalles(map.roads, x, z, 0.7)) return;
+    puestas.push([x, z, 6.2 + (k * 7 % 5) * 0.5, (k * 1.9) % (Math.PI * 2)]);
+  });
   map.extraPalms = [...(map.extraPalms || []), ...puestas];
   map.medianaGobernador = { palmeras: puestas.length };
 }

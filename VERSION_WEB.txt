@@ -2269,8 +2269,7 @@ Version 166 - El paseo de la Rambla Medular, la rotonda del Teatro y Crossfit La
 - Sin publicar todavia: ni el enlace ni la web (tampoco la 164 ni la 165).
 
 Version 167 - La mediana y el palmeral de Gobernador Jose Garcia Hernandez y el PARKING de Juan Negrin (23/11/2026)
-- Material: PC de Arrecife, `Downloads
-ecursos lava game 2026-11-23\centro` (capturas de Look Around). Miradas dos
+- Material: PC de Arrecife, `Downloads\recursos lava game 2026-11-23\centro` (capturas de Look Around). Miradas dos
   fotos de cada calle que faltaba, en dos hojas de recortes: Doctor Juan Negrin (0668, 0684), Fajardo (0693, 0695),
   Luis Fajardo Ferrer (0737, 0741), La Ines (0749, 0755), Cabo Juby (0746, 0748), Juan de Quesada (0763, 0765),
   Gobernador Civil Jose Garcia Hernandez (0768, 0772) y El Salvador (0778, 0784). Tambien la foto aerea del juego.
@@ -2296,3 +2295,31 @@ ecursos lava game 2026-11-23\centro` (capturas de Look Around). Miradas dos
 - Publicado el 23/11/2026: el enlace (el artefacto), con las Versiones 164 a 167 juntas; solo cambiaban index.html y
   el js. La peticion de cambios n.2 esta fusionada en main. Falta la web (Hostinger): en esa sesion no estaba el
   conector de archivos de Hostinger, solo el de correo.
+
+Version 168 - Los rotulos de Ocaso Seguros, Clinica San Vicente y Casa Decor, el muro con palmeras de la Rambla y los contenedores del Hospital Insular (24/11/2026)
+- Material: PC de Arrecife, `Downloads\recursos lava game 2026-11-23\centro` (capturas de Look Around). Vueltas a
+  mirar las fotos 0639 y 0652 (Alcalde Gines de la Hoz), 0693 y 0695 (Fajardo), 0763 y 0765 (Juan de Quesada) y 0606
+  (Rambla Medular 34-36). Tambien la foto aerea del juego. Jose Manuel dio el visto bueno a los nombres el 24/11/2026
+  («coloca todo»).
+- Alcalde Gines de la Hoz, acera este, antes de la calle Brasilia (rotulosCapturas.js, nuevo): la banda azul de
+  OCASO SEGUROS sobre los escaparates y, al lado, el cartel azul de CLINICA SAN VICENTE. Solo los rotulos: no se
+  entra, y no llevan telefonos, horarios ni logotipos copiados.
+- Calle Fajardo, pasado el cruce de Hermanos Zerolo (rotulosCapturas.js): dos banderolas blancas de CASA DECOR, una
+  alta a la derecha y otra mas lejos a la izquierda. El rotulo de Vitaldent ya venia en el mapa.
+- Rambla Medular 34-36, acera norte, antes de la rotonda del Teatro (ramblaMuroNorte.js, nuevo): un muro blanco de
+  59 m (choca) y 7 palmeras en la acera. Antes ahi no habia nada. A ojo: donde empieza y acaba el muro y su altura.
+- Hospital Insular, entrada del parking de los medicos (contenedoresHospital.js, nuevo): el contenedor verde y el
+  gris, a la derecha de la entrada (chocan). El buzon amarillo, el cartel y las isletas rojas y blancas ya estaban
+  desde las Versiones 40 a 42. Los bolardos verdes no se ponen: caerian en el carril de salida del parking.
+- Arreglo de un fallo de la Version 167 (medianaGobernador.js): la «isleta ovalada» era en realidad el parking de
+  los medicos, y las 12 palmeras y la araucaria habian caido dentro, entre los coches. Ahora son 7 palmeras y la
+  araucaria en la acera de alrededor, entre las casuarinas que ya habia. La mediana con arbustos no cambia.
+- Sin hacer: el numero 40 pintado en los carriles de la Rambla; unas 300 fotos sin abrir (solo dos o tres por calle).
+  La captura con el iPhone sigue parada en la 0786 (El Salvador).
+- Comprobado (PC de Arrecife, de dia y en PC, dos cargas): el juego carga sin errores y los cuatro rotulos, el muro
+  y los contenedores estan puestos. Vistos en foto: Ocaso Seguros y, mas lejos, la Clinica; la banderola alta de
+  Casa Decor; el muro con las palmeras; los contenedores; y el parking de los medicos desde arriba, ya sin palmeras
+  dentro. Sin ver en foto: la banderola de Casa Decor de la izquierda (esta puesta, pero no salio en la foto) y la
+  Clinica de cerca. Sin comprobar: de noche, en movil, el rendimiento y chocar con el muro y los contenedores.
+- Archivos: rotulosCapturas.js, ramblaMuroNorte.js y contenedoresHospital.js (nuevos), medianaGobernador.js (el
+  arreglo) y barrios/compartido/index.js (el enganche). Sin tocar main.js ni index.html.
