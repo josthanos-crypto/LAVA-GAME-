@@ -102,7 +102,7 @@ function gente() {
       greet: () => '¡Pasa, pasa! ¿Vienes a probar?',
       talk: byVisit([
         (c) => [{ who: 'Entrenador', text: 'Aquí se entrena en grupo: calentamos, hacemos la técnica y luego el WOD.' }, { who: c.me, text: '¿Y si no he hecho crossfit nunca?', player: true }, { who: 'Entrenador', text: 'Todo se escala. Se empieza con lo que puedas y se va subiendo.' }],
-        (c) => [{ who: 'Entrenador', text: 'Si quieres un reto, fuera tengo un WOD de calle: tres puntos por el barrio y vuelta aquí.' }, { who: c.me, text: '¿Dónde te encuentro?', player: true }, { who: 'Entrenador', text: 'En la acera, justo delante de la puerta.' }],
+        (c) => [{ who: 'Entrenador', text: 'Si quieres un reto, fuera tengo un WOD de calle: tres puntos por el barrio y vuelta aquí.' }, { who: c.me, text: '¿Dónde te encuentro?', player: true }, { who: 'Entrenador', text: 'En la acera, a unos pasos de la puerta.' }],
       ]),
       offer: {
         label: 'Clase de crossfit', price: 0, apply: wod,

@@ -2325,3 +2325,15 @@ Version 168 - Los rotulos de Ocaso Seguros, Clinica San Vicente y Casa Decor, el
   arreglo) y barrios/compartido/index.js (el enganche). Sin tocar main.js ni index.html.
 - Publicado el 24/11/2026: el enlace (el artefacto) con la Version 168; solo cambiaban index.html y el js. Subido a
   main en GitHub. Falta la web (Hostinger): sigue sin estar el conector de archivos de Hostinger, solo el de correo.
+
+Version 169 - La mision WOD de Crossfit Lanzarote ya no arranca sola al entrar al gimnasio (24/11/2026)
+- Material: ninguno nuevo. Lo vio la prueba del gimnasio en el PC de Arrecife (repositorio `lava-git`) y Jose Manuel
+  pidio moverlo el 24/11/2026.
+- Que pasaba: el punto del encargo WOD estaba justo delante de la puerta (Calle Polca), a menos de 3,5 m. Al entrar
+  o al salir del gimnasio la mision arrancaba sola y el reloj corria mientras estabas dentro.
+- Hecho: el punto va ahora 7 m mas alla por la misma acera (missions.js). El entrenador, dentro, dice «a unos pasos
+  de la puerta» en vez de «justo delante» (crossfitLanzarote.js). La mision es la misma: tres puntos y vuelta.
+- Comprobado (PC de Arrecife, de dia y en PC, una carga): parado en la puerta, dentro del gimnasio y al salir, la
+  mision no arranca; al ir al punto nuevo, si. Sin errores. No hay otra puerta de local a menos de 8 m del punto.
+- Sin comprobar: de noche, en movil y hacer la mision entera hasta cobrar.
+- Sin hacer: la web (Hostinger) sigue pendiente; no esta su conector de archivos.

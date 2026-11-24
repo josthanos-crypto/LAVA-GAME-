@@ -21,9 +21,11 @@ const GIVERS = [
     intro: 'Necesito que distraigas a la Local un rato. Que te persigan... y piérdelos.' },
   { kind: 'erupcion', label: '¡ERUPCIÓN!', color: 0xff5a14, who: 'Nayra, la vulcanóloga',
     intro: '¡El volcán ha despertado y la lava baja por las calles! Corre a la zona segura antes de que te alcance.' },
-  // el WOD de Crossfit Lanzarote: el encargo está fijo en la acera, delante de la puerta del gimnasio (Calle Polca)
-  { kind: 'wod', label: 'WOD', color: 0xe8392b, who: 'Entrenador de Crossfit Lanzarote', fixed: [-1837.6, -1552.1],
-    intro: 'Hoy toca WOD de calle: tres puntos por el barrio a todo gas y vuelta aquí, a la puerta. ¡Sin parar, que el reloj corre!' },
+  // el WOD de Crossfit Lanzarote: el encargo está fijo en la acera del gimnasio (Calle Polca).
+  // (Version 169) estaba justo delante de la puerta (-1837.6, -1552.1), a menos de 3,5 m de ella: la misión arrancaba
+  // sola al entrar o salir del gimnasio. Ahora va 7 m más allá por la misma acera.
+  { kind: 'wod', label: 'WOD', color: 0xe8392b, who: 'Entrenador de Crossfit Lanzarote', fixed: [-1834.5, -1545.8],
+    intro: 'Hoy toca WOD de calle: tres puntos por el barrio a todo gas y vuelta aquí, junto a la puerta. ¡Sin parar, que el reloj corre!' },
 ];
 
 /** el frente de lava de «¡Erupción!»: un muro que brilla, más fuerte abajo; el relieve lo dobla con las cuestas */
