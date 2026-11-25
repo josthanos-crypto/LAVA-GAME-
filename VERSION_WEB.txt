@@ -2369,3 +2369,31 @@ Version 170 - El protagonista salta y se agacha, y Crossfit Lanzarote rehecho po
   por fuera no se ha tocado; la web (Hostinger) sigue pendiente, falta su conector de archivos.
 - Archivos: character.js, input.js, touch.js, index.html (dos reglas de estilo y el texto de ayuda),
   crossfitLanzarote.js e interiorKit.js. Sin tocar main.js.
+
+Version 171 - Altavista: Arniches, la esquina de Filipinas, la punta de Almeria y el principio de Guasia, de las capturas de Look Around de casa (25/11/2026)
+- Lo pidio Jose Manuel el 25/11/2026: meter en el juego la carpeta nueva de capturas, empezando por Altavista.
+- Material: PC de CASA, carpeta Downloads\recursos lava game 2026-11-24 web casa (4.338 capturas de Look Around de
+  543 calles en 8 barrios, 8 por calle, unos 7 GB; hechas desde la web de Apple Maps, no con el iPhone). De ahi,
+  barrio altavista: calle_arniches 2593-2600, calle_almeria 2569-2576, calle_guasia 2665-2672 y avenida_temisa
+  2513-2520. Solo se miran: no se copian al juego ni al repositorio.
+- Ojo con esa carpeta: Apple no abre cada calle en el punto del catalogo sino donde quiere, y avanza 8 pasos mirando a
+  lo largo de la calle. Lo de avenida_temisa es en realidad el principio de Guasia, y lo de calle_granada es otra
+  calle (no se ha usado). La letra de la brujula de cada captura (N, S, E, O) si dice hacia donde mira.
+- Hecho (archivo nuevo src/barrios/altavista/lookaround.js, con el kit de aceras de siempre):
+  - Arniches, la mitad de abajo, las dos aceras: casas terreras blancas, el garaje de bloque sin pintar, dos casas de
+    dos plantas, el solar vallado y el solar de tierra de la esquina.
+  - Filipinas: las cuatro casas de dos plantas que cierran Arniches (antes salia un bloque de tres plantas).
+  - Almeria, los ultimos 40 m hasta el parque: casas de dos plantas blancas, melocoton y amarilla, la terrera beis,
+    el muro de bloque y la de tres plantas.
+  - Guasia, la acera norte desde el descampado hasta la fila beis que ya estaba: la casa de balcones amarillos, el
+    muro blanco largo, los dos garajes de bloque y la casa crema de la esquina.
+- A ojo: los anchos de cada casa (las capturas miran a lo largo de la calle, no de frente a cada fachada) y el reparto
+  entre las dos manzanas de Guasia. El orden de las casas, las alturas y los colores si salen de las fotos.
+- No puesto: el rotulo del taller de aluminios de la esquina de Filipinas ni el del bar de la calle de calle_granada
+  (son nombres de negocios: los confirma Jose Manuel). La casa del taller sale con bajo de tienda sin nombre.
+- Comprobado (PC de Arrecife, de dia, una carga): sin errores; cinco fotos, una por tramo, y se ven las casas nuevas.
+- Sin comprobar: de noche, en movil, y andar pegado a las fachadas nuevas (choques).
+- Sin hacer de Altavista: la otra mitad de Arniches, la punta de abajo de Almeria, Chimia, Mosta (el muro blanco del
+  campo de futbol), Tornajo, Pena del Espino y Granada; y mirar las otras 67 calles del barrio por si mejoran algo de
+  lo que ya estaba hecho con Google. De los otros 7 barrios de la carpeta no se ha mirado nada.
+- Archivos: src/barrios/altavista/lookaround.js (nuevo), index.js y LEEME.md del barrio. Sin tocar main.js.

@@ -39,7 +39,16 @@ El barrio del norte, entre Titerroy y Maneje.
   `photometa/si`, y su respuesta trae el identificador y el sitio de todas las fotos de alrededor. Con eso, un script
   baja las fotos mirando de frente a cada fachada (cada 6-7 m) y las junta en una hoja con la distancia desde la
   esquina a. Las fotos solo se miran: no se copian al juego.
-- Sin vistas de Google: Arniches y las puntas de Almería y Guasia (se quedan genéricas).
+- Sin vistas de Google: Arniches y las puntas de Almería y Guasia. Desde la Version 171 están medio hechas con Look Around (abajo); faltan la mitad de arriba de Arniches y la punta de abajo de Almería.
+
+## Con las capturas de Look Around de casa (Version 171)
+
+`lookaround.js` (se llama al final de `prepararMapa`): lo que no tenía vistas de Google, con las capturas de Look Around
+del PC de casa (`Downloads\recursos lava game 2026-11-24 web casa\altavista`, 8 por calle, mirando a lo largo de la
+calle): la mitad de abajo de Arniches, las casas de Filipinas que la cierran, los últimos 40 m de Almería y la acera
+norte de Guasia desde el descampado. Los anchos van a ojo. Apple no abre la calle en el punto del catálogo: hay que
+situar cada tanda por los rótulos de calle que salen en la foto y por la letra de la brújula (lo de `avenida_temisa` es
+Guasia; lo de `calle_granada` no es Granada).
 
 ## La mediana de León y Castillo (Version 165)
 

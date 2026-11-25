@@ -32,6 +32,7 @@ import { tuneSanJuan } from './sanjuan.js';
 import { tuneNorte } from './norte.js';
 import { tuneOeste } from './oeste.js';
 import { tuneUltimos } from './ultimos.js';
+import { tuneLookAround } from './lookaround.js';
 
 export const BARRIO = {
   id: 'altavista',
@@ -67,4 +68,6 @@ export function prepararMapa(map) {
   // el edificio de la piscina municipal, enfrente del Open Mall (por dentro: localesPolideportivo.js)
   tunePolideportivo(map);
   tuneUltimos(map);
+  // lo que quedaba generico, con las capturas de Look Around del 24-11-2026 (Arniches, Filipinas, Almeria y Guasia)
+  tuneLookAround(map);
 }

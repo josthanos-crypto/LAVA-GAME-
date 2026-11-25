@@ -83,7 +83,7 @@ límites y qué hay en cada uno: **`BARRIOS.md`**.
 | San Francisco Javier | `san-francisco-javier/` | el puente del Cabildo |
 | Titerroy | `titerroy/` | la Delegación del Gobierno |
 | Argana Alta | `argana-alta/` | HiperDino y MediaMarkt, McDonald's, Lidl y su Repsol, aparcamientos de Tenderete, ITV, hospital Molina Orosa, el Centro Comercial Argana con Deko Hogar y Kiwoko, y los carteles de los negocios de la zona |
-| Altavista | `altavista/` | de momento nada hecho a mano |
+| Altavista | `altavista/` | las calles, una a una, con las vistas de la calle (kit de aceras; ver su ficha) |
 | Maneje | `maneje/` | el campo de arriba y el camino de Anmara |
 | Playa Honda | `playa-honda/` | Conforama, B3RICEJ, el concesionario y la entrada por la LZ-301 |
 | Compartido | `compartido/` | costa y mar, aeropuerto, naturaleza, señales, rotondas, civic, tiendas, detalles de azoteas |
@@ -161,7 +161,7 @@ hacer algo que ya hacen los extras, se apaga allí la parte repetida (como se hi
    archivo con `guardar_archivo` (texto, sobrescribir) y comprueba que los bytes que
    devuelve coinciden con `wc -c`. No pases imágenes en base64.
 4. **Notas**: añade una sección «Version N» al final de `VERSION_WEB.txt` (aquí y en
-   casa). La última es la Version 170.
+   casa). La última es la Version 171.
 5. **GitHub**: trabaja en una rama y abre un PR para que quede el historial (la copia del
    PC de casa no es un repositorio git: ahí no hay rama ni PR).
 
