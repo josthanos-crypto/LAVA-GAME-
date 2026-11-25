@@ -2397,3 +2397,25 @@ Version 171 - Altavista: Arniches, la esquina de Filipinas, la punta de Almeria 
   campo de futbol), Tornajo, Pena del Espino y Granada; y mirar las otras 67 calles del barrio por si mejoran algo de
   lo que ya estaba hecho con Google. De los otros 7 barrios de la carpeta no se ha mirado nada.
 - Archivos: src/barrios/altavista/lookaround.js (nuevo), index.js y LEEME.md del barrio. Sin tocar main.js.
+
+Version 172 - Altavista: el muro blanco del campo de futbol por la calle Mosta, su porton verde, las torres de focos y las casas blancas de Tornajo (25/11/2026)
+- Lo pidio Jose Manuel el 25/11/2026: seguir con lo que faltaba de Altavista de la carpeta de capturas de casa.
+- Material: PC de CASA, Downloads\recursos lava game 2026-11-24 web casa\altavista: calle_mosta 2761-2768 (recorre
+  el muro del campo), calle_tornajo 2457-2464 (baja Tornajo desde Regulo y acaba de frente al muro y al porton) y
+  calle_pena_del_espino 2465-2472. Solo se miran.
+- El campo de futbol Agapito Reyes Viera (archivo nuevo src/barrios/altavista/campoFutbol.js): 122 m de muro blanco
+  de 3,4 m con machones por la acera sur de Mosta, el pano mas bajo con el porton verde de dos hojas un poco al este
+  de Tornajo, y cuatro torres de focos en las esquinas del campo. Antes el campo no tenia nada alrededor. El muro
+  choca.
+- Tornajo, del cruce con Regulo a Mosta (lookaround.js): las cuatro manzanas que dan a la calle salian rosadas y de
+  alturas distintas; ahora son blancas y de dos plantas, como la urbanizacion real.
+- A ojo: donde empieza y acaba el muro, cada cuanto va un machon, el sitio exacto del porton y el sitio y la altura
+  (24 m) de las torres. En Tornajo no se ha hecho casa a casa: solo color y altura.
+- Mirado y no usado: calle_pena_del_espino (el tramo que recorre ya estaba hecho con Google), calle_chimia (no se
+  puede saber que tramo de la calle es) y calle_granada (es otra calle).
+- Comprobado (PC de Arrecife, de dia, una carga): sin errores; cuatro fotos (Tornajo, el final con el porton, Mosta
+  con el muro y el campo desde arriba).
+- Sin comprobar: de noche (las torres no dan luz), en movil, y chocar contra el muro andando o en coche.
+- Sin hacer de Altavista: la otra mitad de Arniches y la punta de abajo de Almeria (no hay capturas de esos tramos),
+  Chimia y Granada. Las otras 66 calles del barrio no se han mirado. De los otros 7 barrios, nada.
+- Archivos: src/barrios/altavista/campoFutbol.js (nuevo), lookaround.js, index.js (ahora tiene construir) y LEEME.md.

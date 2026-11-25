@@ -15,6 +15,9 @@ import { aceras } from './kitCalles.js';
  * - Guasia, de la esquina del descampado a la fila beis que ya estaba (2513-2516 y 2665-2672): la casa blanca de
  *   balcones amarillos, el muro blanco largo, los dos garajes de bloque de portón rojo y verde y la casa crema de la
  *   esquina.
+ * - (Version 172) Tornajo, del cruce con Régulo a Mosta (calle_tornajo 2457-2464): toda la urbanización es de casas
+ *   blancas de dos plantas con carpintería verde; las cuatro manzanas genéricas que dan a la calle salían rosadas y
+ *   de alturas distintas, y ahora salen blancas y de dos plantas (no se recortan: solo cambian color y altura).
  */
 
 const B = '#f1eee7', B2 = '#ece8e0', BLOQUE = '#9d9890';
@@ -42,7 +45,29 @@ const ACERAS = [
     [13, 5.0, B], [9, 4.2, BLOQUE], [8, 4.6, BLOQUE], [10, 6.6, '#f0ebd8']] },
 ];
 
+// un punto de dentro de cada manzana de Tornajo que pasa a blanca de dos plantas
+const BLANCAS = [[318, -1850], [307, -1817], [306, -1781], [336, -1772]];
+
+function dentro(p, x, z) {
+  let c = false;
+  for (let i = 0, j = p.length - 1; i < p.length; j = i++) {
+    const [xi, zi] = p[i], [xj, zj] = p[j];
+    if ((zi > z) !== (zj > z) && x < ((xj - xi) * (z - zi)) / (zj - zi) + xi) c = !c;
+  }
+  return c;
+}
+
 export function tuneLookAround(map) {
   aceras(map, ACERAS);
+  let blancas = 0;
+  for (const [x, z] of BLANCAS) {
+    for (const b of map.buildings || []) {
+      if (!Array.isArray(b.p) || b.skip || b.ownFront || b.ownRoof || b.edificioReal || !dentro(b.p, x, z)) continue;
+      b.h = 6.6;
+      b.f = [241, 238, 231];
+      blancas++;
+    }
+  }
+  map.altavistaTornajoBlancas = blancas;
   map.altavistaLookAround = true;
 }

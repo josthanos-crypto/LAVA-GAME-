@@ -33,6 +33,7 @@ import { tuneNorte } from './norte.js';
 import { tuneOeste } from './oeste.js';
 import { tuneUltimos } from './ultimos.js';
 import { tuneLookAround } from './lookaround.js';
+import { buildCampoFutbolAltavista } from './campoFutbol.js';
 
 export const BARRIO = {
   id: 'altavista',
@@ -70,4 +71,10 @@ export function prepararMapa(map) {
   tuneUltimos(map);
   // lo que quedaba generico, con las capturas de Look Around del 24-11-2026 (Arniches, Filipinas, Almeria y Guasia)
   tuneLookAround(map);
+}
+
+/** lo que se levanta encima del mapa */
+export function construir({ scene, colliders }) {
+  // el muro blanco del campo de futbol por la calle Mosta, el porton verde y las torres de focos (Version 172)
+  return { campoFutbol: buildCampoFutbolAltavista(scene, colliders) };
 }

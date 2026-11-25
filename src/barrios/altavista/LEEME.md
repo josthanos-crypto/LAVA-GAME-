@@ -50,6 +50,14 @@ norte de Guasia desde el descampado. Los anchos van a ojo. Apple no abre la call
 situar cada tanda por los rótulos de calle que salen en la foto y por la letra de la brújula (lo de `avenida_temisa` es
 Guasia; lo de `calle_granada` no es Granada).
 
+## El campo de fútbol y Tornajo (Version 172)
+
+`campoFutbol.js` (se monta desde `construir` de `index.js`): el muro blanco del campo Agapito Reyes Viera por la acera
+sur de Mosta, el portón verde y las cuatro torres de focos, de las capturas `calle_mosta` y `calle_tornajo` de casa.
+En `lookaround.js`, las cuatro manzanas de Tornajo entre Régulo y Mosta pasan a blancas de dos plantas (solo color y
+altura). Mirado y no usado: `calle_pena_del_espino` (ya estaba hecho), `calle_chimia` (no se sabe qué tramo es) y
+`calle_granada` (es otra calle).
+
 ## La mediana de León y Castillo (Version 165)
 
 `../../medianaLyC.js` (se monta desde `../valterra/ramblaMedular.js`): el bordillo con pitas y matas granate entre las dos
