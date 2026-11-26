@@ -2666,3 +2666,26 @@ Version 180 - Altavista, Argana Alta y Titerroy: unas 1.330 casas en 415 tramos 
 - Sin comprobar: cada tramo de cerca contra su foto (una foto por calle), de noche, en movil y los choques. El juego
   pasa de unos 8.550 a unos 10.060 edificios: NO se ha medido si va mas lento, sobre todo en movil.
 - Archivos: src/barrios/compartido/fachadasCasa.js (nuevo) y src/barrios/compartido/index.js (dos lineas).
+
+Version 181 - Los rotulos de 29 negocios de Altavista, Argana Alta y Titerroy (26/11/2026)
+- Lo pidio Jose Manuel el 26/11/2026: confirmo los nombres vistos en las fotos de fachadas («si, ponlos»).
+- Puestos (29), solo el nombre, en el punto de fachada del paso donde se ve (src/barrios/compartido/fachadasCasa.js,
+  ROTULOS): Superservicio Altavista (Blasco Ibanez); Locutorio Amistad, Las Cristinas, Winners Salon Argana y Codere
+  (Lujan Perez); Casiano (Leon Felipe); Chacon (Polca); Toldos Lanzarote, Carpinteria de Aluminio Willy y Spar
+  (Mazurca); Suma (Campoamor); Calzados Suarez y Merceria Kevais (Doctor Severo Ochoa); Anabel Pets y Dolphinland
+  (Colombia); Dulcita (Carlos III); Keidea Muebles, TravelsAir y Parrilla (Castillo de las Coloradas); Glassdrive y
+  New Electric (Juan Brito); Jasmine de Lanzarote, Generali, ICSE, Di Casa y Studio MK (Doctor Juan Negrin); Correos
+  Express y Proyecto ARO (Santander); Gimnasio Pabellon Municipal de Titerroy (Monsenor Oscar Romero).
+- No repetidos porque el mapa ya los traia cerca: Itahisa (Doctor Juan Negrin) y Quironprevencion (Venezuela).
+- NO puestos:
+  * El Gorro Blanco, Todocolor y Clean and Detail: en el mapa la fachada mas cercana queda a 19-32 m de donde se hizo
+    la foto, asi que el cartel caeria en otro edificio. Hace falta saber el sitio exacto.
+  * Sin nombre legible entero o genericos: «Bar Cafeteria Mac...», la carniceria «Jonathan de...», «Supermercado
+    Granill...», Mini Market (¿Paola?), el bar cafeteria de Lujan Perez, Coffee Shop, Pasteleria Artesanal, Taller
+    Mecanica, Aluminios, Centro Asistencial, la panaderia de Mexico, la farmacia de Juan Negrin, la floristeria 24 h,
+    el estudio de tatuajes, la Iglesia Cristiana, el supermercado verde y gris y la carpinteria de aluminio.
+  * Churreria Fontanales Argana ya estaba en el juego. «Tampico 2» es el nombre de un edificio, no un negocio.
+- A ojo: el sitio de cada rotulo a lo largo de su fachada (la coordenada de cada foto baila unos metros).
+- Comprobado (PC de Arrecife, de dia, una carga): sin errores, entran 29 rotulos; 31 fotos, se ven en su fachada.
+- Sin comprobar: de noche, en movil.
+- Archivos: src/barrios/compartido/fachadasCasa.js.

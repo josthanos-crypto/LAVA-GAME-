@@ -12,6 +12,9 @@ import { aceras } from '../altavista/kitCalles.js';
  * el orden de las fotos. La coordenada de cada paso baila unos metros, así que el sitio de cada casa a lo largo de la
  * calle es aproximado, y los anchos salen de repartir el tramo entre los pasos. Alto 0 = solar. Casas de a hacia b.
  * Va al final de todo (compartido): así no pisa nada de lo que cada barrio ya hizo a mano.
+ * (Version 181) Los rótulos de los negocios que se leen en esas fotos, confirmados por José Manuel el 26-11-2026
+ * (`ROTULOS`): solo el nombre, en el punto de fachada del paso donde se ve. Si el mapa ya trae ese nombre cerca, no
+ * se repite.
  */
 
 const B = '#f1eee7';
@@ -1267,7 +1270,58 @@ const ACERAS = [
     [7, 6.6, '#f1eee7', { tienda: true }]] },
 ];
 
+// rótulos: [nombre, x, z, normal hacia la calle (x, z), tipo]
+const ROTULOS = [
+  ['Superservicio Altavista', 241.4, -861.4, 0.906, -0.424, 'super'],  // Blasco Ibáñez, paso 47
+  ['Locutorio Amistad', -1960.6, -2009.1, 0.327, 0.945, 'tech'],  // de Luján Pérez, paso 36
+  ['Las Cristinas', -1592.5, -2138.1, 0.334, 0.942, 'retail'],  // de Luján Pérez, paso 75
+  ['Winners Salón Argana', -1749.2, -2071.1, -0.332, -0.943, 'gen'],  // de Luján Pérez, paso 58
+  ['Codere', -1739.8, -2074.4, -0.332, -0.943, 'gen'],  // de Luján Pérez, paso 59
+  ['Casiano', -2248.1, -1811.5, -0.824, 0.567, 'food'],  // del León Felipe, paso 47
+  ['Chacón', -1944.3, -1731.2, 0.896, -0.444, 'retail'],  // Polca, paso 30
+  ['Toldos Lanzarote', -1700.8, -1663.4, -0.881, 0.473, 'gen'],  // Mazurca, paso 26
+  ['Carpintería de Aluminio Willy', -1686.7, -1637.1, -0.881, 0.473, 'gen'],  // Mazurca, paso 29
+  ['Spar', -1671.7, -1577.1, 0.890, -0.456, 'super'],  // Mazurca, paso 35
+  ['Suma', -2034.6, -2015.0, -0.985, 0.175, 'super'],  // de Campoamor, paso 32
+  ['Calzados Suárez', -765.7, -565.5, -0.767, -0.642, 'retail'],  // del Doctor Severo Ochoa, paso 8
+  ['Mercería Kevais', -818.3, -516.6, 0.785, 0.619, 'retail'],  // del Doctor Severo Ochoa, paso 14
+  ['Anabel Pets', -818.2, -147.4, -0.915, 0.403, 'retail'],  // de Colombia, paso 4
+  ['Dolphinland', -825.7, -144.2, 0.915, -0.403, 'gen'],  // de Colombia, paso 4
+  ['Dulcita', -460.7, -760.3, 0.601, 0.799, 'food'],  // de Carlos III, paso 9
+  ['Keidea Muebles', -592.4, -276.1, 0.903, 0.429, 'retail'],  // del Castillo de las Coloradas, paso 6
+  ['TravelsAir', -607.8, -246.7, 0.903, 0.429, 'gen'],  // del Castillo de las Coloradas, paso 2
+  ['Parrilla', -610.0, -217.7, -0.903, -0.429, 'retail'],  // del Castillo de las Coloradas, paso 1
+  ['Glassdrive', -668.2, -314.4, -0.015, -1.000, 'gen'],  // de Juan Brito, paso 3
+  ['New Electric', -687.6, -314.1, -0.015, -1.000, 'tech'],  // de Juan Brito, paso 5
+  ['Jasmine de Lanzarote', -195.8, 42.0, -0.618, 0.786, 'retail'],  // Doctor Juan Negrìn, paso 1
+  ['Itahisa Supermercado', -247.5, -2.7, -0.647, 0.763, 'super'],  // Doctor Juan Negrìn, paso 7
+  ['Generali', -319.3, -62.4, -0.647, 0.763, 'bank'],  // Doctor Juan Negrìn, paso 14
+  ['ICSE', -304.4, -49.9, -0.647, 0.763, 'gen'],  // Doctor Juan Negrìn, paso 12
+  ['Di Casa', -333.2, -45.9, 0.647, -0.763, 'retail'],  // Doctor Juan Negrìn, paso 14
+  ['Studio MK', -397.6, -129.0, -0.648, 0.762, 'retail'],  // Doctor Juan Negrìn, paso 20
+  ['Correos Express', -581.5, -362.2, 0.736, 0.677, 'gen'],  // de Santander, paso 4
+  ['Proyecto ARO', -582.2, -346.0, -0.736, -0.677, 'gen'],  // de Santander, paso 5
+  ['Quirónprevención', -813.3, -239.2, -0.992, -0.123, 'gen'],  // de Venezuela, paso 7
+  ['Gimnasio Pabellón Municipal de Titerroy', -502.2, -683.1, 0.827, -0.563, 'gen'],  // Monseñor Óscar Romero, paso 2
+];
+
+const llano = s => String(s == null ? '' : s).normalize('NFD').replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
+
 export function tuneFachadasCasa(map) {
   aceras(map, ACERAS);
   map.fachadasCasa = ACERAS.length;
+  if (!Array.isArray(map.signs)) map.signs = [];
+  let puestos = 0;
+  for (const [name, x, z, nx, nz, k] of ROTULOS) {
+    const n = llano(name);
+    const repe = map.signs.some(s => Math.hypot(s.x - x, s.z - z) < 150 && (() => {
+      const m = llano(s.name);
+      if (m.length <= 3) return false;
+      return m.includes(n) ? true : n.includes(m);
+    })());
+    if (repe) continue;
+    map.signs.push({ x, z, nx, nz, name, k });
+    puestos++;
+  }
+  map.rotulosCasa = puestos;
 }

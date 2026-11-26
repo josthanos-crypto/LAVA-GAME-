@@ -170,7 +170,7 @@ hacer algo que ya hacen los extras, se apaga allí la parte repetida (como se hi
    nginx los daría como texto. En esa dirección la entrada es libre «de momento» (Version 179: lista
    `ENTRADA_LIBRE` de `src/registro.js`); allí no hay `registro.php`. En la web de Hostinger sigue el registro.
 4. **Notas**: añade una sección «Version N» al final de `VERSION_WEB.txt` (aquí y en
-   casa). La última es la Version 180.
+   casa). La última es la Version 181.
 5. **GitHub**: trabaja en una rama y abre un PR para que quede el historial (la copia del
    PC de casa no es un repositorio git: ahí no hay rama ni PR).
 
