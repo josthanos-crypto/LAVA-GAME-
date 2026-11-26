@@ -325,4 +325,5 @@ estas capturas: mirar primero la brújula de cada foto.**
 Rótulos confirmados por José Manuel (26-11-2026): Bingo, Video Tecnic, Zona Fit, Jet Set y Armas Trasmediterránea van
 con `letrero` en su casa de un tramo; Alain Afflelou, Librería Fajardo, Visanta, Auditax, Santa Marta, Orisa Óptica y
 Digi van en `ROTULOS` (se añaden a `map.signs` sobre la fachada que ya había; si el mapa ya trae ese nombre, no se
-repite). Sin poner: Peluquería Bea (no se sabe la calle) y base: (el mapa ya trae uno).
+repite). Sin poner: base: (el mapa ya trae uno). (Version 176) Peluquería Bea va en un tramo nuevo de la acera norte de
+Augusto Lorenzo (nº 30, dirección sacada de internet; en las fotos se ven el 30 y el 28).

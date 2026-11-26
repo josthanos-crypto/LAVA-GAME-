@@ -2518,3 +2518,15 @@ Version 175 - Centro: los rotulos de 12 negocios y arreglo de la 174 (once calle
 - Sin comprobar: que se lean bien de cerca los demas rotulos (Visanta, Auditax, Orisa, Digi, Libreria Fajardo, Video
   Tecnic, Zona Fit, Jet Set), de noche, en movil y los choques.
 - Archivos: src/barrios/arrecife-centro/fachadas.js y su LEEME.md.
+
+Version 176 - Centro: la Peluqueria Bea, en Augusto Lorenzo 30 (26/11/2026)
+- Lo pidio Jose Manuel el 26/11/2026: buscar en internet en que calle esta (quedo sin poner en la 175).
+- Direccion: C. Augusto Lorenzo, 30, Arrecife, segun el directorio de Fresha (DATO DE INTERNET, una sola fuente).
+  Cuadra con las capturas del PC de Arrecife: en las fotos 0504 y 0505 se ven los numeros 30 y 28 en las puertas.
+- Hecho: un tramo nuevo en la acera norte de Augusto Lorenzo, al oeste de Ortega y Gasset (fotos 0500-0507, que van
+  hacia el oeste): cinco casas blancas de 1 a 3 plantas con el rotulo «Peluqueria Bea» en la suya. Solo el nombre.
+  Son ya 58 tramos de acera en el centro y 13 rotulos.
+- A ojo: el ancho de cada casa y el sitio exacto del rotulo dentro de esa acera.
+- Comprobado (PC de Arrecife, de dia, una carga): sin errores; el rotulo se lee en la foto.
+- Sin comprobar: de noche, en movil y los choques.
+- Archivos: src/barrios/arrecife-centro/fachadas.js y su LEEME.md.

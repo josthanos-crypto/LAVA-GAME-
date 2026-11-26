@@ -197,6 +197,9 @@ const ACERAS = [
   // Manolo Millares, acera norte (fotos 0808-0815)
   { a: [-501.5, 337.5], b: [-544.3, 342.7], fondo: 10, casas: [
     [43.1, 12.2, '#d9b0a8', { letrero: 'Armas Trasmediterránea', k: 'gen' }]] },
+  // Augusto Lorenzo, acera norte (fotos 0500-0507)
+  { a: [-721.9, -43.6], b: [-682.9, -61.0], fondo: 10, casas: [
+    [8.5, 4.0, '#ece8e0'], [8.5, 6.6, '#f1eee7', { letrero: 'Peluquería Bea', k: 'gen' }], [8.5, 4.0, '#f1eee7'], [8.5, 9.4, '#f1eee7', { tienda: true }], [8.5, 9.4, '#f1eee7']] },
 ];
 
 // manzanas que son un solo edificio: [punto de dentro, color, alto]. Se pinta el bloque entero, sin partirlo
