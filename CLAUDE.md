@@ -160,6 +160,16 @@ hacer algo que ya hacen los extras, se apaga allí la parte repetida (como se hi
    cambiar nada, copia los archivos que vas a tocar en `_copia_antes_<tema>`. Sube cada
    archivo con `guardar_archivo` (texto, sobrescribir) y comprueba que los bytes que
    devuelve coinciden con `wc -c`. No pases imágenes en base64.
+   **Servidor de casa** (desde el 26/11/2026; **solo cuando José Manuel lo pida**): en ese PC hay un Linux
+   (`wsl -d servidor-canary`, se entra como root) con nginx en `127.0.0.1:8088` (raíz `/var/www/prueba`) y un túnel de
+   Cloudflare que lo saca a `https://servidor.canaryislandconsulting.es`. El juego va en `/var/www/prueba/juego/`
+   (dirección `.../juego/`). Para subirlo: en `Downloads\gta canarias\_github_lava` (copia limpia de GitHub; su
+   `node_modules` es un enlace a `..\game
+ode_modules`), `git pull`, `node node_modulesiteinite.js build
+   --base ./` y, desde `dist` (`carpeta` del conector), `wsl -d servidor-canary -- sh -c "cp -r . /var/www/prueba/juego/
+   && chmod -R a+rX /var/www/prueba/juego"`. NO compilar desde `game\`: su `public` lleva los `.php` del registro y
+   nginx los daría como texto. Ojo: en esa dirección el juego pide registro (`src/registro.js` lo activa en todo
+   `canaryislandconsulting.es`) y allí no hay `registro.php`: mientras José Manuel no decida, nadie nuevo puede entrar.
 4. **Notas**: añade una sección «Version N» al final de `VERSION_WEB.txt` (aquí y en
    casa). La última es la Version 176.
 5. **GitHub**: trabaja en una rama y abre un PR para que quede el historial (la copia del

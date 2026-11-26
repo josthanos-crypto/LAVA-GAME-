@@ -2530,3 +2530,16 @@ Version 176 - Centro: la Peluqueria Bea, en Augusto Lorenzo 30 (26/11/2026)
 - Comprobado (PC de Arrecife, de dia, una carga): sin errores; el rotulo se lee en la foto.
 - Sin comprobar: de noche, en movil y los choques.
 - Archivos: src/barrios/arrecife-centro/fachadas.js y su LEEME.md.
+
+Subida al servidor de casa (26/11/2026, no es una version nueva: es la 176 tal cual)
+- Lo pidio Jose Manuel el 26/11/2026 («si, subelo»). En el PC de casa hay desde ese dia un servidor (Linux
+  servidor-canary con nginx y un tunel de Cloudflare) en https://servidor.canaryislandconsulting.es.
+- Hecho: el juego compilado (Version 176, 47 archivos, 24 MB, el mismo js que en el enlace) en /juego/ de ese servidor.
+  Se compilo en casa desde la copia limpia de GitHub (_github_lava), no desde game\ (que lleva los .php del registro).
+  No se toco la configuracion del servidor ni su pagina de prueba.
+- Comprobado desde el PC de Arrecife: los archivos responden desde internet (pagina, js, mapa, fotos del suelo y
+  relieve) y el juego arranca en un navegador de prueba sin errores ni archivos que falten (33 s hasta el boton).
+- PENDIENTE DE DECIDIR: en esa direccion el juego pide el registro de jugadores (se activa en todo
+  canaryislandconsulting.es) y ese servidor no tiene registro.php ni privacidad.html. Una visita nueva ve el
+  formulario y no puede pasar. La prueba se hizo marcando el navegador de prueba como ya registrado.
+- Solo funciona con el PC de casa encendido.
