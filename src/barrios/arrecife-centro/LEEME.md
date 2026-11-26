@@ -313,3 +313,16 @@ Sale de las capturas del PC de Arrecife (`Downloads\Lava Game capturas 2026-11-2
 calles). No traen coordenada: anchos, sitio exacto y, en alguna calle, el sentido, van a ojo. No toca las manzanas
 con `zone` (Charco, Calle Real), las que ya tenían `f` puesto a mano ni las hechas a mano. Nombres de negocios vistos
 y no puestos (sin confirmar): están en la nota de la Version 174 de `VERSION_WEB.txt`.
+
+### Arreglo y rótulos (Version 175)
+
+Cada foto de Look Around lleva arriba a la derecha una brújula (N, S, E, O) con hacia dónde mira. La 174 no la usó y
+once calles tenían el sentido mal o dudoso. Ahora `fachadas.js` tiene 57 tramos en 24 calles: se rehicieron Tomás
+Lubary, Portugal, Doctor Fleming, Isaac Peral y Alonso Cano, y se quitaron Ortega y Gasset, Molino, Luis Fajardo
+Ferrer, Igualdad, Coronel Bens, García de Hita y Aquilino Fernández (están como antes de la 174). **Para otra tanda de
+estas capturas: mirar primero la brújula de cada foto.**
+
+Rótulos confirmados por José Manuel (26-11-2026): Bingo, Video Tecnic, Zona Fit, Jet Set y Armas Trasmediterránea van
+con `letrero` en su casa de un tramo; Alain Afflelou, Librería Fajardo, Visanta, Auditax, Santa Marta, Orisa Óptica y
+Digi van en `ROTULOS` (se añaden a `map.signs` sobre la fachada que ya había; si el mapa ya trae ese nombre, no se
+repite). Sin poner: Peluquería Bea (no se sabe la calle) y base: (el mapa ya trae uno).

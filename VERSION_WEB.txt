@@ -2488,3 +2488,33 @@ Version 174 - El centro de Arrecife calle a calle: 31 calles que solo tenian la 
 - Sin comprobar: cada tramo de cerca contra su foto, de noche, en movil, y chocar contra las casas nuevas andando o
   en coche. Si las plazas de Luis Morote, Portugal y Aniagua y el aparcamiento de Sol estan bien en el juego.
 - Archivos: src/barrios/arrecife-centro/fachadas.js (nuevo), su index.js y su LEEME.md.
+
+Version 175 - Centro: los rotulos de 12 negocios y arreglo de la 174 (once calles tenian el sentido de las fotos mal o dudoso) (26/11/2026)
+- Lo pidio Jose Manuel el 26/11/2026: confirmo los nombres de negocios vistos en las fotos del centro («si, ponlos»).
+- FALLO DE LA 174 QUE SE ARREGLA AQUI: al situar los rotulos se vio que cada foto lleva arriba a la derecha una brujula
+  (N, S, E, O) que dice hacia donde mira. La 174 se hizo sin mirarla, deduciendo el sentido por los cruces. Repasadas
+  las 51 calles con la brujula: 20 de las 31 calles tocadas estaban bien y 11 tenian el sentido mal o dudoso, con lo
+  que las casas podian estar en la acera o en la manzana que no era.
+  - Rehechas con el sentido bueno: Tomas Lubary, Portugal (el Bingo va al norte, junto a la plaza), Doctor Fleming
+    (las fotos van hacia el sur desde Argentina), Isaac Peral (la casa tostada es de la acera sur) y Alonso Cano.
+  - Quitadas, vuelven a como estaban antes de la 174 porque no se puede asegurar la manzana: Ortega y Gasset, Molino
+    (las fotos miran al oeste: son de una bocacalle), Luis Fajardo Ferrer, Igualdad (las fotos van por otra calle,
+    hacia el norte), Coronel Bens (las fotos van hacia el sur y lo que se ve es la Ferreteria N4 y El Almacen, que ya
+    estaban hechos), Garcia de Hita y Aquilino Fernandez (el lado de las tiendas cae en zona del Charco y Calle Real).
+  - Quedan 57 tramos de acera y unas 213 casas en 24 calles (antes 68 tramos y 276 casas en 31) y los 6 bloques.
+- Rotulos puestos (12). En su casa, dentro de un tramo nuevo: Bingo (Portugal), Video Tecnic y Zona Fit (Doctor
+  Fleming), Jet Set (Manolo Millares, frente al final de Cabo Juby: tramo nuevo, casa blanca de una planta) y Armas
+  Trasmediterranea (Manolo Millares, frente al final de Almirante Boado: tramo nuevo, edificio rosado de 4 plantas).
+  Sueltos, sobre la fachada que ya habia: Alain Afflelou y Libreria Fajardo (Fajardo), Visanta y Auditax (plaza de
+  Luis Morote, edificio de la esquina noroeste), Santa Marta y Orisa Optica (Aquilino Fernandez) y Digi (Garcia de
+  Hita con Nicolas Martin Cabrera). Solo el nombre, sin logotipos ni telefonos.
+- A ojo: el sitio de cada rotulo a lo largo de su calle (unos 20 m arriba o abajo). Santa Marta y Orisa caen sobre una
+  casa terrera del mapa, que alli no se parece a la real (edificio de varias plantas).
+- NO puestos: Peluqueria Bea (no se puede saber en que calle esta: las fotos miran al oeste desde el cruce de Ortega
+  y Gasset con Augusto Lorenzo), base: (el mapa ya trae un rotulo «base:» en otro punto del centro) y «Redes» (no
+  era un negocio: era parte del cartel de al lado de la Ferreteria N4, que ya esta en el juego).
+- Comprobado (PC de Arrecife, de dia, una carga): sin errores, entran los 57 tramos, los 6 bloques y los 7 rotulos
+  sueltos; 20 fotos. Se ven los rotulos de Armas, Bingo, Alain Afflelou y Santa Marta.
+- Sin comprobar: que se lean bien de cerca los demas rotulos (Visanta, Auditax, Orisa, Digi, Libreria Fajardo, Video
+  Tecnic, Zona Fit, Jet Set), de noche, en movil y los choques.
+- Archivos: src/barrios/arrecife-centro/fachadas.js y su LEEME.md.
