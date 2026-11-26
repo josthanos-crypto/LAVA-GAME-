@@ -170,7 +170,7 @@ hacer algo que ya hacen los extras, se apaga allí la parte repetida (como se hi
    nginx los daría como texto. Ojo: en esa dirección el juego pide registro (`src/registro.js` lo activa en todo
    `canaryislandconsulting.es`) y allí no hay `registro.php`: mientras José Manuel no decida, nadie nuevo puede entrar.
 4. **Notas**: añade una sección «Version N» al final de `VERSION_WEB.txt` (aquí y en
-   casa). La última es la Version 176.
+   casa). La última es la Version 177.
 5. **GitHub**: trabaja en una rama y abre un PR para que quede el historial (la copia del
    PC de casa no es un repositorio git: ahí no hay rama ni PR).
 

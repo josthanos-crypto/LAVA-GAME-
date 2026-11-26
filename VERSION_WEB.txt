@@ -2543,3 +2543,40 @@ Subida al servidor de casa (26/11/2026, no es una version nueva: es la 176 tal c
   canaryislandconsulting.es) y ese servidor no tiene registro.php ni privacidad.html. Una visita nueva ve el
   formulario y no puede pasar. La prueba se hizo marcando el navegador de prueba como ya registrado.
 - Solo funciona con el PC de casa encendido.
+
+Version 177 - Playa Honda: repaso con las 880 capturas de Look Around de casa; 27 edificios corregidos en 7 calles (26/11/2026)
+- Lo pidio Jose Manuel el 26/11/2026 («adelante»): mirar las capturas de Playa Honda y mejorar el barrio.
+- Material: PC de CASA, Downloads\recursos lava game 2026-11-24 web casa\playa_honda: 880 fotos de 110 calles, 8 por
+  calle. Solo se miran. No traen coordenada; esta vez se uso desde el principio la brujula de cada foto (N, S, E, O).
+- Como se hizo: de las 110 calles, 88 caen dentro del barrio del juego (las otras 22 no estan en el catalogo de esa
+  zona o caen fuera). Se vieron las 88 en 44 hojas montadas en el PC de casa. Se volco el mapa: 2.461 edificios, de
+  ellos 926 hechos casa a casa (calles.js, calles2.js, resto.js) y casi todos los demas con su color; solo 164
+  genericos. Es decir: Playa Honda ya estaba muy trabajada.
+- Resultado del repaso: casi todas las calles confirman lo que habia (casas blancas de dos plantas con muro blanco).
+  Solo se ha tocado lo que las fotos ensenan distinto y se sabe de que lado es (archivo nuevo
+  src/barrios/playa-honda/capturas.js, 27 cambios de color o altura, sin mover ni partir nada):
+  * Manuel de Falla: 8 chalets de una planta que no tenian color, ahora blancos.
+  * Bergantin, acera oeste: los tejados rojos de la fila de adosados (6) y los dos de enfrente del punto, a una planta.
+  * Tomas Breton, acera sur: tres casas en crema, alternas con las blancas.
+  * Pared del Canto (poligono): la nave larga del este en crema y la del oeste blanca de dos plantas.
+  * Princesa Ico: el bloque amarillo crema de tres plantas pasada la esquina de las tiendas.
+  * Bocaina (acera oeste) y La Plazoleta (acera sur): casas viejas de pescadores a UNA planta (el patron las ponia de
+    dos).
+- A ojo: cuales son las casas crema de Tomas Breton y hasta donde llega la fila de tejados rojos de Bergantin.
+- Visto y NO hecho, por no saber el sitio exacto o porque hace falta algo mas que pintar: las casas crema del final de
+  Boya y de Las Majadas; las casas de una planta de Tanza, Bita, Estribor y Remo (no se sabe que tramo); la plaza de
+  palmeras de Grumete, el parque infantil de Los Roques, el paseo de la calle Mayor, el solar vallado de Sotavento y
+  de Sentina, las urbanizaciones a medio hacer de Joaquin Rodrigo, Jose Maria Gil y Federico Moreno Torroba, y el
+  monolito «Municipio de San Bartolome» de la avenida.
+- Nombres de negocios y sitios vistos y NO puestos (falta que los confirme Jose Manuel): Meson Pleamar (Pleamar),
+  Atlantico Autocentros (Canto el Jable, nave roja), GM Cash (Hoya Grande), Cegrisa / Roca (La Camuesa), Milar (Cuesta
+  Matadero), Centro de Salud de Playa Honda y Oviedo-Miranda Dental Clinic (Tajamar), Boanva y Don Rafa (Princesa
+  Ico), salon de juego / Sports Bar (Lancha con Bote), Jeep y Graficame (Piedras Negras), Catlanza Bus y Azulejos
+  (Pino Cuervo).
+- Sin mirar: las otras carpetas de ese paquete (argana_alta, argana_baja, el_charco, lomo, titerroy, valterra) y las
+  22 calles de playa_honda que caen fuera del barrio del juego.
+- Comprobado (PC de Arrecife, de dia, una carga): sin errores, entran los 27 cambios; 20 fotos. Se ven el bloque
+  amarillo de Princesa Ico, los tejados rojos de Bergantin desde arriba, las casas bajas de Bocaina y La Plazoleta, los
+  chalets blancos de Manuel de Falla y las naves de Pared del Canto. El crema de Tomas Breton apenas se nota.
+- Sin comprobar: de noche, en movil y los choques.
+- Archivos: src/barrios/playa-honda/capturas.js (nuevo), su index.js y su LEEME.md.

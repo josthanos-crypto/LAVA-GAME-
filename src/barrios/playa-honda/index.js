@@ -15,6 +15,7 @@ import { desnivelesPlayaHonda } from '../../desniveles/playa-honda.js';
 import { tuneCalles } from './calles.js';
 import { tuneCalles2 } from './calles2.js';
 import { tuneResto } from './resto.js';
+import { tuneCapturasHonda } from './capturas.js';
 import { blanquear } from '../compartido/blanquear.js';
 import { buildPlayaHondaFoto } from '../../playaHondaFoto.js';
 
@@ -48,6 +49,8 @@ export function prepararMapa(map) {
   tuneResto(map);
   // la segunda fila de casas, detrás de las de la calle: blancas como el resto del pueblo
   blanquear(map, BARRIO.caja);
+  // lo que las capturas de Look Around enseñan distinto (color o altura de edificios que ya estaban)
+  tuneCapturasHonda(map);
 }
 
 /** primera fase: antes de crear los locales */

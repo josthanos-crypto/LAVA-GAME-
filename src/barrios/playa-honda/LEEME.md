@@ -65,3 +65,12 @@ Mamerto Cabrera, mirando a la entrada de Conforama.
 Cubre Foque, Botavara, Mesana, Lancha, Fragata, Siroco, Bajamar, Barlovento, Pleamar, Sotavento, Tinecheide, Alisios, Estay y
 alrededores: casas encaladas de una y dos plantas con muro blanco, adosados y solares. Sin rótulos. Unos 380 tramos sin vistas
 de Google cerca se quedan como estaban. Bandera `map.hondaCalles`.
+
+## Repaso con las capturas de Look Around de casa (Version 177)
+
+`capturas.js` (`tuneCapturasHonda`, lo último de `prepararMapa`, después de `blanquear`): 27 retoques de color o altura
+sobre edificios que ya estaban, sacados de las 880 fotos de `Downloads\recursos lava game 2026-11-24 web
+casa\playa_honda` (PC de casa). Cada línea lleva un punto de dentro del edificio y lo que cambia (`f`, `h`, `c`).
+Calles: Manuel de Falla, Bergantín, Tomás Bretón, Pared del Canto, Princesa Ico, Bocaina y La Plazoleta. Las demás
+calles confirman lo que había. Lo visto y no hecho y los nombres de negocios sin confirmar están en la nota de la
+Version 177 de `VERSION_WEB.txt`. Las fotos llevan una brújula arriba a la derecha (N, S, E, O): mirarla siempre.
