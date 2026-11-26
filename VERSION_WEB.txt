@@ -2614,3 +2614,55 @@ Version 179 - Entrada libre al juego en el servidor de casa (26/11/2026)
 - Subida al servidor de casa la version nueva (con todo lo de las versiones 177 y 178).
 - Ojo: por esa direccion entra cualquiera que tenga el enlace y no se recogen correos.
 - Archivos: src/registro.js.
+
+Version 180 - Altavista, Argana Alta y Titerroy: unas 1.330 casas en 415 tramos que seguian genericos, de las capturas de fachadas de casa (26/11/2026)
+- Lo pidio Jose Manuel el 26/11/2026 («adelante»): seguir con las fachadas de Titerroy, Argana Alta y Altavista de la
+  carpeta del PC de casa (de esa carpeta ya estaba usado argana_baja, Version 173).
+- Material: PC de CASA, Downloads\Lava Game\recursos lava game 2026-11-25 web casa fachadas, barrios altavista (9
+  calles), argana_alta (36) y titerroy (131): por cada paso, una foto de frente, otra a la izquierda y otra a la
+  derecha, con la coordenada y el rumbo en el CSV de cada barrio (2.050 pasos). Solo se miran.
+- Como se hizo: se volco el mapa del juego de toda la zona (7.657 edificios) y se cruzo cada paso con el: de cada paso
+  sale un rayo a cada lado; si da a un bloque generico, hace falta la foto de ese lado. Salieron 1.477 fotos que dan a
+  371 bloques genericos. Se montaron en el PC de casa 76 hojas de 20 fotos solo con esas, se vieron todas y se apunto
+  casa por casa: color, plantas, si es tienda o si es solar. Las demas fotos dan a lo que ya estaba hecho a mano.
+- Hecho (archivo nuevo src/barrios/compartido/fachadasCasa.js, con el kit de aceras; va lo ultimo de todo para no
+  pisar nada hecho a mano): 415 tramos de acera y unas 1.330 casas.
+  * Altavista, 28 tramos: Blasco Ibanez, Mosta, Pena del Espino, Chimia y Almeria.
+  * Argana Alta, 118 tramos: las filas de adosados de un mismo color (crema y amarillo en Felo Monzon, Maria Morales
+    Topham, Santiago Amon y Agustina Ayala; melocoton en Agustin Millares Sall y Polca; tostado y crema en Folias;
+    blanco en El Fausto y Santiago Amon) y las casas sueltas de Lujan Perez, Aires de Lima, Tajaraste, Malaguena,
+    Saltona, Campoamor, Claudio Toledo Cabrera, Mazurca, Seguidilla, Torriani, Palacio Valdes...
+  * Titerroy y alrededores, 269 tramos: casas blancas de una y dos plantas con las de zocalo de color (salmon,
+    tostado, gris, rosa) de Fray Mendo de Viedma, Antonio Maria Manrique, Tinamala y Timbayba; las de Colombia,
+    Guanareme, Gaida, Princesa Yaiza, Tenique, Carlos III, Carlos V, Bolivia, Tampico, Maracaibo, Navarra, Zaragoza,
+    Santander, Doctor Juan Negrin, Castillo de las Coloradas... Algunas de esas calles siguen fuera del barrio
+    (Maneje, San Francisco Javier y el borde norte del centro) y tambien van.
+- A ojo: el ancho de cada casa (el tramo se reparte entre los pasos) y su sitio exacto a lo largo de la calle (la
+  coordenada de cada paso baila unos metros). Los colores van a una paleta corta (blanco, crema, beis, tostado,
+  melocoton, salmon, ocre, amarillo, rosa, gris...). Detras de las casas nuevas queda el resto del bloque como estaba.
+- No puesto: 79 tramos que el programa descarto (la fachada queda a mas de 18 m de la calle, o el tramo pisaba otra
+  calle o era de menos de 5 m); las esquinas, plazas, colegios y muros largos (marcados para no tocar); Doctor
+  Gregorio Maranon (la captura se quedo atascada: las mismas tres fotos repetidas 60 veces) y Sorondongo (un
+  descampado repetido); 4 calles que no estan en el mapa con ese nombre (Temisas, Isas, Argana Alta, Tenderete).
+- Nombres de negocios vistos y NO puestos (falta que los confirme Jose Manuel):
+  Superservicio Altavista (Blasco Ibanez D47), Clean and Detail (Blasco Ibanez I30), Locutorio Amistad (Lujan Perez
+  I36), bar cafeteria en Lujan Perez I29; Las Cristinas floristeria (Lujan Perez I75), Taller Mecanica (I70), Winners
+  Salon Argana y Codere Salon de Juego (Lujan Perez D58-59), El Gorro Blanco (Malaguena D53); Casiano (Leon Felipe
+  I47), Chacon (Polca I30), Coffee Shop y Todocolor (Tajaraste D4 / I77-78), Pasteleria Artesanal (Tajaraste D9),
+  Churreria Fontanales Argana (Tajaraste D40-41, ya esta en el juego); Toldos Lanzarote (Mazurca I26), Carpinteria de
+  Aluminio Willy (Mazurca I29), Spar (Mazurca D35-36); Suma supermercados (Campoamor D31-32), Aluminios (Campoamor
+  D36); Calzados Suarez (Severo Ochoa I8), Merceria Kevais (Severo Ochoa D14), Panaderia Pasteleria Cafeteria (Mexico
+  I9), Centro Asistencial (Colombia I3), Anabel Pets (Colombia I4), Dolphinland (Colombia D4); Bar Cafeteria Mac
+  (Carlos III I6), Supermercado Granill (Carlos III D6), Dulcita (Carlos III D9), carniceria «Jonathan de...» (Carlos
+  III D10), carpinteria de aluminio (Pardela D8); Keidea Muebles (Castillo de las Coloradas I5-6), TravelsAir
+  (Castillo de las Coloradas D2), Fontaneria y Ferreteria Parrilla (Castillo de las Coloradas D1), supermercado verde
+  y gris (Castillo de las Coloradas I2-3); Glassdrive, New Electric e Iglesia Cristiana (Juan Brito I2-5), Jasmine de
+  Lanzarote, Itahisa Supermercado, Mini Market Paola, Generali, ICSE, Di Casa, Studio MK, farmacia (Doctor Juan
+  Negrin); Correos Express y Proyecto ARO (Santander D4-5), tatuajes (Santander D5), floristeria 24 h (Hernandez
+  Pacheco I1); Quironprevencion (Venezuela D3-9), Gimnasio Pabellon Municipal de Titerroy (Monsenor Oscar Romero D2),
+  Tampico 2 (Tampico D1)
+- Comprobado (PC de Arrecife, de dia, dos cargas): sin errores, entran los 415 tramos; 74 fotos a pie de calle y 4
+  desde arriba. Ninguna casa nueva pisa una calzada (por calculo y a la vista).
+- Sin comprobar: cada tramo de cerca contra su foto (una foto por calle), de noche, en movil y los choques. El juego
+  pasa de unos 8.550 a unos 10.060 edificios: NO se ha medido si va mas lento, sobre todo en movil.
+- Archivos: src/barrios/compartido/fachadasCasa.js (nuevo) y src/barrios/compartido/index.js (dos lineas).

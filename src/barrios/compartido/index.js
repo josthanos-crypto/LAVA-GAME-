@@ -44,6 +44,7 @@ import { tuneMedianaGobernador, buildMedianaGobernador } from '../../medianaGobe
 import { buildRotulosCapturas } from '../../rotulosCapturas.js';
 import { buildContenedoresHospital } from '../../contenedoresHospital.js';
 import { tuneRamblaMuroNorte, buildRamblaMuroNorte } from '../../ramblaMuroNorte.js';
+import { tuneFachadasCasa } from './fachadasCasa.js';
 
 export const BARRIO = {
   id: 'compartido',
@@ -91,6 +92,8 @@ export function prepararMapa(map) {
   // (Version 168) las palmeras de la acera norte de la Rambla Medular, a la altura del 34-36
   tuneRamblaMuroNorte(map);
   buildWalkIndex(map.roads);
+  // (Version 180) las fachadas que seguían genéricas, de la segunda pasada de capturas de casa: lo último
+  tuneFachadasCasa(map);
 }
 
 /**
