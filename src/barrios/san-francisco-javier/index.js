@@ -14,6 +14,7 @@ import { tuneCalles } from './calles.js';
 import { tuneCalles2 } from './calles2.js';
 import { tuneCalles3 } from './calles3.js';
 import { tuneResto } from './resto.js';
+import { tuneFachadasSfj } from './fachadas.js';
 
 export const BARRIO = {
   id: 'san-francisco-javier',
@@ -36,6 +37,8 @@ export function prepararMapa(map) {
   tuneCalles3(map);
   // el resto de las calles de casas, con el patrón del barrio
   tuneResto(map);
+  // los tramos que seguían genéricos (capturas de fachadas de casa)
+  tuneFachadasSfj(map);
 }
 
 /** primera fase: antes de crear los locales */

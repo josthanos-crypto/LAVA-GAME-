@@ -299,3 +299,11 @@ depuradora de detrás del Decathlon (`../../arganaFaltaba.js`). Falta repasar ig
 (Version 154) `../../tendereteAvenida.js`: la Calle Tenderete de abajo (hasta la rotonda de la Repsol) como avenida con
 mediana y coches aparcados; `../../rotondaConcha.js`: la concha blanca de esa rotonda. Sacado de los fotogramas del
 recorrido de José Manuel.
+
+## Con las capturas de fachadas de casa (Version 173)
+
+`fachadas.js`: lo que seguía genérico en Liria, Alfonso X el Sabio, Mararía, Alfonso XII, Rivera y Jesús Soto Morales,
+con la segunda pasada de Look Around (PC de casa, `Downloads\Lava Game\recursos lava game 2026-11-25 web casa
+fachadas\argana_baja`: tres fotos por paso y la coordenada de cada uno). Cada tramo recorta el bloque genérico al que
+daban las fotos y levanta las casas en su orden. Anchos y sitio exacto a lo largo de la calle, a ojo. Nombres vistos
+y no puestos (sin confirmar): Tapicería Antonio Zamora y Taller MR Auto.

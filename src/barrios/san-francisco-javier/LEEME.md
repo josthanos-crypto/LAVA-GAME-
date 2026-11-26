@@ -116,3 +116,12 @@ rotondaCabildo.js
 - `calles2.js` (`tuneCalles2`, bandera `map.sfjCalles2`): el resto de las calles del barrio (El Forito, Timple, Fernando
   el Católico, Jaime I, Don Rodrigo, Gregorio Medina, el Cid y alrededores) con las vistas de Google y el mismo kit.
   Rótulo: Frutería Supermercado (Isabel la Católica). Faltan unos 27 tramos sin vistas cerca.
+
+## Con las capturas de fachadas de casa (Version 173)
+
+`fachadas.js`: los tramos que seguían genéricos en José Hernández Almeida, Juana de Arco, Alfonso XIII, Enrique IV,
+Pizarro, El Cid Campeador, Cardenal Cisneros, Juan II y Gregorio Medina Armas, con la segunda pasada de Look Around
+(PC de casa, `Downloads\Lava Game\recursos lava game 2026-11-25 web casa fachadas\argana_baja`). Cada tramo recorta
+el bloque genérico al que daban las fotos y levanta las casas en su orden; los solares de aparcamiento quedan como
+solares. Anchos y sitio exacto a lo largo de la calle, a ojo. Nombres vistos y no puestos (sin confirmar): Nufitbell
+y El Rincón de Manolo.

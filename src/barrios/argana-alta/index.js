@@ -38,6 +38,7 @@ import { tuneArriba } from './arriba.js';
 import { tuneAbajo2 } from './abajo2.js';
 import { tuneResto } from './resto.js';
 import { tuneAbajo3 } from './abajo3.js';
+import { tuneFachadasArgana } from './fachadas.js';
 
 export const BARRIO = {
   id: 'argana-alta',
@@ -94,6 +95,8 @@ export function prepararMapa(map) {
   tuneAbajo3(map);
   // el resto de las calles de casas, con el patrón del barrio
   tuneResto(map);
+  // lo que seguía genérico en Liria, Alfonso X, Mararía, Alfonso XII, Rivera y Jesús Soto (capturas de fachadas)
+  tuneFachadasArgana(map);
   // la Calle Tenderete, de la circunvalación a la rotonda de la Repsol: avenida con mediana y coches aparcados
   tuneTendereteAvenida(map);
   // ajustar rutas: marcar carreteras principales para rutas más cortas

@@ -2419,3 +2419,34 @@ Version 172 - Altavista: el muro blanco del campo de futbol por la calle Mosta, 
 - Sin hacer de Altavista: la otra mitad de Arniches y la punta de abajo de Almeria (no hay capturas de esos tramos),
   Chimia y Granada. Las otras 66 calles del barrio no se han mirado. De los otros 7 barrios, nada.
 - Archivos: src/barrios/altavista/campoFutbol.js (nuevo), lookaround.js, index.js (ahora tiene construir) y LEEME.md.
+
+Version 173 - Argana y San Francisco Javier: las casas de 15 calles que seguian genericas, de las capturas de fachadas de casa (26/11/2026)
+- Lo pidio Jose Manuel el 26/11/2026: paso la carpeta de la segunda pasada de capturas (la de fachadas) para mejorar
+  el barrio.
+- Material: PC de CASA, Downloads\Lava Game\recursos lava game 2026-11-25 web casa fachadas\argana_baja: 32 calles,
+  tres fotos por paso (frente, izquierda y derecha), el CSV con la coordenada y el rumbo de cada paso y las hojas de
+  _hojas (una por calle y lado). Solo se miran.
+- Como se hizo: se cruzo cada paso con el mapa del juego para ver a que edificio da cada foto. De 932 edificios de la
+  zona, 739 ya estaban hechos a mano con Google; quedaban 47 bloques genericos. Solo se han tocado esos.
+- Hecho (41 tramos de acera, unas 130 casas, con el kit de aceras): en Argana Alta (archivo nuevo
+  src/barrios/argana-alta/fachadas.js) Liria, Alfonso X el Sabio, Mararia, Alfonso XII, Rivera y Jesus Soto Morales;
+  en San Francisco Javier (archivo nuevo src/barrios/san-francisco-javier/fachadas.js) Jose Hernandez Almeida, Juana
+  de Arco, Alfonso XIII, Enrique IV, Pizarro, El Cid Campeador, Cardenal Cisneros, Juan II y Gregorio Medina Armas.
+  Cada casa lleva el color y las plantas de su foto; los solares que hacen de aparcamiento quedan como solares.
+- A ojo: el ancho de cada casa (se reparte el tramo entre los pasos) y su sitio exacto a lo largo de la calle (la
+  coordenada de cada paso baila unos metros). Las plantas, cuando la foto solo ensena el bajo.
+- Mirado y no tocado: los lados que en las fotos son descampado, plaza o vallado del campo de futbol (Pizarro norte,
+  Jose Hernandez Almeida sur, Alfonso XIII este, la plaza de Juana de Arco) ya estaban vacios en el mapa. La nave de
+  Home Markt y la Repsol de Jose Lopez Betancort ya estaban hechas.
+- Nombres de negocios vistos y NO puestos (falta que los confirme Jose Manuel): Tapiceria Antonio Zamora (Alfonso X
+  el Sabio 34), Taller MR Auto (Mararia), Nufitbell (Cardenal Cisneros) y El Rincon de Manolo (Enrique IV).
+- Sin mirar de esa carpeta: Camino de Guime (60 pasos, cae fuera de esta zona), las calles con un solo paso (Iguazu,
+  El Drago, Marrubio, Charco de la Caldera, Don Manuel Caceres, Martinez Montanes, El Rapido...), Isabel la Catolica,
+  Jaime I, Tomas Morales, Luisa Linares y las hojas de los lados que ya estaban hechos. Tampoco las carpetas
+  altavista, argana_alta y titerroy de esa misma pasada.
+- Comprobado (PC de Arrecife, de dia, una carga): sin errores, entran los 41 tramos; 16 fotos a pie de calle y una
+  desde arriba. Ninguna casa nueva pisa una calle (comprobado por calculo).
+- Sin comprobar: tramo por tramo de cerca (solo una foto por calle), de noche, en movil, y chocar contra las casas
+  nuevas andando o en coche.
+- Archivos: src/barrios/argana-alta/fachadas.js y src/barrios/san-francisco-javier/fachadas.js (nuevos), los dos
+  index.js y los dos LEEME.md.
