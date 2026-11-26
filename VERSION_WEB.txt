@@ -2580,3 +2580,27 @@ Version 177 - Playa Honda: repaso con las 880 capturas de Look Around de casa; 2
   chalets blancos de Manuel de Falla y las naves de Pared del Canto. El crema de Tomas Breton apenas se nota.
 - Sin comprobar: de noche, en movil y los choques.
 - Archivos: src/barrios/playa-honda/capturas.js (nuevo), su index.js y su LEEME.md.
+
+Version 178 - Playa Honda: los rotulos de 13 negocios y sitios, y arreglo del bloque amarillo de la 177 (26/11/2026)
+- Lo pidio Jose Manuel el 26/11/2026: confirmo los nombres vistos en las fotos de Playa Honda («si, ponlos»).
+- FALLO DE LA 177 QUE SE ARREGLA AQUI: al situar Boanva y Don Rafa se volvieron a mirar de cerca las fotos 4240-4246 de
+  Princesa Ico. El edificio que la 177 pinto de amarillo es en realidad el blanco de la esquina donde estan esas dos
+  tiendas (y un BBVA). Los bloques crema se ven pasado el cruce, mas al sur, y ahi el mapa del juego no tiene edificio.
+  Se ha quitado el amarillo: ese edificio vuelve a estar como antes. Quedan 26 retoques de la 177.
+- Rotulos puestos (13), solo el nombre, sobre la fachada que ya habia (src/barrios/playa-honda/capturas.js, ROTULOS):
+  Meson Pleamar (Pleamar con San Borondon), Atlantico Autocentros (Canto el Jable), GM Cash (Hoya Grande), Cegrisa (La
+  Camuesa; «Roca» es la marca que vende), Milar (Cuesta Matadero), Centro de Salud de Playa Honda (San Borondon, al
+  final de Tajamar), Oviedo-Miranda Dental Clinic (Tajamar), Boanva y Don Rafa (Princesa Ico con Alisios), Jeep y
+  Graficame (Piedras Negras), Azulejos Insulares (Pino Cuervo; en el rotulo real pone eso, no solo «Azulejos») y El
+  Concord (Mastil con Lancha).
+- El Concord es el «salon de juego / Sports Bar» de las fotos de Lancha: en la foto 4767 se lee «Concord» en la fachada
+  y un directorio de internet (Wanderlog) pone «Bar Salon Recreativo El Concord, C. Mastil, 71». Las fotos estan en
+  esa esquina de la calle Mastil, no en el punto del catalogo de la calle Lancha. DATO DE INTERNET, una sola fuente.
+- NO puesto: Catlanza Bus (son guaguas aparcadas en una explanada, no hay fachada donde ponerlo).
+- A ojo: el sitio de cada rotulo a lo largo de su fachada. Milar se ve de lejos en las fotos: el edificio puede no ser
+  exactamente ese.
+- Visto y no confirmado: BBVA (junto a Boanva).
+- Comprobado (PC de Arrecife, de dia, una carga): sin errores, entran los 13 rotulos; 13 fotos. Se ven Boanva, Don
+  Rafa, Oviedo-Miranda, Meson Pleamar, El Concord, Jeep, Graficame, Atlantico Autocentros, GM Cash, Milar y Azulejos.
+- Sin comprobar: Cegrisa y Centro de Salud de cerca, de noche, en movil.
+- Archivos: src/barrios/playa-honda/capturas.js y su LEEME.md.

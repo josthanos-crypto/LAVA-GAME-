@@ -74,3 +74,10 @@ casa\playa_honda` (PC de casa). Cada línea lleva un punto de dentro del edifici
 Calles: Manuel de Falla, Bergantín, Tomás Bretón, Pared del Canto, Princesa Ico, Bocaina y La Plazoleta. Las demás
 calles confirman lo que había. Lo visto y no hecho y los nombres de negocios sin confirmar están en la nota de la
 Version 177 de `VERSION_WEB.txt`. Las fotos llevan una brújula arriba a la derecha (N, S, E, O): mirarla siempre.
+
+### Rótulos y arreglo (Version 178)
+
+`capturas.js` lleva además `ROTULOS`: 13 nombres confirmados por José Manuel (26-11-2026), que se añaden a `map.signs`
+sobre la fachada que ya había (si el mapa ya trae ese nombre, no se repite). Se quitó el amarillo que la 177 puso al
+edificio de la esquina de Princesa Ico con Alisios: es el blanco de Boanva y Don Rafa; los bloques crema quedan más al
+sur y no están en el mapa. El Concord (salón de juego) va en Mástil con Lancha. Sin poner: Catlanza Bus (no hay fachada).

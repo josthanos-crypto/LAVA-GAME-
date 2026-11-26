@@ -7,6 +7,10 @@
  * se sabe de qué lado de la calle es: el color o la altura de un edificio que ya estaba, sin moverlo ni partirlo.
  * Cada línea: [punto de dentro del edificio (x, z), { f: color de fachada, h: alto, c: color de la azotea }].
  * A ojo: qué casas exactas de Tomás Bretón son las crema, y hasta dónde llega la fila de tejados rojos de Bergantín.
+ * (Version 178) Los rótulos de los negocios que confirmó José Manuel el 26-11-2026 (`ROTULOS`): solo el nombre, sobre la
+ * fachada que ya había; su sitio a lo largo de la calle es aproximado. Y se quitó el amarillo del bloque de Princesa
+ * Ico de la 177: ese edificio es el blanco de Boanva y Don Rafa (los bloques crema están pasado el cruce y no salen en
+ * el mapa).
  */
 const CAMBIOS = [
   // Manuel de Falla (fotos 0839-0846): chalets blancos de una planta; estos no tenían color
@@ -36,8 +40,6 @@ const CAMBIOS = [
   [-4425.6, 487.0, { f: '#eadfc2' }],
   // Pared del Canto, lado oeste (fotos 4508-4511): nave blanca de dos plantas
   [-4485.8, 483.6, { f: '#f3f1ec', h: 6.4 }],
-  // Princesa Ico, acera oeste, pasada la esquina de las tiendas (fotos 4244-4247): el bloque amarillo crema de tres plantas
-  [-3678.7, 840.1, { f: '#ecdcae' }],
   // Bocaina, acera oeste (fotos 4396-4399): casas viejas de pescadores, de una planta (el patrón las ponía de dos)
   [-3521.4, 1128.9, { h: 4.0 }],
   [-3518.9, 1142.9, { h: 4.0 }],
@@ -45,6 +47,23 @@ const CAMBIOS = [
   // La Plazoleta, acera sur (fotos 4384-4391): casas viejas de una planta
   [-3485.4, 1224.9, { h: 4.0 }],
   [-3493.7, 1219.6, { h: 4.0 }],
+];
+
+// rótulos sueltos: [nombre, x, z, normal hacia la calle (x, z), tipo]
+const ROTULOS = [
+  ['Mesón Pleamar', -3572.9, 971.0, -0.985, 0.173, 'food'],
+  ['Atlántico Autocentros', -3922.2, 399.0, 0.102, 0.995, 'gen'],
+  ['GM Cash', -4356.6, 460.5, 0.999, 0.042, 'super'],
+  ['Cegrisa', -3526.3, 486.7, 0.995, -0.100, 'retail'],
+  ['Milar', -3577.8, 397.2, 0.994, -0.110, 'tech'],
+  ['Oviedo-Miranda Dental Clinic', -4129.7, 1042.9, -1.000, 0.009, 'gen'],
+  ['Boanva', -3663.0, 837.6, 0.988, -0.155, 'retail'],
+  ['Don Rafa', -3661.9, 844.5, 0.989, -0.151, 'food'],
+  ['Jeep', -4502.6, 495.3, -0.999, -0.044, 'retail'],
+  ['Graficame', -4500.6, 440.3, -0.999, -0.044, 'gen'],
+  ['Azulejos Insulares', -4801.4, 407.8, -0.992, 0.125, 'retail'],
+  ['Centro de Salud de Playa Honda', -4136.0, 1008.5, 0.000, 1.000, 'gen'],
+  ['El Concord', -4599.5, 957.5, 1.000, 0.000, 'gen'],
 ];
 
 function dentro(p, x, z) {
@@ -69,5 +88,14 @@ export function tuneCapturasHonda(map) {
     if (cambio.c) b.c = cambio.c.slice();
     hechos++;
   }
+  if (!Array.isArray(map.signs)) map.signs = [];
+  const ya = new Set(map.signs.map(s => s.name));
+  let rotulos = 0;
+  for (const [name, x, z, nx, nz, k] of ROTULOS) {
+    if (ya.has(name)) continue;
+    map.signs.push({ x, z, nx, nz, name, k });
+    rotulos++;
+  }
   map.capturasHonda = hechos;
+  map.rotulosHonda = rotulos;
 }
