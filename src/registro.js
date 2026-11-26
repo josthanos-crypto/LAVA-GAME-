@@ -9,7 +9,11 @@ const K_DISPOSITIVO = 'lava.dispositivo';
 const SONDEO_MS = 4000;
 
 const params = new URLSearchParams(location.search);
-const activo = /(^|\.)canaryislandconsulting\.es$/.test(location.hostname) || params.has('registro');
+// (Version 179) En el servidor de casa la entrada es libre «de momento» (lo pidió José Manuel el 26-11-2026): allí no
+// está registro.php. Para volver a pedir registro en esa dirección, quitarla de esta lista.
+const ENTRADA_LIBRE = ['servidor.canaryislandconsulting.es'];
+const enWeb = /(^|\.)canaryislandconsulting\.es$/.test(location.hostname) && !ENTRADA_LIBRE.includes(location.hostname);
+const activo = enWeb || params.has('registro');
 
 const leer = (k) => { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch { return null; } };
 const guardar = (k, v) => { try { localStorage.setItem(k, JSON.stringify(v)); } catch { /* sin almacenamiento */ } };

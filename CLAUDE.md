@@ -167,10 +167,10 @@ hacer algo que ya hacen los extras, se apaga allí la parte repetida (como se hi
    `node_modules` es un enlace a `..\game\node_modules`), `git pull`, `node node_modules\vite\bin\vite.js build
    --base ./` y, desde `dist` (`carpeta` del conector), `wsl -d servidor-canary -- sh -c "cp -r . /var/www/prueba/juego/
    && chmod -R a+rX /var/www/prueba/juego"`. NO compilar desde `game\`: su `public` lleva los `.php` del registro y
-   nginx los daría como texto. Ojo: en esa dirección el juego pide registro (`src/registro.js` lo activa en todo
-   `canaryislandconsulting.es`) y allí no hay `registro.php`: mientras José Manuel no decida, nadie nuevo puede entrar.
+   nginx los daría como texto. En esa dirección la entrada es libre «de momento» (Version 179: lista
+   `ENTRADA_LIBRE` de `src/registro.js`); allí no hay `registro.php`. En la web de Hostinger sigue el registro.
 4. **Notas**: añade una sección «Version N» al final de `VERSION_WEB.txt` (aquí y en
-   casa). La última es la Version 178.
+   casa). La última es la Version 179.
 5. **GitHub**: trabaja en una rama y abre un PR para que quede el historial (la copia del
    PC de casa no es un repositorio git: ahí no hay rama ni PR).
 

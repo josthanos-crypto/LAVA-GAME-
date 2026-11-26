@@ -2604,3 +2604,13 @@ Version 178 - Playa Honda: los rotulos de 13 negocios y sitios, y arreglo del bl
   Rafa, Oviedo-Miranda, Meson Pleamar, El Concord, Jeep, Graficame, Atlantico Autocentros, GM Cash, Milar y Azulejos.
 - Sin comprobar: Cegrisa y Centro de Salud de cerca, de noche, en movil.
 - Archivos: src/barrios/playa-honda/capturas.js y su LEEME.md.
+
+Version 179 - Entrada libre al juego en el servidor de casa (26/11/2026)
+- Lo pidio Jose Manuel el 26/11/2026: «entrada libre de momento» en servidor.canaryislandconsulting.es/juego/.
+- El registro de jugadores se activaba en cualquier direccion de canaryislandconsulting.es, y el servidor de casa no
+  tiene registro.php: nadie nuevo podia pasar del formulario. Ahora src/registro.js lleva una lista ENTRADA_LIBRE con
+  esa direccion: ahi no se pide registro. En la web de Hostinger (canaryislandconsulting.es/juego/) sigue igual, con
+  registro. Para volver a pedirlo en el servidor de casa basta quitar la direccion de esa lista.
+- Subida al servidor de casa la version nueva (con todo lo de las versiones 177 y 178).
+- Ojo: por esa direccion entra cualquiera que tenga el enlace y no se recogen correos.
+- Archivos: src/registro.js.
