@@ -164,8 +164,7 @@ hacer algo que ya hacen los extras, se apaga allí la parte repetida (como se hi
    (`wsl -d servidor-canary`, se entra como root) con nginx en `127.0.0.1:8088` (raíz `/var/www/prueba`) y un túnel de
    Cloudflare que lo saca a `https://servidor.canaryislandconsulting.es`. El juego va en `/var/www/prueba/juego/`
    (dirección `.../juego/`). Para subirlo: en `Downloads\gta canarias\_github_lava` (copia limpia de GitHub; su
-   `node_modules` es un enlace a `..\game
-ode_modules`), `git pull`, `node node_modulesiteinite.js build
+   `node_modules` es un enlace a `..\game\node_modules`), `git pull`, `node node_modules\vite\bin\vite.js build
    --base ./` y, desde `dist` (`carpeta` del conector), `wsl -d servidor-canary -- sh -c "cp -r . /var/www/prueba/juego/
    && chmod -R a+rX /var/www/prueba/juego"`. NO compilar desde `game\`: su `public` lleva los `.php` del registro y
    nginx los daría como texto. Ojo: en esa dirección el juego pide registro (`src/registro.js` lo activa en todo
