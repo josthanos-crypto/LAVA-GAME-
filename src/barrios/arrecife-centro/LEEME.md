@@ -297,3 +297,19 @@ La marea, fija: `&marea=llena`, `&marea=media` o `&marea=baja` (si no, va con la
   `PISOS` plantas de `PISO` m con `VANOS` logias de s `L0` a `L1` (fondo pintado `fondoLogia`, forjados,
   aletas y antepechos que salen `FONDO` m), el paño del logo de s 19 a la esquina y la planta
   retranqueada encima (6 m hacia dentro).
+
+## Las calles del centro, con las capturas de Look Around de la oficina (Version 174)
+
+`fachadas.js` (`tuneFachadasCentro`, lo último de `prepararMapa`): 68 tramos de acera en 31 calles que solo tenían la
+manzana entera de un color (Góngora, Quevedo, Perú, Uruguay, Tomás Lubary, Augusto Lorenzo, Ortega y Gasset,
+Paraguay, Portugal, Doctor Fleming, Nicaragua, Isaac Peral, Alonso Cano, Cuba, Trinidad, Cienfuegos, Molino,
+Alegranza, Cabo Juby, Luis Fajardo Ferrer, Eugenio d'Ors, México, El Greco, Almirante Boado Endeiza, Carlos Sáenz
+Infante, Democracia, Igualdad, Coronel Bens, García de Hita, Aquilino Fernández y avenida Coll) y 6 manzanas que son
+un solo edificio y se pintan enteras (`BLOQUES`: la barriada blanca de Garajonay y dos bloques beis de Caldera de
+Taburiente; estas caen ya en el borde con San Francisco Javier). Usa el kit de aceras de Altavista
+(`../altavista/kitCalles.js`): cada tramo recorta la manzana genérica y levanta los edificios en el orden de las fotos.
+
+Sale de las capturas del PC de Arrecife (`Downloads\Lava Game capturas 2026-11-25\capturas\centro`, 441 fotos de 51
+calles). No traen coordenada: anchos, sitio exacto y, en alguna calle, el sentido, van a ojo. No toca las manzanas
+con `zone` (Charco, Calle Real), las que ya tenían `f` puesto a mano ni las hechas a mano. Nombres de negocios vistos
+y no puestos (sin confirmar): están en la nota de la Version 174 de `VERSION_WEB.txt`.

@@ -2450,3 +2450,41 @@ Version 173 - Argana y San Francisco Javier: las casas de 15 calles que seguian 
   nuevas andando o en coche.
 - Archivos: src/barrios/argana-alta/fachadas.js y src/barrios/san-francisco-javier/fachadas.js (nuevos), los dos
   index.js y los dos LEEME.md.
+
+Version 174 - El centro de Arrecife calle a calle: 31 calles que solo tenian la manzana entera de un color, de las capturas de Look Around de la oficina (26/11/2026)
+- Lo pidio Jose Manuel el 26/11/2026: paso la carpeta de capturas del centro para analizar todas las fotos y mejorar
+  lo que se pudiera; lo que no, dejarlo como esta.
+- Material: PC de ARRECIFE (oficina), Downloads\Lava Game capturas 2026-11-25\capturas\centro: 441 fotos de 51 calles
+  (unas 8 por calle, mirando calle adelante), del 24 al 26/11/2026. Solo se miran. No traen coordenada: se sabe la
+  calle, el punto donde empezo la tanda (codigo\calles_arrecife.json) y los cruces que se ven en las fotos.
+- Como se hizo: se vieron las 51 calles en hojas de 8 fotos. Se volco el mapa del juego de la zona (887 edificios):
+  casi todo el centro eran manzanas enteras de un solo color pastel. Para cada calle se saco que manzana queda a cada
+  lado y se repartio cada cara entre los edificios que se ven, en su orden, con su color y sus plantas.
+- Hecho (archivo nuevo src/barrios/arrecife-centro/fachadas.js): 68 tramos de acera y unas 276 casas en 31 calles:
+  Gongora, Quevedo, Peru, Uruguay, Tomas Lubary, Augusto Lorenzo, Ortega y Gasset, Paraguay, Portugal, Doctor
+  Fleming, Nicaragua, Isaac Peral, Alonso Cano, Cuba, Trinidad, Cienfuegos, Molino, Alegranza, Cabo Juby, Luis
+  Fajardo Ferrer, Eugenio d'Ors, Mexico, El Greco, Almirante Boado Endeiza, Carlos Saenz Infante, Democracia,
+  Igualdad, Coronel Bens, Garcia de Hita, Aquilino Fernandez y la avenida Coll. Casi todo son casas blancas de 1 a 4
+  plantas, con las de color que se ven (melocoton y tostadas de Gongora, ocre de Almirante Boado y de Garcia de
+  Hita, salmon de Luis Fajardo Ferrer, beis de Cabo Juby...) y bajos de tienda donde los hay.
+- Y 6 manzanas que son un solo edificio, pintadas enteras: la barriada blanca de 4 plantas de Garajonay, Caldera de
+  Bandama y Roque Bentayga (4 bloques) y dos bloques beis de Caldera de Taburiente.
+- A ojo: el ancho de cada edificio (cada cara de manzana se reparte a partes iguales entre los que se ven), su sitio
+  exacto a lo largo de la calle y, en alguna calle, el sentido en que iban las fotos (Tomas Lubary, Igualdad,
+  Aquilino Fernandez, Garcia de Hita, Nicaragua). Detras de las casas nuevas queda el resto de la manzana como estaba.
+- Mirado y no tocado: Fajardo, Figueroa, Sol, Canalejas, Tenerife (ya tenian color puesto a mano); avenida Cesar
+  Manrique, Francos, la acera norte de Cienfuegos (zona del Charco y de la Calle Real, con aspecto propio); Aniagua,
+  Luis Morote, avenida Doctor Rafael Gonzalez, La Marina, Parque Islas Canarias, Fred Olsen (dos tandas iguales),
+  Recinto Ferial y La Ines (son plazas, parques, el paseo del mar, aparcamientos y el Jet Set: no hay manzana que
+  repartir). Tambien se dejaron 4 caras donde la fachada queda a mas de 10 m de la calle.
+- Nombres de negocios vistos y NO puestos (falta que los confirme Jose Manuel): Peluqueria Bea (Ortega y Gasset),
+  Bingo (Portugal), Video Tecnic y Zona Fit (Doctor Fleming), Jet Set y Armas Trasmediterranea (Manolo Millares),
+  base: (Francos), Santa Marta y Orisa Optica (Aquilino Fernandez), Redes (Coronel Bens), Auditax y Visanta (Luis
+  Morote), Alain Afflelou y Libreria Fajardo (Fajardo), Digi (Garcia de Hita).
+- Sin mirar: las carpetas acceso_pdc y puerto_del_carmen de ese mismo paquete, y las 34 fotos descartadas.
+- Comprobado (PC de Arrecife, de dia, una carga): sin errores, entran los 68 tramos y los 6 bloques; 63 fotos a pie
+  de calle y desde arriba (una o dos por calle). Ninguna casa nueva pisa una calzada (por calculo, recortando las
+  puntas junto a otra calle, y a la vista en las fotos).
+- Sin comprobar: cada tramo de cerca contra su foto, de noche, en movil, y chocar contra las casas nuevas andando o
+  en coche. Si las plazas de Luis Morote, Portugal y Aniagua y el aparcamiento de Sol estan bien en el juego.
+- Archivos: src/barrios/arrecife-centro/fachadas.js (nuevo), su index.js y su LEEME.md.

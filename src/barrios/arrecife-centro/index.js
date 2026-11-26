@@ -41,6 +41,7 @@ import { tuneElAlmacen, buildElAlmacen } from '../../elAlmacen.js';
 import { tuneHotelLancelot, buildHotelLancelot } from '../../hotelLancelot.js';
 import { tuneMasLugares, buildMasLugares } from './masLugares.js';
 import { tuneCasaAmarilla, buildCasaAmarilla } from '../../casaAmarilla.js';
+import { tuneFachadasCentro } from './fachadas.js';
 import { desnivelesArrecifeCentro } from '../../desniveles/arrecife-centro.js';
 
 export const BARRIO = {
@@ -83,6 +84,8 @@ export function prepararMapa(map) {
   tuneMasLugares(map);
   // la Casa Amarilla (León y Castillo 6): el bloque del mapa pasa a tener su fachada de la foto
   tuneCasaAmarilla(map);
+  // las calles del centro que solo tenían la manzana entera de un color (capturas de Look Around del 24-26/11/2026)
+  tuneFachadasCentro(map);
 }
 
 /** primera fase: antes de crear los locales */
