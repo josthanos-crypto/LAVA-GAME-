@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Fachadas dibujadas</title>
+<style>body{margin:0;background:#cfd6dc;font:14px sans-serif}h2{margin:10px 12px 4px}canvas{display:block;margin:0 12px 14px}</style></head>
+<body><div id="o"></div>
+<script type="module">
+import { pintarCasa, altoDibujo } from '/src/fachadasDibujadas/pintor.js';
+const calle = (await import(`/src/fachadasDibujadas/calles/${new URLSearchParams(location.search).get('c') || 'lebrillo'}.js`)).default;
+const S = +(new URLSearchParams(location.search).get('s') || 40);
+let semilla = 1;
+for (const ac of calle.aceras) {
+  const W = ac.anchos.reduce((s, w) => s + w, 0), H = Math.max(...ac.altos.map(altoDibujo));
+  const h2 = document.createElement('h2'); h2.textContent = `${calle.nombre}: ${ac.a} → ${ac.b}`; o.append(h2);
+  const cv = document.createElement('canvas'); cv.width = Math.ceil(W * S); cv.height = Math.ceil(H * S); o.append(cv);
+  const ctx = cv.getContext('2d'); ctx.fillStyle = '#9fb7c9'; ctx.fillRect(0, 0, cv.width, cv.height);
+  let x = 0;
+  ac.anchos.forEach((w, i) => {
+    const alto = ac.altos[i], d = ac.casas[i], hh = altoDibujo(alto);
+    if (d) pintarCasa(ctx, x * S, (H - hh) * S, S, w, alto, d, semilla++ * 7919);
+    x += w;
+  });
+}
+</script></body></html>

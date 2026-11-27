@@ -1268,6 +1268,101 @@ const ACERAS = [
   // de Tinguafaya, acera oeste, paso 1
   { a: [-747.8, -1300.6], b: [-747.0, -1293.7], fondo: 9, casas: [
     [7, 6.6, '#f1eee7', { tienda: true }]] },
+  // ===== TITERROY, repaso (Version 182): la otra copia de la carpeta, la de Downloads sin «Lava Game», =====
+  // ===== que tiene 157 pasos que no estaban en la primera. Van despues: recortan sobre lo ya puesto arriba =====
+  // del Doctor Severo Ochoa, acera oeste, paso 19
+  { a: [-846.6, -484.9], b: [-854.1, -476.0], fondo: 9, casas: [
+    [11.6, 4.0, '#f1eee7']] },
+  // México, acera oeste, pasos 18-24
+  { a: [-651.0, 112.7], b: [-669.3, 77.7], fondo: 9, casas: [
+    [4.5, 6.6, '#f1eee7'], [12.1, 6.6, '#f1eee7'], [10.4, 6.6, '#f1eee7'], [7, 6.6, '#f1eee7'], [7, 6.6, '#f1eee7'], [13.7, 6.6, '#f1eee7'], [9.7, 6.6, '#f1eee7'], [4.5, 6.6, '#f1eee7', { tienda: true }]] },
+  // México, acera este, pasos 17-24
+  { a: [-622.5, 144.7], b: [-650.6, 91.1], fondo: 9, casas: [
+    [7.6, 4.0, '#f1eee7', { tienda: true }], [13.5, 4.0, '#f1eee7', { tienda: true }], [12.1, 4.0, '#f1eee7'], [10.4, 4.0, '#f1eee7', { tienda: true }], [7, 4.0, '#f1eee7'], [7, 4.0, '#f1eee7'], [13.7, 4.0, '#d9b996'], [9.7, 4.0, '#e6d3b8'], [4.5, 4.0, '#f1eee7']] },
+  // de Toledo, acera este, paso 7
+  { a: [-963.6, -1504.3], b: [-953.6, -1490.8], fondo: 9, casas: [
+    [8.4, 4.0, '#f1eee7'], [8.4, 4.0, '#f1eee7']] },
+  // la Pardela, acera sur, paso 10
+  { a: [-598.8, -1305.8], b: [-592.4, -1311.9], fondo: 9, casas: [
+    [8.8, 4.0, '#f1eee7']] },
+  // de Vicente Guerra, acera norte, pasos 8-10
+  { a: [-231.9, -663.2], b: [-183.3, -694.4], fondo: 9, casas: [
+    [8.9, 6.6, '#f1eee7'], [8.9, 6.6, '#f1eee7'], [8.9, 6.6, '#f1eee7'], [11.2, 4.0, '#f1eee7'], [11.2, 4.0, '#f1eee7'], [4.3, 4.0, '#f1eee7'], [4.3, 0, B, { fondo: 16 }]] },
+  // de Vicente Guerra, acera sur, pasos 8-10
+  { a: [-232.8, -649.6], b: [-169.2, -690.6], fondo: 9, casas: [
+    [8.7, 6.6, '#f1eee7'], [8.7, 6.6, '#f1eee7'], [8.7, 6.6, '#f1eee7'], [8.7, 6.6, '#f1eee7'], [11.2, 6.6, '#f1eee7'], [11.2, 6.6, '#f1eee7'], [9.2, 4.0, '#f1eee7'], [9.2, 4.0, '#f1eee7']] },
+  // del Fray Mendo de Viedma, acera sur, pasos 9-16
+  { a: [-760.4, -825.6], b: [-704.3, -867.0], fondo: 9, casas: [
+    [6.4, 4.0, '#e6d3b8'], [8.5, 4.0, '#f1eee7'], [8, 4.0, '#f1eee7'], [8, 4.0, '#f1eee7'], [8, 4.0, '#a9abad'], [8, 4.0, '#f1eee7'], [8, 4.0, '#a9abad'], [7.4, 4.0, '#f1eee7'], [7.4, 4.0, '#f1eee7']] },
+  // del Fray Mendo de Viedma, acera norte, paso 17
+  { a: [-717.4, -869.8], b: [-710.3, -875.0], fondo: 9, casas: [
+    [8.8, 4.0, '#efe6c8']] },
+  // del Fray Mendo de Viedma, acera norte, pasos 11-16
+  { a: [-756.3, -841.0], b: [-710.3, -875.0], fondo: 9, casas: [
+    [10.5, 4.0, '#d9b996'], [8, 6.6, '#f1eee7'], [8, 4.0, '#f1eee7'], [8, 4.0, '#f1eee7'], [8, 4.0, '#a9abad'], [7.4, 4.0, '#a9abad'], [7.4, 4.0, '#a9abad']] },
+  // del Fray Mendo de Viedma, acera sur, paso 17
+  { a: [-711.2, -861.5], b: [-704.1, -866.8], fondo: 9, casas: [
+    [8.9, 4.0, '#a9abad']] },
+  // Tinamala, acera norte, paso 7
+  { a: [-591.6, -789.2], b: [-582.0, -796.4], fondo: 9, casas: [
+    [12, 4.0, '#efe6c8']] },
+  // Tinamala, acera norte, paso 4
+  { a: [-536.9, -828.5], b: [-546.1, -821.8], fondo: 9, casas: [
+    [11.4, 4.0, '#f1eee7']] },
+  // Tinamala, acera norte, paso 5
+  { a: [-564.3, -809.5], b: [-572.6, -803.4], fondo: 9, casas: [
+    [10.3, 4.0, '#e4cfc9']] },
+  // Tinamala, acera sur, pasos 7-8
+  { a: [-576.1, -786.5], b: [-598.8, -769.4], fondo: 9, casas: [
+    [8, 4.0, '#f1eee7'], [8, 4.0, '#f1eee7'], [12.4, 4.0, '#f1eee7']] },
+  // Lebrillo, acera norte, pasos 9-11
+  { a: [-523.5, -311.6], b: [-472.3, -301.3], fondo: 9, casas: [
+    [9.6, 4.0, '#f1eee7'], [9.6, 4.0, '#f1eee7'], [8.1, 4.0, '#f1eee7'], [8.1, 4.0, '#f1eee7'], [8.4, 4.0, '#f1eee7'], [8.4, 4.0, '#f1eee7']] },
+  // Lebrillo, acera sur, pasos 9-11
+  { a: [-510.8, -299.1], b: [-474.2, -291.8], fondo: 9, casas: [
+    [4.5, 6.6, '#f1eee7'], [8.1, 6.6, '#f1eee7', { tienda: true }], [8.1, 6.6, '#f1eee7', { tienda: true }], [8.4, 6.6, '#efe6c8'], [8.4, 6.6, '#efe6c8']] },
+  // de Santa Teresa de Jesús, acera norte, paso 12
+  { a: [-811.9, -257.6], b: [-794.4, -255.9], fondo: 9, casas: [
+    [8.8, 4.0, '#f1eee7'], [8.8, 4.0, '#f1eee7']] },
+  // de Santa Teresa de Jesús, acera norte, paso 14
+  { a: [-777.5, -254.0], b: [-768.0, -253.1], fondo: 9, casas: [
+    [9.5, 4.0, '#f1eee7']] },
+  // de Santa Teresa de Jesús, acera sur, pasos 12-14
+  { a: [-803.2, -247.8], b: [-771.3, -244.5], fondo: 9, casas: [
+    [7.1, 6.6, '#f1eee7', { tienda: true }], [7.1, 6.6, '#f1eee7', { tienda: true }], [11.3, 6.6, '#f1eee7'], [6.8, 4.0, '#f1eee7']] },
+  // Gaire, acera este, paso 5
+  { a: [-867.4, -670.1], b: [-863.1, -675.3], fondo: 9, casas: [
+    [6.8, 4.0, '#f1eee7']] },
+  // Sorondongo, acera norte, paso 5
+  { a: [-1265.9, 46.8], b: [-1280.6, 49.8], fondo: 9, casas: [
+    [7.5, 4.0, '#f1eee7'], [7.5, 4.0, '#f1eee7']] },
+  // Tingafa, acera este, paso 5
+  { a: [-579.3, -854.5], b: [-567.6, -839.8], fondo: 9, casas: [
+    [9.4, 4.0, '#f1eee7'], [9.4, 4.0, '#f1eee7']] },
+  // Tingafa, acera este, paso 7
+  { a: [-556.6, -836.4], b: [-546.2, -821.8], fondo: 9, casas: [
+    [18, 0, B, { fondo: 16 }]] },
+  // de la Princesa Artiaga, acera oeste, pasos 3-5
+  { a: [-801.0, -1672.2], b: [-782.2, -1645.2], fondo: 9, casas: [
+    [8.1, 4.0, '#f1eee7'], [8.1, 4.0, '#f1eee7'], [9, 4.0, '#f1eee7'], [7.8, 4.0, '#f1eee7']] },
+  // de la Princesa Artiaga, acera sur, paso 7
+  { a: [-771.9, -1624.4], b: [-763.4, -1617.1], fondo: 9, casas: [
+    [11.2, 6.6, '#f1eee7']] },
+  // Agustín Espinosa, acera sur, paso 19
+  { a: [-1572.9, 19.0], b: [-1583.2, 20.6], fondo: 9, casas: [
+    [10.5, 6.6, '#f1eee7']] },
+  // Agustín Espinosa, acera norte, paso 3
+  { a: [-1383.9, -38.9], b: [-1397.0, -36.8], fondo: 9, casas: [
+    [13.3, 6.6, '#f1eee7']] },
+  // Agustín Espinosa, acera norte, paso 23
+  { a: [-1656.2, 10.3], b: [-1666.5, 11.9], fondo: 9, casas: [
+    [10.4, 0, B, { fondo: 16 }]] },
+  // Tampico, acera sur, paso 1
+  { a: [-805.4, -280.6], b: [-789.2, -276.7], fondo: 9, casas: [
+    [8.3, 6.6, '#f1eee7'], [8.3, 6.6, '#f1eee7']] },
+  // Tampico, acera sur, paso 7
+  { a: [-732.0, -260.9], b: [-723.4, -257.7], fondo: 9, casas: [
+    [9.1, 6.6, '#f1eee7', { tienda: true }]] },
 ];
 
 // rótulos: [nombre, x, z, normal hacia la calle (x, z), tipo]

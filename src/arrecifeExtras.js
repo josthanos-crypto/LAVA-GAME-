@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { vestirLados } from './navesLados.js';
+import './fachadasDibujadas/index.js';
 
 /**
  * Añadidos de Arrecife para Lava Game (vienen de la versión GTA Canarias):

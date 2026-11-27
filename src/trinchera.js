@@ -2,6 +2,9 @@ import * as THREE from 'three';
 import { Kit } from './interiorKit.js';
 import { marco, enMarco, sueloTex, trocear } from './restaurantesCharco.js';
 import { paveMesh, polyTris } from './suelos.js';
+import { montarLucesPuentes } from './puentesLuz.js';
+import { buildPuenteRayas } from './puenteRayas.js';
+import { terrainY } from './terrain.js';
 
 /**
  * Los cruces a distinto nivel de la circunvalación (LZ-3), pedidos por José Manuel el 09/11/2026 («los puentes de
@@ -39,8 +42,10 @@ export const TRINCHERAS = [
     ancho: 21, talud: 1, puentes: [{ o: [-1680.34, -490.32], c: [0.7326, 0.6806], w: 9.5 }] },
   // el enlace de la LZ-20: el ramal en curva pasa dos veces por encima y, al lado, la pasarela de la gente; a los lados
   // van los ramales pegados, así que sin muros (taludes de tierra)
+  // (Version 183) sin pantallas contra el ruido: dentro de la rotonda grande se veían como una jaula de cristal alrededor
+  // del hueco, y en la foto aérea no hay
   { nombre: 'Enlace LZ-20', tipo: 'trinchera', o: [-1259.2, -809.8], u: [0.7919, -0.6108], prof: 7, llano: 102, rampa: 95,
-    ancho: 15, talud: 10, muros: false, puentes: [
+    ancho: 15, talud: 10, muros: false, pantallas: false, puentes: [
       { o: [-1322.15, -761.21], c: [0.585, 0.811], w: 2.6, peatonal: true, curva: 4.4 },
       { o: [-1269.92, -801.9], c: [0.6016, 0.7988], w: 11, curva: 5.8 },
       { o: [-1196.26, -858.38], c: [0.5576, 0.8301], w: 11, curva: 3.4 }] },
@@ -314,8 +319,23 @@ function modo(obj, m) {
     if (!o.material) return;
     o.material = Array.isArray(o.material) ? o.material.map(x => x.clone()) : o.material.clone();
     for (const mt of Array.isArray(o.material) ? o.material : [o.material]) { mt.userData.trench = m; mt.needsUpdate = true; }
+    // (Version 183) y su sombra con el mismo modo: el material de sombras de three.js es uno para todos y no sabe el
+    // modo, así que la valla alta y el tablero echaban la sombra desde el fondo de la zanja (rayas y una «V» negra
+    // en el suelo de debajo del puente)
+    if (o.isMesh) o.customDepthMaterial = sombraDe(m);
   });
   return obj;
+}
+
+const sombras = new Map();
+/** el material de sombra (profundidad) de un modo de la franja; también lo usa cocheTrinchera.js */
+export function sombraDe(m) {
+  if (!sombras.has(m)) {
+    const d = new THREE.MeshDepthMaterial({ depthPacking: THREE.RGBADepthPacking });
+    d.userData.trench = m;
+    sombras.set(m, d);
+  }
+  return sombras.get(m);
 }
 
 /** la valla alta de los puentes: postes verdes, barras arriba y abajo y barrotes blancos (s a lo largo, en z) */
@@ -323,7 +343,8 @@ function vallaAlta(k, s0, s1, z, y = 0) {
   const VERDE = 0x3e5e44, BLANCO = 0xe4e6e2;
   for (let s = s0; s <= s1 + 0.01; s += 2.5) k.box(s, y, z, 0.1, 2.5, 0.1, VERDE);
   for (const yy of [0.15, 2.4]) k.box((s0 + s1) / 2, y + yy, z, s1 - s0, 0.07, 0.07, VERDE);
-  for (let s = s0 + 0.08; s < s1; s += 0.14) k.box(s, y + 0.15, z, 0.025, 2.25, 0.025, BLANCO);
+  // (Version 183) los barrotes van en k.shell: sin sombra y fuera de la oclusión ambiental (montarTrincheras)
+  for (let s = s0 + 0.08; s < s1; s += 0.14) k.box(s, y + 0.15, z, 0.025, 2.25, 0.025, BLANCO, { list: k.shell });
 }
 
 /** la barandilla verde baja de las entradas */
@@ -331,7 +352,7 @@ function barandilla(k, s0, s1, z, y = 0) {
   const VERDE = 0x3e5e44;
   for (let s = s0; s <= s1 + 0.01; s += 2) k.box(s, y, z, 0.06, 1.0, 0.06, VERDE);
   for (const yy of [0.15, 0.95]) k.box((s0 + s1) / 2, y + yy, z, s1 - s0, 0.05, 0.05, VERDE);
-  for (let s = s0 + 0.1; s < s1; s += 0.12) k.box(s, y + 0.15, z, 0.02, 0.8, 0.02, VERDE);
+  for (let s = s0 + 0.1; s < s1; s += 0.12) k.box(s, y + 0.15, z, 0.02, 0.8, 0.02, VERDE, { list: k.shell });
 }
 
 /** la barrera de hormigón (tipo New Jersey) */
@@ -356,7 +377,11 @@ function trinchera(t, scene, colliders, grupos) {
   const cerca = (a) => tramos.some(([a0, a1]) => a > a0 - 120 && a < a1 + 120);
   // el fondo de asfalto y, si no hay muros, los taludes de tierra
   const F = muros ? S : 0;
-  add(paveMesh(trocear(polyTris([P(-L, -W - F), P(L, -W - F), P(L, W + F), P(-L, W + F)]), 3), 0.08, asfaltoFondo(), 0xffffff), 'below');
+  const fondo = paveMesh(trocear(polyTris([P(-L, -W - F), P(L, -W - F), P(L, W + F), P(-L, W + F)]), 3), 0.08, asfaltoFondo(), 0xffffff);
+  add(fondo, 'below');
+  // (Version 183) el fondo va por debajo de la calzada de la circunvalación (0,16) y de sus rayas: con el empujón hacia
+  // delante de los suelos se pintaba por encima a trozos (el asfalto a parches y sin rayas que vio José Manuel)
+  if (fondo) { fondo.material.polygonOffset = false; fondo.material.needsUpdate = true; }
   if (!muros) {
     for (const lado of [-1, 1]) {
       const talud = paveMesh(trocear(polyTris([P(-L, lado * W), P(L, lado * W), P(L, lado * (W + S)), P(-L, lado * (W + S))]), 3), 0.02, tierraVolcanica(), 0xffffff);
@@ -393,6 +418,89 @@ function trinchera(t, scene, colliders, grupos) {
   for (const p of t.puentes) puente(t, p, W, S, add);
 }
 
+/**
+ * (Version 183) las calzadas de las calles del mapa cerca de una franja: ajena(x, z) dice si (x, z) cae en la de una calle
+ * que no es la circunvalación de la franja (las que cruzan, los ramales, las rotondas) y abajo(x, z) si cae en la de la
+ * circunvalación (la que va a lo largo de la franja)
+ */
+function calzadas(t) {
+  const roads = (typeof window !== 'undefined' && window.__game?.map?.roads) || [];
+  const n = [-t.u[1], t.u[0]], R = Math.hypot(t.llano + t.rampa + 40, t.ancho + t.talud + 40);
+  const segs = [];
+  for (const r of roads) {
+    if (r.ped || r.dirt || !r.p || r.p.length < 2) continue;
+    for (let i = 0; i < r.p.length - 1; i++) {
+      const [ax, az] = r.p[i], [bx, bz] = r.p[i + 1];
+      if (distSeg(t.o[0], t.o[1], ax, az, bx, bz) > R) continue;
+      const len = Math.hypot(bx - ax, bz - az) || 1;
+      const along = Math.abs(((bx - ax) * t.u[0] + (bz - az) * t.u[1]) / len) > 0.85;
+      segs.push([ax, az, bx, bz, r.w / 2 - 0.3, along]);
+    }
+  }
+  const lado = (x, z) => Math.abs((x - t.o[0]) * n[0] + (z - t.o[1]) * n[1]);
+  return {
+    ajena: (x, z) => {
+      const l = lado(x, z);
+      return segs.some(([ax, az, bx, bz, h, along]) => !(along && l < t.ancho + 1) && distSeg(x, z, ax, az, bx, bz) < h);
+    },
+    abajo: (x, z) => segs.some(([ax, az, bx, bz, h, along]) => along && distSeg(x, z, ax, az, bx, bz) < h),
+  };
+}
+
+function distSeg(x, z, ax, az, bx, bz) {
+  const dx = bx - ax, dz = bz - az, L2 = dx * dx + dz * dz || 1;
+  const t = Math.max(0, Math.min(1, ((x - ax) * dx + (z - az) * dz) / L2));
+  return Math.hypot(ax + dx * t - x, az + dz * t - z);
+}
+
+/** los trozos de [s0, s1] (de al menos 1 m) donde libre(s) se cumple, mirando cada medio metro */
+function tramosLibres(s0, s1, libre) {
+  const out = [];
+  let a = null, ult = s0;
+  for (let s = s0; s < s1 + 0.25; s += 0.5) {
+    const q = Math.min(s, s1);
+    if (libre(q)) { if (a === null) a = q; ult = q; } else if (a !== null) { if (ult - a >= 1) out.push([a, ult]); a = null; }
+  }
+  if (a !== null && ult - a >= 1) out.push([a, ult]);
+  return out;
+}
+
+/**
+ * (Version 183) lo de arriba del puente, pegado a su tablero. El tablero es una losa recta (una caja: el relieve solo se
+ * mira en sus cuatro esquinas), pero las barreras y la valla alta tienen un vértice cada pocos centímetros y cada uno
+ * seguía el terreno de debajo: donde el terreno del mapa baja (la zanja de verdad de la circunvalación), la valla se
+ * descolgaba como una cortina hasta la calzada de abajo (lo que vio José Manuel). Cada vértice de lo alto (de la cara
+ * de abajo de las vigas hacia arriba) se sube o se baja lo justo para quedar sobre la losa, como hace puenteRayas.js
+ * con las rayas; lo de abajo (los pies de los estribos y de la pila) se queda en el fondo.
+ */
+function pegarAlTablero(gp, Pc, C, X) {
+  const h = [Pc(0, -X), Pc(2 * C, -X), Pc(2 * C, X), Pc(0, X)].map(([x, z]) => terrainY(x, z));
+  const losa = (s, z) => {
+    const u = Math.min(1, Math.max(0, s / (2 * C))), v = Math.min(1, Math.max(0, (z + X) / (2 * X)));
+    return u + v <= 1 ? h[0] + (h[1] - h[0]) * u + (h[3] - h[0]) * v : h[2] + (h[3] - h[2]) * (1 - u) + (h[1] - h[2]) * (1 - v);
+  };
+  gp.updateMatrixWorld(true);
+  const v = new THREE.Vector3();
+  gp.traverse((o) => {
+    if (!o.isMesh) return;
+    const pos = o.geometry.getAttribute('position'), inv = o.matrixWorld.clone().invert();
+    // (la altura de cada vértice sobre el tablero, antes de pegarlo: la usa pruebas/puentes.js)
+    o.geometry.userData.alturaPuente = Float32Array.from({ length: pos.count }, (_, i) => pos.getY(i));
+    for (let i = 0; i < pos.count; i++) {
+      const ly = pos.getY(i);
+      if (ly < -1.25) continue;
+      // s y z del puente: el grupo está en Pc(0, 0) mirando a lo largo de la calle (enMarco)
+      const s = pos.getX(i), z = pos.getZ(i);
+      v.set(s, ly, z).applyMatrix4(o.matrixWorld);
+      v.y += losa(s, z) - terrainY(v.x, v.z);
+      v.applyMatrix4(inv);
+      pos.setY(i, v.y);
+    }
+    pos.needsUpdate = true;
+    o.geometry.computeBoundingSphere();
+  });
+}
+
 /** un puente sobre la trinchera, a lo largo de su calle (s) y de través (z), como el de Pereyra Galviaty en las fotos */
 function puente(t, p, W, S, add) {
   const C = p.tabC, X = p.tabX;
@@ -401,28 +509,44 @@ function puente(t, p, W, S, add) {
   const M = marco(Pc(0, 0), Pc(2 * C, 0));
   const k = new Kit();
   // (lo de la calle de arriba que cae en el tablero baja con todo: la calzada del puente va a su altura de siempre)
-  k.box(C, -1.41, 0, 2 * C - 0.6, 1.45, 2 * X, 0x9a9890);
+  // (Version 183) tablero más fino (antes 2 m con las vigas: al pasar por debajo la cámara quedaba pegada a él y se
+  // llenaba la pantalla de hormigón oscuro) y de hormigón más claro
+  k.box(C, -0.86, 0, 2 * C - 0.6, 0.9, 2 * X, 0xb4b1aa);
   if (p.peatonal) {
     k.box(C, 0.04, 0, 2 * C - 0.6, 0.2, 2 * X - 0.4, 0xc8bfae);
   } else {
     k.box(C, 0.04, 0, 2 * C - 0.6, 0.12, 2 * (X - 2.7), 0x4a4a48);
     for (let s = 1; s < 2 * C - 1; s += 4) k.box(s + 1, 0.165, 0, 2, 0.01, 0.15, 0xe8e6e0);
   }
+  // (Version 183) las barreras, barandillas y vallas solo donde no pisan la calzada de una calle: el puente es recto y
+  // las calles que pasan por él a veces van en curva (los ramales, el anillo de Las Caletas) o tienen una rotonda
+  // cerca; antes la valla cruzaba el asfalto
+  const { ajena, abajo } = calzadas(t);
+  const libres = (s0, s1, z) => tramosLibres(s0, s1, (s) => !ajena(...M.W(s, z)));
   for (const zz of [-1, 1]) {
     if (!p.peatonal) {
-      barrera(k, 0.3, 2 * C - 0.3, zz * (X - 2.5), 0.16);
+      for (const [a, b] of libres(0.3, 2 * C - 0.3, zz * (X - 2.5))) barrera(k, a, b, zz * (X - 2.5), 0.16);
       k.box(C, 0.04, zz * (X - 1.1), 2 * C - 0.6, 0.25, 2.2, 0xc8bfae);
-      if (p.barandillas !== false) for (const ss of [-12, 2 * C]) barandilla(k, ss, ss + 12, zz * (X - 0.2), 0.25);
+      if (p.barandillas !== false) for (const ss of [-12, 2 * C]) for (const [a, b] of libres(ss, ss + 12, zz * (X - 0.2))) barandilla(k, a, b, zz * (X - 0.2), 0.25);
     }
-    vallaAlta(k, 0.3, 2 * C - 0.3, zz * (X - 0.2), p.peatonal ? 0.24 : 0.29);
+    for (const [a, b] of libres(0.3, 2 * C - 0.3, zz * (X - 0.2))) vallaAlta(k, a, b, zz * (X - 0.2), p.peatonal ? 0.24 : 0.29);
   }
-  for (let zz = -X + 1.5; zz < X - 1; zz += 4) k.box(C, -1.91, zz, 2 * C - 0.6, 0.5, 0.9, 0x8a8880);
-  k.box(C, -t.prof - 0.1, 0, 1.2, t.prof - 1.31, 2 * X - 2, 0xb0aea6);
-  for (const s of [C - (W + 0.2) / cn, C + (W + 0.2) / cn]) k.box(s, -t.prof - 0.2, 0, 0.6, t.prof - 1.21, 2 * X, 0xb0aea6);
-  add(enMarco(k, M, 'trincheraPuente', null), 'stay');
+  for (let zz = -X + 1.5; zz < X - 1; zz += 4) k.box(C, -1.2, zz, 2 * C - 0.6, 0.34, 0.9, 0xa29f98);
+  // la pila del medio, solo si abajo hay mediana (si no, quedaba un muro en mitad de la calzada de abajo)
+  let pilaLibre = true;
+  for (let zz = -X + 1; zz <= X - 1 && pilaLibre; zz += 1) for (const ds of [-0.9, 0, 0.9]) if (abajo(...M.W(C + ds, zz))) pilaLibre = false;
+  if (pilaLibre) k.box(C, -t.prof - 0.1, 0, 1.2, t.prof - 1.1, 2 * X - 2, 0xb0aea6);
+  for (const s of [C - (W + 0.2) / cn, C + (W + 0.2) / cn]) k.box(s, -t.prof - 0.2, 0, 0.6, t.prof - 1.0, 2 * X, 0xb0aea6);
+  const gp = enMarco(k, M, 'trincheraPuente', null);
+  pegarAlTablero(gp, Pc, C, X);
+  add(gp, 'stay');
   // la losa del fondo debajo del puente: tapa el trozo de la calle de arriba que baja con todo y las rayas
   const e = (W + S) / cn;
-  add(paveMesh(trocear(polyTris([Pc(C - e, -X - 0.5), Pc(C + e, -X - 0.5), Pc(C + e, X + 0.5), Pc(C - e, X + 0.5)]), 2), 0.3, asfaltoFondo(), 0xffffff), 'below');
+  const losa = paveMesh(trocear(polyTris([Pc(C - e, -X - 0.5), Pc(C + e, -X - 0.5), Pc(C + e, X + 0.5), Pc(C - e, X + 0.5)]), 2), 0.3, asfaltoFondo(), 0xffffff);
+  // (Version 183) la luz que rebota debajo del puente: en la sombra del tablero el asfalto salía casi negro
+  // (puentesLuz.js la baja de noche: si no, brillaba blanca como con luz propia)
+  if (losa) { losa.name = 'losaPuente'; losa.material.emissive.setRGB(0.12, 0.115, 0.105); }
+  add(losa, 'below');
 }
 
 /** el terraplén: los taludes de tierra, el túnel de la calle, las aletas blancas y la calzada de arriba */
@@ -454,9 +578,11 @@ function terraplen(t, scene, colliders, grupos) {
   const M = marco(Pc(0, 0), Pc(2 * C, 0));
   // las aletas blancas de las bocas: siguen la cuesta del talud por arriba
   const ka = new Kit();
+  // (Version 183) sin los trozos que caen en la calzada de otra calle (en Tenderete, la rotonda de al lado)
+  const { ajena } = calzadas(t);
   for (const zz of [-(X + 0.25), X + 0.25]) {
     for (const [s0, s1] of [[C - W - S - 0.5, C - W + 0.5], [C + W - 0.5, C + W + S + 0.5]]) {
-      for (let s = s0; s < s1; s += 1) ka.box(s + 0.5, 0, zz, 1.02, 0.6, 0.45, 0xeeeeea);
+      for (let s = s0; s < s1; s += 1) if (!ajena(...M.W(s + 0.5, zz))) ka.box(s + 0.5, 0, zz, 1.02, 0.6, 0.45, 0xeeeeea);
     }
   }
   add(enMarco(ka, M, 'terraplenAletas', colliders), 'wing');
@@ -468,11 +594,13 @@ function terraplen(t, scene, colliders, grupos) {
   for (let s = T0 + 1; s < T1 - 1; s += 4) k.box(s + 1, 0.185, 0, 2, 0.01, 0.15, 0xe8e6e0);
   for (const zz of [-1, 1]) {
     k.box(C, 0.06, zz * (X - 1.3), T1 - T0, 0.22, 2.2, 0xc8bfae);
-    k.box(C, 0, zz * (X + 0.25), 2 * W, H - 1.3, 0.45, 0xe6e4de);
+    k.box(C, 0, zz * (X + 0.25), 2 * W, H - 0.7, 0.45, 0xe6e4de);
   }
-  k.box(C, H - 1.3, 0, 2 * W + 0.6, 1.55, 2 * X + 1.2, 0xbab8b0);
-  for (let s = C - W + 3; s < C + W - 2; s += 6) for (let zz = -X + 3; zz < X - 2; zz += 6) k.box(s, H - 1.36, zz, 1.2, 0.06, 0.3, 0xfff4d8);
-  for (const s of [C - W - 0.15, C + W + 0.15]) k.box(s, H - 1.3, 0, 0.3, 2.3, 2 * X + 1.2, 0xeeeeea);
+  // (Version 183) techo más alto y más fino (antes a 1,3 m por debajo de la carretera de arriba: la cámara iba casi
+  // pegada a él y el túnel parecía un cuarto oscuro)
+  k.box(C, H - 0.7, 0, 2 * W + 0.6, 0.95, 2 * X + 1.2, 0xc4c2ba);
+  for (let s = C - W + 3; s < C + W - 2; s += 6) for (let zz = -X + 3; zz < X - 2; zz += 6) k.box(s, H - 0.76, zz, 1.2, 0.06, 0.3, 0xfff4d8);
+  for (const s of [C - W - 0.15, C + W + 0.15]) k.box(s, H - 0.7, 0, 0.3, 1.7, 2 * X + 1.2, 0xeeeeea);
   k.box(C, H + 0.25, 0, 2 * W, 0.08, 2 * X + 1.2, 0x4a4a48);
   // (sin choques: las paredes del túnel cortarían en el plano la circunvalación que pasa por encima)
   add(enMarco(k, M, 'terraplenTunel', null), 'stay');
@@ -493,7 +621,24 @@ export function montarTrincheras(scene, colliders) {
       if (!g?.scene || !g.terrainUniforms) return;
       clearInterval(t);
       instalarTrinchera(g);
-      ok(buildTrincheras(scene || g.scene, colliders || g.colliders));
+      const hecho = buildTrincheras(scene || g.scene, colliders || g.colliders);
+      // (Version 183) los barrotes finos (k.shell: valla alta y barandillas) y las pantallas de cristal, fuera de la
+      // oclusión ambiental de la calidad alta: la confundían y pintaba bajo los puentes una cortina de rayas oscuras
+      const finos = [];
+      for (const gr of hecho.grupos) {
+        if (gr.name === 'trincheraPantallas') finos.push(gr);
+        else if (gr.name === 'trincheraPuente') gr.traverse(o => { if (o.isMesh && !o.castShadow) finos.push(o); });
+      }
+      g.postfx?.excludeFromAO?.(...finos);
+      // (Version 183) luz debajo de los puentes y fuera la caja vieja del paso de Tenderete (puentesLuz.js)
+      try { hecho.luces = montarLucesPuentes(g, hecho.grupos, TRINCHERAS); } catch (e) { console.warn('Luz de los puentes:', e); }
+      // (Version 183) el asfalto y las rayas de los puentes, arriba y abajo (puenteRayas.js), en todos: antes solo en el
+      // del Cabildo y el de Tenderete (los ponen sus barrios), y en los demás la zanja salía sin rayas
+      try {
+        const yaPuestos = ['Cabildo', 'Tenderete (Titerroy)'];
+        hecho.rayas = buildPuenteRayas(scene || g.scene, g.map, TRINCHERAS.map(t => t.nombre).filter(n => !yaPuestos.includes(n)));
+      } catch (e) { console.warn('Rayas de los puentes:', e); }
+      ok(hecho);
     }, 300);
   });
 }

@@ -41,6 +41,7 @@ import { tuneElAlmacen, buildElAlmacen } from '../../elAlmacen.js';
 import { tuneHotelLancelot, buildHotelLancelot } from '../../hotelLancelot.js';
 import { tuneMasLugares, buildMasLugares } from './masLugares.js';
 import { tuneCasaAmarilla, buildCasaAmarilla } from '../../casaAmarilla.js';
+import { tuneDisaJuanNegrin, buildDisaJuanNegrin } from '../../disaJuanNegrin.js';
 import { tuneFachadasCentro } from './fachadas.js';
 import { desnivelesArrecifeCentro } from '../../desniveles/arrecife-centro.js';
 
@@ -84,6 +85,8 @@ export function prepararMapa(map) {
   tuneMasLugares(map);
   // la Casa Amarilla (León y Castillo 6): el bloque del mapa pasa a tener su fachada de la foto
   tuneCasaAmarilla(map);
+  // (Version 183) la DISA pequeña de Doctor Juan Negrín, en su isleta (antes la genérica caía encima de las calles)
+  tuneDisaJuanNegrin(map);
   // las calles del centro que solo tenían la manzana entera de un color (capturas de Look Around del 24-26/11/2026)
   tuneFachadasCentro(map);
 }
@@ -115,6 +118,7 @@ export function construir({ scene, map, colliders, touch }) {
   buildEstatuas(scene, colliders);
   // la Casa Amarilla, con su fachada de azulejo y el reloj
   buildCasaAmarilla(scene, map);
+  buildDisaJuanNegrin(scene, colliders);
   // el edificio Atlántida (Multicines, C/ León y Castillo 42) como en la foto
   const atlantida = buildAtlantida(scene);
   buildFajardo(scene);

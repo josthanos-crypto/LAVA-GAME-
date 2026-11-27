@@ -17,6 +17,7 @@ import { applyExtras } from './extraData.js';
 import { zone, markZones, charcoPromenade } from './zones.js';
 import { makeRoadIndex } from './roadIndex.js';
 import { caraArriba } from './caraArriba.js';
+import { anillosRotonda, anilloGeometry, anilloRayas, dentroDeAnillos, recortar, cruzaZanja, aCaballoZanja } from './rotondasCalzada.js';
 
 export async function loadMap(onProgress) {
   onProgress?.('Descargando mapa de Arrecife…', 10);
@@ -454,7 +455,10 @@ function buildFuelStations(scene, map, colliders) {
     const xs = b.p.map(q => q[0]), zs = b.p.map(q => q[1]);
     return [Math.min(...xs), Math.max(...xs), Math.min(...zs), Math.max(...zs), b.p];
   });
-  const insideBuilding = (x, z) => bboxes.some(([x0, x1, z0, z1, poly]) =>
+  // (Version 183) ni dentro de un edificio ni encima de la calzada de una calle (en Doctor Juan Negrín la marquesina
+  // caía atravesada sobre las dos calles)
+  const calz = new Calzada(map.roads);
+  const insideBuilding = (x, z) => !!calz.roadAt(x, z, 0.3) || bboxes.some(([x0, x1, z0, z1, poly]) =>
     x > x0 && x < x1 && z > z0 && z < z1 && pointInPoly(poly, x, z));
 
   const placed = [];
@@ -481,6 +485,11 @@ function buildFuelStations(scene, map, colliders) {
         }
       }
       if (best) [f.x, f.z, f.a] = best;
+    }
+    // si ni siquiera cabe el surtidor solo fuera de la calzada, no se pone (mejor nada que un surtidor en mitad de la calle)
+    {
+      const c0 = Math.cos(f.a), s0 = Math.sin(f.a);
+      if ([[0, 0], [-2.2, 0], [2.2, 0], [2.4, 0.6]].some(([lx, lz]) => calz.roadAt(f.x + lx * c0 + lz * s0, f.z - lx * s0 + lz * c0, 0.3))) continue;
     }
     placed.push([f.x, f.z]);
     const cos = Math.cos(f.a), sin = Math.sin(f.a);
@@ -887,7 +896,9 @@ function buildStreetlights(map) {
     poles.setMatrixAt(i, m);
     heads.setMatrixAt(i, m);
     const hx = x + Math.cos(a) * 1.45, hz = z - Math.sin(a) * 1.45;
-    m.compose(new THREE.Vector3(hx, 0.21, hz), flat, new THREE.Vector3(1, 1, 1));
+    // (Version 183) sin charco si queda a caballo del borde de una zanja: se doblaba por la pared como una cuña blanca
+    const k = aCaballoZanja(hx, hz, 4.2) ? 0 : 1;
+    m.compose(new THREE.Vector3(hx, 0.21, hz), flat, new THREE.Vector3(k, k, k));
     glows.setMatrixAt(i, m);
   });
   poles.castShadow = true;
@@ -1351,6 +1362,18 @@ export function buildWorld(scene, map, onProgress, renderer) {
   const pasos = crossings(map);
   const marks = roadMarks(map.roads, pasos, map.buildings);
   const roadGeoms = [], dashGeoms = [], edgeGeoms = [], walkGeoms = [], pedGeoms = [], curbGeoms = [], kerbTops = [], gutters = [];
+  // (Version 183) las rotondas, redondas: su anillo entero y sus rayas (rotondasCalzada.js); sus arcos del mapa ya no
+  // se pintan y las rayas y aceras de las calles que entran se paran en el borde del anillo
+  const anillos = anillosRotonda(map.roads);
+  const arcoPintado = new Set(anillos.flatMap(a => [...a.arcos]));
+  const enAnillo = dentroDeAnillos(anillos);
+  for (const a of anillos) {
+    roadGeoms.push(anilloGeometry(a));
+    const { bordes, discontinua } = anilloRayas(a);
+    edgeGeoms.push(bordes);
+    if (discontinua) dashGeoms.push(discontinua);
+  }
+  const sinAnillo = (pts) => recortar(pts, anillos);
   // índice de calzadas para recortar aceras, bordillos y cunetas en los cruces: la acera de una calle
   // ya no cruza por encima del asfalto de otra (se veía en las rotondas y en los cruces grandes)
   const CCELL = 24;
@@ -1372,6 +1395,7 @@ export function buildWorld(scene, map, onProgress, renderer) {
     }
   }
   const onOtherRoad = (x, z, self) => {
+    if (!arcoPintado.has(self) && enAnillo(x, z)) return true;
     const list = carriage.get(Math.floor(x / CCELL) * 100003 + Math.floor(z / CCELL));
     if (!list) return false;
     for (const [ax, az, bx, bz, half, r] of list) {
@@ -1386,8 +1410,11 @@ export function buildWorld(scene, map, onProgress, renderer) {
   const runs = (pts, self) => {
     const out = [];
     let cur = [];
-    for (const q of pts) {
-      const qBad = onOtherRoad(q[0], q[1], self);
+    for (let i = 0; i < pts.length; i++) {
+      const q = pts[i];
+      // (Version 183) ni dentro de la zanja de una trinchera que la calle cruza por encima (ver cruzaZanja)
+      const a = pts[Math.max(0, i - 1)], b = pts[Math.min(pts.length - 1, i + 1)];
+      const qBad = onOtherRoad(q[0], q[1], self) || cruzaZanja(q[0], q[1], b[0] - a[0], b[1] - a[1]);
       const midBad = !qBad && cur.length > 0 && onOtherRoad((q[0] + cur[cur.length - 1][0]) / 2, (q[1] + cur[cur.length - 1][1]) / 2, self);
       if (qBad || midBad) {
         if (cur.length > 1) out.push(cur);
@@ -1405,6 +1432,7 @@ export function buildWorld(scene, map, onProgress, renderer) {
       pedGeoms.push(roadGeometry(r.p, r.w, 0.13));
       continue;
     }
+    if (arcoPintado.has(r0)) continue;   // el anillo entero ya está puesto arriba
     const y = 0.14 + (r.major ? 0.02 : 0);
     roadGeoms.push(roadGeometry(r.p, r.w, y));
     // acera elevada 10 cm sobre la calzada (que se note el escalón), con bordillo de piedra clara
@@ -1426,8 +1454,7 @@ export function buildWorld(scene, map, onProgress, renderer) {
       for (const run of runs(offsetPolyline(r.p, side * (r.w / 2 - 0.18)), r0)) gutters.push(lineGeometry(run, y + 0.004, 0.18));
     }
     if (r.major) {
-      edgeGeoms.push(lineGeometry(offsetPolyline(r.p, r.w / 2 - 0.35), y + 0.01, 0.08));
-      edgeGeoms.push(lineGeometry(offsetPolyline(r.p, -r.w / 2 + 0.35), y + 0.01, 0.08));
+      for (const s of [1, -1]) for (const run of sinAnillo(offsetPolyline(r.p, s * (r.w / 2 - 0.35)))) edgeGeoms.push(lineGeometry(run, y + 0.01, 0.08));
     }
     // línea del medio: solo donde separa algo. En doble sentido, discontinua y continua al llegar a un
     // cruce; en sentido único solo si la calle es ancha (dos carriles), como separación de carriles
@@ -1435,10 +1462,10 @@ export function buildWorld(scene, map, onProgress, renderer) {
     if (twoLanes) {
       // (sin pintar encima de las bandas de los pasos de peatones: marks.clip)
       const { a0, a1, b0, b1 } = marks.centre(r0);
-      if (b0 - a1 > 6) for (const [s0, e0] of marks.clip(r0, a1, b0)) if (e0 - s0 > 4) dashGeoms.push(dashGeometry(cutLine(r.p, s0, e0), y + 0.012));
+      if (b0 - a1 > 6) for (const [s0, e0] of marks.clip(r0, a1, b0)) if (e0 - s0 > 4) for (const run of sinAnillo(cutLine(r.p, s0, e0))) dashGeoms.push(dashGeometry(run, y + 0.012));
       if (!r0.ow) {
-        if (a1 - a0 > 2) for (const [s0, e0] of marks.clip(r0, a0, a1)) edgeGeoms.push(lineGeometry(cutLine(r.p, s0, e0), y + 0.012, 0.07));
-        if (b1 - b0 > 2) for (const [s0, e0] of marks.clip(r0, b0, b1)) edgeGeoms.push(lineGeometry(cutLine(r.p, s0, e0), y + 0.012, 0.07));
+        if (a1 - a0 > 2) for (const [s0, e0] of marks.clip(r0, a0, a1)) for (const run of sinAnillo(cutLine(r.p, s0, e0))) edgeGeoms.push(lineGeometry(run, y + 0.012, 0.07));
+        if (b1 - b0 > 2) for (const [s0, e0] of marks.clip(r0, b0, b1)) for (const run of sinAnillo(cutLine(r.p, s0, e0))) edgeGeoms.push(lineGeometry(run, y + 0.012, 0.07));
       }
     }
   }
@@ -1462,6 +1489,13 @@ export function buildWorld(scene, map, onProgress, renderer) {
   // (Version 134) en las curvas cerradas y en las bocas de las rotondas algún triángulo de la calzada quedaba del
   // revés y no se pintaba; por el agujero asomaba la foto aérea como una mancha gris borrosa (caraArriba.js)
   caraArriba(roadMesh.geometry);
+  // (Version 183) el asfalto, por metros del mundo (como la pintura): donde dos calzadas se pisan (las dos de la
+  // circunvalación, los cruces) cada una llevaba la textura a su manera y se veía el suelo a parches
+  {
+    const p = roadMesh.geometry.getAttribute('position'), uv = roadMesh.geometry.getAttribute('uv');
+    for (let i = 0; i < p.count; i++) uv.setXY(i, p.getX(i) / 8, p.getZ(i) / 8);
+    uv.needsUpdate = true;
+  }
   roadMesh.receiveShadow = true;
   scene.add(roadMesh);
 

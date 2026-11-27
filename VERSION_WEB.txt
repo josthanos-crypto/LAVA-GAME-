@@ -2689,3 +2689,101 @@ Version 181 - Los rotulos de 29 negocios de Altavista, Argana Alta y Titerroy (2
 - Comprobado (PC de Arrecife, de dia, una carga): sin errores, entran 29 rotulos; 31 fotos, se ven en su fachada.
 - Sin comprobar: de noche, en movil.
 - Archivos: src/barrios/compartido/fachadasCasa.js.
+
+Version 182 - Titerroy: 31 tramos mas con la otra copia de las capturas de fachadas (27/11/2026)
+- Lo pidio Jose Manuel el 27/11/2026 ("si, repasalas"): repasar Titerroy con la carpeta de su tabla
+  ("Downloads\recursos lava game 2026-11-25 web casa fachadas", la que va sin "Lava Game" delante), que trae 157
+  pasos que no estaban en la copia usada en la Version 180 (sobre todo Mexico, Fray Mendo de Viedma, Vicente Guerra,
+  Lebrillo y Santa Teresa de Jesus).
+- Puestos al final de ACERAS, despues de todo lo de la Version 180 (asi solo recortan lo que seguia generico): 31
+  tramos, unas 92 casas, en Mexico, Vicente Guerra, Fray Mendo de Viedma, Lebrillo, Santa Teresa de Jesus,
+  Tinamala, Tingafa, Princesa Artiaga, Agustin Espinosa, Tampico, Toledo, la Pardela, Doctor Severo Ochoa, Gaire y
+  Sorondongo. Dos son solares (Tingafa paso 7, Agustin Espinosa paso 23); el de Fray Mendo acera sur paso 17 no
+  levanta casa porque ya la pone el tramo de al lado.
+- Doctor Gregorio Maranon: con las fotos nuevas no ha salido ningun tramo nuevo.
+- Comprobado (PC de casa, de dia, una carga): sin errores, entran los 446 tramos (415 + 31); ninguna casa nueva pisa
+  una calzada (por calculo); Lebrillo y Vicente Guerra vistas desde arriba.
+- Sin comprobar: cada tramo contra su foto, de noche, en movil.
+- Archivos: src/barrios/compartido/fachadasCasa.js.
+
+Version 183 - Rotondas redondas, sin vallas en la calzada y con luz debajo de los puentes (27/11/2026)
+- Lo pidio Jose Manuel: las rotondas salian hechas de tramos rectos y con las lineas pintadas cruzadas, habia vallas en
+  medio de la calzada y al pasar por debajo de un puente parecia que se entraba en un cuarto oscuro.
+- Rotondas (las 38 de la ciudad): el anillo de asfalto es ahora un circulo de verdad, pegado al bordillo de la isleta.
+  Lleva pintada la linea de dentro (entera), la de fuera (abierta donde entra cada calle) y, si la rotonda tiene dos
+  carriles, la discontinua del medio. Las lineas de las calles que llegan se paran en el borde de la rotonda: ya no se
+  meten ni se cruzan dentro. Los coches siguen dando la vuelta como antes.
+- Vallas: las barreras, barandillas y vallas altas de los puentes de la circunvalacion se ponian rectas aunque la calle
+  fuera en curva (los ramales de la LZ-20, el anillo de Las Caletas, la rotonda pegada al puente de Pereyra Galviaty y la
+  de Tenderete); ahora no se pone ningun trozo encima de la calzada de una calle. La pila del medio de un puente solo va
+  si la carretera de abajo tiene mediana. Comprobado con todas las calles del mapa: ninguna valla de puente queda sobre
+  el asfalto. (El quitamiedos de la Avenida Mamerto Cabrera, en Playa Honda, se deja: va por la mediana, como en la foto.)
+- Puentes: en el paso de Tenderete (entrada a Titerroy) habia dos puentes dibujados a la vez, el viejo de los anadidos del
+  PC de Arrecife y el tunel nuevo; la caja del viejo quedaba a la altura del coche y era el «cuarto oscuro». Se esconde
+  el viejo (el coche sigue pasando igual). Debajo de los puentes y en los tuneles hay luz del sol de dia y, de noche,
+  luz de farola en el suelo y las luces del techo del tunel encendidas.
+- Comprobado (PC de casa, navegador, calidad media): sin errores; fotos de antes y despues de 3 rotondas (Domingo Ramirez
+  Ferrera, Velazquez y Juan Brito, mas la del Cabildo), del paso de Tenderete de dia y de noche y del puente de Las
+  Caletas. Compila con npx vite build --base ./.
+- Sin comprobar: en movil (lo nuevo es poco: unos pocos miles de triangulos y ningun foco de luz mas) y los puentes uno
+  a uno de noche (solo Tenderete y Pereyra Galviaty).
+- Despues, con las fotos de Jose Manuel del mismo dia:
+  * La rotonda grande de la subida a San Bartolome (enlace de la LZ-20, la circunvalacion pasa por debajo): ahora es
+    redonda como en la foto aerea (salia de tramos rectos), sin la raya discontinua que cruzaba la entrada y sin la
+    jaula de pantallas de cristal que rodeaba el hueco de dentro (en la foto aerea no hay). El anillo se para en el
+    borde de la zanja; por encima pasan los dos puentes.
+  * La gasolinera DISA pequena de Doctor Juan Negrin: antes la marquesina caia atravesada encima de la calle. Ahora
+    esta dentro de su isleta en cuna, entre Doctor Juan Negrin y Blas Cabrera Topham, con la caseta en la punta ancha,
+    la marquesina estrecha, dos surtidores del lado de Blas Cabrera Topham (la que va hacia el centro) y el totem en la
+    punta. Y ninguna gasolinera del juego se pone ya encima de una calzada (si no cabe fuera, no se pone).
+  * Por confirmar con Jose Manuel: de que lado de la isleta estan los surtidores (dijo «direccion Arrecife por el lado
+    derecho»; en el mapa las dos calles dejan la isleta a su izquierda).
+- Repaso de todos los puentes y tuneles (los 13 cruces de la circunvalacion, tambien los de Playa Honda), por arriba y
+  por debajo, despues de que Jose Manuel viera que por debajo «se ve fatal»:
+  * El coche desaparecia al pasar por debajo: ahora se ve siempre.
+  * El suelo de la zanja salia a parches y sin rayas: ahora es asfalto igual que la carretera, con sus rayas, tambien
+    debajo de cada puente (antes las rayas solo estaban en el del Cabildo y en el de Tenderete).
+  * Debajo del tablero el asfalto salia casi negro: ahora tiene la luz que rebota, como una carretera en sombra.
+  * Al pasar por debajo (y al dar marcha atras) se llenaba la pantalla de hormigon oscuro: el tablero era muy gordo y
+    bajo para la camara. Ahora es mas fino y mas alto, y los techos de los tuneles tambien suben.
+  * La valla del puente colgaba como una cortina hasta la carretera de abajo: ahora va pegada al tablero.
+  * En calidad alta salia una cortina de rayas oscuras bajo los puentes (las «sombras de rincon» con los barrotes
+    finos): ya no.
+  * Las aceras de la calle de arriba se hundian en la zanja como una rampa blanca a rayas a los lados del puente: ya no.
+  * En el tunel de Tenderete el coche iba 2 m por encima del suelo (losetas del puente viejo): ya va por el suelo.
+  * La pila del medio del puente solo se pone si no toca la calzada de abajo.
+- Para que no vuelva a pasar: la skill «lava-puentes» (como estan hechos, los fallos y sus reglas) y el recorrido de
+  prueba pruebas/puentes.js: P.revisar() comprueba solo vallas, coche y la caja vieja; P.ir(k, i, 'abajo'|'arriba')
+  pone el coche en cada puente para la foto.
+- Comprobado (PC de casa, calidad media y alta, de dia): P.revisar() bien en los 13 cruces; fotos por debajo de los 13
+  y por arriba de Pereyra Galviaty, Tenderete, Enlace LZ-20 y Las Caletas. Compila.
+- De noche (repaso despues, pedido por Jose Manuel): debajo de cada puente de zanja hay lamparas pegadas al tablero y la
+  losa de debajo se enciende con luz calida (antes no se veia nada: los charcos de luz quedaban tapados por el suelo y
+  la losa brillaba blanca toda la noche). En los tuneles, el techo y los charcos de luz. Las farolas de la
+  circunvalacion ya no ponen su charco de luz a caballo del borde de la zanja. Comprobado de noche en calidad alta:
+  Pereyra Galviaty, Enlace LZ-20 (San Bartolome), Tenderete, Cabildo y Francisco Matallana.
+- Sin comprobar: el movil, los otros puentes de noche uno a uno y las rayas de encima de Las Caletas (se cruzan las de
+  los ramales que se juntan en el puente).
+- Archivos: src/rotondasCalzada.js, src/puentesLuz.js, src/disaJuanNegrin.js y pruebas/puentes.js (nuevos),
+  src/world.js, src/trinchera.js, src/cocheTrinchera.js, src/barrios/arrecife-centro/index.js, MAPA_CODIGO.md. Copia
+  de antes en _copia_antes_rotondas_puentes/.
+
+Version 184 - Fachadas dibujadas: cada casa de Titerroy, Argana Alta y Altavista con sus detalles de verdad (27/11/2026)
+- Lo pidio Jose Manuel el 27/11/2026: "que las fachadas sean lo mas realistas posible", cada casa con lo que tiene en la
+  foto (como el zocalo de piedra negra con juntas blancas), estilo dibujo, nada de pegar fotos.
+- Nuevo src/fachadasDibujadas/: pintor.js dibuja la fachada de cada casa como una ilustracion (pared, zocalo de piedra
+  canaria, granito o liso, cornisas con rombos, franjas, esquinas, puertas de cuarterones y de arco, portones,
+  contraventanas de lamas, rejas, visillos, ventanas de aluminio, balcones y balconcillos, garajes, persianas
+  metalicas, escaparates con toldo, cables, contador y numero de la casa). index.js la pega delante de la pared que da
+  a la calle y solo pinta las aceras cercanas (en el movil, menos nitidez, mas cerca y de una en una).
+- Datos: src/fachadasDibujadas/calles/*.js, una descripcion por casa mirando las fotos de Look Around de casa (solo se
+  miran): Lebrillo a mano y 441 tramos mas repartidos en 10 archivos. 1.216 casas descritas; 249 se dejan como estaban
+  (solares, muros sin nada, casas que no salen claras). En el juego encajan 1.099 (las demas son esquinas que ya puso
+  otro tramo).
+- Herramientas: tools/fachadas_preparar.py (por cada tramo, las fotos del lado bueno en una hoja) y
+  tools/fachadas_esqueletos.py (los archivos de datos en blanco). Vista previa en plano: pruebas/fachadas.html. Metodo
+  en la skill lava-game-fachadas.
+- Lo importa src/arrecifeExtras.js (una linea).
+- Comprobado (PC de casa, de dia): sin errores; Lebrillo, Blas Cabrera Topham, Santiago Amon y Pena del Espino a pie de
+  calle; con el modo movil, 12 aceras cargadas y 23 MB de texturas (en PC, unos 60). Compila.
+- Sin comprobar: de noche (las ventanas dibujadas no se encienden), en un movil de verdad, y cada casa contra su foto.

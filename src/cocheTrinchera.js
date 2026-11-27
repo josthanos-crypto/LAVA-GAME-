@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { bajadaEn } from './trinchera.js';
+import { bajadaEn, sombraDe } from './trinchera.js';
 
 /**
  * (Version 161) Los coches, de una pieza en los puentes (lo vio José Manuel junto al puente del Cabildo: «el coche
@@ -41,6 +41,8 @@ function marcar(group) {
   const piloto = group.userData.rider?.group || null;
   group.traverse(o => {
     if (!o.material) return;
+    // (Version 183) la sombra del coche, con el mismo modo que su dibujo (si no, en la franja salía desplazada)
+    if (o.isMesh && !o.customDepthMaterial) o.customDepthMaterial = sombraDe('stay');
     let dePiloto = false;
     for (let p = o; p && piloto; p = p.parent) if (p === piloto) { dePiloto = true; break; }
     const f = dePiloto ? copiaQuieta : quieto;
@@ -68,7 +70,14 @@ export function rigidoEnTrinchera(group) {
     // la derecha del coche es (cos h, -sin h)
     const rx = Math.cos(h) * ANCHO, rz = -Math.sin(h) * ANCHO;
     const derecha = bajadaEn(x + rx, z + rz, h), izquierda = bajadaEn(x - rx, z - rz, h);
-    if (d === 0 && delante === 0 && detras === 0 && derecha === 0 && izquierda === 0) return;
+    const fuera = d === 0 && delante === 0 && detras === 0 && derecha === 0 && izquierda === 0;
+    // (Version 183) en la franja el coche se dibuja a d metros de donde three.js cree que está (la matriz baja y el
+    // sombreador sube el mundo): three.js lo daba por fuera de cámara y el coche desaparecía al pasar bajo los puentes
+    if (ud.enFranja !== !fuera) {
+      ud.enFranja = !fuera;
+      this.traverse(o => { if (o.isMesh) { if (ud.enFranja) { o.userData.culloAntes ??= o.frustumCulled; o.frustumCulled = false; } else if (o.userData.culloAntes !== undefined) o.frustumCulled = o.userData.culloAntes; } });
+    }
+    if (fuera) return;
     // la rampa: el morro baja si por delante se hunde más. Un salto brusco (el borde del tablero del puente) no inclina
     const salto = delante - detras;
     if (Math.abs(salto) > 0.004 && Math.abs(salto) < LARGO * 0.9) this.matrix.multiply(_rx.makeRotationX(Math.atan2(salto, 2 * LARGO)));
