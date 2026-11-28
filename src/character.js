@@ -37,19 +37,20 @@ export const CHARACTERS = {
   },
   jose: {
     name: 'José',
-    skin: 0xcf9a6e,
-    hair: 0xc9a650,
-    torso: 0x3e8a4f,       // verde canario
-    torso2: 0x3e8a4f,
-    legsCol: 0x4a5568,
-    shoes: 0x8a6a4a,
-    shoeStyle: 'shoe',
+    skin: 0xf1cdb0,        // piel clara
+    hair: 0xd6b468,        // rubio, despeinado (como en su dibujo, Version 185)
+    torso: 0x4c78b4,       // sudadera azul con capucha
+    torso2: 0x4c78b4,
+    topStyle: 'hoodie',
+    legsCol: 0xd8c394,     // pantalón beis
+    shoes: 0x2a2c30,
+    shoeStyle: 'sneaker',
     shorts: false,
     shades: false,
     hairStyle: 'short',
-    build: 1.04,
-    belt: 0x6a4a30,        // cinturón marrón, a juego con los zapatos (Version 133)
-    stubble: false,        // bien afeitado
+    build: 1.12,           // sudadera holgada
+    belt: 0x6a4a30,
+    stubble: true,         // barba corta rubia (sale del color del pelo)
   },
   iria: {
     name: 'Iria',
@@ -242,6 +243,17 @@ export class OnFoot {
     this.mesh.position.set(this.pos.x, mix(FOOT_Y + Math.abs(Math.sin(this.phase)) * 0.03 * amt, -0.3 + bob) + this.jumpY, this.pos.y);
     this.mesh.rotation.x = sw * 1.25;
     this.mesh.rotation.y = this.heading;
+    // (Version 185) se inclina hacia dentro en las curvas y se echa atrás al frenar (como en GTA)
+    const giro = ((this.heading - (this._hPrev ?? this.heading) + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
+    this._hPrev = this.heading;
+    const vel = Math.abs(this.speed);
+    const lean = Math.max(-0.22, Math.min(0.22, -(giro / Math.max(dt, 1e-3)) * vel * 0.035)) * (1 - sw);
+    this._lean = (this._lean ?? 0) + (lean - (this._lean ?? 0)) * Math.min(1, dt * 6);
+    this.mesh.rotation.z = this._lean;
+    const acel = (this.speed - (this._vPrev ?? this.speed)) / Math.max(dt, 1e-3);
+    this._vPrev = this.speed;
+    this._pitch = (this._pitch ?? 0) + (Math.max(-0.12, Math.min(0.1, acel * 0.012)) - (this._pitch ?? 0)) * Math.min(1, dt * 5);
+    if (sw < 0.5 && !this.sitting) this.parts.spine.rotation.x += this._pitch;
   }
 
   /**

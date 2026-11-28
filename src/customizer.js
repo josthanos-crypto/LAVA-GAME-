@@ -13,7 +13,7 @@ const CLOTHES = [0xf2f2f2, 0x1c1c1e, 0x3a5f8a, 0x1f4fa8, 0x18c5b8, 0x3e8a4f, 0xd
 const PANTS = [0x34465c, 0x1e2024, 0x4a5568, 0x6b5844, 0xc8b89a, 0xffa63d, 0x2f6b5a, 0xf2f2f2];
 const SHOES = [0xf4f1ea, 0x1e1e20, 0x8a6a4a, 0xd8271c, 0x3a4a6a, 0x18c5b8];
 const STYLES = [['short', 'Corto'], ['surf', 'Surfero'], ['long', 'Largo'], ['curly', 'Rizado'], ['ponytail', 'Coleta'], ['bun', 'Moño'], ['rapado', 'Rapado'], ['calvo', 'Calvo']];
-const TOPS = [['tshirt', 'Camiseta'], ['tank', 'Tirantes'], ['long', 'Manga larga'], ['jacket', 'Chaqueta']];
+const TOPS = [['tshirt', 'Camiseta'], ['tank', 'Tirantes'], ['long', 'Manga larga'], ['hoodie', 'Sudadera'], ['jacket', 'Chaqueta']];
 const FOOT = [['sneaker', 'Zapatillas'], ['shoe', 'Zapatos'], ['sandal', 'Sandalias']];
 
 const hex = (n) => '#' + n.toString(16).padStart(6, '0');

@@ -19,9 +19,30 @@ MAT.onBeforeCompile = (sh) => {
   sh.fragmentShader = sh.fragmentShader
     .replace('#include <common>', '#include <common>\nvarying float vRough;')
     .replace('#include <roughnessmap_fragment>', 'float roughnessFactor = abs(vRough);')
-    .replace('#include <metalnessmap_fragment>', 'float metalnessFactor = vRough < 0.0 ? 0.85 : metalness;');
+    .replace('#include <metalnessmap_fragment>', 'float metalnessFactor = vRough < 0.0 ? 0.85 : metalness;')
+    // (Version 185) aspecto de dibujo animado a lo Ghibli: la luz en escalones suaves, sombras cálidas azuladas, un
+    // brillo de color en las zonas de luz y un contorno fino de tinta marrón al borde de la silueta
+    .replace('#include <opaque_fragment>', `
+      {
+        float gl = dot(outgoingLight, vec3(0.299, 0.587, 0.114));
+        float gq = floor(gl * 4.0 + 0.5) / 4.0;
+        float gs = max(mix(gl, gq, 0.3), 0.2);
+        vec3 gcol = outgoingLight * (gs / max(gl, 0.02));
+        float sombra = smoothstep(0.55, 0.12, gl);
+        // la piel (acabado 0,55) no se ensucia en la sombra: algo de luz que la atraviesa, cálida
+        float piel = 1.0 - step(0.012, abs(vRough - 0.55));
+        sombra *= 1.0 - 0.55 * piel;
+        gcol += piel * vec3(0.045, 0.02, 0.008) * (1.0 - gl);
+        gcol = mix(gcol, gcol * vec3(0.92, 0.88, 1.08) + vec3(0.035, 0.03, 0.05), sombra * 0.75);
+        gcol += outgoingLight * vec3(0.05, 0.03, 0.0) * smoothstep(0.5, 0.95, gl);
+        float rim = 1.0 - clamp(abs(dot(normalize(normal), normalize(vViewPosition))), 0.0, 1.0);
+        float tinta = smoothstep(0.7, 0.93, rim);
+        gcol = mix(gcol, vec3(0.1, 0.065, 0.05) * (0.6 + gs), tinta * 0.85);
+        outgoingLight = gcol;
+      }
+      #include <opaque_fragment>`);
 };
-MAT.customProgramCacheKey = () => 'human-rough';
+MAT.customProgramCacheKey = () => 'human-ghibli';
 
 // huesos del esqueleto (índices)
 export const B = { hips: 0, spine: 1, head: 2, armL: 3, elbowL: 4, armR: 5, elbowR: 6, legL: 7, kneeL: 8, legR: 9, kneeR: 10 };

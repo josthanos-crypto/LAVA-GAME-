@@ -13,7 +13,7 @@ import { buildHead } from './humanHead.js';
  * con las articulaciones bien.
  *
  * opts: { sex: 'm'|'f', build (0.85–1.25), height, skin, hair, hairStyle,
- *         top, topStyle: 'tshirt'|'tank'|'long'|'jacket'|'none'|'bikini'|'swimsuit', sleeves, inner,
+ *         top, topStyle: 'tshirt'|'tank'|'long'|'hoodie'|'jacket'|'none'|'bikini'|'swimsuit', sleeves, inner,
  *         bottom, bottomStyle: 'pants'|'shorts'|'skirt'|'dress'|'swim', shorts,
  *         shoes, shoeStyle: 'sneaker'|'shoe'|'sandal'|'barefoot', shoeAccent, belt,
  *         beard, stubble, cap, capColor, shades, eyes, backpack, bag, watch,
@@ -150,7 +150,9 @@ export function buildHuman(opts = {}) {
   const lo = o.detail < 1;
   const fino = (perfil) => (lo ? perfil.filter((_, i) => i % 2 === 0 || i === perfil.length - 1) : perfil);
   const bs = o.bottomStyle || (o.shorts ? 'shorts' : 'pants');
-  const ts = bs === 'dress' ? (o.topStyle === 'long' ? 'long' : 'tank') : o.topStyle;
+  // (Version 185) sudadera con capucha: manga larga, más larga de talle y con capucha caída y bolsillo canguro
+  const hoodie = o.topStyle === 'hoodie' && bs !== 'dress';
+  const ts = bs === 'dress' ? (o.topStyle === 'long' ? 'long' : 'tank') : hoodie ? 'long' : o.topStyle;
   const k = o.build * (female ? 0.9 : 1); // grosor de brazos y piernas
   // bañador: torso al aire, bikini o bañador entero
   const swimTop = ts === 'none' || ts === 'bikini' || ts === 'swimsuit';
@@ -170,7 +172,7 @@ export function buildHuman(opts = {}) {
 
   // ── tronco ──
   const rings = (female ? RINGS_F : RINGS_M).map(([y, rx, rz, dz]) => [y, rx * o.build, rz * (0.6 + 0.4 * o.build) * (o.build > 1.1 ? 1.08 : 1), dz || 0]);
-  const hem = ts === 'jacket' ? 0.93 : 0.975;
+  const hem = ts === 'jacket' || hoodie ? 0.93 : 0.975;
   const crew = ts === 'tshirt' || ts === 'long';   // cuello redondo, pegado al cuello
   const neckY = crew ? NECK + 0.011 : NECK - 0.012;
   const beltOn = (bs === 'pants' || bs === 'shorts') && o.belt != null;
@@ -199,6 +201,16 @@ export function buildHuman(opts = {}) {
     if (beltOn && y > hem - 0.022) return beltC;
     return bottom;
   }, (x, y) => [B.hips, B.spine, smooth01((y - 1.0) / 0.12)]);
+  // capucha caída detrás del cuello, cordones y bolsillo canguro de la sudadera
+  if (hoodie) {
+    const [, rx, rz] = ringAt(cutRings, neckY);
+    add(ell(1, Math.max(rx * 1.1, 0.15), 0.085, 0.085, 0, neckY - 0.04, -(rz + 0.03), hi ? 18 : 12, hi ? 10 : 7), shade(top, 0.93), B.spine);
+    add(ell(1, Math.max(rx * 0.8, 0.12), 0.06, 0.06, 0, neckY - 0.085, -(rz + 0.075), 12, 7), shade(top, 0.8), B.spine);
+    if (!lo) {
+      for (const sx of [-1, 1]) add(box(0.012, 0.16, 0.012, sx * 0.04, neckY - 0.16, rz * 0.93), cloth(0xe8e4da), B.spine);
+      add(box(rx * 1.05, 0.15, 0.03, 0, hem - 0.12, rz * 0.97), shade(top, 0.9), B.spine);
+    }
+  }
   // cuello de la camiseta (canalé)
   if (crew && !lo) {
     const [, rx, rz] = ringAt(cutRings, neckY);
@@ -259,12 +271,13 @@ export function buildHuman(opts = {}) {
     const tb = legBands('thigh');
     const thigh = lathe(fino(thighP), tb, tb.length && tb[tb.length - 1][0] < -1 ? bottom : skin, { segs: SEG, sz: 0.95 });
     thigh.translate(x0, HIP, 0);
-    addLathe(thigh, legB);
+    // (Version 185) la piel se dobla suave en la rodilla: lo bajo del muslo sigue en parte a la espinilla
+    addLathe(thigh, (x, y) => [legB, kneeB, 0.5 * smooth01((KNEE + 0.07 - y) / 0.1)]);
     const shinP = [[0, 0.05], [0.04, 0.038], [0.052, 0.005], [0.056, -0.06], [0.06, -0.13], [0.052, -0.22], [0.04, -0.32], [0.033, -0.38], [0.032, -0.41], [0.02, -0.43], [0, -0.435]]
       .map(([r, y]) => [(pants && y < 0.02 && y > -0.42 ? Math.max(r, 0.056) : r) * k, y]);
     const shin = lathe(fino(shinP), legBands('shin'), pants ? shade(bottom, 0.8) : skin, { segs: SEG, sz: 0.95 });
     shin.translate(x0, KNEE, 0);
-    addLathe(shin, kneeB);
+    addLathe(shin, (x, y) => [kneeB, legB, 0.5 * smooth01((y - (KNEE - 0.04)) / 0.09)]);
     addShoe(o, add, { x0, kneeB, hi, lo, skin, shoe, top });
   }
 
@@ -281,7 +294,8 @@ export function buildHuman(opts = {}) {
     const upBands = ts === 'tank' || swimTop ? [] : longSleeve ? [[-10, sleeve]] : [[cutS + 0.015, sleeve], [cutS, shade(sleeve, 0.86)]];
     const up = lathe(fino(upP), upBands, longSleeve ? sleeve : skin, { segs: SEG, cloth: 1.025 });
     up.translate(x0, SH, 0);
-    addLathe(up, armB);
+    // y en el codo: lo bajo del brazo sigue en parte al antebrazo y lo alto del antebrazo, al brazo
+    addLathe(up, (x, y) => [armB, elbB, 0.5 * smooth01((ELBOW + 0.06 - y) / 0.09)]);
     const foreP = [[0, 0.042], [0.03, 0.034], [0.043, 0.01], [0.045, -0.04], [0.04, -0.12], [0.033, -0.2], [0.029, -0.24], [0.02, -0.255], [0, -0.26]]
       .map(([r, y]) => [r * ka, y]);
     const fore = lathe(fino(foreP), longSleeve ? [[-0.205, sleeve], [-0.225, shade(sleeve, 0.84)]] : [], skin, { segs: SEG });
@@ -295,7 +309,7 @@ export function buildHuman(opts = {}) {
       }
     }
     fore.translate(x0, ELBOW, 0);
-    addLathe(fore, elbB);
+    addLathe(fore, (x, y) => [elbB, armB, 0.5 * smooth01((y - (ELBOW - 0.035)) / 0.08)]);
     addHand(add, { x0, side, elbB, hi, lo, skin, k });
     // reloj en la muñeca izquierda
     if (watch && side < 0) {
@@ -373,7 +387,7 @@ export function buildHuman(opts = {}) {
     joint.rotation._onChange(() => { orig(); child.rotation.x = fn(joint.rotation.x); });
   };
   const knee = (a) => 0.06 + Math.max(0, a) * 1.15 + Math.max(0, -a - 0.9) * 0.6;
-  const elbow = (a) => -(0.14 + (a < 0 && a > -1.5 ? Math.sin((-a / 1.5) * Math.PI) * 0.6 : 0) + Math.max(0, a) * 0.15);
+  const elbow = (a) => -(0.22 + (a < 0 && a > -1.5 ? Math.sin((-a / 1.5) * Math.PI) * 0.6 : 0) + Math.max(0, a) * 0.15);
   link(legL, kneeL, knee);
   link(legR, kneeR, knee);
   link(armL, elbowL, elbow);

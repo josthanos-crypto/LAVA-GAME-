@@ -2787,3 +2787,27 @@ Version 184 - Fachadas dibujadas: cada casa de Titerroy, Argana Alta y Altavista
 - Comprobado (PC de casa, de dia): sin errores; Lebrillo, Blas Cabrera Topham, Santiago Amon y Pena del Espino a pie de
   calle; con el modo movil, 12 aceras cargadas y 23 MB de texturas (en PC, unos 60). Compila.
 - Sin comprobar: de noche (las ventanas dibujadas no se encienden), en un movil de verdad, y cada casa contra su foto.
+
+Version 185 - Jose con su sudadera azul y todos los personajes con aspecto de dibujo a lo Ghibli (27/11/2026)
+- Lo pidio Jose Manuel el 27/11/2026 con su dibujo estilo Ghibli: poner a ese personaje como «Jose» y mejorar a todos
+  los personajes a un Ghibli realista.
+- Jose (tecla 3): piel clara, pelo y barba corta rubios, sudadera azul holgada con capucha, pantalon beis y zapatillas
+  oscuras (src/character.js; lo pidio el 28/11: "soy blanquito, mi barba es rubia"). Nueva prenda `topStyle: 'hoodie'` en src/humanModel.js (capucha caida con borde, cordones y
+  bolsillo canguro), que tambien sale en el personalizador (M) como «Sudadera».
+- Ghibli para TODAS las personas (protagonistas y gente de la calle, que comparten material, src/humanParts.js): la luz
+  en escalones suaves, sombras calidas azuladas, un brillo calido en las zonas de luz y un contorno fino de tinta marron
+  en la silueta. No cuesta mas que antes (se hace en el mismo material).
+- Codos y rodillas: ya se doblaban, pero cada trozo de brazo y pierna iba rigido a un solo hueso (parecia un muñeco de
+  piezas). Ahora la piel se reparte entre los dos huesos en la rodilla y en el codo y se dobla suave (humanModel.js).
+  Y los codos al andar y correr no se veian doblados porque al abrir los hombros se volvia a poner el codo de reposo
+  (andares.js): arreglado, y el codo va algo doblado al andar y a unos 90 grados al correr. Vale para todas las personas.
+- La piel no se oscurece tanto en la sombra (le pasa algo de luz calida).
+- Mas vivos, como en GTA (andares.js y character.js): parados respiran, cargan el peso en una pierna y luego en la otra
+  (la otra rodilla se afloja) y miran a un lado y a otro sin prisa; el protagonista se inclina hacia dentro en las
+  curvas y se echa atras al frenar (y adelante al arrancar). Lo de estar parado vale tambien para la gente de la calle
+  que se para andando.
+- Comprobado (PC de casa, de dia, navegador aparte): sin errores; Jose quieto (mira, respira, cambia el peso), corriendo con la rodilla doblando, y en una curva
+  inclinado unos 6 grados; compila.
+- Sin comprobar: de noche, en movil, la gente de la calle de cerca y la cara de Jose parecida a su dibujo (la cara sigue
+  siendo la de siempre; el pelo, la ropa y el color de piel si cambian). No lleva el cigarrillo del dibujo.
+- Archivos: src/humanParts.js, src/humanModel.js, src/andares.js, src/character.js, src/customizer.js.

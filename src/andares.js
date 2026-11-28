@@ -77,10 +77,36 @@ export function andar(p, fase, { zancada = 0.6, correr = 0, peso = 1 } = {}) {
   const armL = -B * sa - 0.12 * r, armR = B * sa - 0.12 * r;
   p.armL.rotation.x = armL;
   p.armR.rotation.x = armR;
-  const codo = (a) => -(0.16 + 1.25 * r + k * (0.5 - 0.2 * r) * Math.max(0, -a / (B + 1e-3)));
-  p.elbowL.rotation.x = codo(armL);
-  p.elbowR.rotation.x = codo(armR);
-  // los brazos se abren un poco más al correr
+  // los brazos se abren un poco más al correr (antes que los codos: tocar el hombro vuelve a poner el codo de reposo)
   p.armL.rotation.z = b.armLZ - 0.05 * r * w;
   p.armR.rotation.z = b.armRZ + 0.05 * r * w;
+  // (Version 185) codo siempre algo doblado al andar (como una persona de verdad) y a unos 90° al correr
+  const codo = (a) => -(0.32 + 1.15 * r + k * (0.55 - 0.2 * r) * Math.max(0, -a / (B + 1e-3)));
+  p.elbowL.rotation.x = codo(armL);
+  p.elbowR.rotation.x = codo(armR);
+  // (Version 185) parado no es una estatua: respira, carga el peso en una pierna y luego en la otra y mira alrededor
+  const quieto = (1 - cl(k * 5, 0, 1)) * w;
+  if (quieto > 0.01) vivo(p, b, quieto);
+}
+
+function vivo(p, b, q) {
+  b.semilla ??= Math.random() * 100;
+  const t = performance.now() / 1000 + b.semilla;
+  const resp = Math.sin(t * 1.7);
+  // peso: cambia de pierna cada 6-9 s, sin prisa
+  const peso = Math.sin(t * 0.37) * 0.7 + Math.sin(t * 0.13) * 0.3;
+  p.spine.rotation.x += 0.014 * resp * q;
+  p.head.rotation.x -= 0.01 * resp * q;
+  p.hips.rotation.z += 0.04 * peso * q;
+  p.spine.rotation.z -= 0.045 * peso * q;
+  p.hips.position.y -= 0.012 * Math.abs(peso) * q;
+  // la rodilla de la pierna que descansa se afloja
+  p.kneeL.rotation.x += 0.16 * Math.max(0, peso) * q;
+  p.kneeR.rotation.x += 0.16 * Math.max(0, -peso) * q;
+  // mira a un lado y a otro (y de vez en cuando se queda mirando)
+  const mira = Math.sin(t * 0.21) + 0.5 * Math.sin(t * 0.53 + 1.3);
+  p.head.rotation.y += 0.32 * Math.tanh(mira * 1.6) * q;
+  // los hombros suben un poco al respirar, los brazos cuelgan sueltos
+  p.armL.rotation.x += 0.03 * resp * q;
+  p.armR.rotation.x -= 0.03 * resp * q;
 }
